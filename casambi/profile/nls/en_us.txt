@@ -1,0 +1,7 @@
+ND-casambi-NAME = Casambi
+ND-casambi-ICON = Output
+ST-str-ST-NAME = Status 
+CMD-str-DON-NAME = On
+CMD-str-DOF-NAME = Off
+IX_CASAMBI-0 = Off
+IX_CASAMBI-100 = On

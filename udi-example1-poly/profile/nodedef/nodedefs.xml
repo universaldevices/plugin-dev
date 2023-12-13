@@ -1,0 +1,16 @@
+<nodeDefs>
+  <nodeDef id="test" nodeType="139" nls="str">
+    <sts>
+      <st id="ST" editor="bool" />
+      <st id="GV0" editor="raw" />
+      <st id="GV1" editor="raw" />
+	</sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="DISCOVER" />
+      </accepts>
+    </cmds>
+  </nodeDef>
+</nodeDefs>
+

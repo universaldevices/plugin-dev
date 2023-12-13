@@ -1,0 +1,5 @@
+<editors>
+  <editor id="CASAMBI">
+      <range uom="51" subset="0,100" nls="IX_CASAMBI" />
+   </editor>
+</editors>
