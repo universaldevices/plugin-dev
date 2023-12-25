@@ -1,0 +1,121 @@
+2023-12-15 15:17:02,839 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:17:02,842 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:17:02,843 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:17:02,843 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:17:02,844 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:17:02,845 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:17:02,845 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:17:03,049 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:17:03,108 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:17:03,809 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:17:03,811 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:17:03,811 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:17:03,811 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:17:03,812 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:17:03,812 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:17:27,944 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:17:27,945 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:17:27,946 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:17:27,946 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:17:27,947 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:17:27,947 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:17:27,947 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:17:28,140 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:17:28,173 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:17:28,765 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:17:28,767 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:17:28,767 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:17:28,767 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:17:28,768 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:17:28,768 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:18:36,380 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:18:36,382 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:18:36,383 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:18:36,383 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:18:36,383 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:18:36,384 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:18:36,384 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:18:36,581 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:18:36,616 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:18:37,202 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:18:37,203 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:18:37,204 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:18:37,204 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:18:37,204 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:18:37,204 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:20:11,057 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:20:11,059 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:20:11,060 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:20:11,060 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:20:11,060 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:20:11,061 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:20:11,061 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:20:11,272 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:20:11,309 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:20:11,900 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:20:11,902 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:20:11,902 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:20:11,903 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:20:11,903 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:20:11,903 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:21:42,847 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:21:42,850 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:21:42,851 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:21:42,851 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:21:42,852 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:21:42,852 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:21:42,852 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:21:43,049 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:21:43,084 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:21:43,670 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:21:43,672 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:21:43,672 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:21:43,672 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:21:43,672 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:21:43,672 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:25:40,124 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:25:40,126 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:25:40,127 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:25:40,127 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:25:40,128 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:25:40,128 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:25:40,128 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:25:40,339 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:25:40,377 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:25:40,968 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:25:40,970 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:25:40,970 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:25:40,970 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:25:40,970 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:25:40,971 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:26:06,535 MainThread udi_interface      ERROR    nls_gen:generate: Failed to generate NLS: name 'file_name' is not defined
+2023-12-15 15:26:29,815 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:26:29,816 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:26:29,817 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:26:29,818 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:26:29,818 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:26:29,818 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:26:29,819 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:26:30,016 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:26:30,055 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:26:30,653 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:26:30,654 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:26:30,655 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:26:30,655 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:26:30,655 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:26:30,656 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2023-12-15 15:29:32,185 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2023-12-15 15:29:32,186 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2023-12-15 15:29:32,187 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2023-12-15 15:29:32,188 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2023-12-15 15:29:32,188 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2023-12-15 15:29:32,189 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJrMDdYKTdkbHliOVgqTUlxIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTYiLCJpc3lWZXJzaW9uIjoiNS43LjEiLCJlZGl0aW9uIjoiRnJlZSJ9
+2023-12-15 15:29:32,189 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2023-12-15 15:29:32,470 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2023-12-15 15:29:32,509 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2023-12-15 15:29:33,173 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2023-12-15 15:29:33,175 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2023-12-15 15:29:33,175 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2023-12-15 15:29:33,175 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2023-12-15 15:29:33,175 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2023-12-15 15:29:33,176 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
