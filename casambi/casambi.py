@@ -17,6 +17,9 @@ ser = None
 serial_port = '/dev/pg3.casambi'
 lock = threading.Lock()
 oadrLock = threading.Lock()
+isGetParamComplete=False
+
+
 
 class RelayNode(udi_interface.Node):
     id = 'relay'
@@ -86,14 +89,193 @@ def processSerialError(e):
     polyglot.Notices['port'] = 'Unable to open serial port {}'.format(serial_port)
 
 
+class OADRSensor:
+
+    _status:int = 0 
+    _type:int = 0 #0 = Mode, 1 = Price
+    _mode:int = 0 
+    _level:int = 0 #0-255 for 0 to 100%
+    _price:int = 0 #precision 2
+    global ser
+    
+    def __init__(self):
+        pass
+
+    def setStatus(self, status:int)->bool:
+        self._status=status
+        return True
+        
+    def setType(self, itype:int)->bool:
+        if itype !=0 and itype != 1:
+            LOGGER.error("Type can only be 0 for Mode and 1 for Price")
+            return False
+        self._type=itype
+        return True
+
+
+    def setMode(self, mode:int)->bool:
+        if mode < 0 or mode > 3:
+            LOGGER.error("Mode can only be 0, 1, 2, and 3")
+            return False
+        self._mode = mode
+        return True
+
+    def setLevel(self, level:int)->bool:
+        if level < 0 or level > 255:
+            Logger.error('Level can only be between 0 and 255')
+            return False
+        self._level=level
+        return True
+
+    def setPrice(self, price:float, precision:int)->bool:
+        self._price = int (price * (10^precision))
+        return True
+
+    def getStatus(self) -> int:
+        return self._status
+
+    def getType(self) -> int:
+        return self._type
+
+    def getMode(self) -> int:
+        return self._mode
+
+    def getLevel(self) -> int:
+        return self._level
+
+    def getPrice(self) -> int:
+        return self._price
+
+    def getValue(self, payload) -> int:
+        if payload == None:
+            return 0 
+        if payload[1] == 0:
+            return self.getStatus()
+        elif payload[1] == 1:
+            return self.getType()
+        elif payload[1] == 2:
+            return self.getMode()
+        elif payload[1] == 3:
+            return self.getLevel()
+        elif payload[1] == 4:
+            return self.getPrice()
+        LOGGER.error("OADR Sensor does not have a {} attribute".format(payload[1]))
+        return  0
+
+class CasambiParameters:
+
+    controlMode = 0 
+    l1:int = 0 
+    l2:int = 0 
+    l3:int = 0 
+    p1:int = 0 
+    p2:int = 0 
+    p3:int = 0 
+
+    def __init__(self):
+        pass
+
+    def setL1(self,l1:int)->bool:
+        if l1 < 0 or l1 > 255:
+            Logger.error('L1 can only be between 0 and 255')
+            return False
+        self.l1=l1
+        return True
+
+    def setL2(self,l2:int)->bool:
+        if l2 < 0 or l2 > 255:
+            Logger.error('L2 can only be between 0 and 255')
+            return False
+        self.l2=l2
+        return True
+
+    def setL3(self,l3:int)->bool:
+        if l3 < 0 or l3 > 255:
+            Logger.error('L3 can only be between 0 and 255')
+            return False
+        self.l3=l3
+        return True
+
+    def setP1(self,p1:int)->bool:
+        self.p1=p1
+        return True
+
+    def setP2(self,p2:int)->bool:
+        self.p2=p2
+        return True
+
+    def setP3(self,p3:int)->bool:
+        self.p3=p3
+        return True
+
+    def setControlMode(self, controlMode:int)->bool:
+        self.controlMode=controlMdoe
+
+    def getL1(self):
+        return self.l1
+
+    def getL2(self):
+        return self.l2
+
+    def getL3(self):
+        return self.l3
+
+    def getP1(self):
+        return self.p1
+
+    def getP2(self):
+        return self.p2
+
+    def getP3(self):
+        return self.p3
+
+    def getControlMode(self):
+        return self.controlMode
+
+    def setValue(self, payload)->bool:
+        if payload == None:
+            Logger.error('payload is null')
+            return False
+
+        if payload[1] == 9:
+            self.setControlMode(payload[2])
+        elif payload[1] == 10:
+            self.setL1(payload[2])
+        elif payload[1] == 11:
+            self.setL2(payload[2])
+        elif payload[1] == 12:
+            self.setL3(payload[2])
+        elif payload[1] == 13:
+            self.setP1(payload[2])
+        elif payload[1] == 14:
+            self.setP2(payload[2])
+        elif payload[1] == 15:
+            self.setP3(payload[2])
+        return True
+
+
+oadrSensor:OADRSensor=OADRSensor()        
+casParams:CasambiParameters=CasambiParameters()        
+pingOp = 1
+pongOp = 2
+initOp = 3
+setManyChannelsOp = 13
+getSensorValueOp = 0x18 #24
+setSensorValueOp = 0x19 #25
+setParamOp = 0x1A #26
+paramCompOp = 0x1B #27
+
+
 def getInitSerial():
     global polyglot
     global ser
     global serial_port 
+    global isGetParamComplete
 
     lock.acquire()
     if ser == None:
         try:
+            isGetParamComplete=False
             ser = serial.Serial(serial_port, 115200, timeout=5)
             if ser.isOpen() == False: 
                 ser.open()
@@ -106,17 +288,30 @@ def getInitSerial():
             LOGGER.info('Writing INIT')
             init = [1,3,0]
             ser.write(bytearray(init)) # force status request
-            ping = [1,1]
-            ser.write(bytearray(ping))
+            getParams=[1,0x1d]
+            isGetParamComplete=False
+            ser.write(bytearray(getParams)) # force status request
+            #while (not isGetParamComplete):
+            #    time.sleep(2)
+            
+            #ock.release()
+
+            #param is complete now
+
+            #ping = [1,1]
+            #ser.write(bytearray(ping))
         except Exception as e:
             processSerialError(e)
-            lock.release()
+            if lock.locked():
+                lock.release()
             return None
     else:
         if ser.isOpen():
-            lock.release()
+            if lock.locked():
+                lock.release()
             return ser
-    lock.release()
+    if lock.locked():
+        lock.release()
     return None
 
 
@@ -169,10 +364,13 @@ def getOADRInfo() -> oadr.OpenADR:
         events = out.getEvents()
         num_events = len(events) 
         if num_events > 0:
+            oadrSensor.setStatus(1)
             print('Number of events {}', num_events)
             event :oadr.EiEvent
             for event in events:
                 LOGGER.info('Start time: {}, end time: {}, duration: {}, status: {}'.format(event.getStartTime(), event.getEndTime(), event.getDuration(), event.getStatus()))
+        else:
+            oadrSensor.setStatus(0)
 
 
 
@@ -185,12 +383,13 @@ def poll(polltype):
 
     if 'shortPoll' in polltype:
         getOADRInfo()
-        if getInitSerial() != None:
-            ping = [1,1] 
-            try:
-                ser.write(bytearray(ping))
-            except Exception as e:
-                processSerialError(e)
+#        if getInitSerial() != None:
+#
+#            ping = [1,1] 
+#            try:
+#                ser.write(bytearray(ping))
+#            except Exception as e:
+#                processSerialError(e)
                # ser.write(bytes('GetParameter', 'utf-8')) # request status update
                # ser.write(bytes('GetSensor', 'utf-8')) # request status update
            # ser.write(bytes('AT+CH1=?', 'utf-8')) # request status update
@@ -207,23 +406,34 @@ def Pong(payload):
 def SetManyChannels(payload):
     LOGGER.info('SetManyChannels')
 
-def GetSensorValue(payload):
-    LOGGER.info('GetSensorValue')
+def GetSensorValue(payload)->bool:
+    if ser == None or ser.isOpen()==False:
+        return False
+    val : int = oadrSensor.getValue(payload)
+    LOGGER.info('GetSensorValue: {}'.format(val))
+    payload=[setSensorValueOp,payload[1],val]
+    try:
+        ser.write(bytearray(payload)) 
+        return True
+    except Exception as e:
+        processSerialError(e)
+        return False
 
 def SetSensorValue(payload):
     LOGGER.info('SetSensorValue')
+
+def SetParameter(payload):
+    LOGGER.info('SetParameter')
+    casParams.setValue(payload)
+
+def SetParamComplete(payload):
+    global isGetParamComplete
+    isGetParamComplete=True
 
 
 def listener():
     global polyglot
     global ser
-
-    pingOp = 1
-    pongOp = 2
-    initOp = 3
-    setManyChannelsOp = 13
-    getSensorValueOp = 24
-    setSensorValueOp = 25
 
     LOGGER.info('Starting serial port listener')
     while (True):
@@ -261,6 +471,11 @@ def listener():
             GetSensorValue(payload)
         elif op == setSensorValueOp:
             SetSensorValue(payload)
+        elif op == setParamOp:
+            SetParameter(payload)
+        elif op == paramCompOp:
+            SetParamComplete(payload)
+
         else:
             LOGGER.info('op is {}'.format(op))
 
