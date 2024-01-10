@@ -9,3 +9,13 @@ udi-example1-poly/logs
 udi-example1-poly/.bash_history
 udi-example1-poly/__pycache__
 audio-player/profile/nls/en_us.txt
+audio-player/0021b9262626_1_daemon.pid
+audio-player/0021b9262626_1.cert
+audio-player/0021b9262626_1.key
+audio-player/0021b9262626_1.pid
+audio-player/logs/debug.log.2023-12-15.gz
+audio-player/logs/debug.log.2023-12-26.gz
+audio-player/logs/debug.log.2024-01-09.gz
+audio-player/dev.init.sh
+audio-player/__pycache__/nls_gen.cpython-39.pyc
+audio-player/__pycache__/ud_audio.cpython-39.pyc
