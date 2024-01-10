@@ -10,7 +10,7 @@
       <sends />
       <accepts>
         <cmd id="PLAY">
-          <p id="NAME" editor="mpgNames" />
+          <p id="PLAYLIST" editor="mpgNames" />
         </cmd>
         <cmd id="STOP">
         </cmd>
