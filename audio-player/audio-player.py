@@ -22,6 +22,8 @@ LOGGER = udi_interface.LOGGER
 polyglot = None
 path = None
 defaultSoundPath='./sounds'
+#the speaker on the back
+defaultOutputDevice=2
 #lock = threading.Lock()
 
 class _AudioPlayerParams:
@@ -41,7 +43,7 @@ def audio_player_thread():
     pd = AudioSegment.from_file(AudioPlayerParams.mediaPath)
     p = pyaudio.PyAudio()
 
-    stream = p.open(format =
+    stream = p.open(output_device_index=defaultOutputDevice, format =
         p.get_format_from_width(pd.sample_width),
         channels = pd.channels,
         rate = pd.frame_rate,
@@ -70,10 +72,10 @@ class UDAudioPlayer:
         AudioPlayerParams.mediaPath = path
         AudioPlayerParams.node = node
         AudioPlayerParams.index = index
-        # Start serial port listener
-        listen_thread = threading.Thread(target = audio_player_thread)
-        listen_thread.daemon = False
-        listen_thread.start()
+        # Start audio player thread 
+        ap_thread = threading.Thread(target = audio_player_thread)
+        ap_thread.daemon = False
+        ap_thread.start()
 
     def stop(self, node):
         if not AudioPlayerParams.isPlaying:
