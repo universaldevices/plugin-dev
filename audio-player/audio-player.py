@@ -205,9 +205,6 @@ if __name__ == "__main__":
         polyglot.ready()
         polyglot.setCustomParamsDoc()
 
-        listen_thread.daemon = True
-        listen_thread.start()
-
         # Just sit and wait for events
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
