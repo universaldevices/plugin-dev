@@ -17,3 +17,4 @@ audio-player/logs
 audio-player/dev.init.sh
 audio-player/__pycache__/nls_gen.cpython-39.pyc
 audio-player/__pycache__/ud_audio.cpython-39.pyc
+audio-player.tar.gz

@@ -4840,3 +4840,765 @@ KeyError: 'PLAYLIST'
 2024-01-10 10:16:54,427 Thread-6   udi_interface      INFO     audio-player:listener: listener thread
 2024-01-10 10:17:04,431 Thread-6   udi_interface      INFO     audio-player:listener: listener thread
 2024-01-10 10:17:14,433 Thread-6   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:45:56,031 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-01-10 10:45:56,031 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-01-10 10:45:56,031 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-01-10 10:45:56,031 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-01-10 10:45:56,032 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2024-01-10 10:45:56,032 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IklORk8iLCJ0b2tlbiI6InVzQWQtR08oTUQqa3kzY20iLCJtcXR0SG9zdCI6ImxvY2FsaG9zdCIsIm1xdHRQb3J0Ijo4ODgzLCJzZWN1cmUiOjEsImlzUEczeCI6dHJ1ZSwicGczVmVyc2lvbiI6IjMuMi4xNyIsImlzeVZlcnNpb24iOiI1LjguMCIsImVkaXRpb24iOiJGcmVlIn0=
+2024-01-10 10:45:56,032 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-01-10 10:45:56,081 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-01-10 10:45:56,120 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-01-10 10:45:56,448 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-01-10 10:45:56,448 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-01-10 10:45:56,449 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-01-10 10:45:56,449 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-01-10 10:45:56,449 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-01-10 10:45:56,449 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2024-01-10 10:45:56,449 MainThread udi_interface.interface INFO     interface:__init__: Initialization received from Polyglot V3 3.2.17  [ISY: 5.8.0, Slot: 1]
+2024-01-10 10:45:56,450 MainThread udi_interface.interface INFO     interface:__init__: Connect: Network Interface: {'addr': '172.26.18.3', 'netmask': '255.255.255.0', 'broadcast': '172.26.18.255'}
+2024-01-10 10:45:56,450 Interface  udi_interface.interface INFO     interface:_startMqtt: Connecting to MQTT... localhost:8883
+2024-01-10 10:45:56,450 MainThread udi_interface.interface WARNING  interface:_get_server_data: get_server_data: failed to read file server.json: [Errno 2] No such file or directory: 'server.json'
+2024-01-10 10:45:56,450 Interface  udi_interface.interface INFO     interface:_startMqtt: Using SSL cert: 0021b9262626_1.cert key: 0021b9262626_1.key ca: /usr/local/etc/ssl/certs/ud.ca.cert
+2024-01-10 10:45:56,450 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 10:45:56,501 MQTT       udi_interface.interface INFO     interface:_connect: MQTT Connected with result code 0 (Success)
+2024-01-10 10:45:56,502 MQTT       udi_interface.interface INFO     interface:_connect: MQTT Subscribing to topic: udi/pg3/ns/clients/00:21:b9:26:26:26_1 -  MID: 2 Result: 0
+2024-01-10 10:45:56,543 MQTT       udi_interface.interface INFO     interface:_subscribe: MQTT Subscribed Succesfully for Message ID: 2 - QoS: (0,)
+2024-01-10 10:45:59,459 Thread-1   udi_interface      INFO     audio-player:listener: Starting serial port listener
+2024-01-10 10:45:59,459 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:45:59,539 Thread-2   udi_interface      INFO     audio-player:parameterHandler: we are using /usr/home/admin/Chimes as path
+2024-01-10 10:45:59,540 Thread-2   udi_interface.custom INFO     custom:_save: Sending data notices to Polyglot.
+2024-01-10 10:45:59,541 MQTT       udi_interface.interface INFO     interface:_message: custom data response {'customparamsdoc': ''}
+2024-01-10 10:45:59,541 Thread-2   udi_interface.interface INFO     interface:updateProfile: Sending Install Profile command to Polyglot.
+2024-01-10 10:45:59,542 Thread-2   udi_interface      INFO     audio-player:addAudioNode: Adding AudioPlayer node
+2024-01-10 10:45:59,542 MQTT       udi_interface.interface INFO     interface:_message: Successfully set key = customparamsdoc
+2024-01-10 10:45:59,542 Thread-2   udi_interface.interface INFO     interface:addNode: Adding node AudioPlayer(0) [None]
+2024-01-10 10:45:59,557 MQTT       udi_interface.interface INFO     interface:_message: Successfully set key = notices
+2024-01-10 10:45:59,693 MQTT       udi_interface.interface INFO     interface:_message: Profile installation finished
+2024-01-10 10:45:59,854 MQTT       udi_interface.interface INFO     interface:_message: Successfully set 0 :: ST to 0 UOM 25
+2024-01-10 10:45:59,896 MQTT       udi_interface.interface INFO     interface:_message: Successfully set 0 :: GV0 to 0 UOM 25
+2024-01-10 10:46:09,468 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:46:19,470 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:46:22,061 Command    udi_interface.node INFO     node:reportDrivers: Updating All Drivers to ISY for AudioPlayer(0)
+2024-01-10 10:46:22,170 MQTT       udi_interface.interface INFO     interface:_message: Successfully set 0 :: ST to 0 UOM 25
+2024-01-10 10:46:22,170 MQTT       udi_interface.interface INFO     interface:_message: Successfully set 0 :: GV0 to 0 UOM 25
+2024-01-10 10:46:29,473 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:46:39,481 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:46:49,483 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:46:55,918 Thread-4   udi_interface      INFO     audio-player:poll: short poll
+2024-01-10 10:46:59,498 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:47:09,505 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:47:19,506 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:47:29,508 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:47:39,527 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:47:49,529 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:47:55,935 Thread-5   udi_interface      INFO     audio-player:poll: short poll
+2024-01-10 10:47:59,533 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:48:09,537 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:48:19,538 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:48:29,540 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:48:39,545 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:48:49,555 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:48:55,936 Thread-6   udi_interface      INFO     audio-player:poll: short poll
+2024-01-10 10:48:59,567 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:49:09,573 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:49:19,577 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:49:29,587 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:49:39,591 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:49:49,622 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:49:55,942 Thread-7   udi_interface      INFO     audio-player:poll: short poll
+2024-01-10 10:49:59,661 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:50:09,665 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:50:19,672 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:50:29,685 Thread-1   udi_interface      INFO     audio-player:listener: listener thread
+2024-01-10 10:50:32,562 Command    udi_interface.interface INFO     interface:_handleInput: Received stop from Polyglot... Shutting Down.
+2024-01-10 10:50:32,562 Command    udi_interface.interface INFO     interface:stop: Disconnecting from MQTT... localhost:8883
+2024-01-10 10:50:32,563 Command    udi_interface.interface INFO     interface:_disconnect: MQTT Graceful disconnection.
+2024-01-10 15:23:35,340 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-01-10 15:23:35,341 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-01-10 15:23:35,341 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-01-10 15:23:35,341 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-01-10 15:23:35,341 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2024-01-10 15:23:35,341 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJRU1pIJShmSVhLUFB3bFd5IiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTciLCJpc3lWZXJzaW9uIjoiNS44LjAiLCJlZGl0aW9uIjoiRnJlZSJ9
+2024-01-10 15:23:35,341 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-01-10 15:23:35,425 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-01-10 15:23:35,483 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-01-10 15:23:35,724 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-01-10 15:23:35,725 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-01-10 15:23:35,725 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-01-10 15:23:35,725 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-01-10 15:23:35,725 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-01-10 15:23:35,725 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2024-01-10 15:23:35,726 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2024-01-10 15:23:35,726 MainThread udi_interface      ERROR    udi_interface:write: File "/usr/home/admin/workspace/plugin-dev/audio-player/audio-player.py", line 13, in <module>
+2024-01-10 15:23:35,726 MainThread udi_interface      ERROR    udi_interface:write: import pyaudio
+2024-01-10 15:23:35,726 MainThread udi_interface      ERROR    udi_interface:write: ModuleNotFoundError
+2024-01-10 15:23:35,727 MainThread udi_interface      ERROR    udi_interface:write: :
+2024-01-10 15:23:35,727 MainThread udi_interface      ERROR    udi_interface:write: No module named 'pyaudio'
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJRU1pIJShmSVhLUFB3bFd5IiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTciLCJpc3lWZXJzaW9uIjoiNS44LjAiLCJlZGl0aW9uIjoiRnJlZSJ9
+2024-01-10 15:24:34,191 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-01-10 15:24:34,238 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-01-10 15:24:34,270 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-01-10 15:24:34,461 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-01-10 15:24:34,462 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-01-10 15:24:34,462 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-01-10 15:24:34,462 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-01-10 15:24:34,462 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-01-10 15:24:34,462 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2024-01-10 15:24:34,469 MainThread udi_interface.interface INFO     interface:__init__: Initialization received from Polyglot V3 3.2.17  [ISY: 5.8.0, Slot: 1]
+2024-01-10 15:24:34,469 MainThread udi_interface.interface INFO     interface:__init__: Connect: Network Interface: {'addr': '172.26.18.3', 'netmask': '255.255.255.0', 'broadcast': '172.26.18.255'}
+2024-01-10 15:24:34,469 Interface  udi_interface.interface INFO     interface:_startMqtt: Connecting to MQTT... localhost:8883
+2024-01-10 15:24:34,470 MainThread udi_interface.interface WARNING  interface:_get_server_data: get_server_data: failed to read file server.json: [Errno 2] No such file or directory: 'server.json'
+2024-01-10 15:24:34,470 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:34,475 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:37,490 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:37,502 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:40,503 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:40,503 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:43,505 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:43,509 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:46,512 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:46,515 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:49,512 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:49,519 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:52,514 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:52,524 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:55,516 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:55,532 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:24:58,521 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:24:58,541 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:25:01,523 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 15:25:01,545 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 15:25:04,514 MainThread udi_interface      ERROR    udi_interface:write: Exception ignored in:
+2024-01-10 15:25:04,514 MainThread udi_interface      ERROR    udi_interface:write: <module 'threading' from '/usr/local/lib/python3.9/threading.py'>
+2024-01-10 15:25:04,514 MainThread udi_interface      ERROR    udi_interface:write: Traceback (most recent call last):
+2024-01-10 15:25:04,514 MainThread udi_interface      ERROR    udi_interface:write: File "/usr/local/lib/python3.9/threading.py", line 1477, in _shutdown
+2024-01-10 15:25:04,515 MainThread udi_interface      ERROR    udi_interface:write: lock.acquire()
+2024-01-10 15:25:04,515 MainThread udi_interface      ERROR    udi_interface:write: KeyboardInterrupt
+2024-01-10 15:25:04,515 MainThread udi_interface      ERROR    udi_interface:write: :
+2024-01-10 16:22:01,977 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-01-10 16:22:01,979 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-01-10 16:22:01,980 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-01-10 16:22:01,981 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-01-10 16:22:01,981 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2024-01-10 16:22:01,982 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJRU1pIJShmSVhLUFB3bFd5IiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTciLCJpc3lWZXJzaW9uIjoiNS44LjAiLCJlZGl0aW9uIjoiRnJlZSJ9
+2024-01-10 16:22:01,982 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-01-10 16:22:02,176 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-01-10 16:22:02,211 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-01-10 16:22:02,811 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-01-10 16:22:02,812 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-01-10 16:22:02,813 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-01-10 16:22:02,813 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-01-10 16:22:02,813 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-01-10 16:22:02,813 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2024-01-10 16:22:02,831 MainThread udi_interface.interface INFO     interface:__init__: Initialization received from Polyglot V3 3.2.17  [ISY: 5.8.0, Slot: 1]
+2024-01-10 16:22:02,831 MainThread udi_interface.interface INFO     interface:__init__: Connect: Network Interface: {'addr': '172.26.18.3', 'netmask': '255.255.255.0', 'broadcast': '172.26.18.255'}
+2024-01-10 16:22:02,834 MainThread udi_interface.interface WARNING  interface:_get_server_data: get_server_data: failed to read file server.json: [Errno 2] No such file or directory: 'server.json'
+2024-01-10 16:22:02,834 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:02,835 Interface  udi_interface.interface INFO     interface:_startMqtt: Connecting to MQTT... localhost:8883
+2024-01-10 16:22:02,842 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:05,835 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:05,854 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:08,859 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:08,885 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:11,864 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:11,893 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:14,873 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:14,896 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:17,885 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:17,898 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:20,898 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:20,902 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:23,904 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:23,907 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:26,913 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:26,920 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:29,915 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:22:29,929 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:32,916 MainThread udi_interface.interface ERROR    interface:send: MQTT Send timeout :: {'config': {'version': '1.0.4', 'requestId': False}}.
+2024-01-10 16:22:32,917 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:32,938 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:35,923 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:35,945 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:38,925 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:38,950 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:41,926 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:41,956 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:44,936 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:44,968 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:47,940 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:47,978 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:50,949 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:50,985 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:53,951 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:54,050 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:56,953 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:22:57,063 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:22:59,961 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:23:00,068 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:02,969 MainThread udi_interface.interface ERROR    interface:send: MQTT Send timeout :: {'getAll': {}}.
+2024-01-10 16:23:02,969 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getNsInfo': {}}
+2024-01-10 16:23:03,074 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:05,974 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getNsInfo': {}}
+2024-01-10 16:23:06,080 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:08,976 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getNsInfo': {}}
+2024-01-10 16:23:09,088 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:11,981 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getNsInfo': {}}
+2024-01-10 16:23:12,093 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:14,982 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getNsInfo': {}}
+2024-01-10 16:23:15,098 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:17,984 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getNsInfo': {}}
+2024-01-10 16:23:18,115 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:27,058 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-01-10 16:23:27,059 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-01-10 16:23:27,060 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-01-10 16:23:27,060 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-01-10 16:23:27,061 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/audio-player
+2024-01-10 16:23:27,061 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoxLCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiJRU1pIJShmSVhLUFB3bFd5IiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMTciLCJpc3lWZXJzaW9uIjoiNS44LjAiLCJlZGl0aW9uIjoiRnJlZSJ9
+2024-01-10 16:23:27,061 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-01-10 16:23:27,254 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-01-10 16:23:27,287 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-01-10 16:23:27,898 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-01-10 16:23:27,899 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-01-10 16:23:27,899 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-01-10 16:23:27,900 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-01-10 16:23:27,900 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-01-10 16:23:27,900 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.2.2 Starting...
+2024-01-10 16:23:27,918 MainThread udi_interface.interface INFO     interface:__init__: Initialization received from Polyglot V3 3.2.17  [ISY: 5.8.0, Slot: 1]
+2024-01-10 16:23:27,918 MainThread udi_interface.interface INFO     interface:__init__: Connect: Network Interface: {'addr': '172.26.18.3', 'netmask': '255.255.255.0', 'broadcast': '172.26.18.255'}
+2024-01-10 16:23:27,921 Interface  udi_interface.interface INFO     interface:_startMqtt: Connecting to MQTT... localhost:8883
+2024-01-10 16:23:27,921 MainThread udi_interface.interface WARNING  interface:_get_server_data: get_server_data: failed to read file server.json: [Errno 2] No such file or directory: 'server.json'
+2024-01-10 16:23:27,922 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:27,928 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:30,924 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:30,944 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:33,929 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:33,950 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:36,968 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:36,974 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:39,978 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:39,983 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:42,990 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:42,995 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:45,995 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:46,000 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:48,998 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:49,012 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:52,000 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:52,019 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:55,001 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'config': {'version': '1.0.4', 'requestId': False}}
+2024-01-10 16:23:55,026 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:23:58,004 MainThread udi_interface.interface ERROR    interface:send: MQTT Send timeout :: {'config': {'version': '1.0.4', 'requestId': False}}.
+2024-01-10 16:23:58,005 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:23:58,032 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:24:01,007 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:24:01,037 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:24:04,009 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:24:04,042 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)
+2024-01-10 16:24:07,017 MainThread udi_interface.interface WARNING  interface:send: MQTT Send waiting on connection :: {'getAll': {}}
+2024-01-10 16:24:07,053 Interface  udi_interface.interface ERROR    interface:_startMqtt: MQTT Connection SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134), Will retry in a few seconds.
+Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.9/site-packages/udi_interface/interface.py", line 544, in _startMqtt
+    self._mqttc.loop_forever()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1742, in loop_forever
+    self.reconnect()
+  File "/home/admin/.local/lib/python3.9/site-packages/paho/mqtt/client.py", line 1073, in reconnect
+    sock.do_handshake()
+  File "/usr/local/lib/python3.9/ssl.py", line 1343, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1134)

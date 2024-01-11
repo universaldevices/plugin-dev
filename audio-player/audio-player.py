@@ -3,19 +3,90 @@
 Polyglot v3 node server communicating with Casambi USB dongle 
 Copyright (C) 2023  Universal Devices
 """
-from ud_audio import UDAudioPlayer
+
+import os
+current_path = os.environ['PATH']
+ffprog_path='/usr/local/bin'
+os.environ['PATH'] = f'{ffprog_path}:{current_path}'
+
 from nls_gen import NLSGenerator
 import udi_interface
 import sys
-import os
 import time
 import threading
 import json
+import pyaudio
+from pydub import AudioSegment
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
 path = None
-lock = threading.Lock()
+defaultSoundPath='./sounds'
+#lock = threading.Lock()
+
+class _AudioPlayerParams:
+    isPlaying :bool = False
+    toStop :bool = False
+    mediaPath: str = None
+    node = None
+    index: int = 0
+
+
+AudioPlayerParams:_AudioPlayerParams = _AudioPlayerParams()
+
+chunk = 4096
+def audio_player_thread():
+    if AudioPlayerParams.node != None:
+        AudioPlayerParams.node.updateState(1, AudioPlayerParams.index)
+    pd = AudioSegment.from_file(AudioPlayerParams.mediaPath)
+    p = pyaudio.PyAudio()
+
+    stream = p.open(format =
+        p.get_format_from_width(pd.sample_width),
+        channels = pd.channels,
+        rate = pd.frame_rate,
+        output = True)
+    i = 0
+    data = pd[:chunk]._data
+    while data and not AudioPlayerParams.toStop:
+        stream.write(data)
+        i += chunk
+        data = pd[i:i + chunk]._data
+
+    stream.close()    
+    p.terminate()
+    if AudioPlayerParams.node != None:
+        AudioPlayerParams.node.updateState(0, 0)
+    AudioPlayerParams.isPlaying = False
+    AudioPlayerParams.toStop = False
+
+class UDAudioPlayer:
+
+    def play(self, node, index, path:str) -> bool:
+        while AudioPlayerParams.isPlaying:
+            time.sleep(0.5) 
+        AudioPlayerParams.isPlaying = True
+        AudioPlayerParams.toStop = False
+        AudioPlayerParams.mediaPath = path
+        AudioPlayerParams.node = node
+        AudioPlayerParams.index = index
+        # Start serial port listener
+        listen_thread = threading.Thread(target = audio_player_thread)
+        listen_thread.daemon = False
+        listen_thread.start()
+
+    def stop(self, node):
+        if not AudioPlayerParams.isPlaying:
+            return
+        AudioPlayerParams.node = node
+        AudioPlayerParams.toStop = True
+
+    def query(self, node):
+        if AudioPlayerParams.isPlaying:
+            node.updateState(1, AudioPlayerParams.index)
+        else:
+            node.updateState(0, 0)
+
 udAudioPlayer = UDAudioPlayer()
 nlsGen = NLSGenerator()
 
@@ -86,26 +157,31 @@ def addAudioNode(address)->bool:
 Read the user entered custom parameters. This should only be the serial
 port.
 '''
-
 def parameterHandler(params):
     global polyglot
     global path
     global nlsGen
+    global defaultSoundPath
 
     if params == None:
-        polyglot.Notices['path'] = 'path cannot be blank ...' 
+        LOGGER.info("using default sounds ...")
+        path=defaultSoundPath
     elif 'path' in params:
         path=params['path']
-        if path == None:
-            polyglot.Notices['path'] = 'path cannot be blank ...' 
-        elif os.path.isdir(path):
-            LOGGER.info('we are using {} as path'.format(path))
-            polyglot.Notices.clear()
-            nlsGen.generate(path)
-            polyglot.updateProfile()
-            addAudioNode("0")
-        else:
-            polyglot.Notices['path'] = '{} is not a directory'.format(path)
+
+    if path == None or path == '':
+        LOGGER.info("using default sounds ...")
+        path=defaultSoundPath
+
+    if not os.path.isdir(path):
+        polyglot.Notices['path'] = '{} is not a valid directory. Using defaults ... '.format(path)
+        path=defaultSoundPath
+
+    LOGGER.info('we are using {} as path'.format(path))
+    polyglot.Notices.clear()
+    nlsGen.generate(path)
+    polyglot.updateProfile()
+    addAudioNode("0")
 
 def poll(polltype):
 
@@ -115,47 +191,10 @@ def poll(polltype):
         LOGGER.info("long poll")
 
 
-def listener():
-
-    LOGGER.info('Starting serial port listener')
-    while (True):
-        LOGGER.info("listener thread")
-        time.sleep(10)
-
-        
-        #status = ser.readline().decode('utf-8')
-        # status looks like: OK+CH1=0
-        #LOGGER.info('incoming: {}'.format(status))
-
-def oldCrap(): 
-        try: 
-            if status.startswith('OK'):
-                status = status.split('+')[1]
-
-            (channel, state) = status.split('=')
-            address = channel.lower()
-
-            if polyglot.getNode(address):
-                LOGGER.info('Updatiung {} status to {}'.format(address, state.rstrip()))
-                polyglot.getNode(address).update(state.rstrip())
-            else:
-                name = 'Relay-{}'.format(channel)
-                LOGGER.info('Adding new node for channel {}'.format(channel))
-                node = RelayNode(polyglot, address, address, name, ser)
-                polyglot.addNode(node)
-                node.update(state.rstrip())
-
-        except Exception as e:
-            LOGGER.error('Error parsing relay status: {}'.format(str(e)))
-        
-
-
-
-
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.0.4')
+        polyglot.start('1.0.2')
 
 
         # subscribe to the events we want
@@ -166,8 +205,6 @@ if __name__ == "__main__":
         polyglot.ready()
         polyglot.setCustomParamsDoc()
 
-        # Start serial port listener
-        listen_thread = threading.Thread(target = listener)
         listen_thread.daemon = True
         listen_thread.start()
 
