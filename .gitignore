@@ -24,3 +24,6 @@ bin
 audio-player/0021b9262626_2.cert
 audio-player/0021b9262626_2.key
 audio-player/logs/debug.log
+audio-player/0021b9262626_2_daemon.pid
+audio-player/0021b9262626_2.pid
+audio-player/logs/debug.log
