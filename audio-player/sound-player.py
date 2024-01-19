@@ -4,12 +4,12 @@ Polyglot v3 node server communicating with Casambi USB dongle
 Copyright (C) 2023  Universal Devices
 """
 
-USE THIS METHOD FOR LARGE FILES/BT?
+#USE THIS METHOD FOR LARGE FILES/BT?
 
-must install the following
-pip - sounddevice
-pip - soundfile
-.... must install py39-numpy package (HUGE)
+#must install the following
+#pip - sounddevice
+#pip - soundfile
+#.... must install py39-numpy package (HUGE)
 
 import os
 current_path = os.environ['PATH']
@@ -24,7 +24,7 @@ import numpy
 
 devices:[]=sd.query_devices()
 print(devices)
-device_index:str='/dev/dsp1'
+device_index:str='/dev/dsp'
 
 filename ="./sounds/chime.mp3"
 event = threading.Event()
@@ -46,7 +46,7 @@ try:
         current_frame += chunksize
 
     stream = sd.OutputStream(
-        samplerate=fs, device=device_index, channels=data.shape[1],
+        48000, device=device_index, channels=data.shape[1],
         callback=callback, finished_callback=event.set)
     with stream:
         event.wait()  # Wait until playback is finished
