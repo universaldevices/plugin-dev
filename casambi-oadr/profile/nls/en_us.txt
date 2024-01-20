@@ -4,16 +4,16 @@ ND-casambi-ICON = Output
 ST-casambi-ST-NAME = OpenADR Status
 ST-casambi-GV1-NAME = Start Time 
 ST-casambi-GV2-NAME = End Time 
-ST-casambi-GV3-NAME = Mode 
-ST-casambi-GV4-NAME = Price 
+ST-casambi-GV3-NAME = Current Mode 
+ST-casambi-GV4-NAME = Current Price 
 ST-casambi-GV5-NAME = Control Mode 
-ST-casambi-GV6-NAME = Level 1  
-ST-casambi-GV7-NAME = Level 2  
-ST-casambi-GV8-NAME = Level 3  
-ST-casambi-GV9-NAME = Price 1  
-ST-casambi-GV10-NAME = Price 2  
-ST-casambi-GV11-NAME = Price 3  
-ST-casambi-GV12-NAME = Current Load-Shed 
+ST-casambi-GV6-NAME = Moderate Load Shedding %
+ST-casambi-GV7-NAME = High Load Shedding % 
+ST-casambi-GV8-NAME = Special Load Shedding % 
+ST-casambi-GV9-NAME = Moderate Price Threshold
+ST-casambi-GV10-NAME = High Price Threshold 
+ST-casambi-GV11-NAME = Special Price Threshold 
+ST-casambi-GV12-NAME = Current Load Shed %
 
 CMD-casambi-QUERY-NAME = Query
 

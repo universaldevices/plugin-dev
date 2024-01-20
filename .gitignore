@@ -1,6 +1,7 @@
 casambi/.bash_history
 casambi/logs
 casambi/__pycache__
+casambi-oadr/__pycache__
 casambi/0021b9262626_1.cert
 casambi/0021b9262626_1.key
 udi-example1-poly/0021b9262626_3.cert
@@ -26,4 +27,7 @@ audio-player/0021b9262626_2.key
 audio-player/logs/debug.log
 audio-player/0021b9262626_2_daemon.pid
 audio-player/0021b9262626_2.pid
-audio-player/logs/debug.log
+audio-player/logs/*
+casambi-oadr/logs/*
+casambi-oadr/0021b9262626_1.cert
+casambi-oadr/0021b9262626_1.key

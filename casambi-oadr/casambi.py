@@ -3,16 +3,21 @@
 Polyglot v3 node server communicating with Casambi USB dongle 
 Copyright (C) 2023  Universal Devices
 """
+
+import os
+current_path = os.environ['PATH']
+ffprog_path='/usr/local/bin'
+os.environ['PATH'] = f'{ffprog_path}:{current_path}'
+
 import udi_interface
 import sys
 import time
-import serial
 import threading
-import xml.etree.cElementTree as ET
-import oadr
+import serial
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
+
 ser = None
 serial_port = '/dev/pg3.casambi'
 lock = threading.Lock()
@@ -73,7 +78,6 @@ def getInitSerial()->bool:
         lock.release()
     return ser.isOpen()
 
-
 class CasambiNode(udi_interface.Node):
     id = 'casambi'
     drivers = [
@@ -108,48 +112,48 @@ class CasambiNode(udi_interface.Node):
     def __init__(self, polyglot, primary, address, name):
         super(CasambiNode, self).__init__(polyglot, primary, address, name)
 
-    def noop(self, cmd):
-        LOGGER.info('Got command: {}'.format(cmd))
-        ### You can add commands here
-        ### map them to the commands array below
-        '''
-        if 'cmd' in cmd:
-            if cmd['cmd'] == 'DON':
-                # check value
-                if 'value' in cmd:
-                    if cmd['value'] == '100':
-                        ser.write(bytes(self.on_str, 'utf-8'))
-                    else:
-                        ser.write(bytes(self.off_str, 'utf-8'))
-                else:
-                    ser.write(bytes(self.on_str, 'utf-8'))
-            elif cmd['cmd'] == 'DOF':
-                ser.write(bytes(self.off_str, 'utf-8'))
-        '''
+    def updateState(self, state, index):
+        if state == 1:
+            self.setDriver('ST', 1, uom=25, force=True)
+            self.setDriver('GV0', index, uom=25, force=True)
+        else:
+            self.setDriver('ST', 0, uom=25, force=True)
+            self.setDriver('GV0', 0, uom=25, force=True)
 
-    def query(self):
-        QueryCasambi()
-    
-    #this is a list of supported commands
+    def processCommand(self, cmd):
+        LOGGER.info('Got command: {}'.format(cmd))
+        if 'cmd' in cmd:
+            if cmd['cmd'] == 'QUERY':
+                QueryCasambi() 
+            ## you can add more commands in the array and handle them here:
+            '''
+            elif cmd['cmd'] == 'TEST':
+                do something here
+            '''
+               
+
     commands = {
-            'QUERY': query
+            'QUERY': processCommand
+            #test command
+            #'TEST': test 
             }
 
-def addUpdateNode()->bool:
+def addUpdateNode(address)->bool:
     global casambiNode
-    global polyglot
-    
-    if polyglot.getNode("0"):
+
+    if address == None:
+        address = "0"
+    if polyglot.getNode(address):
         LOGGER.info('CasambiNode already exists ...')
         return False
-    
+
     if getInitSerial():
-        casambiNode = CasambiNode(polyglot, '0', '0', 'Casambi DR USB')
+        casambiNode = CasambiNode(polyglot, address, address, 'Casambi DR USB')
         polyglot.addNode(casambiNode)
         polyglot.updateProfile()
         QueryCasambi()
 #        getOADRInfo()
-
+        return True
 
 '''
 Read the user entered custom parameters. This should only be the serial
@@ -172,43 +176,17 @@ def parameterHandler(params):
     else:
             polyglot.Notices['port'] = 'Using default serial port {}'.format(serial_port)
 
-    addUpdateNode()
-
+    addUpdateNode('0')
 
 def poll(polltype):
-    global ser
-
-    if 'shortPoll' in polltype:
-        addUpdateNode()
-    #    getOADRInfo()
-
-
-if __name__ == "__main__":
-    try:
-        # Start serial port listener
-       # listen_thread = threading.Thread(target = listener)
-       # listen_thread.daemon = True
-       # listen_thread.start()
-
-        polyglot = udi_interface.Interface([])
-        polyglot.start('1.0.5')
-
-
-        # subscribe to the events we want
-        polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
-        polyglot.subscribe(polyglot.POLL, poll)
-
-        # Start running
-        polyglot.setCustomParamsDoc()
-        polyglot.ready()
-   #     polyglot.updateProfile()
-
-        # Just sit and wait for events
-        polyglot.runForever()
-    except (KeyboardInterrupt, SystemExit):
-        sys.exit(0)
-        
-
+    ''' 
+    you can do things based on short/long polls as you will be called for each
+    for now, we have nothing to do
+    '''
+   # if 'shortPoll' in polltype:
+   #     LOGGER.info("short poll")
+   # elif 'longPoll' in polltype:
+   #     LOGGER.info("long poll")
 
 class OADRSensor:
 
@@ -283,6 +261,85 @@ class OADRSensor:
         LOGGER.error("OADR Sensor does not have a {} attribute".format(payload[1]))
         return  0
 
+'''
+    OADR values coming from IoX
+'''
+class OADRSensor:
+
+    _status:int = 0 
+    _type:int = 0 #0 = Mode, 1 = Price
+    _mode:int = 0 
+    _level:int = 0 #0-255 for 0 to 100%
+    _price:int = 0 #precision 2
+    global ser
+    
+    def __init__(self):
+        pass
+
+    def setStatus(self, status:int)->bool:
+        self._status=status
+        return True
+        
+    def setType(self, itype:int)->bool:
+        if itype !=0 and itype != 1:
+            LOGGER.error("Type can only be 0 for Mode and 1 for Price")
+            return False
+        self._type=itype
+        return True
+
+
+    def setMode(self, mode:int)->bool:
+        if mode < 0 or mode > 3:
+            LOGGER.error("Mode can only be 0, 1, 2, and 3")
+            return False
+        self._mode = mode
+        return True
+
+    def setLevel(self, level:int)->bool:
+        if level < 0 or level > 255:
+            Logger.error('Level can only be between 0 and 255')
+            return False
+        self._level=level
+        return True
+
+    def setPrice(self, price:float, precision:int)->bool:
+        self._price = int (price * (10^precision))
+        return True
+
+    def getStatus(self) -> int:
+        return self._status
+
+    def getType(self) -> int:
+        return self._type
+
+    def getMode(self) -> int:
+        return self._mode
+
+    def getLevel(self) -> int:
+        return self._level
+
+    def getPrice(self) -> int:
+        return self._price
+
+    def getValue(self, payload) -> int:
+        if payload == None:
+            return 0 
+        if payload[1] == 0:
+            return self.getStatus()
+        elif payload[1] == 1:
+            return self.getType()
+        elif payload[1] == 2:
+            return self.getMode()
+        elif payload[1] == 3:
+            return self.getLevel()
+        elif payload[1] == 4:
+            return self.getPrice()
+        LOGGER.error("OADR Sensor does not have a {} attribute".format(payload[1]))
+        return  0
+
+'''
+    This class defines Casambi Parameters
+'''
 class CasambiParameters:
 
     CONTROL_MODE_LEVEL          = 0
@@ -326,18 +383,18 @@ class CasambiParameters:
         return True
 
     def setP1(self,p1:int)->bool:
-        self.p1=p1
-        casambiNode.setDriver('GV9', p1, uom=103, force=True)
+        self.p1=p1/100
+        casambiNode.setDriver('GV9', self.p1, uom=103, force=True)
         return True
 
     def setP2(self,p2:int)->bool:
-        casambiNode.setDriver('GV10', p2, uom=103, force=True)
-        self.p2=p2
+        self.p2=p2/100
+        casambiNode.setDriver('GV10', self.p2, uom=103, force=True)
         return True
 
     def setP3(self,p3:int)->bool:
-        self.p3=p3
-        casambiNode.setDriver('GV11', p3, uom=103, force=True)
+        self.p3=p3/100
+        casambiNode.setDriver('GV11', self.p3, uom=103, force=True)
         return True
 
     def setLoadShedLimit(self, loadShedLimit:int)->bool:
@@ -400,63 +457,24 @@ class CasambiParameters:
             self.setP3(payload[2])
         return True
 
-
-oadrSensor:OADRSensor=OADRSensor()        
+'''
+    The following segment is all about handling serial data coming 
+    from the serial port. As the data flows, Casambi Parameters are update
+    accordingly.
+'''
+ 
 casParams:CasambiParameters=CasambiParameters()        
-pingOp = 1
-pongOp = 2
-initOp = 3
-setManyChannelsOp = 13
-getSensorValueOp = 0x18 #24
-setSensorValueOp = 0x19 #25
-setParamOp = 0x1A #26
-paramCompOp = 0x1B #27
+oadrSensor:OADRSensor=OADRSensor() 
 
-
-
-def getOADRInfo() -> oadr.OpenADR:
-    oadrLock.acquire()
-    oadr_xml = None
-    isy = udi_interface.ISY(polyglot)
-    if isy == None:
-        LOGGER.error("no iox")
-        oadrLock.release()
-        return None
-    try:
-        oadr_xml = isy.cmd('/rest/oadr')
-    except Exception as e:
-        LOGGER.error(str(e))
-        oadrLock.release()
-        return None
-
-    if oadr_xml == None:
-        LOGGER.error("No oadr response")
-        oadrLock.release()
-        return None
-
-    out = oadr.OpenADR()
-    if out.parse_xml(oadr_xml) == False:
-        out = None
-
-    if out != None:
-        events = out.getEvents()
-        num_events = len(events) 
-        if num_events > 0:
-            oadrSensor.setStatus(1)
-            print('Number of events {}', num_events)
-            event :oadr.EiEvent
-            for event in events:
-                LOGGER.info('Start time: {}, end time: {}, duration: {}, status: {}'.format(event.getStartTime(), event.getEndTime(), event.getDuration(), event.getStatus()))
-        else:
-            oadrSensor.setStatus(0)
-
-
-
-    oadrLock.release()
-    out = None
-    
-
-
+#Some Casambi Constants
+CAS_PING_OP = 1
+CAS_PONG_OP = 2
+CAS_INIT_OP = 3
+CAS_SET_M_CHANNELS_OP = 13
+CAS_GET_SENSOR_VAL_OP = 0x18 #24
+CAS_SET_SENSOR_VAL_OP = 0x19 #25
+CAS_SET_PARAM_OP = 0x1A #26
+CAS_PARAM_COMP_OP = 0x1B #27
 
 
 def Init(payload):
@@ -476,7 +494,7 @@ def GetSensorValue(payload)->bool:
         return False
     val : int = oadrSensor.getValue(payload)
     LOGGER.info('GetSensorValue: {}'.format(val))
-    payload=[setSensorValueOp,payload[1],val]
+    payload=[CAS_SET_SENSOR_VAL_OP,payload[1],val]
     try:
         ser.write(bytearray(payload)) 
         return True
@@ -496,14 +514,15 @@ def SetParamComplete(payload):
     isGetParamComplete=True
 
 
-def listener():
+#listen to serial port and do things
+def serial_port_listener():
     global polyglot
     global ser
 
     LOGGER.info('Starting serial port listener')
     while (True):
 
-        if getInitSerial() == False:
+        if ser == None or ser.isOpen() == False:
             time.sleep(5)
             continue
 
@@ -524,24 +543,51 @@ def listener():
 
         op = payload[0]
 
-        if op == initOp:
+        if op == CAS_INIT_OP:
             Init(payload)
-        elif op == pingOp:
+        elif op == CAS_PING_OP:
             Ping(payload)
-        elif op == pongOp:
+        elif op == CAS_PONG_OP:
             Pong(payload)
-        elif op == setManyChannelsOp:
+        elif op == CAS_SET_M_CHANNELS_OP:
             SetManyChannels(payload)
-        elif op == getSensorValueOp:
+        elif op == CAS_GET_SENSOR_VAL_OP:
             GetSensorValue(payload)
-        elif op == setSensorValueOp:
+        elif op == CAS_SET_SENSOR_VAL_OP:
             SetSensorValue(payload)
-        elif op == setParamOp:
+        elif op == CAS_SET_PARAM_OP:
             SetParameter(payload)
-        elif op == paramCompOp:
+        elif op == CAS_PARAM_COMP_OP:
             SetParamComplete(payload)
 
         else:
             LOGGER.info('op is {}'.format(op))
 
+
+
+if __name__ == "__main__":
+    try:
+       # Start serial port listener
+        listen_thread = threading.Thread(target = serial_port_listener)
+        listen_thread.daemon = True
+        listen_thread.start()
+
+
+        polyglot = udi_interface.Interface([])
+        polyglot.start('1.0.4')
+
+
+        # subscribe to the events we want
+        polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
+        polyglot.subscribe(polyglot.POLL, poll)
+
+        # Start running
+        polyglot.ready()
+        polyglot.setCustomParamsDoc()
+
+        # Just sit and wait for events
+        polyglot.runForever()
+    except (KeyboardInterrupt, SystemExit):
+        sys.exit(0)
         
+
