@@ -3,7 +3,7 @@
       <range uom="25" min="0" max="2" nls="IX_OADRSTAT" />
    </editor>
   <editor id="OADRTIME">
-      <range uom="151" />
+      <range uom="145" />
    </editor>
   <editor id="OADRMODE">
       <range uom="25" min="0" max="3" nls="IX_OADRMODE" />
