@@ -1,0 +1,54 @@
+<nodeDefs>
+  <nodeDef id="DROPCTRL" nls="DROPCTRL">
+        <editors />
+        <sts>
+            <st id="ST" editor="BOOL" />
+        </sts>
+        <cmds>
+            <sends />
+            <accepts>
+                <cmd id="DISCOVER" />
+            </accepts>
+        </cmds>
+  </nodeDef>
+  <nodeDef id="DROPHUB" nls="DROPHUB">
+    <sts>
+      <!--leak detected-->
+      <st id="ST" editor="LEAK" />
+      <!--current water flow-->
+      <st id="WATERF" editor="GPM" />
+      <!--peak water flow-->
+      <st id="GV2" editor="GPM" />
+      <!--water used today-->
+      <st id="WVOL" editor="GAL" />
+      <!--average water used in the last 30 days-->
+      <st id="GV3" editor="GAL" />
+      <!--current system pressure-->
+      <st id="WATERP" editor="PSI" />
+      <!--low system pressure today-->
+      <st id="GV4" editor="PSI" />
+      <!--high system pressure today-->
+      <st id="GV5" editor="PSI" />
+      <!-- Water On/Off-->
+      <st id="GV6" editor="ONOFF" />
+      <!-- Bypass On/Off-->
+      <st id="GV7" editor="ONOFF" />
+      <!-- pMode-->
+      <st id="GV8" editor="PMODE" />
+      <!-- Battery -->
+      <st id="BATLVL" editor="PERCENT" />
+      <!-- Notif -->
+      <st id="GV9" editor="NOTIF" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+          <cmd id="WATER" editor="ONOFF"/>
+          <cmd id="BYPASS" editor="ONOFF"/>
+          <cmd id="PMODE" editor="PMODE"/>
+        </accepts>
+     </cmds>
+  </nodeDef>
+</nodeDefs>
+

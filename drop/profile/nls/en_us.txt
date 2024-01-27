@@ -1,0 +1,34 @@
+ND-DROPCTRL-NAME = Drop Controller
+ND-DROPCTRL-ICON = GenericCtl 
+
+
+ST-DROPHUB-ST-NAME = Leak Detected 
+ST-DROPHUB-WATERF-NAME = Current Water Flow Rate 
+ST-DROPHUB-GV2-NAME = Peak Water Flow Rate Today
+ST-DROPHUB-WVOL-NAME = Water Used Today 
+ST-DROPHUB-GV3-NAME = Average Water Used (30 Days) 
+ST-DROPHUB-WATERP-NAME = System Pressure 
+ST-DROPHUB-GV4-NAME = Low System Pressure Today 
+ST-DROPHUB-GV5-NAME = High System Pressure Today 
+ST-DROPHUB-GV6-NAME = Water  
+ST-DROPHUB-GV7-NAME = Bypass 
+ST-DROPHUB-GV8-NAME = Protect Mode Setting 
+ST-DROPHUB-BATLVL-NAME = Battery Level 
+ST-DROPHUB-NOTIF-NAME = Notifications 
+
+CMD-DROPHUB-QUERY-NAME = Query
+CMD-DROPHUB-WATER-NAME = Water
+CMD-DROPHUB-BYPASS-NAME = Bypass
+CMD-DROPHUB-PMODE-NAME = Protection Mode
+
+IX_PMODE-0 = Home
+IX_PMODE-1 = Away
+IX_PMODE-2 = Schedule
+
+IX_NOTIF-0 = No New Notification
+IX_NOTIF-1 = Pending Notification 
+
+IX_LEAK-0 = Leak Detected 
+IX_LEAK-1 = No Leak Detected 
+
+
