@@ -31,3 +31,8 @@ audio-player/logs/*
 casambi-oadr/logs/*
 casambi-oadr/0021b9262626_1.cert
 casambi-oadr/0021b9262626_1.key
+drop/0021b9262626_2_daemon.pid
+drop/0021b9262626_2.cert
+drop/0021b9262626_2.key
+drop/logs/*
+drop/dmap.json

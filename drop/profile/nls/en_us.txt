@@ -2,6 +2,8 @@ ND-DROPCTRL-NAME = Drop Controller
 ND-DROPCTRL-ICON = GenericCtl 
 
 
+ND-DROPHUB-NAME = Hub
+ND-DROPHUB-ICON = Irrigation 
 ST-DROPHUB-ST-NAME = Leak Detected 
 ST-DROPHUB-WATERF-NAME = Current Water Flow Rate 
 ST-DROPHUB-GV2-NAME = Peak Water Flow Rate Today
@@ -13,13 +15,85 @@ ST-DROPHUB-GV5-NAME = High System Pressure Today
 ST-DROPHUB-GV6-NAME = Water  
 ST-DROPHUB-GV7-NAME = Bypass 
 ST-DROPHUB-GV8-NAME = Protect Mode Setting 
-ST-DROPHUB-BATLVL-NAME = Battery Level 
-ST-DROPHUB-NOTIF-NAME = Notifications 
+ST-DROPHUB-GV9-NAME = Notifications 
 
 CMD-DROPHUB-QUERY-NAME = Query
 CMD-DROPHUB-WATER-NAME = Water
 CMD-DROPHUB-BYPASS-NAME = Bypass
 CMD-DROPHUB-PMODE-NAME = Protection Mode
+
+CMDP-ONOFF-WCTRL-NAME = Control
+CMDP-ONOFF-BPCTRL-NAME = Control
+CMDP-PMODE-PMCTRL-NAME = Setting
+
+
+ND-DROPSOFT-NAME = Softener
+ND-DROPSOFT-ICON = Output 
+ST-DROPSOFT-ST-NAME = Flow Rate 
+ST-DROPSOFT-GV7-NAME = Bypass 
+ST-DROPSOFT-BATLVL-NAME = Battery Level 
+ST-DROPSOFT-WVOL-NAME = Capacity
+ST-DROPSOFT-WATERP-NAME = System Pressure 
+ST-DROPSOFT-GV2-NAME = Reserve Capacity In Use 
+CMD-DROPSOFT-QUERY-NAME = Query
+CMD-DROPSOFT-BYPASS-NAME = Bypass
+
+ND-DROPFILT-NAME = Filter
+ND-DROPFILT-ICON = Output
+ST-DROPFILT-ST-NAME = Flow Rate 
+ST-DROPFILT-GV7-NAME = Bypass 
+ST-DROPFILT-BATLVL-NAME = Battery Level 
+ST-DROPFILT-WATERP-NAME = System Pressure 
+CMD-DROPFILT-QUERY-NAME = Query
+CMD-DROPFILT-BYPASS-NAME = Bypass
+
+ND-DROPSALT-NAME = Salt Sensor
+ND-DROPSALT-ICON = Sensor
+ST-DROPSALT-ST-NAME = Salt Level 
+ST-DROPSALT-GV7-NAME = Bypass 
+ST-DROPSALT-BATLVL-NAME = Battery Level 
+ST-DROPSALT-WATERP-NAME = System Pressure 
+CMD-DROPSALT-QUERY-NAME = Query
+
+ND-DROPPV-NAME = Protection Valve 
+ND-DROPPV-ICON = Switch 
+ST-DROPPV-ST-NAME = Leak Detected 
+ST-DROPPV-WATERF-NAME = Flow Rate 
+ST-DROPPV-GV6-NAME = Water  
+ST-DROPPC-BATLVL-NAME = Battery Level 
+ST-DROPPV-WATERP-NAME = System Pressure 
+ST-DROPPV-WATERT-NAME = Temperature
+CMD-DROPPV-QUERY-NAME = Query
+CMD-DROPPV-WATER-NAME = Water
+
+ND-DROPPC-NAME = Pump Control 
+ND-DROPPC-ICON = Switch 
+ST-DROPPC-ST-NAME = Leak Detected 
+ST-DROPPC-WATERF-NAME = Flow Rate 
+ST-DROPPC-WATERP-NAME = System Pressure 
+ST-DROPPC-GV2-NAME = Pump Status  
+ST-DROPPC-WATERT-NAME = Temperature
+CMD-DROPPC-QUERY-NAME = Query
+
+
+ND-DROPLEAK-NAME = Leak Detector 
+ND-DROPLEAK-ICON = Sensor 
+ST-DROPLEAK-ST-NAME = Leak Detected 
+ST-DROPLEAK-BATLVL-NAME = Battery Level 
+ST-DROPLEAK-WATERT-NAME = Temperature
+CMD-DROPLEAK-QUERY-NAME = Query
+
+ND-DROPRO-NAME = Reverse Osmosis Filter 
+ND-DROPRO-ICON = Output 
+ST-DROPRO-ST-NAME = Leak Detected
+ST-DROPRO-GV1-NAME = Inlet Water TDS
+ST-DROPRO-GV2-NAME = Outlet Water TDS
+ST-DROPRO-GV3-NAME = Remaining Life (Cart#1)
+ST-DROPRO-GV4-NAME = Remaining Life (Cart#2)
+ST-DROPRO-GV5-NAME = Remaining Life (Cart#3)
+CMD-DROPRO-QUERY-NAME = Query
+CMD-DISCOVER-NAME = Discover
+
 
 IX_PMODE-0 = Home
 IX_PMODE-1 = Away
@@ -28,7 +102,13 @@ IX_PMODE-2 = Schedule
 IX_NOTIF-0 = No New Notification
 IX_NOTIF-1 = Pending Notification 
 
-IX_LEAK-0 = Leak Detected 
-IX_LEAK-1 = No Leak Detected 
+IX_LEAK-0 = No Leak Detected 
+IX_LEAK-1 = Leak Detected 
+
+IX_SALT-0 = Normal
+IX_SALT_1 = Low
+
+IX_PUMP-0 = Off
+IX_PUMP-1 = Running
 
 

@@ -44,9 +44,162 @@
       <sends />
         <accepts>
           <cmd id="QUERY" />
-          <cmd id="WATER" editor="ONOFF"/>
-          <cmd id="BYPASS" editor="ONOFF"/>
-          <cmd id="PMODE" editor="PMODE"/>
+          <cmd id="WATER">
+               <p id="WCTRL" editor="ONOFF" />
+          </cmd>
+          <cmd id="BYPASS">
+               <p id="BPCTRL" editor="ONOFF" />
+          </cmd>
+          <cmd id="PMODE"> 
+               <p id="PMCTRL" editor="PMODE" />
+          </cmd>
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPSOFT" nls="DROPSOFT">
+    <sts>
+      <!--current water flow-->
+      <st id="ST" editor="GPM" />
+      <!-- Bypass On/Off-->
+      <st id="GV7" editor="ONOFF" />
+      <!-- Battery -->
+      <st id="BATLVL" editor="PERCENT" />
+      <!-- Capacity -->
+      <st id="WVOL" editor="GAL" />
+      <!--current system pressure-->
+      <st id="WATERP" editor="PSI" />
+      <!-- reserve capacity in use-->
+      <st id="GV2" editor="ONOFF" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+          <cmd id="BYPASS">
+               <p id="BPCTRL" editor="ONOFF" />
+          </cmd>
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPFILT" nls="DROPFILT">
+    <sts>
+      <!--current water flow-->
+      <st id="ST" editor="GPM" />
+      <!-- Bypass On/Off-->
+      <st id="GV7" editor="ONOFF" />
+      <!-- Battery -->
+      <st id="BATLVL" editor="PERCENT" />
+      <!--current system pressure-->
+      <st id="WATERP" editor="PSI" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+          <cmd id="BYPASS">
+               <p id="BPCTRL" editor="ONOFF" />
+          </cmd>
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPSALT" nls="DROPSALT">
+    <sts>
+      <!--salt level on/off-->
+      <st id="ST" editor="SALT_LEVEL" />
+      <!-- Bypass On/Off-->
+      <st id="GV7" editor="ONOFF" />
+      <!-- Battery -->
+      <st id="BATLVL" editor="PERCENT" />
+      <!--current system pressure-->
+      <st id="WATERP" editor="PSI" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPPV" nls="DROPPV">
+    <sts>
+      <!--leak detected-->
+      <st id="ST" editor="LEAK" />
+      <!--current water flow-->
+      <st id="WATERF" editor="GPM" />
+      <!-- Water On/Off-->
+      <st id="GV6" editor="ONOFF" />
+      <!-- Battery -->
+      <st id="BATLVL" editor="PERCENT" />
+      <!--current system pressure-->
+      <st id="WATERP" editor="PSI" />
+      <!--Temperature-->
+      <st id="WATERT" editor="TEMPF" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+          <cmd id="WATER">
+               <p id="WCTRL" editor="ONOFF" />
+          </cmd>
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPPC" nls="DROPPC">
+    <sts>
+      <!--leak detected-->
+      <st id="ST" editor="LEAK" />
+      <!--current water flow-->
+      <st id="WATERF" editor="GPM" />
+      <!--current system pressure-->
+      <st id="WATERP" editor="PSI" />
+      <!-- Pump Status-->
+      <st id="GV2" editor="PUMP_STAT" />
+      <!--Temperature-->
+      <st id="WATERT" editor="TEMPF" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPLEAK" nls="DROPLEAK">
+    <sts>
+      <!--leak detected-->
+      <st id="ST" editor="LEAK" />
+      <!-- Battery -->
+      <st id="BATLVL" editor="PERCENT" />
+      <!--Temperature-->
+      <st id="WATERT" editor="TEMPF" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+        </accepts>
+     </cmds>
+  </nodeDef>
+  <nodeDef id="DROPRO" nls="DROPRO">
+    <sts>
+      <!--leak detected-->
+      <st id="ST" editor="LEAK" />
+      <!-- Inlet Water TDS -->
+      <st id="GV1" editor="PPM" />
+      <!-- Outlet Water TDS -->
+      <st id="GV2" editor="PPM" />
+      <!-- Cart #1 Life Remaining-->
+      <st id="GV3" editor="CART_LIFE" />
+      <!-- Cart #2 Life Remaining-->
+      <st id="GV4" editor="CART_LIFE" />
+      <!-- Cart #3 Life Remaining-->
+      <st id="GV5" editor="CART_LIFE" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
         </accepts>
      </cmds>
   </nodeDef>

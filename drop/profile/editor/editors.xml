@@ -26,10 +26,22 @@
     <editor id="LEAK">
         <range uom="25" min="0" max="1" nls="IX_LEAK" />
     </editor>
-
+    <editor id="SALT_LEVEL">
+        <range uom="25" min="0" max="1" nls="IX_SALT" />
+    </editor>
+    <editor id="PUMP_STAT">
+        <range uom="25" min="0" max="1" nls="IX_PUMP" />
+    </editor>
     <editor id="TEMPF">
         <range uom="17" min="-40" max="176" prec="2" />
     </editor>
+    <editor id="PPM">
+        <range uom="54"/>
+    </editor>
+    <editor id="CART_LIFE">
+        <range uom="51"/>
+    </editor>
+
     <editor id="HUM">
         <range uom="22" min="0" max="100" prec="2" />
     </editor>

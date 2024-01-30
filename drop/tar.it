@@ -1,2 +1,2 @@
 #!/bin/sh
-tar -czvf audio-player.tar.gz audio-player.py install.sh nls_gen.py profile requirements.txt sounds
+tar -czvf drop.tar.gz drop.py install.sh profile requirements.txt 
