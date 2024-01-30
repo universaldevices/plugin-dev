@@ -1,0 +1,53 @@
+<eiEvents>
+<eiEvent id="Event013024_135636_494_0" status="Active" optStatus="Opted In" pendingOptStatus="N/A" priority="0" modNum="0" createdTime="2024/01/30 01:56:35 PM" respReq="Always" isTest="false">
+<requestID>OadrDisReq013024_135635_983</requestID>
+<marketContext>http://MarketContext1</marketContext>
+<optId>0</optId>
+<modificationTime>2001/12/17 01:30:47 AM</modificationTime>
+<modificationReason>Update</modificationReason>
+<eiActivePeriod startTime="2024/01/30 01:57:36 PM" actualStartTime="2024/01/30 01:57:36 PM" endTime="2024/01/30 02:02:36 PM">
+<duration unit="seconds">300</duration>
+<notificationTime>2024/01/30 01:56:36 PM</notificationTime>
+<rampUpTime>2024/01/30 01:57:36 PM</rampUpTime>
+<recoveryTime>2024/01/30 02:02:36 PM</recoveryTime>
+<tolerance>
+<startAfter unit="seconds">0</startAfter>
+</tolerance>
+</eiActivePeriod>
+<eiEventSignals>
+<eiEventSignal id="String" name="SIMPLE" type="level">
+<intervals>
+<interval id="0" status="Active">
+<value type="float" unit="N/A">2.000000</value>
+<mode>High</mode>
+<duration unit="seconds">300</duration>
+<startTime>2024/01/30 01:57:36 PM</startTime>
+<endTime>2024/01/30 02:02:36 PM</endTime>
+</interval>
+</intervals>
+<currentValue id="N/A" status="Completed">
+<value type="float" unit="N/A">2.000000</value>
+<mode>High</mode>
+</currentValue>
+</eiEventSignal>
+<eiEventSignal id="SIG_02" name="ELECTRICITY_PRICE" type="price">
+<intervals>
+<interval id="0" status="Active">
+<value type="float" unit="USD/KWh">3.140000</value>
+<duration unit="seconds">300</duration>
+<startTime>2024/01/30 01:57:36 PM</startTime>
+<endTime>2024/01/30 02:02:36 PM</endTime>
+</interval>
+</intervals>
+<currentValue id="N/A" status="Completed">
+<value type="float" unit="USD/KWh">3.140000</value>
+</currentValue>
+</eiEventSignal>
+</eiEventSignals>
+<eiTarget>
+<resources>
+<resource>resource1</resource>
+</resources>
+</eiTarget>
+</eiEvent>
+</eiEvents>
