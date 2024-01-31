@@ -986,9 +986,9 @@ class DropRO(udi_interface.Node):
             if "cart1" in data:
                 self.setDriver("GV3", data["cart1"], 51)
             if "cart2" in data:
-                self.setDriver("GV4", data["cart4"], 51)
+                self.setDriver("GV4", data["cart2"], 51)
             if "cart3" in data:
-                self.setDriver("GV5", data["cart5"], 51)
+                self.setDriver("GV5", data["cart3"], 51)
 
         except Exception as ex:
             LOGGER.error("Failed to update leak detector info{}".format(ex))
@@ -1002,7 +1002,7 @@ class DropRO(udi_interface.Node):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.0.0')
+        polyglot.start('1.0.3')
         Controller(polyglot)
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):

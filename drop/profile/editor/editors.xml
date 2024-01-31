@@ -3,19 +3,19 @@
         <range uom="2" subset="0,1" />
     </editor>
     <editor id="PERCENT">
-        <range uom="51" />
+        <range uom="51" min="0" max="100"/>
     </editor>
     <editor id="ONOFF">
         <range uom="78" subset="0,100" />
     </editor>
-     <editor id="GPM">
-        <range uom="143" />
+    <editor id="GPM">
+        <range uom="143" min="0" max="10000" />
     </editor>
     <editor id="GAL">
-        <range uom="69" />
+        <range uom="69" min="0" max="1000000"/>
     </editor>
     <editor id="PSI">
-        <range uom="138" />
+        <range uom="138" min="0" max="100"/>
     </editor>
     <editor id="PMODE">
         <range uom="25" min="0" max="2" nls="IX_PMODE" />
@@ -36,12 +36,11 @@
         <range uom="17" min="-40" max="176" prec="2" />
     </editor>
     <editor id="PPM">
-        <range uom="54"/>
+        <range uom="54" min="0" max="100" />
     </editor>
     <editor id="CART_LIFE">
-        <range uom="51"/>
+        <range uom="51" min="0" max="100"/>
     </editor>
-
     <editor id="HUM">
         <range uom="22" min="0" max="100" prec="2" />
     </editor>

@@ -1,9 +1,9 @@
 ND-DROPCTRL-NAME = Drop Controller
-ND-DROPCTRL-ICON = GenericCtl 
+ND-DROPCTRL-ICON = Irrigation
 
 
 ND-DROPHUB-NAME = Hub
-ND-DROPHUB-ICON = Irrigation 
+ND-DROPHUB-ICON = LampAndSwitch 
 ST-DROPHUB-ST-NAME = Leak Detected 
 ST-DROPHUB-WATERF-NAME = Current Water Flow Rate 
 ST-DROPHUB-GV2-NAME = Peak Water Flow Rate Today
@@ -28,7 +28,7 @@ CMDP-PMODE-PMCTRL-NAME = Setting
 
 
 ND-DROPSOFT-NAME = Softener
-ND-DROPSOFT-ICON = Output 
+ND-DROPSOFT-ICON = Output
 ST-DROPSOFT-ST-NAME = Flow Rate 
 ST-DROPSOFT-GV7-NAME = Bypass 
 ST-DROPSOFT-BATLVL-NAME = Battery Level 
@@ -56,7 +56,7 @@ ST-DROPSALT-WATERP-NAME = System Pressure
 CMD-DROPSALT-QUERY-NAME = Query
 
 ND-DROPPV-NAME = Protection Valve 
-ND-DROPPV-ICON = Switch 
+ND-DROPPV-ICON = Switch
 ST-DROPPV-ST-NAME = Leak Detected 
 ST-DROPPV-WATERF-NAME = Flow Rate 
 ST-DROPPV-GV6-NAME = Water  
@@ -77,14 +77,14 @@ CMD-DROPPC-QUERY-NAME = Query
 
 
 ND-DROPLEAK-NAME = Leak Detector 
-ND-DROPLEAK-ICON = Sensor 
+ND-DROPLEAK-ICON = Sensor
 ST-DROPLEAK-ST-NAME = Leak Detected 
 ST-DROPLEAK-BATLVL-NAME = Battery Level 
 ST-DROPLEAK-WATERT-NAME = Temperature
 CMD-DROPLEAK-QUERY-NAME = Query
 
 ND-DROPRO-NAME = Reverse Osmosis Filter 
-ND-DROPRO-ICON = Output 
+ND-DROPRO-ICON = Output
 ST-DROPRO-ST-NAME = Leak Detected
 ST-DROPRO-GV1-NAME = Inlet Water TDS
 ST-DROPRO-GV2-NAME = Outlet Water TDS
