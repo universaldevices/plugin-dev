@@ -124,7 +124,6 @@ class Controller(udi_interface.Node):
 
         self.poly.ready()
         self.poly.addNode(self)
-        self.addAllNodes()
 
     def addAllNodes(self): 
         config = self.poly.getConfig()
@@ -185,9 +184,7 @@ class Controller(udi_interface.Node):
         return True
 
     def start(self):
-        while self.valid_configuration is False:
-            LOGGER.info('Waiting on valid configuration')
-            time.sleep(5)
+        self.addAllNodes()
         polyglot.updateProfile()
         self.poly.setCustomParamsDoc()
 
