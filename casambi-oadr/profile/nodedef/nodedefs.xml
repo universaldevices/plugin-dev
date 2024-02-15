@@ -2,8 +2,6 @@
   <nodeDef id="casambi" nls="casambi">
     <sts>
       <st id="ST" editor="OADRSTAT" />
-      <st id="GV1" editor="OADRTIME" />
-      <st id="GV2" editor="OADRTIME" />
       <st id="GV3" editor="OADRMODE" />
       <st id="GV4" editor="OADRPRICE" />
       <st id="GV5" editor="CAS_CTLMODE" />
@@ -14,11 +12,15 @@
       <st id="GV10" editor="CAS_PRICE" />
       <st id="GV11" editor="CAS_PRICE" />
       <st id="GV12" editor="CAS_SHEDLIMIT" />
+      <st id="GV13" editor="OADRTEST" />
     </sts>
     <cmds>
       <sends />
         <accepts>
           <cmd id="QUERY" />
+          <cmd id="OPENADR_TEST">
+               <p id="SET" editor="OADRTEST" />
+          </cmd>
         </accepts>
      </cmds>
   </nodeDef>

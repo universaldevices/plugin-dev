@@ -13,17 +13,22 @@ from nls_gen import NLSGenerator
 import udi_interface
 import sys
 import time
-import threading
 import json
 import pyaudio
+import sounddevice as sd
 from pydub import AudioSegment
+
+import threading
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
 path = None
 defaultSoundPath='./sounds'
-#the speaker on the back
-defaultOutputDevice=2
+SPEAKER_OUT = 1
+BLUETOOTH_OUT = 0
+#the speaker on the back = 2
+#0 = bt
+defaultOutputDevice=BLUETOOTH_OUT
 #lock = threading.Lock()
 
 class _AudioPlayerParams:
@@ -32,11 +37,24 @@ class _AudioPlayerParams:
     mediaPath: str = None
     node = None
     index: int = 0
+    outputDevice: int = defaultOutputDevice
 
 
 AudioPlayerParams:_AudioPlayerParams = _AudioPlayerParams()
 
+devices:[]=sd.query_devices()
+print(devices)
+device_index:str='/dev/dsp'
+
 chunk = 4096
+
+
+def getSampleRate(suggested:int):
+    if AudioPlayerParams.outputDevice == BLUETOOTH_OUT:
+        return 48000
+    return suggested
+
+
 def audio_player_thread():
     if AudioPlayerParams.node != None:
         AudioPlayerParams.node.updateState(1, AudioPlayerParams.index)
@@ -46,7 +64,8 @@ def audio_player_thread():
     stream = p.open(output_device_index=defaultOutputDevice, format =
         p.get_format_from_width(pd.sample_width),
         channels = pd.channels,
-        rate = pd.frame_rate,
+        rate = getSampleRate(pd.frame_rate),
+        #rate = pd.frame_rate,
         output = True)
     i = 0
     data = pd[:chunk]._data
@@ -72,7 +91,7 @@ class UDAudioPlayer:
         AudioPlayerParams.mediaPath = path
         AudioPlayerParams.node = node
         AudioPlayerParams.index = index
-        # Start audio player thread 
+        # Start audio player thread
         ap_thread = threading.Thread(target = audio_player_thread)
         ap_thread.daemon = False
         ap_thread.start()
@@ -82,6 +101,7 @@ class UDAudioPlayer:
             return
         AudioPlayerParams.node = node
         AudioPlayerParams.toStop = True
+        event.set()
 
     def query(self, node):
         if AudioPlayerParams.isPlaying:
@@ -96,7 +116,9 @@ class AudioPlayerNode(udi_interface.Node):
     id = 'mpgPlayer'
     drivers = [
             {'driver': 'ST', 'value': 0, 'uom': 25},
-            {'driver': 'GV0', 'value': 0, 'uom': 25}
+            {'driver': 'GV0', 'value': 0, 'uom': 25},
+            {'driver': 'GV1', 'value': 0, 'uom': 25},
+            {'driver': 'GV2', 'value': 0, 'uom': 25}
             ]
 
     def __init__(self, polyglot, primary, address, name):
@@ -109,6 +131,13 @@ class AudioPlayerNode(udi_interface.Node):
         else:
             self.setDriver('ST', 0, uom=25, force=True)
             self.setDriver('GV0', 0, uom=25, force=True)
+
+    def processBT(self, index:int):
+        print(index)
+
+
+    def processOutput(self, index:int):
+        print (index)
 
     def processCommand(self, cmd):
         LOGGER.info('Got command: {}'.format(cmd))
@@ -131,6 +160,18 @@ class AudioPlayerNode(udi_interface.Node):
         
             elif cmd['cmd'] == 'STOP':
                 udAudioPlayer.stop(self)
+            
+            elif cmd['cmd'] == 'BT' :
+                sparam = str(cmd['query']).replace("'","\"")
+                jparam=json.loads(sparam)
+                index=int(jparam['BTSTATUS.uom25'])
+                self.processBT(index)
+
+            elif cmd['cmd'] == 'OUTPUT' :
+                sparam = str(cmd['query']).replace("'","\"")
+                jparam=json.loads(sparam)
+                index=int(jparam['OUTPUT.uom25'])
+                self.processOutput(index)
 
             elif cmd['cmd'] == 'QUERY':
                 udAudioPlayer.query(self)
@@ -138,6 +179,8 @@ class AudioPlayerNode(udi_interface.Node):
     commands = {
             'PLAY': processCommand,
             'STOP': processCommand,
+            'BT': processCommand,
+            'OUTPUT': processCommand,
             'QUERY': processCommand
             }
 

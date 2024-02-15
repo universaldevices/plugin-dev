@@ -13,6 +13,7 @@ import serial
 import xml.etree.cElementTree as ET
 import oadr
 import struct
+import json
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
@@ -52,6 +53,8 @@ CASOADR_PROPERTY_PRICE_2='GV10'
 CASOADR_PROPERTY_PRICE_3='GV11'
 #Cas Shed Limit 
 CASOADR_PROPERTY_SHEDLIMIT='GV12'
+#OpenADR Testing
+CASOADR_PROPERTY_TEST_OADR='GV13'
 
 OADR_STATUS_INACTIVE:int        = 0
 OADR_STATUS_PENDING:int         = 1
@@ -92,6 +95,9 @@ CAS_PARAM_L3_TAG = 0x0C #12
 CAS_PARAM_P1_TAG = 0x0D #13
 CAS_PARAM_P2_TAG = 0x0E #14
 CAS_PARAM_P3_TAG = 0x0F #15
+
+#periodic timeout
+CAS_PERIODIC_TIMEOUT = 0x05 
 
 def processSerialError(e):
     global polyglot
@@ -151,23 +157,8 @@ def getInitSerial()->bool:
 class CasambiNode(udi_interface.Node):
     #local variables to make it easier/faster (instead of using getDriver())
     ##oadr
-    status:int=0
-    mode:int=0
-    price:float=0
-    bMode:bool=False
-    bPrice:bool=False
-
     ##casambi
     id = 'casambi'
-    controlMode:int=-1
-    l1:int=-1
-    l2:int=-1
-    l3:int=-1
-    p1:float=-1
-    p2:float=-1
-    p3:float=-1
-    shedLimit:int=0
-
     drivers = [
             #oadr status
             {'driver': CASOADR_PROPERTY_STATUS, 'value': 0, 'uom': 25},
@@ -195,42 +186,49 @@ class CasambiNode(udi_interface.Node):
             {'driver': CASOADR_PROPERTY_PRICE_3, 'value': 0, 'uom': 103},
             #Cas Shed Limit 
             {'driver': CASOADR_PROPERTY_SHEDLIMIT, 'value': 0, 'uom': 51},
+            #OpenADR Test
+            {'driver': CASOADR_PROPERTY_TEST_OADR, 'value': 0, 'uom': 25},
             ]
 
     def __init__(self, polyglot, primary, address, name):
         super(CasambiNode, self).__init__(polyglot, primary, address, name)
-        self.clear(True)
-
-    def clear(self, isAll:bool):
-        self.status=0
-        self.mode=0
-        self.price=0
         self.bMode=False
         self.bPrice=False
-        self.shedLimit=0
 
-        ##casambi
-        if isAll:
-            self.controlMode=-1
-            self.l1=-1
-            self.l2=-1
-            self.l3=-1
-            self.p1=-1
-            self.p2=-1
-            self.p3=-1
+    def clear(self, init:bool):
+        self.bMode=False
+        self.bPrice=False
+        if init == True:
+#            self.setDriver(CASOADR_PROPERTY_START_TIME, "N/A", 145, force=True)
+#            self.setDriver(CASOADR_PROPERTY_END_TIME, "N/A", 145, force=True)
+            self.setDriver(CASOADR_PROPERTY_STATUS, OADR_STATUS_INACTIVE, 25, force=True)
+            self.setDriver(CASOADR_PROPERTY_MODE, OADR_MODE_NORMAL, 25, force=True)
+            self.setDriver(CASOADR_PROPERTY_PRICE, 0.00, 25, force=True)
+            self.setDriver(CASOADR_PROPERTY_CTL_MODE, CONTROL_MODE_LEVEL , 25, force=True)
+            self.setDriver(CASOADR_PROPERTY_SHEDLIMIT, 0.00, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_LEVEL_1, 0, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_LEVEL_2, 0, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_LEVEL_3, 0, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_PRICE_1, 0.00, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_PRICE_2, 0.00, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_PRICE_3, 0.00, uom=51, force=True)
+            self.setDriver(CASOADR_PROPERTY_TEST_OADR, 0, uom=25, force=True)
+
 
 
     def setStartTime(self, startTime:str):
-        if startTime == None:
-            self.setDriver(CASOADR_PROPERTY_START_TIME, "N/A", 145, force=False)
-        else:
-            self.setDriver(CASOADR_PROPERTY_START_TIME, startTime, 145, force=False)
+        pass
+#        if startTime == None:
+#            self.setDriver(CASOADR_PROPERTY_START_TIME, "N/A", 145, force=False)
+#        else:
+#            self.setDriver(CASOADR_PROPERTY_START_TIME, startTime, 145, force=False)
 
     def setEndTime(self, endTime:str):
-        if endTime == None:
-            self.setDriver(CASOADR_PROPERTY_END_TIME, "N/A", 145, force=False)
-        else:
-            self.setDriver(CASOADR_PROPERTY_END_TIME, endTime, 145, force=False)
+        pass
+#        if endTime == None:
+#            self.setDriver(CASOADR_PROPERTY_END_TIME, "N/A", 145, force=False)
+#        else:
+#            self.setDriver(CASOADR_PROPERTY_END_TIME, endTime, 145, force=False)
 
     def setDuration(self, duration:int):
         #for now, do nothing
@@ -241,36 +239,35 @@ class CasambiNode(udi_interface.Node):
         self.setEndTime(endTime)
         self.setDuration(duration)
 
+        if status == self.getStatus():
+                return
         LOGGER.info('Start time: {}, end time: {}, duration: {}, status: {}'.format(startTime, endTime, duration, status))
-        if status == self.status:
-            LOGGER.debug("status has not changed ...")
-            return
-
-        self.status=status
         self.setDriver(CASOADR_PROPERTY_STATUS, status, 25, force=True)
         self.sendStatus()
         #doing nothing with duration
 
     def getStatus(self)-> int:
-        return self.status
-       # return getDriver(CASOADR_PROPERTY_STATUS)
-
+        try:
+            return self.getDriver(CASOADR_PROPERTY_STATUS)
+        except Exception as ex:
+            return OADR_STATUS_INACTIVE 
+        
     def setMode(self, mode:int)->bool:
         if mode < 0 or mode > 3:
             LOGGER.error("Mode can only be 0, 1, 2, and 3")
             return False
-        if mode == self.mode:
-            LOGGER.debug("mode has not changed ...")
-            return
-        self.mode=mode
         self.bMode=True
+        if self.getMode() == mode:
+            return True
         self.setDriver(CASOADR_PROPERTY_MODE, mode, 25, force=True)
         self.sendMode()
         return True
 
     def getMode(self)->int:
-        return self.mode
-        # return getDriver(CASOADR_PROPERTY_MODE)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_MODE)
+        except Exception as ex:
+            return OADR_MODE_NORMAL
 
     def setMode_s(self, mode:str)->bool:
         if mode == None:
@@ -288,17 +285,33 @@ class CasambiNode(udi_interface.Node):
     def setPrice(self, price:float)->bool:
         if price == None:
             return False
-        if (price == self.price):
-            LOGGER.debug("price has not changed ...")
-            return
-        self.price=price
         self.bPrice=True
+        if self.getPrice() == price:
+            return 
         self.setDriver(CASOADR_PROPERTY_PRICE, price, 25, force=True)
         self.sendPrice()
         return True
 
     def getPrice(self)->float:
-        return self.price
+        try:
+            return self.getDriver(CASOADR_PROPERTY_PRICE)
+        except Exception as ex:
+            return 0.00
+
+    def setLoadShedLimit(self, loadShedLimit:int)->bool:
+        if loadShedLimit == self.getLoadShedLimit():
+            LOGGER.debug("shed level has not changed ...")
+            return
+        self.setDriver(CASOADR_PROPERTY_SHEDLIMIT, loadShedLimit, uom=51, force=True)
+        self.sendShedLevel()
+        self.sendPeriodic()
+        return True
+
+    def getLoadShedLimit(self)->int:
+        try:
+            return self.getDriver(CASOADR_PROPERTY_SHEDLIMIT)
+        except Exception as ex:
+            return 0
 
     def setInactive(self):
         self.setStatus(OADR_STATUS_INACTIVE, None, None, 0)
@@ -313,8 +326,21 @@ class CasambiNode(udi_interface.Node):
     def isPrice(self)->bool:
         return self.bPrice
 
+    def isTestingOpenADR(self)->bool:
+        try:
+            return self.getDriver(CASOADR_PROPERTY_TEST_OADR)
+        except Exception as ex:
+            return False
+    
+    def setTestingOpenADR(self, enable:int):
+        self.setDriver(CASOADR_PROPERTY_TEST_OADR, enable, uom=25, force=True)
+        if enable == 0:
+            self.clear(True)
+            if getInitSerial():
+                QueryCasambi()
+
     def isActive(self)->bool:
-        return self.status == OADR_STATUS_ACTIVE
+        return self.getStatus() == OADR_STATUS_ACTIVE
 
     def setEvent(self, event:oadr.EiEvent): 
         if event == None:
@@ -352,94 +378,92 @@ class CasambiNode(udi_interface.Node):
             LOGGER.error("Type can only be 0 for Mode and 1 for Price")
             controlMode=-1
             return False
-        self.controlMode=controlMode
         self.setDriver(CASOADR_PROPERTY_CTL_MODE, controlMode, 25, force=False)
         return True
     
     def getControlMode(self)->int:
-        return self.controlMode
-    #    return getDriver(CASOADR_PROPERTY_CTL_MODE)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_CTL_MODE)
+        except Exception as ex:
+            return CONTROL_MODE_LEVEL
 
     def isControlMode_Mode(self)->bool:
-        return self.controlMode==CONTROL_MODE_LEVEL
+        return self.getControlMode()==CONTROL_MODE_LEVEL
         
     def isControlMode_Price(self)->bool:
-        return self.controlMode==CONTROL_MODE_PRICE
+        return self.getControlMode()==CONTROL_MODE_PRICE
         
     def setL1(self,l1:int)->bool:
         if l1 < 0 or l1 > 255:
             Logger.error('L1 can only be between 0 and 255')
             return False
-        self.l1=l1
         self.setDriver(CASOADR_PROPERTY_LEVEL_1, l1, uom=51, force=False)
         return True
 
     def getL1(self)->int:
-        return self.l1
-        #return getDriver(CASOADR_PROPERTY_LEVEL_1)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_LEVEL_1)
+        except Exception as ex:
+            return 0 
 
     def setL2(self,l2:int)->bool:
         if l2 < 0 or l2 > 255:
             Logger.error('L2 can only be between 0 and 255')
             return False
-        self.l2=l2
         self.setDriver(CASOADR_PROPERTY_LEVEL_2, l2, uom=51, force=False)
         return True
 
     def getL2(self)->int:
-        return self.l2
-      #  return getDriver(CASOADR_PROPERTY_LEVEL_2)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_LEVEL_2)
+        except Exception as ex:
+            return 0 
 
     def setL3(self,l3:int)->bool:
         if l3 < 0 or l3 > 255:
             Logger.error('L3 can only be between 0 and 255')
             return False
-        self.l3=l3
         self.setDriver(CASOADR_PROPERTY_LEVEL_3, l3, uom=51, force=False)
         return True
 
     def getL3(self)->int:
-        return self.l3
-#        return getDriver(CASOADR_PROPERTY_LEVEL_3)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_LEVEL_3)
+        except Exception as ex:
+            return 0 
 
     def setP1(self,p1:int)->bool:
-        self.p1=p1/100
-        self.setDriver(CASOADR_PROPERTY_PRICE_1, self.p1, uom=103, force=False)
+        p1=p1/100
+        self.setDriver(CASOADR_PROPERTY_PRICE_1, p1, uom=103, force=False)
         return True
 
     def getP1(self)->float:
-        return self.p1
+        try:
+            return self.getDriver(CASOADR_PROPERTY_PRICE_1)
+        except Exception as ex:
+            return 0.00 
 
     def setP2(self,p2:int)->bool:
-        self.p2=p2/100
-        self.setDriver(CASOADR_PROPERTY_PRICE_2, self.p2, uom=103, force=False)
+        p2=p2/100
+        self.setDriver(CASOADR_PROPERTY_PRICE_2, p2, uom=103, force=False)
         return True
 
     def getP2(self)->float:
-        return self.p2
-       #return  getDriver(CASOADR_PROPERTY_PRICE_2)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_PRICE_2)
+        except Exception as ex:
+            return 0.00 
 
     def setP3(self,p3:int)->bool:
-        self.p3=p3/100
-        self.setDriver(CASOADR_PROPERTY_PRICE_3, self.p3, uom=103, force=False)
+        p3=p3/100
+        self.setDriver(CASOADR_PROPERTY_PRICE_3, p3, uom=103, force=False)
         return True
 
     def getP3(self)->float:
-        return self.p3
-     # return getDriver(CASOADR_PROPERTY_PRICE_3)
-
-    def setLoadShedLimit(self, loadShedLimit:int)->bool:
-        if loadShedLimit == self.shedLimit:
-            LOGGER.debug("shed level has not changed ...")
-            return
-        self.shedLimit=loadShedLimit
-        self.setDriver(CASOADR_PROPERTY_SHEDLIMIT, loadShedLimit, uom=51, force=True)
-        self.sendShedLevel()
-        return True
-
-    def getLoadShedLimit(self)->int:
-        return self.shedLimit
-        #return getDriver(CASOADR_PROPERTY_SHEDLIMIT)
+        try:
+            return self.getDriver(CASOADR_PROPERTY_PRICE_3)
+        except Exception as ex:
+            return 0.00 
 
     def _getSensorValue(self, tag):
         if tag == None:
@@ -454,7 +478,7 @@ class CasambiNode(udi_interface.Node):
             mode=self.getMode()
             return struct.pack('<H', mode)
         elif tag == CAS_SENSOR_SHED_LEVEL_TAG:
-            shedLimit=self.getLoadShedLimit()
+            shedLimit:int=int(self.getLoadShedLimit())
            # shedLimit=int(shedLimit*255/100)
             return struct.pack('<H', shedLimit)
         elif tag == CAS_SENSOR_PRICE_TAG:
@@ -517,33 +541,42 @@ class CasambiNode(udi_interface.Node):
     def getSensorValue(self, payload)->bool:
         if ser == None or ser.isOpen()==False:
             return False
-        val = self._getSensorValue(payload[1])
-        towrite_array=[0x02,CAS_GET_SENSOR_VAL_OP,payload[1]]
-        LOGGER.debug('getSensorValue: {} -> {}'.format(payload[1], val))
-        try:
-            ser.write(bytearray(towrite_array))
-            ser.write(val)
-            return True
-        except Exception as e:
-            lock.acquire()
-            processSerialError(e)
-            lock.release()
-            return False
+        return self._sendSensorValue(payload[1])
+
+        #
+        #val = self._getSensorValue(payload[1])
+        #towrite_array=[0x02,CAS_SET_SENSOR_VAL_OP,payload[1]]
+        #LOGGER.debug('getSensorValue: {} -> {}'.format(payload[1], val))
+        #try:
+        #    ser.write(bytearray(towrite_array))
+        #    ser.write(val)
+        #    return True
+        #except Exception as e:
+        #    lock.acquire()
+        #    processSerialError(e)
+        #    lock.release()
+        #    return False
 
     #send sensor value to the dongle
     def _sendSensorValue(self, tag)->bool:
         if ser == None or ser.isOpen()==False:
             return False
         val = self._getSensorValue(tag)
-        towrite_array=[0x02,CAS_SET_SENSOR_VAL_OP,tag]
         LOGGER.debug('sendSensorValue: {} -> {}'.format(tag, val))
         try:
+            if tag == CAS_SENSOR_PRICE_TAG:
+                towrite_array=[0x04,CAS_SET_SENSOR_VAL_OP,tag]
+            else:
+                towrite_array=[0x03,CAS_SET_SENSOR_VAL_OP,tag]
+            
             ser.write(bytearray(towrite_array))
             ser.write(val)
             if tag == CAS_SENSOR_SHED_LEVEL_TAG:
-                towrite_array[1]=CAS_SET_CHANNEL_0_OP
+                val:int = int(int.from_bytes(self._getSensorValue(CAS_SENSOR_SHED_LEVEL_TAG), byteorder='little')*255/100)
+                shed=struct.pack('<H', val )
+                towrite_array=[0x03,CAS_SET_CHANNEL_0_OP,tag]
                 ser.write(bytearray(towrite_array))
-                ser.write(val)
+                ser.write(shed)
             return True
         except Exception as e:
             lock.acquire()
@@ -551,7 +584,24 @@ class CasambiNode(udi_interface.Node):
             lock.release()
             return False
 
-    
+    def sendPeriodic(self):
+        pass
+        if ser == None or ser.isOpen()==False:
+            return False
+        LOGGER.debug("sending periodic load shed ... ")
+        val:int = int(int.from_bytes(self._getSensorValue(CAS_SENSOR_SHED_LEVEL_TAG), byteorder='little')*255/100)
+        shed=struct.pack('<H', val)
+        try:
+            towrite_array=[0x07,0x47,0x90,0xAC] 
+            ser.write(bytearray(towrite_array))
+            ser.write(shed)
+            towrite_array=[CAS_PERIODIC_TIMEOUT,0x07,0x01]
+            ser.write(bytearray(towrite_array))
+        except Exception as e:
+            lock.acquire()
+            processSerialError(e)
+            lock.release()
+
     def sendStatus(self)->bool:
         return self._sendSensorValue(CAS_SENSOR_STATUS_TAG)
 
@@ -584,7 +634,6 @@ class CasambiNode(udi_interface.Node):
         oadrLock.acquire()
         global isGetParamComplete
         retry=0
-        QueryCasambi()
         while not isGetParamComplete and retry < 5:
             retry+=1
             time.sleep(1)
@@ -596,11 +645,19 @@ class CasambiNode(udi_interface.Node):
             return None
 
         try:
-            oadr_xml = isy.cmd('/rest/oadr')
-            if oadr_xml == None:
-                LOGGER.error("No oadr response")
-                oadrLock.release()
-                return None
+            oadr_xml=None
+            try:
+                if self.isTestingOpenADR():
+                    with open('./oadr.xml', 'r') as file:
+                        oadr_xml = file.read()
+                else:
+                    oadr_xml = isy.cmd('/rest/oadr')
+                if oadr_xml == None:
+                    LOGGER.error("No oadr response")
+                    oadrLock.release()
+                    return None
+            except Exception as ex:
+                LOGGER.error(str(ex))
 
             oadr_p=oadr.OpenADR()
             if oadr_p.parse_xml(oadr_xml) == False:
@@ -637,18 +694,21 @@ class CasambiNode(udi_interface.Node):
             oadrLock.release()
         self.updateLoadShedLimit()
 
+    ## you can add more commands in the array and handle them here:
     def processCommand(self, cmd):
         LOGGER.info('Got command: {}'.format(cmd))
         if 'cmd' in cmd:
             if cmd['cmd'] == 'QUERY':
                 QueryCasambi() 
-            ## you can add more commands in the array and handle them here:
-            '''
-            elif cmd['cmd'] == 'TEST':
-                do something here
-            '''
+            if cmd['cmd'] == 'OPENADR_TEST':
+                query = str(cmd['query']).replace("'","\"")
+                jparam=json.loads(query)
+                val=int(jparam['SET.uom25'])
+                self.setTestingOpenADR(val)
+    
     commands = {
-            'QUERY': processCommand
+            'QUERY': processCommand,
+            'OPENADR_TEST':processCommand
             #test command
             #'TEST': test 
             }
@@ -667,7 +727,11 @@ def addUpdateNode(address)->bool:
         casambiNode = CasambiNode(polyglot, address, address, 'Casambi DR USB')
         polyglot.addNode(casambiNode)
         polyglot.updateProfile()
-        casambiNode.setInactive()
+        casambiNode.clear(True)
+        if getInitSerial():
+            QueryCasambi()
+        else:
+            return
 
     if isy == None:
         isy = udi_interface.ISY(polyglot)
@@ -682,9 +746,12 @@ def addUpdateNode(address)->bool:
 Read the user entered custom parameters. This should only be the serial
 port.
 '''
+initCompleted:bool=False
+initialPeriodicSent:bool=False
 def parameterHandler(params):
     global polyglot
     global serial_port
+    global initCompleted
 
     polyglot.Notices.clear()
 
@@ -700,23 +767,33 @@ def parameterHandler(params):
             polyglot.Notices['port'] = 'Using default serial port {}'.format(serial_port)
 
     addUpdateNode('0')
+    initCompleted=True
 
-def poll(polltype):
     ''' 
     you can do things based on short/long polls as you will be called for each
     for now, we have nothing to do
     '''
-   # if 'shortPoll' in polltype:
-   #     LOGGER.info("short poll")
-   # elif 'longPoll' in polltype:
-   #     LOGGER.info("long poll")
+    # if 'shortPoll' in polltype:
+    #     LOGGER.info("short poll")
+    # elif 'longPoll' in polltype:
+    #     LOGGER.info("long poll")
+def poll(polltype):
+    global initCompleted
+    global initialPeriodicSent
     if 'shortPoll' in polltype:
-        if oadrLock.locked() or lock.locked():
-            return None
+        if initCompleted == False:
+            return
+        if lock.locked() : 
+            return
+        if oadrLock.locked():
+            return
         addUpdateNode('0')
+        if initialPeriodicSent==False:
+            casambiNode.sendPeriodic()
+            initialPeriodicSent=True
+    elif 'longPoll' in polltype:
+        casambiNode.sendPeriodic()
 
-
- 
 def Init(payload):
     LOGGER.debug('Init')
 

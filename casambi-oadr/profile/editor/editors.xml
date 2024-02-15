@@ -1,26 +1,26 @@
 <editors>
+  <editor id="OADRTEST">
+        <range uom="25" min="0" max="1" nls="IX_OADRTEST"/> 
+   </editor>
   <editor id="OADRSTAT">
       <range uom="25" min="0" max="2" nls="IX_OADRSTAT" />
-   </editor>
-  <editor id="OADRTIME">
-      <range uom="145" />
    </editor>
   <editor id="OADRMODE">
       <range uom="25" min="0" max="3" nls="IX_OADRMODE" />
    </editor>
   <editor id="OADRPRICE">
-      <range uom="103" />
+      <range uom="103" min="-1000.00" max="1000.00"/>
    </editor>
   <editor id="CAS_CTLMODE">
       <range uom="25" min="0" max="2" nls="IX_CAS_CTLMODE" />
    </editor>
   <editor id="CAS_LEVEL">
-      <range uom="51"/>
+      <range uom="51" min="0" max="2"/>
    </editor>
   <editor id="CAS_PRICE">
-      <range uom="103"/>
+      <range uom="103" min="-100.00" max="100.00"/>
    </editor>
   <editor id="CAS_SHEDLIMIT">
-      <range uom="51"/>
+      <range uom="51" min="0.00" max="100.00"/>
    </editor>
 </editors>

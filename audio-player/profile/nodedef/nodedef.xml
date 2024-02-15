@@ -5,6 +5,8 @@
     <sts>
       <st id="ST" editor="playStatus" />
       <st id="GV0" editor="mpgNames" />
+      <st id="GV1" editor="btStatus" />
+      <st id="GV2" editor="output" />
 	  </sts>
     <cmds>
       <sends />
@@ -13,6 +15,12 @@
           <p id="PLAYLIST" editor="mpgNames" />
         </cmd>
         <cmd id="STOP">
+        </cmd>
+        <cmd id="BT"> 
+          <p id="BTSTATUS" editor="btStatus" />
+        </cmd>
+        <cmd id="OUTPUT">
+          <p id="OUTPUT" editor="output" />
         </cmd>
       </accepts>
     </cmds>

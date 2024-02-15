@@ -26,7 +26,7 @@ devices:[]=sd.query_devices()
 print(devices)
 device_index:str='/dev/dsp'
 
-filename ="./sounds/chime.mp3"
+filename ="./sounds/magic.mp3"
 event = threading.Event()
 
 try:

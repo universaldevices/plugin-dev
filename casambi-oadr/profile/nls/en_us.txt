@@ -14,8 +14,17 @@ ST-casambi-GV9-NAME = Moderate Price Threshold
 ST-casambi-GV10-NAME = High Price Threshold 
 ST-casambi-GV11-NAME = Special Price Threshold 
 ST-casambi-GV12-NAME = Current Load Shed %
+ST-casambi-GV13-NAME = OpenADR Testing?
 
 CMD-casambi-QUERY-NAME = Query
+CMD-casambi-QUERY-NAME = Query
+
+
+CMD-casambi-OPENADR_TEST-NAME = OpenADR Test
+CMDP-OADRTEST-SET-NAME = Set
+
+IX_OADRTEST-0 = No
+IX_OADRTEST-1 = Yes
 
 IX_OADRSTAT-0 = Inactive
 IX_OADRSTAT-1 = Pending

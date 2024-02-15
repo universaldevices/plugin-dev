@@ -14,15 +14,26 @@ ND-mpgPlayer-ICON = Siren
 
 ST-mpgPlayer-ST-NAME = Playing Status 
 ST-mpgPlayer-GV0-NAME = Play List 
+ST-mpgPlayer-GV1-NAME = Bluetooth 
+ST-mpgPlayer-GV2-NAME = Output 
 
 #Shared command names
 
 CMD-STOP-NAME = Stop 
 CMD-PLAY-NAME = Play 
+CMD-BT-NAME = Bluetooth
+CMD-OUTPUT-NAME = Output
 CMDP-mpgNames-PLAYLIST-NAME = Playlist
+CMDP-BTSTATUS-NAME = Status
+CMDP-OUTPUT-NAME = Device
 
 PLAYSTATUS-0 = Idle
 PLAYSTATUS-1 = Playing
+
+BTSTATUS-0 = Disabled
+BTSTATUS-1 = Enabled
+OUTPUT-0 = Speaker Jack
+OUTPUT-1 = Bluetooth
 
 '''
 
