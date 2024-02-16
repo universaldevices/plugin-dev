@@ -1,2 +1,2 @@
 #!/bin/sh
-tar -czvf casambi.tar.gz casambi.py oadr.py oadr.xml
+tar -czvf casambi.tar.gz casambi.py oadr.py oadr.xml casambi.conf profile install.sh requirements.txt
