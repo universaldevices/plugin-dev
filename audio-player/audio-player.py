@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Polyglot v3 node server communicating with Casambi USB dongle 
+Polyglot v3 plugin for audio playback 
 Copyright (C) 2023  Universal Devices
 """
 
@@ -14,105 +14,110 @@ import udi_interface
 import sys
 import time
 import json
-import pyaudio
-import sounddevice as sd
-from pydub import AudioSegment
-
 import threading
+import vlc
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
 path = None
 defaultSoundPath='./sounds'
-SPEAKER_OUT = 1
-BLUETOOTH_OUT = 0
-#the speaker on the back = 2
-#0 = bt
-defaultOutputDevice=BLUETOOTH_OUT
-#lock = threading.Lock()
+SPEAKER_OUT = '/dev/dsp1' 
+BLUETOOTH_OUT = '/dev/dsp'
+defaultOutputDevice=SPEAKER_OUT
 
-class _AudioPlayerParams:
-    isPlaying :bool = False
-    toStop :bool = False
-    mediaPath: str = None
-    node = None
-    index: int = 0
-    outputDevice: int = defaultOutputDevice
+#create vlc instance
+vlc_instance = vlc.Instance('--no-xlib') 
+# Create VLC media player
 
-
-AudioPlayerParams:_AudioPlayerParams = _AudioPlayerParams()
-
-devices:[]=sd.query_devices()
-print(devices)
-device_index:str='/dev/dsp'
-
-chunk = 4096
-
-
-def getSampleRate(suggested:int):
-    if AudioPlayerParams.outputDevice == BLUETOOTH_OUT:
-        return 48000
-    return suggested
-
+def play_stopped(event, nums):
+    global udAudioPlayer
+    udAudioPlayer.stopped()
 
 def audio_player_thread():
-    if AudioPlayerParams.node != None:
-        AudioPlayerParams.node.updateState(1, AudioPlayerParams.index)
-    pd = AudioSegment.from_file(AudioPlayerParams.mediaPath)
-    p = pyaudio.PyAudio()
+    global udAudioPlayer
+    udAudioPlayer.playVLC()
 
-    stream = p.open(output_device_index=defaultOutputDevice, format =
-        p.get_format_from_width(pd.sample_width),
-        channels = pd.channels,
-        rate = getSampleRate(pd.frame_rate),
-        #rate = pd.frame_rate,
-        output = True)
-    i = 0
-    data = pd[:chunk]._data
-    while data and not AudioPlayerParams.toStop:
-        stream.write(data)
-        i += chunk
-        data = pd[i:i + chunk]._data
 
-    stream.close()    
-    p.terminate()
-    if AudioPlayerParams.node != None:
-        AudioPlayerParams.node.updateState(0, 0)
-    AudioPlayerParams.isPlaying = False
-    AudioPlayerParams.toStop = False
+class AudioPlayer:
+    def __init__(self): 
+        self.node = None
+        self.index: int = 0
+        self.outputDevice: str = defaultOutputDevice
+        self.player: vlc.MediaPlayer = None 
 
-class UDAudioPlayer:
+    def setNode(self, node):
+        self.node=node
 
-    def play(self, node, index, path:str) -> bool:
-        while AudioPlayerParams.isPlaying:
+    def playVLC(self):
+        if self.node != None:
+            self.node.updateState(1, self.index)
+        
+        if self.player != None:
+            # Attach the event manager to the media player
+            event_manager = self.player.event_manager()
+            # Register the event and callback
+            event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, play_stopped, None)
+            self.player.play()
+        
+    def stopped(self):
+        if self.node != None:
+            self.node.updateState(0, self.index)
+
+#        if self.player != None:
+#            self.player.release()
+
+        self.player=None
+
+    def stop(self):
+        if self.player != None:
+            self.player.stop()
+        self.stopped()
+
+    def play(self, index, path:str) -> bool:
+        while self.isPlaying():
             time.sleep(0.5) 
-        AudioPlayerParams.isPlaying = True
-        AudioPlayerParams.toStop = False
-        AudioPlayerParams.mediaPath = path
-        AudioPlayerParams.node = node
-        AudioPlayerParams.index = index
+        self.index = index
+        self.player = vlc_instance.media_player_new()
+        self.player.audio_output_device_set(None, self.outputDevice)
+        # Load the stream
+        media = vlc_instance.media_new(path)
+        # Set the media to the player
+        self.player.set_media(media)
+
         # Start audio player thread
         ap_thread = threading.Thread(target = audio_player_thread)
         ap_thread.daemon = False
         ap_thread.start()
 
-    def stop(self, node):
-        if not AudioPlayerParams.isPlaying:
-            return
-        AudioPlayerParams.node = node
-        AudioPlayerParams.toStop = True
-        event.set()
-
     def query(self, node):
-        if AudioPlayerParams.isPlaying:
-            node.updateState(1, AudioPlayerParams.index)
+        if self.isPlaying():
+            node.updateState(1, self.index)
         else:
             node.updateState(0, 0)
 
-udAudioPlayer = UDAudioPlayer()
+    def isPlaying(self)->bool:
+        if self.player == None:
+            return False
+        return True
+
+    def setOutputDevice(self, index:int)->bool:
+        if index == 0:
+            self.outputDevice=SPEAKER_OUT
+            return True
+        elif index == 1:
+            self.outputDevice=BLUETOOTH_OUT
+            return True
+        
+        LOGGER.error(f"Invalid output device {index}")
+        return False
+
+
+udAudioPlayer:AudioPlayer=AudioPlayer()
 nlsGen = NLSGenerator()
 
 class AudioPlayerNode(udi_interface.Node):
+    global udAudioPlayer
+
     id = 'mpgPlayer'
     drivers = [
             {'driver': 'ST', 'value': 0, 'uom': 25},
@@ -123,6 +128,7 @@ class AudioPlayerNode(udi_interface.Node):
 
     def __init__(self, polyglot, primary, address, name):
         super(AudioPlayerNode, self).__init__(polyglot, primary, address, name)
+        udAudioPlayer.setNode(self)
 
     def updateState(self, state, index):
         if state == 1:
@@ -132,12 +138,19 @@ class AudioPlayerNode(udi_interface.Node):
             self.setDriver('ST', 0, uom=25, force=True)
             self.setDriver('GV0', 0, uom=25, force=True)
 
+    def updateOutput(self, index):
+        if index < 0 or index > 1:
+            return
+        self.setDriver('GV2', index, uom=25, force=True)
+
     def processBT(self, index:int):
         print(index)
 
 
     def processOutput(self, index:int):
-        print (index)
+        if udAudioPlayer.setOutputDevice(index):
+            self.updateOutput(index)
+
 
     def processCommand(self, cmd):
         LOGGER.info('Got command: {}'.format(cmd))
@@ -153,13 +166,13 @@ class AudioPlayerNode(udi_interface.Node):
                     if filename == None:
                         return
                     LOGGER.info('Playing #{}:{}'.format(index, filename))
-                    udAudioPlayer.stop(self)
-                    udAudioPlayer.play(self, index, filename)
+                    udAudioPlayer.stop()
+                    udAudioPlayer.play(index, filename)
                 except Exception as ex:
                     LOGGER.error(ex)
         
             elif cmd['cmd'] == 'STOP':
-                udAudioPlayer.stop(self)
+                udAudioPlayer.stop()
             
             elif cmd['cmd'] == 'BT' :
                 sparam = str(cmd['query']).replace("'","\"")

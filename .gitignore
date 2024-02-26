@@ -16,3 +16,4 @@ lib/
 bin/
 drop/logs/
 drop/dmap.json
+logs/*
