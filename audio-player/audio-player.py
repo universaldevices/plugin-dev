@@ -19,11 +19,12 @@ import vlc
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
-path = None
+path:str = None
 defaultSoundPath='./sounds'
 SPEAKER_OUT = '/dev/dsp1' 
 BLUETOOTH_OUT = '/dev/dsp'
 defaultOutputDevice=SPEAKER_OUT
+stations:str = None
 
 #create vlc instance
 vlc_instance = vlc.Instance('--no-xlib') 
@@ -47,6 +48,25 @@ class AudioPlayer:
 
     def setNode(self, node):
         self.node=node
+
+    def setVolume(self, volume:int)->bool:
+        if volume < 0 or volume > 100:
+            return
+        if self.player == None:
+            return
+        rc = self.player.audio_set_volume(volume)
+        if rc == 0:
+            return True
+        return False
+
+    def getVolume(self)->int:
+        if self.player == None:
+            return 0
+        try:
+            return self.player.audio_get_volume()
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            return 0
 
     def playVLC(self):
         if self.node != None:
@@ -83,6 +103,9 @@ class AudioPlayer:
         media = vlc_instance.media_new(path)
         # Set the media to the player
         self.player.set_media(media)
+        if self.node != None:
+            vol = self.getVolume()
+            self.node.updateVolume(vol)
 
         # Start audio player thread
         ap_thread = threading.Thread(target = audio_player_thread)
@@ -123,7 +146,8 @@ class AudioPlayerNode(udi_interface.Node):
             {'driver': 'ST', 'value': 0, 'uom': 25},
             {'driver': 'GV0', 'value': 0, 'uom': 25},
             {'driver': 'GV1', 'value': 0, 'uom': 25},
-            {'driver': 'GV2', 'value': 0, 'uom': 25}
+            {'driver': 'GV2', 'value': 0, 'uom': 25},
+            {'driver': 'GV3', 'value': 0, 'uom': 51}
             ]
 
     def __init__(self, polyglot, primary, address, name):
@@ -142,6 +166,17 @@ class AudioPlayerNode(udi_interface.Node):
         if index < 0 or index > 1:
             return
         self.setDriver('GV2', index, uom=25, force=True)
+
+    def updateVolume(self, volume:int):
+        if volume < 0 or volume > 100:
+            return
+        self.setDriver('GV3', volume, uom=51, force=True)
+
+    def processVolume(self, volume:int):
+        if volume < 0 or volume > 100:
+            return
+        if udAudioPlayer.setVolume(volume) == True:
+            self.updateVolume(volume)
 
     def processBT(self, index:int):
         print(index)
@@ -186,6 +221,12 @@ class AudioPlayerNode(udi_interface.Node):
                 index=int(jparam['OUTPUT.uom25'])
                 self.processOutput(index)
 
+            elif cmd['cmd'] == 'VOLUME' :
+                sparam = str(cmd['query']).replace("'","\"")
+                jparam=json.loads(sparam)
+                volume=int(jparam['VOLUME.uom51'])
+                self.processVolume(volume)
+
             elif cmd['cmd'] == 'QUERY':
                 udAudioPlayer.query(self)
 
@@ -194,7 +235,8 @@ class AudioPlayerNode(udi_interface.Node):
             'STOP': processCommand,
             'BT': processCommand,
             'OUTPUT': processCommand,
-            'QUERY': processCommand
+            'QUERY': processCommand,
+            'VOLUME': processCommand
             }
 
 def addAudioNode(address)->bool:
@@ -218,28 +260,34 @@ port.
 def parameterHandler(params):
     global polyglot
     global path
+    global stations
     global nlsGen
     global defaultSoundPath
 
     if params == None:
-        LOGGER.info("using default sounds ...")
+        LOGGER.info("using default sounds and no stations ...")
         path=defaultSoundPath
-    elif 'path' in params:
-        path=params['path']
+    else:
+        if 'path' in params:
+            path=params['path']
 
-    if path == None or path == '':
-        LOGGER.info("using default sounds ...")
-        path=defaultSoundPath
+            if path == None or path == '':
+                LOGGER.info("using default sounds ...")
+                path=defaultSoundPath
 
-    if not os.path.isdir(path):
-        polyglot.Notices['path'] = '{} is not a valid directory. Using defaults ... '.format(path)
-        path=defaultSoundPath
+            if not os.path.isdir(path):
+                polyglot.Notices['path'] = '{} is not a valid directory. Using defaults ... '.format(path)
+                path=defaultSoundPath
 
-    LOGGER.info('we are using {} as path'.format(path))
-    polyglot.Notices.clear()
-    nlsGen.generate(path)
+                LOGGER.info('we are using {} as path'.format(path))
+        if 'stations' in params:
+            stations=params['stations']
+
+    nlsGen.generate(path, stations)
     polyglot.updateProfile()
     addAudioNode("0")
+    polyglot.Notices.clear()
+
 
 def poll(polltype):
 

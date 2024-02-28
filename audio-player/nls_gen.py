@@ -13,9 +13,10 @@ ND-mpgPlayer-NAME = MPG Player
 ND-mpgPlayer-ICON = Siren
 
 ST-mpgPlayer-ST-NAME = Playing Status 
-ST-mpgPlayer-GV0-NAME = Play List 
+ST-mpgPlayer-GV0-NAME = Playing 
 ST-mpgPlayer-GV1-NAME = Bluetooth 
 ST-mpgPlayer-GV2-NAME = Output 
+ST-mpgPlayer-GV3-NAME = Volume 
 
 #Shared command names
 
@@ -23,9 +24,11 @@ CMD-STOP-NAME = Stop
 CMD-PLAY-NAME = Play 
 CMD-BT-NAME = Bluetooth
 CMD-OUTPUT-NAME = Output
-CMDP-mpgNames-PLAYLIST-NAME = Playlist
-CMDP-BTSTATUS-NAME = Status
-CMDP-OUTPUT-NAME = Device
+CMD-VOLUME-NAME = Volume
+CMDP-mpgNames-PLAYLIST-NAME = 
+CMDP-BTSTATUS-NAME = 
+CMDP-OUTPUT-NAME = 
+CMDP-VOLUME-NAME = 
 
 PLAYSTATUS-0 = Idle
 PLAYSTATUS-1 = Playing
@@ -53,10 +56,9 @@ class DefaultEditor ():
 
 class NLSGenerator :
 
-    musicList:[str] = []
-        
     def __init__(self) -> None:
-        self.musicList = []
+        self.musicList:[str]=[]
+        self.stationsList:[str,str]=[]
         self.load()
 
         #Given a path, recreate the NLS document for the list of files
@@ -169,11 +171,31 @@ class NLSGenerator :
         for index, music in enumerate(self.musicList):
             print(f"{index}-{music}")
 
-    def generate(self, path:str) -> bool :
+
+    def parseStation(self, station):
+        if station == None:
+            return None
+        parts = station.replace('"', '').split('===')
+        if len(parts) == 2:
+            return {'name': parts[0], 'url': parts[1]}
+        else:
+            return None
+
+    def parseStations(self, stations:str)->bool:
+        if stations == None:
+            return False
+        stations_array = stations.split(',')
+        for station in stations_array:
+            parsed_station = self.parseStation(station)
+            if parsed_station:
+                self.stationsList.append(parsed_station)
+
+    def generate(self, path:str, stations:str) -> bool :
         # There is only one nls, so read the nls template and write the new one
         if path == None:
             LOGGER.error('Need the path for where to find the mpg files ... ')
             return False
+        self.parseStations(stations)
         dir_content = self.getSortedDirContent(path)
         self.removeDeleted(dir_content)
         self.addNew(dir_content)
@@ -183,10 +205,17 @@ class NLSGenerator :
             self.make_file_dir(en_us_txt)
             nls = open(en_us_txt,  "w")
             nls.write(DefaultNls.nls)
+            last:int=0
             for index, music in enumerate(self.musicList):
                 if music == "n/a":
                     continue
                 nls.write(f"MPGNAME-{index} = {music}\n")
+                last=index
+            last+=1
+            for index, station in enumerate(self.stationsList):
+                if station == None:
+                    continue
+                nls.write(f"MPGNAME-{last+index} = {station['name']}\n")
             nls.write("\n\n")
             nls.close()
 
@@ -203,11 +232,20 @@ class NLSGenerator :
         if parent_path == None:
             LOGGER.error('Need parent path')
             return None
-        if index < 0 or index >= len(self.musicList):
+        if index < 0: 
             LOGGER.error('Failed getting path requested index {}, array len {}'.format(index, len(self.musicList)))
             return None
+        musicFileEndIndex=len(self.musicList)
+        if index < musicFileEndIndex: 
+            return parent_path + "/" + self.musicList[index] 
+        LOGGER.info(f"Playing live stream at {musicFileEndIndex}")
+        stationIndex=index-musicFileEndIndex
+        if stationIndex < 0 or stationIndex >= len(self.stationsList):
+            LOGGER.error('Failed getting url for requested index {}, array len {}'.format(index, len(self.stationsList)))
+            return None
+        return self.stationsList[stationIndex]['url']
+            
 
-        return parent_path + "/" + self.musicList[index] 
 
     def make_file_dir(self, file_path):
         directory = os.path.dirname(file_path)
@@ -219,7 +257,7 @@ class NLSGenerator :
 if __name__ == "__main__":
     try:
         nlsGen = NLSGenerator()
-        nlsGen.generate("/usr/home/admin/Chimes")
+        nlsGen.generate("/usr/home/admin/Chimes", None)
         nlsGen.dump()
 
     except (KeyboardInterrupt, SystemExit):

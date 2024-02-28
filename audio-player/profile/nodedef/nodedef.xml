@@ -7,20 +7,24 @@
       <st id="GV0" editor="mpgNames" />
       <st id="GV1" editor="btStatus" />
       <st id="GV2" editor="output" />
+      <st id="GV3" editor="volume" />
 	  </sts>
     <cmds>
       <sends />
       <accepts>
         <cmd id="PLAY">
-          <p id="PLAYLIST" editor="mpgNames" />
+          <p id="PLAYLIST" editor="mpgNames" init="GV0"/>
         </cmd>
         <cmd id="STOP">
         </cmd>
         <cmd id="BT"> 
-          <p id="BTSTATUS" editor="btStatus" />
+          <p id="BTSTATUS" editor="btStatus" init="GV1"/>
         </cmd>
         <cmd id="OUTPUT">
-          <p id="OUTPUT" editor="output" />
+          <p id="OUTPUT" editor="output" init="GV2"/>
+        </cmd>
+        <cmd id="VOLUME">
+          <p id="VOLUME" editor="volume" init="GV3"/>
         </cmd>
       </accepts>
     </cmds>

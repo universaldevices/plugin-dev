@@ -1,4 +1,3 @@
 udi_interface>=3.0.57
-pydub
-pyaudio
+python-vlc
 
