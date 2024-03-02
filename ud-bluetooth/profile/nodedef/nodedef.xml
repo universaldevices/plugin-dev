@@ -1,0 +1,34 @@
+<nodeDefs>
+
+<!-- The node server control Node-->
+  <nodeDef id="BltSvc" nls="BLTSVC">
+    <sts>
+      <st id="ST" editor="btStatus" />
+      <st id="GV0" editor="btPairedDev" />
+	  </sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="BT"> 
+          <p id="BTSTATUS" editor="btStatus" init="ST"/>
+        </cmd>
+        <cmd id="SCAN">
+        </cmd>
+      </accepts>
+    </cmds>
+  </nodeDef>
+  <nodeDef id="BltDev" nls="BLTDEV">
+    <sts>
+      <st id="ST" editor="btPaired" />
+	  </sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="PAIR" nls="PAIR"></cmd>
+        <cmd id="UNPAIR" nls="UNPAIR"></cmd>
+        <cmd id="FORGET" nls="FORGET"></cmd>
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+</nodeDefs>

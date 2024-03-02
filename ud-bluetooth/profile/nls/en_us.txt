@@ -1,0 +1,35 @@
+
+#Controller
+ND-BltSvc-NAME = Bluetooth Service
+ND-BltSvc-ICON = Siren
+ND-BltDev-NAME = Bluetooth Device
+ND-BltDev-ICON = Output
+
+ST-BLTSVC-ST-NAME = Status
+ST-BLTSVC-GV0-NAME = Paired Device
+
+ST-BLTDEV-ST-NAME = Status
+
+#ST-mpgPlayer-GV0-NAME = Playing 
+#ST-mpgPlayer-GV1-NAME = Bluetooth 
+#ST-mpgPlayer-GV2-NAME = Output 
+#ST-mpgPlayer-GV3-NAME = Volume 
+
+
+CMD-SCAN-NAME = Scan for Bluetooth Devices
+CMD-BT-NAME = Service
+CMDP-BTSTATUS-NAME = 
+
+CMD-PAIR-NAME = Pair
+CMD-UNPAIR-NAME = Unpair
+CMD-FORGET-NAME = Forget
+
+BTPAIRED_DEV
+BTSTATUS-0 = Disabled
+BTSTATUS-1 = Enabled
+
+BTPAIRED-0 = Unpaired
+BTPAIRED-1 = Paired
+
+
+

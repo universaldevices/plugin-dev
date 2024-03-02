@@ -15,6 +15,8 @@ import sys
 import time
 import json
 import threading
+import paho.mqtt.client as mqtt
+import ssl
 import vlc
 
 LOGGER = udi_interface.LOGGER
@@ -134,7 +136,20 @@ class AudioPlayer:
         LOGGER.error(f"Invalid output device {index}")
         return False
 
+def find_files_with_extension(directory:str, extension:str):
+    if directory == None or extension == None:
+        return None
+    file_paths = []
 
+    for root, _, files in os.walk('./'):
+        for file in files:
+            if file.endswith(extension):
+                # Construct the full path to the file and append it to the list
+                file_path = os.path.join(root, file)
+                file_paths.append(file_path)
+
+    return file_paths
+ 
 udAudioPlayer:AudioPlayer=AudioPlayer()
 nlsGen = NLSGenerator()
 
@@ -153,6 +168,80 @@ class AudioPlayerNode(udi_interface.Node):
     def __init__(self, polyglot, primary, address, name):
         super(AudioPlayerNode, self).__init__(polyglot, primary, address, name)
         udAudioPlayer.setNode(self)
+        self._mqttc = None
+        try:
+            mqttThread = threading.Thread(target=self._startMqtt, name='SysConfigMqtt')
+            mqttThread.daemon = False
+            mqttThread.start()
+        except Exception as ex:
+            LOGGER.error(str(ex))
+
+    def _startMqtt(self)->bool:
+        cafile= '/usr/local/etc/ssl/certs/ud.ca.cert'
+        certs = find_files_with_extension('./','.cert')
+        keys = find_files_with_extension('./','.key')
+        if len(certs) == 0 or len(keys) == 0:
+            LOGGER.warning("no cert/key for mqtt connectivity")
+            return False
+
+        LOGGER.info('Using SSL cert: {} key: {} ca: {}'.format(certs[0], keys[0], cafile))
+        try:
+            self._mqttc=mqtt.Client(self.id, True)
+            self.sslContext = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH, cafile=cafile)
+            self.sslContext.load_cert_chain(certs[0], keys[0])
+            self._mqttc.tls_set_context(self.sslContext)
+            self._mqttc.tls_insecure_set(True)
+            self._mqttc.on_connect=self.on_connect
+            self._mqttc.on_subscribe = self.on_subscribe
+            self._mqttc.on_disconnect = self.on_disconnect
+            self._mqttc.on_publish = self.on_publish
+#            self._mqttc.on_log = self.on_log
+            self._mqttc.on_message = self.on_message
+        except Exception as ex:
+            LOGGER.error(str(ex))
+        while True: 
+            try:
+                self._mqttc.connect_async('{}'.format(polyglot._server), int(polyglot._port), 10)
+                self._mqttc.loop_forever()
+            except ssl.SSLError as e:
+                LOGGER.error("MQTT Connection SSLError: {}, Will retry in a few seconds.".format(e), exc_info=True)
+            except Exception as ex:
+                template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+                message = template.format(type(ex).__name__, ex.args)
+                LOGGER.exception("MQTT Connection error: {}".format(
+                    message), exc_info=True)
+                time.sleep(3)
+        return True
+
+
+    def on_connect(self, mqttc, userdata, flags, rc):
+        self._mqttc.subscribe('sconfig/bluetooth/#', 0)
+        self._mqttc.publish('config/bluetooth')
+        self._mqttc.publish('config/bluetooth/list')
+
+    def on_disconnect(self, mqttc, userdata, rc):
+        pass
+
+    def on_publish(self, mqttc, userdata, mid):
+        pass
+
+    def on_subscribe(self, mqttc, userdata, mid, granted_qos):
+        pass
+
+    def on_message(self, mqttc, userdata, msg):
+        if msg == None or msg.topic == None:
+            return
+        if msg.topic == "sconfig/bluetooth/enabled":
+            self.updateBTStatus(True)
+        elif msg.topic == "sconfig/bluetooth/disabled":
+            self.updateBTStatus(False)
+        elif msg.topic == "sconfig/bluetooth/list":
+            self.updateBTList(msg.payload)
+
+    def on_log(self, mqttc, userdata, level, string):
+        pass
+
+
 
     def updateState(self, state, index):
         if state == 1:
@@ -178,10 +267,21 @@ class AudioPlayerNode(udi_interface.Node):
         if udAudioPlayer.setVolume(volume) == True:
             self.updateVolume(volume)
 
+    def updateBTStatus(self, enabled:bool):
+        if enabled:
+            self.setDriver('GV1', 1, uom=25, force=True)
+        else:
+            self.setDriver('GV1', 0, uom=25, force=True)
+
+    def updateBTList(self, payload:str):
+        pass
+
     def processBT(self, index:int):
-        print(index)
-
-
+        if index == 0:
+            self._mqttc.publish('config/bluetooth/disable')
+        else:
+            self._mqttc.publish('config/bluetooth/enable')
+    
     def processOutput(self, index:int):
         if udAudioPlayer.setOutputDevice(index):
             self.updateOutput(index)
@@ -282,6 +382,10 @@ def parameterHandler(params):
                 LOGGER.info('we are using {} as path'.format(path))
         if 'stations' in params:
             stations=params['stations']
+            if "a , separated " in stations:
+                LOGGER.error("Invalid stations list. It has to be in the form name===url,name===url, ....")
+                polyglot.Notices['stations'] = 'Stations list is of the form name===url,name===url, ....'
+                stations=None
 
     nlsGen.generate(path, stations)
     polyglot.updateProfile()

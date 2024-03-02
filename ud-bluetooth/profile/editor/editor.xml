@@ -1,0 +1,13 @@
+
+    <editors>
+        <editor id="btStatus">
+            <range uom="25" min="0" max="1" nls="BTSTATUS"/>
+        </editor>
+        <editor id="btPaired">
+            <range uom="25" min="0" max="1" nls="BTPAIRED"/>
+        </editor>
+        <editor id="btPairedDev">
+            <range uom="145" />
+        </editor>
+    </editors>
+    
