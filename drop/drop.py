@@ -44,9 +44,6 @@ class DeviceAddressMap:
             LOGGER.error("failed saving the dev map file {}".format (ex))
             return False
 
-    def add(self, key:str, val:str):
-        self.map.add
-
     @staticmethod
     def getPG3Address(addr:str)->str:
         if addr == None:

@@ -32,6 +32,56 @@ stations:str = None
 vlc_instance = vlc.Instance('--no-xlib') 
 # Create VLC media player
 
+'''
+stateFile = './pstate.json'
+
+#Saves the state of the player such as output and volume
+class PlayerState:
+
+    def __init__(self):
+        self.map:Dict[str,int]={}
+        self.load()
+
+    def load(self)->bool():
+        if not os.path.exists(stateFile):
+            return False
+        try:
+            with open(stateFile, 'r') as json_file:
+                self.map = json.load(json_file)
+            return True
+        except Exception as ex:
+            LOGGER.warning("failed loading the state file {}".format (ex))
+            return False
+
+    def save(self)->bool():
+        try:
+            with open(stateFile, 'w') as json_file:
+                json.dump(self.map, json_file)
+        except Exception as ex:
+            LOGGER.error("failed saving the state file {}".format (ex))
+            return False
+
+    def setOutput(self, index:int):
+        map['output']=index
+
+    def setVolume(self, volume:int):
+        map['volume']=volume
+
+    def getOutput(self):
+        try:
+            return map['output']
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            return 0
+    
+    def getVolume(self):
+        try:
+            return map['volume']
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            return 0
+'''
+
 def play_stopped(event, nums):
     global udAudioPlayer
     udAudioPlayer.stopped()
@@ -173,6 +223,9 @@ class AudioPlayerNode(udi_interface.Node):
             mqttThread = threading.Thread(target=self._startMqtt, name='SysConfigMqtt')
             mqttThread.daemon = False
             mqttThread.start()
+            config = self.poly.getConfig()
+            if config == None:
+                return
         except Exception as ex:
             LOGGER.error(str(ex))
 

@@ -14,6 +14,8 @@ audio-player/__pycache__/
 lib64/
 lib/
 bin/
+ud-bluetooth/logs/
+ud-bluetooth/logs/*
 drop/logs/
 drop/dmap.json
 logs/*

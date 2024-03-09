@@ -17,9 +17,6 @@
         </cmd>
         <cmd id="STOP">
         </cmd>
-        <cmd id="BT"> 
-          <p id="BTSTATUS" editor="btStatus" init="GV1"/>
-        </cmd>
         <cmd id="OUTPUT">
           <p id="OUTPUT" editor="output" init="GV2"/>
         </cmd>
