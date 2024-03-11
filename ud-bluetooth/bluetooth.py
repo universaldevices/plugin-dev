@@ -173,7 +173,28 @@ class BTSVCController(udi_interface.Node):
             self.setDriver('ST', 0, uom=25, force=True)
 
     def updateBTList(self, payload:str):
-        pass
+        try:
+            data_array:[str] = json.loads(payload)
+        except Exception as ex:
+            LOGGER.error(
+                "Failed to parse MQTT Payload as Json: {} {}".format(ex, payload)
+            )
+            return False
+
+        if len(data_array) == 0:
+            return False
+        try:
+            for devInfo in data_array:
+                uuid=devInfo['uuid']
+                name=devInfo['name']
+                if uuid != None:
+                    node=self.poly.getNode(get_pg3_address(uuid))
+                    if node == None:
+                        node = self.addDevice(uuid, name)
+                    node.updatePairedStatus(True)
+
+        except Exception as ex:
+            LOGGER.error(str(ex))
 
     def processBT(self, index:int):
         if index == 0:
@@ -184,14 +205,15 @@ class BTSVCController(udi_interface.Node):
     def processScan(self):
         self._mqttc.publish('config/bluetooth/scan')
 
-    def processScanResult(self, devInfo:str):
+    def processScanResult(self, devInfo:str)->bool:
         if devInfo == None:
-            return
+            return False
 
         try:
             uuid=devInfo['uuid']
             name=devInfo['name']
             self.addDevice(uuid, name, True)
+            return True
 
         except Exception as ex:
             LOGGER.error(
@@ -199,7 +221,7 @@ class BTSVCController(udi_interface.Node):
             )
             return False
 
-    def processPair(self, payload, bPaired:bool):
+    def processPair(self, payload, bPaired:bool)->bool:
 
         try:
             dInfo=json.loads(payload)
@@ -209,17 +231,15 @@ class BTSVCController(udi_interface.Node):
                 uuid = get_pg3_address(uuid)
                 node = self.poly.getNode(uuid)
                 if node == None:
-                    return
+                    return False
                 node.updatePairedStatus(bPaired)
+                return True 
             
         except Exception as ex:
             LOGGER.error(
                 "Failed to parse MQTT Payload as Json: {} {}".format(ex, payload)
             )
             return False
-
-
-
 
     def processScanResults(self, payload:str):
         try:
@@ -235,6 +255,7 @@ class BTSVCController(udi_interface.Node):
 
         for devInfo in data_array:
             self.processScanResult(devInfo)
+        return True
 
     def addAllNodes(self): 
         config = self.poly.getConfig()
@@ -267,9 +288,11 @@ class BTSVCController(udi_interface.Node):
             LOGGER.error("failed creating bt device node ..." )
             return
         self.poly.addNode(devNode)
+        return devNode
 
     def query(self):
-        pass
+        self._mqttc.publish('config/bluetooth')
+        self._mqttc.publish('config/bluetooth/list')
     
     def processCommand(self, cmd):
         LOGGER.info('Got command: {}'.format(cmd))
@@ -352,6 +375,7 @@ class BluetoothDevNode(udi_interface.Node):
 
             elif cmd['cmd'] == 'QUERY':
                 self.query()
+            return True
 
     commands = {
             'PAIR': processCommand,
