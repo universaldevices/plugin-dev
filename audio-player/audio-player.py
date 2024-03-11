@@ -29,8 +29,21 @@ defaultOutputDevice=SPEAKER_OUT
 stations:str = None
 
 #create vlc instance
-vlc_instance = vlc.Instance('--no-xlib') 
-# Create VLC media player
+vlc_instance = vlc.Instance('--no-xlib')
+
+
+'''
+if you want to log locally, uncomment
+'''
+
+#@vlc.CallbackDecorators.LogCb
+#def log_callback(instance, level, ctx, fmt, args):
+#    try:
+#        module, _file, _line = vlc.libvlc_log_get_context(ctx)
+#    except TypeError:
+#        print("vlc.libvlc_log_get_context(ctx)")
+
+#vlc_instance.log_set(log_callback,None)
 
 '''
 stateFile = './pstate.json'
@@ -90,7 +103,6 @@ def audio_player_thread():
     global udAudioPlayer
     udAudioPlayer.playVLC()
 
-
 class AudioPlayer:
     def __init__(self): 
         self.node = None
@@ -121,15 +133,17 @@ class AudioPlayer:
             return 0
 
     def playVLC(self):
+        global vlc_instance
         if self.node != None:
             self.node.updateState(1, self.index)
-        
+
         if self.player != None:
-            # Attach the event manager to the media player
-            event_manager = self.player.event_manager()
-            # Register the event and callback
-            event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, play_stopped, None)
-            self.player.play()
+            try:
+                self.player.play()
+            except Exception as ex:
+                LOGGER.error(str(ex))
+                self.stop()
+                return
         
     def stopped(self):
         if self.node != None:
@@ -158,17 +172,24 @@ class AudioPlayer:
         if self.node != None:
             vol = self.getVolume()
             self.node.updateVolume(vol)
+        # Attach the event manager to the media player
+        event_manager = self.player.event_manager()
+        # Register the event and callback
+        event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, play_stopped, None)
+        event_manager.event_attach(vlc.EventType.MediaPlayerEncounteredError, play_stopped, None)
 
         # Start audio player thread
         ap_thread = threading.Thread(target = audio_player_thread)
         ap_thread.daemon = False
         ap_thread.start()
-
-    def query(self, node):
+        return True
+    
+    def query(self, node)->bool:
         if self.isPlaying():
             node.updateState(1, self.index)
         else:
             node.updateState(0, 0)
+        return True
 
     def isPlaying(self)->bool:
         if self.player == None:
@@ -218,6 +239,8 @@ class AudioPlayerNode(udi_interface.Node):
     def __init__(self, polyglot, primary, address, name):
         super(AudioPlayerNode, self).__init__(polyglot, primary, address, name)
         udAudioPlayer.setNode(self)
+        self.updateState(0,0)
+        self.updateOutput(0)
         self._mqttc = None
         try:
             mqttThread = threading.Thread(target=self._startMqtt, name='SysConfigMqtt')
@@ -290,6 +313,8 @@ class AudioPlayerNode(udi_interface.Node):
             self.updateBTStatus(False)
         elif msg.topic == "sconfig/bluetooth/list":
             self.updateBTList(msg.payload)
+        elif msg.topic == "sconfig/bluetooth/unpair":
+            udAudioPlayer.stop()
 
     def on_log(self, mqttc, userdata, level, string):
         pass
@@ -336,11 +361,23 @@ class AudioPlayerNode(udi_interface.Node):
             self._mqttc.publish('config/bluetooth/enable')
     
     def processOutput(self, index:int):
-        if udAudioPlayer.setOutputDevice(index):
-            self.updateOutput(index)
+        if index == 0:
+            if udAudioPlayer.setOutputDevice(index):
+                self.updateOutput(index)
+                return True
+            else:
+                return False
+
+        btStatus=self.getDriver('GV1') 
+        if btStatus == 1:
+            if udAudioPlayer.setOutputDevice(index):
+                self.updateOutput(index)
+                return True
+        return False
 
 
-    def processCommand(self, cmd):
+
+    def processCommand(self, cmd)->bool:
         LOGGER.info('Got command: {}'.format(cmd))
         if 'cmd' in cmd:
             if cmd['cmd'] == 'PLAY':
@@ -349,13 +386,13 @@ class AudioPlayerNode(udi_interface.Node):
                     jparam=json.loads(sparam)
                     index=int(jparam['PLAYLIST.uom25'])
                     if index == 0:
-                        return
+                        return False
                     filename=nlsGen.getFilePath(path, index)
                     if filename == None:
-                        return
+                        return False
                     LOGGER.info('Playing #{}:{}'.format(index, filename))
                     udAudioPlayer.stop()
-                    udAudioPlayer.play(index, filename)
+                    return udAudioPlayer.play(index, filename)
                 except Exception as ex:
                     LOGGER.error(ex)
         
