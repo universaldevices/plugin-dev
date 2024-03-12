@@ -4,7 +4,9 @@
   <nodeDef id="BltSvc" nls="BLTSVC">
     <sts>
       <st id="ST" editor="btStatus" />
+      <!--
       <st id="GV0" editor="btPairedDev" />
+      -->
 	  </sts>
     <cmds>
       <sends />
@@ -27,6 +29,7 @@
         <cmd id="PAIR" nls="PAIR"></cmd>
         <cmd id="UNPAIR" nls="UNPAIR"></cmd>
         <cmd id="FORGET" nls="FORGET"></cmd>
+        <cmd id="QUERY" nls="QUERY"></cmd>
       </accepts>
     </cmds>
   </nodeDef>
