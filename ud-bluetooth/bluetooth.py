@@ -152,6 +152,8 @@ class BTSVCController(udi_interface.Node):
             self.processPair(msg.payload, True)
         elif msg.topic == "sconfig/bluetooth/unpair":
             self.processPair(msg.payload, False)
+        elif msg.topic == "sconfig/bluetooth/forget":
+            self.processForget(msg.payload)
 
     def on_disconnect(self, mqttc, userdata, rc):
         pass
@@ -241,6 +243,25 @@ class BTSVCController(udi_interface.Node):
             )
             return False
 
+    def processForget(self, payload)->bool:
+
+        try:
+            dInfo=json.loads(payload)
+            uuid=dInfo['uuid']
+            name=dInfo['name']
+            if uuid != None:
+                uuid = get_pg3_address(uuid)
+                polyglot.delNode(uuid)
+                return True
+            return False
+
+        except Exception as ex:
+            LOGGER.error(
+                "Failed to parse MQTT Payload as Json: {} {}".format(ex, payload)
+            )
+            return False
+
+
     def processScanResults(self, payload:str):
         try:
             data_array:[str] = json.loads(payload)
@@ -294,7 +315,7 @@ class BTSVCController(udi_interface.Node):
         self._mqttc.publish('config/bluetooth')
         self._mqttc.publish('config/bluetooth/list')
     
-    def processCommand(self, cmd):
+    def processCommand(self, cmd)->bool:
         LOGGER.info('Got command: {}'.format(cmd))
         if 'cmd' in cmd:
             if cmd['cmd'] == 'BT' :
@@ -361,8 +382,7 @@ class BluetoothDevNode(udi_interface.Node):
     def processForget(self):
         self.controller.publishCommand('config/bluetooth/forget', self.getDeviceJson())
 
-    def processCommand(self, cmd):
-        LOGGER.info('Got command: {}'.format(cmd))
+    def processCommand(self, cmd)->bool:
         if 'cmd' in cmd:
             if cmd['cmd'] == 'PAIR' :
                 self.processPair()
@@ -376,6 +396,8 @@ class BluetoothDevNode(udi_interface.Node):
             elif cmd['cmd'] == 'QUERY':
                 self.query()
             return True
+        else:
+            return False
 
     commands = {
             'PAIR': processCommand,
