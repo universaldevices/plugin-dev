@@ -13,7 +13,7 @@
       <sends />
       <accepts>
         <cmd id="PLAY">
-          <p id="PLAYLIST" editor="mpgNames" init="GV0"/>
+          <p id="PLAYLIST" editor="mpgNames" />
         </cmd>
         <cmd id="STOP">
         </cmd>

@@ -18,12 +18,21 @@ import threading
 import paho.mqtt.client as mqtt
 import ssl
 import vlc
+import pyaudio
+from pydub import AudioSegment
+import subprocess
+import shutil
+#from gtts import gTTS
+
+MUSIC_TEMP_DIR="./tmp_sounds"
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
 path:str = None
 defaultSoundPath='./sounds'
+PAUDIO_SPEAKER_OUT=2
 SPEAKER_OUT = '/dev/dsp1' 
+PAUDIO_BLUETOOTH_OUT=0
 BLUETOOTH_OUT = '/dev/dsp'
 defaultOutputDevice=SPEAKER_OUT
 stations:str = None
@@ -31,6 +40,13 @@ stations:str = None
 #create vlc instance
 vlc_instance = vlc.Instance('--no-xlib')
 
+def getPyAudioDevice(dev:str):
+    if dev == SPEAKER_OUT:
+        return PAUDIO_SPEAKER_OUT
+    elif dev == BLUETOOTH_OUT:
+        return PAUDIO_BLUETOOTH_OUT
+    else:
+        return getPyAudioDevice(defaultOutputDevice)
 
 '''
 if you want to log locally, uncomment
@@ -101,7 +117,10 @@ def play_stopped(event, nums):
 
 def audio_player_thread():
     global udAudioPlayer
-    udAudioPlayer.playVLC()
+    if udAudioPlayer.isTTS:
+        udAudioPlayer.playTTS()
+    else:
+        udAudioPlayer.playVLC()
 
 class AudioPlayer:
     def __init__(self): 
@@ -109,6 +128,11 @@ class AudioPlayer:
         self.index: int = 0
         self.outputDevice: str = defaultOutputDevice
         self.player: vlc.MediaPlayer = None 
+        self.isTTS: bool = False
+        self.toStop: bool = False #used for TTS
+        self.path: str = None
+        if not os.path.exists(MUSIC_TEMP_DIR):
+            os.makedirs(MUSIC_TEMP_DIR)
 
     def setNode(self, node):
         self.node=node
@@ -134,66 +158,165 @@ class AudioPlayer:
 
     def playVLC(self):
         global vlc_instance
-        if self.node != None:
-            self.node.updateState(1, self.index)
+        try:
+            self.player = vlc_instance.media_player_new()
+            self.player.audio_output_device_set(None, self.outputDevice)
+            # Load the stream
+            media = vlc_instance.media_new(self.path)
+            # Set the media to the player
+            self.player.set_media(media)
+            if self.node != None:
+                vol = self.getVolume()
+                self.node.updateVolume(vol)
+            # Attach the event manager to the media player
+            event_manager = self.player.event_manager()
+            # Register the event and callback
+            event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, play_stopped, None)
+            event_manager.event_attach(vlc.EventType.MediaPlayerEncounteredError, play_stopped, None)
+            if self.node != None:
+                self.node.updateState(1, self.index)
+            self.player.play()
 
-        if self.player != None:
-            try:
-                self.player.play()
-            except Exception as ex:
-                LOGGER.error(str(ex))
-                self.stop()
-                return
-        
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            self.stop()
+
+    def playTTS(self):
+        try:
+            chunk=1024
+            pd = AudioSegment.from_file(self.path)
+            p = pyaudio.PyAudio()
+
+            stream = p.open(output_device_index=getPyAudioDevice(self.outputDevice), format =
+            p.get_format_from_width(pd.sample_width),
+            channels = pd.channels,
+            rate = pd.frame_rate, 
+            output = True)
+            if self.node != None:
+                self.node.updateState(1, self.index)
+            i = 0
+            data = pd[:chunk]._data
+            while data and not self.toStop:
+                stream.write(data)
+                i += chunk
+                data = pd[i:i + chunk]._data
+
+            stream.close()    
+            p.terminate()
+            pd=None
+            self.stopped()
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            self.stopped()
+
     def stopped(self):
         if self.node != None:
             self.node.updateState(0, self.index)
-
-#        if self.player != None:
-#            self.player.release()
-
         self.player=None
+        self.toStop=False
 
     def stop(self):
         if self.player != None:
             self.player.stop()
-        self.stopped()
+            self.player.release()
+            self.stopped()
+        else:
+            self.toStop=True
 
+    def get_audio_info(self, path:str):
+        # Get audio metadata
+        ffprobe_cmd = ["ffprobe", "-v", "error", "-show_entries", "stream=channels,bit_rate", "-of", "json", path]
+        process = subprocess.Popen(ffprobe_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, _ = process.communicate()
+    
+        # Parse JSON output
+        metadata = json.loads(output)
+    
+        # Initialize variables to store bitrate and mono status
+        bitrate = 0
+        is_mono = False
+        frame_rate = 0
+
+        # Extract bitrate and mono status from metadata
+        if 'streams' in metadata:
+            for stream in metadata['streams']:
+                if 'bit_rate' in stream:
+                    bitrate = int(stream['bit_rate'])
+                if 'channels' in stream and stream['channels'] == 1:
+                    is_mono = True
+                if 'r_frame_rate' in stream:
+                # r_frame_rate is a string in the form "numerator/denominator"
+                # We can convert it to a float by dividing numerator by denominator
+                    numerator, denominator = map(float, stream['r_frame_rate'].split('/'))
+                    frame_rate = numerator / denominator
+        if frame_rate == 0:
+            pd = AudioSegment.from_file(path)
+            frame_rate = pd.frame_rate
+            pd = None
+    
+        # Return bitrate and mono status as a tuple
+        return bitrate, is_mono, frame_rate
+    
     def play(self, index, path:str) -> bool:
-        while self.isPlaying():
+        if self.node == None:
+            return False
+        while self.node.isPlaying():
             time.sleep(0.5) 
+        self.toStop=False
         self.index = index
-        self.player = vlc_instance.media_player_new()
-        self.player.audio_output_device_set(None, self.outputDevice)
-        # Load the stream
-        media = vlc_instance.media_new(path)
-        # Set the media to the player
-        self.player.set_media(media)
-        if self.node != None:
-            vol = self.getVolume()
-            self.node.updateVolume(vol)
-        # Attach the event manager to the media player
-        event_manager = self.player.event_manager()
-        # Register the event and callback
-        event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, play_stopped, None)
-        event_manager.event_attach(vlc.EventType.MediaPlayerEncounteredError, play_stopped, None)
+        self.path = path
+        if '//' in self.path:
+            self.isTTS=False
+        else:
+            filename=os.path.basename(self.path)
+            path48=MUSIC_TEMP_DIR+"/iox48."+filename
+            path24=MUSIC_TEMP_DIR+"/iox24."+filename
+            #if neither exists, figure out what we have
+            
+            if not (os.path.exists(path48) or os.path.exists(path24)):
+                try:
+                    bit_rate, is_mono, frame_rate = self.get_audio_info(path)
+                    if (frame_rate != None and frame_rate > 24000) and (bit_rate != None and bit_rate > 32000): 
+                    #and (is_mono != None and not is_mono):
+                        self.TTS=False
+                        with open(path48,'w'):
+                            pass
+                    else:
+                        self.TTS=True
+                        with open(path24,'w'):
+                            pass
+                except Exception as ex:
+                    LOGGER.log(str(ex))
+                    self.TTS=False
+
+            #now, if path24 exists, 
+            if os.path.exists(path24):
+                self.isTTS=True 
+                if not os.path.exists(path48):
+                    #we have a tts file that we need to convert
+                    pd = AudioSegment.from_file(self.path)
+                    pd=pd.set_frame_rate(48000)
+                    pd.export(path48, format="mp3")
+                    pd = None
+                self.path=path48
+            else:
+                self.isTTS = False
+
 
         # Start audio player thread
         ap_thread = threading.Thread(target = audio_player_thread)
         ap_thread.daemon = False
         ap_thread.start()
         return True
+
+    def resume(self)->bool:
+        self.play(self.index, self.path)
     
     def query(self, node)->bool:
-        if self.isPlaying():
+        if node.isPlaying():
             node.updateState(1, self.index)
         else:
             node.updateState(0, 0)
-        return True
-
-    def isPlaying(self)->bool:
-        if self.player == None:
-            return False
         return True
 
     def setOutputDevice(self, index:int)->bool:
@@ -319,7 +442,11 @@ class AudioPlayerNode(udi_interface.Node):
     def on_log(self, mqttc, userdata, level, string):
         pass
 
-
+    def isPlaying(self):
+        try:
+            return self.getDriver('ST') == 1
+        except Exception as ex:
+            return False
 
     def updateState(self, state, index):
         if state == 1:
@@ -364,6 +491,9 @@ class AudioPlayerNode(udi_interface.Node):
         if index == 0:
             if udAudioPlayer.setOutputDevice(index):
                 self.updateOutput(index)
+                if self.isPlaying():
+                    udAudioPlayer.stop()
+                    udAudioPlayer.resume()
                 return True
             else:
                 return False
@@ -372,12 +502,14 @@ class AudioPlayerNode(udi_interface.Node):
         if btStatus == 1:
             if udAudioPlayer.setOutputDevice(index):
                 self.updateOutput(index)
+                if self.isPlaying():
+                    udAudioPlayer.stop()
+                    udAudioPlayer.resume()
                 return True
         return False
 
-
-
     def processCommand(self, cmd)->bool:
+        global path
         LOGGER.info('Got command: {}'.format(cmd))
         if 'cmd' in cmd:
             if cmd['cmd'] == 'PLAY':
@@ -448,8 +580,8 @@ Read the user entered custom parameters. This should only be the serial
 port.
 '''
 def parameterHandler(params):
-    global polyglot
     global path
+    global polyglot
     global stations
     global nlsGen
     global defaultSoundPath

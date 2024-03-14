@@ -190,6 +190,14 @@ class NLSGenerator :
             if parsed_station:
                 self.stationsList.append(parsed_station)
 
+    def defrag(self):
+        #remove any n/a at the bottom
+        for i in reversed(range(len(self.musicList))):
+            if self.musicList[i] == "n/a":
+                self.musicList.pop(i)
+            else:
+                break
+
     def generate(self, path:str, stations:str) -> bool :
         # There is only one nls, so read the nls template and write the new one
         if path == None:
@@ -199,6 +207,7 @@ class NLSGenerator :
         dir_content = self.getSortedDirContent(path)
         self.removeDeleted(dir_content)
         self.addNew(dir_content)
+        self.defrag()
         self.save()
         en_us_txt = "profile/nls/en_us.txt"
         try:
