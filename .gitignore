@@ -10,6 +10,7 @@ audio-player/profile/nls/en_us.txt
 audio-player/logs/
 audio-player/lib64/*
 audio-player/m.list
+audio-player/tmp_sounds/
 audio-player/__pycache__/
 lib64/
 lib/
