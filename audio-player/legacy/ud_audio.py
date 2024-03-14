@@ -21,7 +21,11 @@ class _AudioPlayerParams:
 AudioPlayerParams:_AudioPlayerParams = _AudioPlayerParams()
 
 chunk = 4096
-fn = '/usr/home/admin/Downloads/example.mp3' 
+#fn = 'sounds/schime.mp3'
+fn = './output.mp3'
+#0 = BT
+#2 = Speaker
+defaultOutputDevice=2
 
 
 def audio_player_thread():
@@ -29,8 +33,9 @@ def audio_player_thread():
         AudioPlayerParams.node.updateState(1, AudioPlayerParams.index)
     pd = AudioSegment.from_file(AudioPlayerParams.mediaPath)
     p = pyaudio.PyAudio()
+    print(pd.frame_rate)
 
-    stream = p.open(format =
+    stream = p.open(output_device_index=defaultOutputDevice, format =
         p.get_format_from_width(pd.sample_width),
         channels = pd.channels,
         rate = pd.frame_rate,
@@ -40,6 +45,7 @@ def audio_player_thread():
     while data and not AudioPlayerParams.toStop:
         stream.write(data)
         i += chunk
+        data = pd[i:i + chunk]._data
 
     stream.close()    
     p.terminate()
@@ -79,10 +85,10 @@ ap = UDAudioPlayer()
 
 if __name__ == "__main__":
     try:
-        while True:
-            ap.play(None, 0, fn)
-            time.sleep(5)
-            ap.stop()
+#        while True:
+        ap.play(None, 0, fn)
+#            time.sleep(5)
+#            ap.stop(None)
     except (KeyboardInterrupt, SystemExit):
         sys.exit(0)
         
