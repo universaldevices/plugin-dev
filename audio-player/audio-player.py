@@ -626,7 +626,7 @@ def poll(polltype):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.1.0')
+        polyglot.start('1.2.0')
 
 
         # subscribe to the events we want
