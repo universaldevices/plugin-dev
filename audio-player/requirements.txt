@@ -1,4 +1,7 @@
 udi_interface>=3.0.57
 python-vlc
 pydub
+platformdirs
+requests-file
+googletrans>=4.0.0-rc1
 

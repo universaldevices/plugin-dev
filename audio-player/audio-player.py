@@ -22,9 +22,9 @@ import pyaudio
 from pydub import AudioSegment
 import subprocess
 import shutil
-#from gtts import gTTS
+from ud_tts import UDTTS
 
-MUSIC_TEMP_DIR="./tmp_sounds"
+MUSIC_TEMP_DIR="tmp_sounds"
 
 LOGGER = udi_interface.LOGGER
 polyglot = None
@@ -61,56 +61,6 @@ if you want to log locally, uncomment
 
 #vlc_instance.log_set(log_callback,None)
 
-'''
-stateFile = './pstate.json'
-
-#Saves the state of the player such as output and volume
-class PlayerState:
-
-    def __init__(self):
-        self.map:Dict[str,int]={}
-        self.load()
-
-    def load(self)->bool():
-        if not os.path.exists(stateFile):
-            return False
-        try:
-            with open(stateFile, 'r') as json_file:
-                self.map = json.load(json_file)
-            return True
-        except Exception as ex:
-            LOGGER.warning("failed loading the state file {}".format (ex))
-            return False
-
-    def save(self)->bool():
-        try:
-            with open(stateFile, 'w') as json_file:
-                json.dump(self.map, json_file)
-        except Exception as ex:
-            LOGGER.error("failed saving the state file {}".format (ex))
-            return False
-
-    def setOutput(self, index:int):
-        map['output']=index
-
-    def setVolume(self, volume:int):
-        map['volume']=volume
-
-    def getOutput(self):
-        try:
-            return map['output']
-        except Exception as ex:
-            LOGGER.error(str(ex))
-            return 0
-    
-    def getVolume(self):
-        try:
-            return map['volume']
-        except Exception as ex:
-            LOGGER.error(str(ex))
-            return 0
-'''
-
 def play_stopped(event, nums):
     global udAudioPlayer
     udAudioPlayer.stopped()
@@ -131,8 +81,6 @@ class AudioPlayer:
         self.isTTS: bool = False
         self.toStop: bool = False #used for TTS
         self.path: str = None
-        if not os.path.exists(MUSIC_TEMP_DIR):
-            os.makedirs(MUSIC_TEMP_DIR)
 
     def setNode(self, node):
         self.node=node
@@ -183,7 +131,7 @@ class AudioPlayer:
 
     def playTTS(self):
         try:
-            chunk=1024
+            chunk_size=4096
             pd = AudioSegment.from_file(self.path)
             p = pyaudio.PyAudio()
 
@@ -194,14 +142,22 @@ class AudioPlayer:
             output = True)
             if self.node != None:
                 self.node.updateState(1, self.index)
-            i = 0
-            data = pd[:chunk]._data
-            while data and not self.toStop:
-                stream.write(data)
-                i += chunk
-                data = pd[i:i + chunk]._data
 
-            stream.close()    
+            for i in range(0, len(pd), chunk_size):
+                if self.toStop:
+                    break
+                chunk = pd[i:i + chunk_size]
+                stream.write(chunk.raw_data)
+
+#            i = 0
+#            data = pd[:chunk]._data
+#            while data and not self.toStop:
+#                stream.write(data)
+#                i += chunk
+#                data = pd[i:i + chunk]._data
+
+            stream.stop_stream()
+            stream.close()
             p.terminate()
             pd=None
             self.stopped()
@@ -256,7 +212,20 @@ class AudioPlayer:
     
         # Return bitrate and mono status as a tuple
         return bitrate, is_mono, frame_rate
-    
+
+    def make48K(self):
+        return UDTTS.make48K(self.path, MUSIC_TEMP_DIR)
+
+       # filename=os.path.basename(self.path)
+       # path48=MUSIC_TEMP_DIR+"/iox48."+filename
+       # if not os.path.exists(path48):
+       # #we have a tts file that we need to convert
+       #     pd = AudioSegment.from_file(self.path)
+       #     pd=pd.set_frame_rate(48000)
+       #     pd.export(path48, format="mp3")
+       #     pd = None
+       # return path48 
+
     def play(self, index, path:str) -> bool:
         if self.node == None:
             return False
@@ -265,8 +234,31 @@ class AudioPlayer:
         self.toStop=False
         self.index = index
         self.path = path
-        if '//' in self.path:
-            self.isTTS=False
+        if '_t' in self.path:
+            self.isTTS = True
+            self.path = self.make48K()
+        else:
+            self.isTTS = False
+
+
+        # Start audio player thread
+        ap_thread = threading.Thread(target = audio_player_thread)
+        ap_thread.daemon = False
+        ap_thread.start()
+        return True
+    
+    def play__heuristics(self, index, path:str) -> bool:
+        if self.node == None:
+            return False
+        while self.node.isPlaying():
+            time.sleep(0.5) 
+        self.toStop=False
+        self.index = index
+        self.path = path
+        if '_nvlc_' in self.path:
+            self.isTTS = True
+            self.make48K(path48)
+            self.path = path48
         else:
             filename=os.path.basename(self.path)
             path48=MUSIC_TEMP_DIR+"/iox48."+filename
@@ -292,12 +284,7 @@ class AudioPlayer:
             #now, if path24 exists, 
             if os.path.exists(path24):
                 self.isTTS=True 
-                if not os.path.exists(path48):
-                    #we have a tts file that we need to convert
-                    pd = AudioSegment.from_file(self.path)
-                    pd=pd.set_frame_rate(48000)
-                    pd.export(path48, format="mp3")
-                    pd = None
+                self.make48K(path48)
                 self.path=path48
             else:
                 self.isTTS = False
@@ -575,6 +562,14 @@ def addAudioNode(address)->bool:
         udAudioPlayer.query(node)
         return True
 
+def get_tts_elements(dictionary, pattern="tts_*"):
+    regex = re.compile(pattern)
+    matched_elements = {}
+    for key, value in dictionary.items():
+        if regex.match(key):
+            matched_elements[key] = value
+    return matched_elements
+
 '''
 Read the user entered custom parameters. This should only be the serial
 port.
@@ -585,6 +580,7 @@ def parameterHandler(params):
     global stations
     global nlsGen
     global defaultSoundPath
+    global MUSIC_TEMP_DIR
 
     if params == None:
         LOGGER.info("using default sounds and no stations ...")
@@ -609,6 +605,20 @@ def parameterHandler(params):
                 polyglot.Notices['stations'] = 'Stations list is of the form name===url,name===url, ....'
                 stations=None
 
+        try:         
+            MTemp=path+"/"+MUSIC_TEMP_DIR
+            if os.path.exists(MTemp):
+                #remove it
+                shutil.rmtree(MTemp)
+            os.makedirs(MTemp)
+            MUSIC_TEMP_DIR=MTemp
+        except Exception as ex:
+                LOGGER.error(ex)
+
+    tts=UDTTS(path)
+    if tts.parse_params(params) != None:
+        tts.generate_mp3_files()
+
     nlsGen.generate(path, stations)
     polyglot.updateProfile()
     addAudioNode("0")
@@ -626,7 +636,7 @@ def poll(polltype):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.2.0')
+        polyglot.start('1.3.0')
 
 
         # subscribe to the events we want
