@@ -383,6 +383,7 @@ class AudioPlayerNode(udi_interface.Node):
             self._mqttc.on_publish = self.on_publish
 #            self._mqttc.on_log = self.on_log
             self._mqttc.on_message = self.on_message
+        
         except Exception as ex:
             LOGGER.error(str(ex))
         while True: 
@@ -628,7 +629,7 @@ def poll(polltype):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.3.0')
+        polyglot.start('1.3.1')
 
 
         # subscribe to the events we want
