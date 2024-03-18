@@ -319,9 +319,7 @@ class BTSVCController(udi_interface.Node):
         LOGGER.info('Got command: {}'.format(cmd))
         if 'cmd' in cmd:
             if cmd['cmd'] == 'BT' :
-                sparam = str(cmd['query']).replace("'","\"")
-                jparam=json.loads(sparam)
-                index=int(jparam['BTSTATUS.uom25'])
+                index=int(cmd['value'])
                 self.processBT(index)
                 return True
 
@@ -419,7 +417,7 @@ def poll(polltype):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.0.0')
+        polyglot.start('1.0.1')
         BTSVCController(polyglot)
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
