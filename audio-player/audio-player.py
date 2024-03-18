@@ -501,9 +501,7 @@ class AudioPlayerNode(udi_interface.Node):
         if 'cmd' in cmd:
             if cmd['cmd'] == 'PLAY':
                 try:
-                    sparam = str(cmd['query']).replace("'","\"")
-                    jparam=json.loads(sparam)
-                    index=int(jparam['PLAYLIST.uom25'])
+                    index=int(cmd.get('value'))
                     if index == 0:
                         return False
                     filename=nlsGen.getFilePath(path, index)
@@ -519,21 +517,15 @@ class AudioPlayerNode(udi_interface.Node):
                 udAudioPlayer.stop()
             
             elif cmd['cmd'] == 'BT' :
-                sparam = str(cmd['query']).replace("'","\"")
-                jparam=json.loads(sparam)
-                index=int(jparam['BTSTATUS.uom25'])
+                index=int(cmd.get('value'))
                 self.processBT(index)
 
             elif cmd['cmd'] == 'OUTPUT' :
-                sparam = str(cmd['query']).replace("'","\"")
-                jparam=json.loads(sparam)
-                index=int(jparam['OUTPUT.uom25'])
+                index=int(cmd.get('value'))
                 self.processOutput(index)
 
             elif cmd['cmd'] == 'VOLUME' :
-                sparam = str(cmd['query']).replace("'","\"")
-                jparam=json.loads(sparam)
-                volume=int(jparam['VOLUME.uom51'])
+                index=int(cmd.get('value'))
                 self.processVolume(volume)
 
             elif cmd['cmd'] == 'QUERY':
