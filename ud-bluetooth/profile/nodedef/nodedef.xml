@@ -12,7 +12,7 @@
       <sends />
       <accepts>
         <cmd id="BT"> 
-          <p id="BTSTATUS" editor="btStatus" init="ST"/>
+          <p id="" editor="btStatus" init="ST"/>
         </cmd>
         <cmd id="SCAN">
         </cmd>

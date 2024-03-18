@@ -13,15 +13,15 @@
       <sends />
       <accepts>
         <cmd id="PLAY">
-          <p id="PLAYLIST" editor="mpgNames" />
+          <p id="" editor="mpgNames" />
         </cmd>
         <cmd id="STOP">
         </cmd>
         <cmd id="OUTPUT">
-          <p id="OUTPUT" editor="output" init="GV2"/>
+          <p id="" editor="output" init="GV2"/>
         </cmd>
         <cmd id="VOLUME">
-          <p id="VOLUME" editor="volume" init="GV3"/>
+          <p id="" editor="volume" init="GV3"/>
         </cmd>
       </accepts>
     </cmds>
