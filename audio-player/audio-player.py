@@ -525,7 +525,7 @@ class AudioPlayerNode(udi_interface.Node):
                 self.processOutput(index)
 
             elif cmd['cmd'] == 'VOLUME' :
-                index=int(cmd.get('value'))
+                volume=int(cmd.get('value'))
                 self.processVolume(volume)
 
             elif cmd['cmd'] == 'QUERY':
