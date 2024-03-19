@@ -1,2 +1,3 @@
 #!/bin/sh
-tar -czvf bluetooth.tar.gz bluetooth.py install.sh profile requirements.txt
+version=$(cat version.py | awk -F'=' '{print $2'}| sed 's/\"//g')
+tar -czvf bluetooth-${version}.tar.gz version.py bluetooth.py install.sh profile requirements.txt

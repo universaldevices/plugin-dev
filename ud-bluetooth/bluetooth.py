@@ -12,6 +12,7 @@ import json
 import threading
 import paho.mqtt.client as mqtt
 import ssl
+import version
 
 LOGGER = udi_interface.LOGGER
 Custom = udi_interface.Custom
@@ -417,7 +418,7 @@ def poll(polltype):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.0.1')
+        polyglot.start(version.ud_plugin_version)
         BTSVCController(polyglot)
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
