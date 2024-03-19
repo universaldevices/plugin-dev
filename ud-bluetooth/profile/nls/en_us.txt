@@ -18,7 +18,6 @@ ST-BLTDEV-ST-NAME = Status
 
 CMD-SCAN-NAME = Scan for Bluetooth Devices
 CMD-BT-NAME = Service
-CMDP-BTSTATUS-NAME = 
 
 CMD-PAIR-NAME = Pair
 CMD-UNPAIR-NAME = Unpair
