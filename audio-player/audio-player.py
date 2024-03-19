@@ -23,6 +23,7 @@ from pydub import AudioSegment
 import subprocess
 import shutil
 from ud_tts import UDTTS
+import version
 
 MUSIC_TEMP_DIR="tmp_sounds"
 
@@ -629,7 +630,7 @@ def poll(polltype):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.3.1')
+        polyglot.start(version.ud_plugin_version)
 
 
         # subscribe to the events we want
