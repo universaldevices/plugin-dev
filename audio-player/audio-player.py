@@ -645,5 +645,7 @@ if __name__ == "__main__":
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
         sys.exit(0)
+    except Exception as ex:
+        LOGGER.error(ex)
         
 
