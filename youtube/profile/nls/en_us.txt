@@ -1,0 +1,49 @@
+
+#Controller
+ND-mpgPlayer-NAME = MPG Player 
+ND-mpgPlayer-ICON = Siren
+
+ST-mpgPlayer-ST-NAME = Playing Status 
+ST-mpgPlayer-GV0-NAME = Playing 
+ST-mpgPlayer-GV1-NAME = Bluetooth 
+ST-mpgPlayer-GV2-NAME = Output 
+ST-mpgPlayer-GV3-NAME = Volume 
+
+#Shared command names
+
+CMD-STOP-NAME = Stop 
+CMD-PLAY-NAME = Play 
+CMD-BT-NAME = Bluetooth
+CMD-OUTPUT-NAME = Output
+CMD-VOLUME-NAME = Volume
+
+PLAYSTATUS-0 = Idle
+PLAYSTATUS-1 = Playing
+
+BTSTATUS-0 = Disabled
+BTSTATUS-1 = Enabled
+OUTPUT-0 = Speaker Jack
+OUTPUT-1 = Bluetooth
+
+MPGNAME-0 = None
+MPGNAME-1 = schime.mp3
+MPGNAME-2 = bells2.mp3
+MPGNAME-3 = fragment.mp3
+MPGNAME-4 = magic.mp3
+MPGNAME-5 = harp.mp3
+MPGNAME-6 = rbell.mp3
+MPGNAME-8 = chimes.mp3
+MPGNAME-9 = wind.mp3
+MPGNAME-10 = bells.mp3
+MPGNAME-11 = hbell.mp3
+MPGNAME-12 = mystical.mp3
+MPGNAME-13 = synth.mp3
+MPGNAME-14 = pa.mp3
+MPGNAME-15 = malonc.mp3
+MPGNAME-16 = fantasy.mp3
+MPGNAME-17 = wchime.mp3
+MPGNAME-18 = example.mp3
+MPGNAME-19 = chime.mp3
+MPGNAME-20 = computer.mp3
+
+

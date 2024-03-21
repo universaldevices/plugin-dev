@@ -18,6 +18,9 @@ bin/
 ud-bluetooth/logs/__pycache__/
 ud-bluetooth/logs/
 ud-bluetooth/logs/*
+youtube/logs/__pycache__/
+youtube/logs/
+youtube/logs/*
 drop/logs/
 drop/dmap.json
 logs/*

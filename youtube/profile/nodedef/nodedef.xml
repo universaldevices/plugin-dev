@@ -1,0 +1,30 @@
+<nodeDefs>
+
+<!-- The node server control Node-->
+  <nodeDef id="mpgPlayer" nls="mpgPlayer">
+    <sts>
+      <st id="ST" editor="playStatus" />
+      <st id="GV0" editor="mpgNames" />
+      <st id="GV1" editor="btStatus" />
+      <st id="GV2" editor="output" />
+      <st id="GV3" editor="volume" />
+	  </sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="PLAY">
+          <p id="" editor="mpgNames" />
+        </cmd>
+        <cmd id="STOP">
+        </cmd>
+        <cmd id="OUTPUT">
+          <p id="" editor="output" init="GV2"/>
+        </cmd>
+        <cmd id="VOLUME">
+          <p id="" editor="volume" init="GV3"/>
+        </cmd>
+      </accepts>
+    </cmds>
+  </nodeDef>
+
+</nodeDefs>
