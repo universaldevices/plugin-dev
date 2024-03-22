@@ -13,6 +13,7 @@ import threading
 import paho.mqtt.client as mqtt
 import ssl
 import version
+import secrets
 
 LOGGER = udi_interface.LOGGER
 Custom = udi_interface.Custom
@@ -106,7 +107,9 @@ class BTSVCController(udi_interface.Node):
 
         LOGGER.info('Using SSL cert: {} key: {} ca: {}'.format(certs[0], keys[0], cafile))
         try:
-            self._mqttc=mqtt.Client(self.id, True)
+            rand=secrets.token_hex(6) 
+            mqtt_id=f'{self.id}_{rand}'
+            self._mqttc=mqtt.Client(mqtt_id, True)
             self.sslContext = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH, cafile=cafile)
             self.sslContext.load_cert_chain(certs[0], keys[0])
             self._mqttc.tls_set_context(self.sslContext)
