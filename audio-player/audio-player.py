@@ -82,6 +82,7 @@ class AudioPlayer:
         self.isTTS: bool = False
         self.toStop: bool = False #used for TTS
         self.path: str = None
+        self.volume = 100
 
     def setNode(self, node):
         self.node=node
@@ -89,8 +90,9 @@ class AudioPlayer:
     def setVolume(self, volume:int)->bool:
         if volume < 0 or volume > 100:
             return
+        self.volume = volume
         if self.player == None:
-            return
+            return True
         rc = self.player.audio_set_volume(volume)
         if rc == 0:
             return True
@@ -98,12 +100,15 @@ class AudioPlayer:
 
     def getVolume(self)->int:
         if self.player == None:
-            return 0
+            return self.volume 
         try:
             return self.player.audio_get_volume()
         except Exception as ex:
             LOGGER.error(str(ex))
             return 0
+
+    def getVolumeInDB(self):
+        return max(-60, -60 + (self.volume / 100) * 60)
 
     def playVLC(self):
         global vlc_instance
@@ -114,9 +119,6 @@ class AudioPlayer:
             media = vlc_instance.media_new(self.path)
             # Set the media to the player
             self.player.set_media(media)
-            if self.node != None:
-                vol = self.getVolume()
-                self.node.updateVolume(vol)
             # Attach the event manager to the media player
             event_manager = self.player.event_manager()
             # Register the event and callback
@@ -124,6 +126,12 @@ class AudioPlayer:
             event_manager.event_attach(vlc.EventType.MediaPlayerEncounteredError, play_stopped, None)
             if self.node != None:
                 self.node.updateState(1, self.index)
+            if self.node != None:
+                vol = self.getVolume()
+                if vol != self.volume:
+                    vol=self.volume
+                    self.setVolume(vol)
+                self.node.updateVolume(vol)
             self.player.play()
 
         except Exception as ex:
@@ -147,7 +155,7 @@ class AudioPlayer:
             for i in range(0, len(pd), chunk_size):
                 if self.toStop:
                     break
-                chunk = pd[i:i + chunk_size]
+                chunk = pd[i:i + chunk_size] + self.getVolumeInDB()
                 stream.write(chunk.raw_data)
 
 #            i = 0
