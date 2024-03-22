@@ -8,12 +8,16 @@ from udi_interface import LOGGER, Custom, OAuth
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import googleapiclient.discovery
+from nls_gen import NLSGenerator
 import os
 import json
 scopes=['https://www.googleapis.com/auth/youtube.download', 'https://www.googleapis.com/auth/youtube.readonly', 'https://www.googleapis.com/auth/youtubepartner-channel-audit']
 
 YT_PLAYLIST_URL="https://www.googleapis.com/youtube/v3/playlists"
 YT_PLAYLIST_ITEMS_URL="https://www.googleapis.com/youtube/v3/playlistItems"
+YT_VIDEO_URL="https://www.youtube.com/watch"
+
+PLAYLISTS_DIRECTORY="./playlists"
 
 # This class implements the API calls to your external service
 # It inherits the OAuth class
@@ -62,12 +66,45 @@ class YouTubeService(OAuth):
         # This provides initial oAuth tokens following user authentication
         super().oauthHandler(token)
 
-    # Your service may need to access custom params as well...
-    def customParamsHandler(self, data):
-        self.customParams.load(data)
-        # Example for a boolean field
-        self.myParamBoolean = ('myParam' in self.customParams and self.customParams['myParam'].lower() == 'true')
-        LOGGER.info(f"My param boolean: { self.myParamBoolean }")
+    def getPlaylistFile(self, title):
+        if title == None:
+            return None
+        try:
+            return os.path.join(PLAYLISTS_DIRECTORY, f'{title}.m3u')
+        except Exception as ex:
+            LOGGER.error(ex)
+            return None
+
+    def makePlaylistFile(self, playlist_id):
+        # Create the directory if it doesn't exist
+        if not os.path.exists(PLAYLISTS_DIRECTORY):
+            os.makedirs(PLAYLISTS_DIRECTORY)
+        
+        try:
+            playlist = self.playlists[playlist_id]
+            if playlist == None:
+                return False
+            title = playlist['title']
+            if title == None:
+                return False
+
+            with open(os.path.join(PLAYLISTS_DIRECTORY, f'{title}.m3u'), 'w') as f:
+                for item in playlist['items']:
+                    url=item['url']
+                    f.write(f'{url}\n')
+
+        except Exception as ex:
+            LOGGER.error(ex)
+
+    def getVideoURL(self, videoId):
+        if videoId == None:
+            return None
+        access_token = self.getAccessToken()
+        if access_token == None:
+            return None
+        #"url" : f'https://www.youtube.com/watch?v={id}&fmt=audio'
+        url=f"{YT_VIDEO_URL}?v={videoId}&fmt=audio&access_token={access_token}"
+        return url
 
     def getPlaylistItems(self, playlist_id):
         if playlist_id == None:
@@ -75,7 +112,7 @@ class YouTubeService(OAuth):
         params = {
                 'part': 'snippet',
                 'playlistId': playlist_id,
-                'maxResults': 26,  # Maximum number of results per page
+                'maxResults': 50,  # Maximum number of results per page
         }
         items=[]
         try:
@@ -85,10 +122,11 @@ class YouTubeService(OAuth):
                 # Process the playlists data
                 for item in playlist_data["items"]:
                     id = item['snippet']['resourceId']['videoId']
+                    url=self.getVideoURL(id)
                     item = {
                         "id" : id, 
                         "title" : item['snippet']['title'],
-                        "url" : f'https://www.youtube.com/watch?v={id}'
+                        "url" : url,
                     }
                     items.append(item) 
 
@@ -102,7 +140,7 @@ class YouTubeService(OAuth):
             LOGGER.error(str(ex))
 
 
-    def getPlaylists(self):
+    def processPlaylists(self):
         params = {
             "part": "snippet",
             "mine": "true",
@@ -121,6 +159,7 @@ class YouTubeService(OAuth):
                         'items': items
                     }
                     self.playlists[id] = pl 
+                    self.makePlaylistFile(id)
 
                 # Check if there is another page of results
                 if "nextPageToken" in playlists_data:

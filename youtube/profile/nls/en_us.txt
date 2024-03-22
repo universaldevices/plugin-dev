@@ -12,6 +12,8 @@ ST-mpgPlayer-GV3-NAME = Volume
 #Shared command names
 
 CMD-STOP-NAME = Stop 
+CMD-PREVIOUS-NAME = Previous 
+CMD-NEXT-NAME = Next 
 CMD-PLAY-NAME = Play 
 CMD-BT-NAME = Bluetooth
 CMD-OUTPUT-NAME = Output
@@ -26,24 +28,22 @@ OUTPUT-0 = Speaker Jack
 OUTPUT-1 = Bluetooth
 
 MPGNAME-0 = None
-MPGNAME-1 = schime.mp3
-MPGNAME-2 = bells2.mp3
-MPGNAME-3 = fragment.mp3
-MPGNAME-4 = magic.mp3
-MPGNAME-5 = harp.mp3
-MPGNAME-6 = rbell.mp3
-MPGNAME-8 = chimes.mp3
-MPGNAME-9 = wind.mp3
-MPGNAME-10 = bells.mp3
-MPGNAME-11 = hbell.mp3
-MPGNAME-12 = mystical.mp3
-MPGNAME-13 = synth.mp3
-MPGNAME-14 = pa.mp3
-MPGNAME-15 = malonc.mp3
-MPGNAME-16 = fantasy.mp3
-MPGNAME-17 = wchime.mp3
-MPGNAME-18 = example.mp3
-MPGNAME-19 = chime.mp3
-MPGNAME-20 = computer.mp3
+MPGNAME-1 = Uncle Nader
+MPGNAME-2 = Mine
+MPGNAME-3 = Hebrew
+MPGNAME-4 = Favorites
+MPGNAME-5 = Home Friends
+MPGNAME-6 = Religious
+MPGNAME-7 = Sia
+MPGNAME-8 = Friends
+MPGNAME-9 = Farsi
+MPGNAME-10 = Euro
+MPGNAME-11 = Classical
+MPGNAME-12 = Vocal
+MPGNAME-13 = Instrumental
+MPGNAME-14 = Pop
+MPGNAME-15 = Shmu Music
+MPGNAME-16 = Sky and Sabzi
+MPGNAME-17 = Opera
 
 

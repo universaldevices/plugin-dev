@@ -1,0 +1,11 @@
+#!/bin/sh
+version=$(cat version.py | awk -F'=' '{print $2'}| sed 's/\"//g')
+unlink audio_player.py
+unlink nls_gen.py
+cp ../audio-player/audio-player.py audio_player.py
+cp ../audio-player/nls_gen.py nls_gen.py 
+tar -czvf youtube-${version}.tar.gz version.py youtube-music.py youtube_svc.py audio_player.py install.sh nls_gen.py profile requirements.txt 
+rm audio_player.py
+rm nls_gen.py 
+ln -s ../audio-player/audio-player.py audio_player.py
+ln -s ../audio-player/nls_gen.py nls_gen.py 

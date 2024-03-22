@@ -15,7 +15,11 @@
         <cmd id="PLAY">
           <p id="" editor="mpgNames" />
         </cmd>
+        <cmd id="PREVIOUS">
+        </cmd>
         <cmd id="STOP">
+        </cmd>
+        <cmd id="NEXT">
         </cmd>
         <cmd id="OUTPUT">
           <p id="" editor="output" init="GV2"/>

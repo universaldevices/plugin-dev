@@ -13,10 +13,13 @@ import udi_interface
 import version
 from udi_interface import Interface as Interface
 from youtube_svc import YouTubeService
+from youtube_svc import PLAYLISTS_DIRECTORY as PLAYLISTS_DIRECTORY
+import audio_player 
+from nls_gen import NLSGenerator
 
 LOGGER = udi_interface.LOGGER
 
-class YTMNode(udi_interface.Node):
+class YTMNode(audio_player.AudioPlayerNode):
 
     def __init__(self, polyglot, primary, address, name, ytService):
         super(YTMNode, self).__init__(polyglot, primary, address, name)
@@ -30,14 +33,19 @@ class YTMNode(udi_interface.Node):
         # First check if user has authenticated
         try:
             self.ytService.getAccessToken()
+            # If getAccessToken did raise an exception, then proceed with device discovery
         except ValueError as err:
             LOGGER.warning('Access token is not yet available. Please authenticate.')
-            polyglot.Notices['auth'] = 'Please initiate authentication'
-            return
+            polyglot.Notices['auth'] = 'Please initiate authentication using the Authenticate Buttion'
+            return False
 
-        # If getAccessToken did raise an exception, then proceed with device discovery
-        playlist = self.ytService.getPlaylists()
-        print(playlist)
+        self.ytService.processPlaylists()
+        nlsGen = NLSGenerator()
+        nlsGen.generate(PLAYLISTS_DIRECTORY, None)
+        polyglot.updateProfile()
+        polyglot.Notices.clear()
+
+        return True
 
     def oauthHandler(self, token):
         # When user just authorized, pass this to your service, which will pass it to the OAuth handler
@@ -59,6 +67,11 @@ class YTMNode(udi_interface.Node):
                 node.setOffline()
         polyglot.stop()
 
+    def parameterHandler(self, params):
+        #nlsGen.generate(path, stations)
+        #polyglot.updateProfile()
+        #self.configDoneHandler()
+        pass
 
 if __name__ == "__main__":
     try:
@@ -76,18 +89,19 @@ if __name__ == "__main__":
         ytService = YouTubeService(polyglot)
 
         # then you need to create the controller node
-        ytmNode = YTMNode(polyglot, 'ytsvc', 'ytsvc', 'YouTube Service', ytService)
+        ytmNode = YTMNode(polyglot, 'ytsvc', 'ytsvc', 'YouTube Player', ytService)
         polyglot.addNode(ytmNode)
+        ytmNode.query()
 
         # subscribe to the events we want
         # polyglot.subscribe(polyglot.POLL, pollHandler)
         polyglot.subscribe(polyglot.STOP, ytmNode.stopHandler)
+        polyglot.subscribe(polyglot.CUSTOMPARAMS, ytmNode.parameterHandler)
         polyglot.subscribe(polyglot.CUSTOMDATA, None) # ytService.customDataHandler)
-        polyglot.subscribe(polyglot.CUSTOMNS, ytService.customNsHandler)
-        polyglot.subscribe(polyglot.CUSTOMPARAMS, ytService.customParamsHandler)
         polyglot.subscribe(polyglot.OAUTH, ytmNode.oauthHandler)
         polyglot.subscribe(polyglot.CONFIGDONE, ytmNode.configDoneHandler)
         polyglot.subscribe(polyglot.ADDNODEDONE, ytmNode.addNodeDoneHandler)
+        polyglot.subscribe(polyglot.CUSTOMNS, ytService.customNsHandler)
 
         # We can start receive events
         polyglot.ready()
