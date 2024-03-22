@@ -22,11 +22,11 @@ import soundfile as sf
 import numpy
 
 
-#devices:[]=sd.query_devices()
-#print(devices)
+devices:[]=sd.query_devices()
+print(devices)
 device_index:str='/dev/dsp'
 
-filename ="./output.mp3"
+filename ="./sounds/magic.mp3"
 event = threading.Event()
 
 try:
@@ -46,7 +46,7 @@ try:
         current_frame += chunksize
 
     stream = sd.OutputStream(
-        device=device_index, channels=data.shape[1],
+        48000, device=device_index, channels=data.shape[1],
         callback=callback, finished_callback=event.set)
     with stream:
         event.wait()  # Wait until playback is finished

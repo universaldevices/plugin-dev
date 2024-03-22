@@ -8,6 +8,7 @@ import os
 current_path = os.environ['PATH']
 ffprog_path='/usr/local/bin'
 os.environ['PATH'] = f'{ffprog_path}:{current_path}'
+isAudioPlayerChild =  os.path.basename(__file__) != 'audio-player.py'
 
 from nls_gen import NLSGenerator
 import udi_interface
@@ -22,8 +23,10 @@ import pyaudio
 from pydub import AudioSegment
 import subprocess
 import shutil
-from ud_tts import UDTTS
+if not isAudioPlayerChild: 
+    from ud_tts import UDTTS
 import version
+import secrets
 
 MUSIC_TEMP_DIR="tmp_sounds"
 
@@ -39,7 +42,10 @@ defaultOutputDevice=SPEAKER_OUT
 stations:str = None
 
 #create vlc instance
-vlc_instance = vlc.Instance('--no-xlib')
+#vlc_instance = vlc.Instance('--no-xlib')
+#vlc_instance = vlc.Instance('--no-xlib', '--demux=playlist', '--no-video')
+#vlc_instance = vlc.Instance('--no-xlib', '--no-video')
+vlc_instance = vlc.Instance('--no-xlib', '--no-video', '--network-caching=5000' )
 
 def getPyAudioDevice(dev:str):
     if dev == SPEAKER_OUT:
@@ -83,9 +89,16 @@ class AudioPlayer:
         self.toStop: bool = False #used for TTS
         self.path: str = None
         self.volume = 100
+        self.shuffle:bool = False
 
     def setNode(self, node):
         self.node=node
+
+    def isPlaylistPlayer(self)->bool:
+        if self.player == None:
+            return False
+        return isinstance(self.player, vlc.MediaListPlayer)
+        
 
     def setVolume(self, volume:int)->bool:
         if volume < 0 or volume > 100:
@@ -93,7 +106,11 @@ class AudioPlayer:
         self.volume = volume
         if self.player == None:
             return True
-        rc = self.player.audio_set_volume(volume)
+        rc = 0
+        if self.isPlaylistPlayer():
+            rc = self.player.get_media_player().audio_set_volume(volume)
+        else:
+            rc = self.player.audio_set_volume(volume)
         if rc == 0:
             return True
         return False
@@ -102,7 +119,10 @@ class AudioPlayer:
         if self.player == None:
             return self.volume 
         try:
-            return self.player.audio_get_volume()
+            if self.isPlaylistPlayer():
+                return self.player.get_media_player().audio_get_volume()
+            else:
+                return self.player.audio_get_volume()
         except Exception as ex:
             LOGGER.error(str(ex))
             return 0
@@ -112,13 +132,31 @@ class AudioPlayer:
 
     def playVLC(self):
         global vlc_instance
+        isListPlayer=self.path.endswith('.m3u')
         try:
-            self.player = vlc_instance.media_player_new()
-            self.player.audio_output_device_set(None, self.outputDevice)
-            # Load the stream
-            media = vlc_instance.media_new(self.path)
-            # Set the media to the player
-            self.player.set_media(media)
+            if isListPlayer:
+                self.player = vlc_instance.media_list_player_new()
+                # Create a media list
+                media_list = vlc_instance.media_list_new([])  # Create an empty media list
+                with open(self.path, 'r') as file:
+                    for line in file:
+                        media = vlc_instance.media_new(line.strip())  # Strip newline characters
+                        media_list.add_media(media)
+                # Set the media list to the media list player
+                self.player.set_media_list(media_list)
+                #self.player.get_media_player().set_audio_output(self.outputDevice)
+                self.player.get_media_player().audio_output_device_set(None, self.outputDevice)
+
+            else:
+                self.player = vlc_instance.media_player_new()
+                # Load the stream
+                media = vlc_instance.media_new(self.path)
+                # Set the media to the player
+                self.player.set_media(media)
+                self.player.audio_output_device_set(None, self.outputDevice)
+
+
+
             # Attach the event manager to the media player
             event_manager = self.player.event_manager()
             # Register the event and callback
@@ -132,7 +170,10 @@ class AudioPlayer:
                     vol=self.volume
                     self.setVolume(vol)
                 self.node.updateVolume(vol)
-            self.player.play()
+            if self.shuffle:
+                self.player.randomize()
+            else:
+                self.player.play()
 
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -307,6 +348,33 @@ class AudioPlayer:
 
     def resume(self)->bool:
         self.play(self.index, self.path)
+
+    def next(self)->bool:
+        if not self.isPlaylistPlayer():
+            return False
+        self.player.next() 
+        return True
+
+    def previous(self)->bool:
+        if not self.isPlaylistPlayer():
+            return False
+        self.player.previous() 
+        return True
+
+    def shuffle(self, bShuffle:bool)->bool:
+        if not self.isPlaylistPlayer():
+            return False
+
+        if self.node == None:
+            return False
+
+        if self.shuffle == bShuffle:
+            return True
+
+        self.shuffle=bShuffle 
+        if self.node.isPlaying():
+            self.resume()
+        return True
     
     def query(self, node)->bool:
         if node.isPlaying():
@@ -314,6 +382,7 @@ class AudioPlayer:
         else:
             node.updateState(0, 0)
         return True
+
 
     def setOutputDevice(self, index:int)->bool:
         if index == 0:
@@ -381,7 +450,9 @@ class AudioPlayerNode(udi_interface.Node):
 
         LOGGER.info('Using SSL cert: {} key: {} ca: {}'.format(certs[0], keys[0], cafile))
         try:
-            self._mqttc=mqtt.Client(self.id, True)
+            rand=secrets.token_hex(6) 
+            mqtt_id=f'{self.id}_{rand}'
+            self._mqttc=mqtt.Client(mqtt_id, True)
             self.sslContext = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH, cafile=cafile)
             self.sslContext.load_cert_chain(certs[0], keys[0])
             self._mqttc.tls_set_context(self.sslContext)
@@ -397,7 +468,7 @@ class AudioPlayerNode(udi_interface.Node):
             LOGGER.error(str(ex))
         while True: 
             try:
-                self._mqttc.connect_async('{}'.format(polyglot._server), int(polyglot._port), 10)
+                self._mqttc.connect_async('{}'.format(self.polyglot._server), int(self.polyglot._port), 10)
                 self._mqttc.loop_forever()
             except ssl.SSLError as e:
                 LOGGER.error("MQTT Connection SSLError: {}, Will retry in a few seconds.".format(e), exc_info=True)
@@ -496,7 +567,7 @@ class AudioPlayerNode(udi_interface.Node):
                 return False
 
         btStatus=self.getDriver('GV1') 
-        if btStatus == 1:
+        if btStatus == 1 or btStatus == '1':
             if udAudioPlayer.setOutputDevice(index):
                 self.updateOutput(index)
                 if self.isPlaying():
@@ -541,13 +612,20 @@ class AudioPlayerNode(udi_interface.Node):
             elif cmd['cmd'] == 'QUERY':
                 udAudioPlayer.query(self)
 
+            elif cmd['cmd'] == 'PREVIOUS':
+                udAudioPlayer.previous()
+            elif cmd['cmd'] == 'NEXT':
+                udAudioPlayer.next()
+
     commands = {
             'PLAY': processCommand,
             'STOP': processCommand,
             'BT': processCommand,
             'OUTPUT': processCommand,
             'QUERY': processCommand,
-            'VOLUME': processCommand
+            'VOLUME': processCommand,
+            'PREVIOUS': processCommand,
+            'NEXT': processCommand
             }
 
 def addAudioNode(address)->bool:

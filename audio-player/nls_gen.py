@@ -21,6 +21,8 @@ ST-mpgPlayer-GV3-NAME = Volume
 #Shared command names
 
 CMD-STOP-NAME = Stop 
+CMD-PREVIOUS-NAME = Previous 
+CMD-NEXT-NAME = Next 
 CMD-PLAY-NAME = Play 
 CMD-BT-NAME = Bluetooth
 CMD-OUTPUT-NAME = Output
@@ -87,7 +89,7 @@ class NLSGenerator :
     def isMusicFileName(self,name) -> str:
         if name == None:
             return None
-        music_extensions = ['.mp3', '.wav', '.flac', '.ogg', '.m4a']
+        music_extensions = ['.mp3', '.wav', '.flac', '.ogg', '.m4a', '.m3u']
 
         filename, file_extension = os.path.splitext(name)
 
@@ -214,6 +216,8 @@ class NLSGenerator :
             for index, music in enumerate(self.musicList):
                 if music == "n/a":
                     continue
+                if music.endswith(".m3u"):
+                    music = music[:-4]  # Remove the last 4 characters (.m3u)
                 nls.write(f"MPGNAME-{index} = {music}\n")
                 last=index
             last+=1
@@ -235,8 +239,8 @@ class NLSGenerator :
 
     def getFilePath(self, parent_path:str, index: int):
         if parent_path == None:
-            LOGGER.error('Need parent path')
-            return None
+            parent_path = './playlists'
+        
         if index < 0: 
             LOGGER.error('Failed getting path requested index {}, array len {}'.format(index, len(self.musicList)))
             return None
