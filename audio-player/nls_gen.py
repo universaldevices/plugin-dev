@@ -17,6 +17,7 @@ ST-mpgPlayer-GV0-NAME = Playing
 ST-mpgPlayer-GV1-NAME = Bluetooth 
 ST-mpgPlayer-GV2-NAME = Output 
 ST-mpgPlayer-GV3-NAME = Volume 
+ST-mpgPlayer-GV4-NAME = Shuffle 
 
 #Shared command names
 
@@ -27,6 +28,7 @@ CMD-PLAY-NAME = Play
 CMD-BT-NAME = Bluetooth
 CMD-OUTPUT-NAME = Output
 CMD-VOLUME-NAME = Volume
+CMD-SHUFFLE-NAME = Shuffle
 
 PLAYSTATUS-0 = Idle
 PLAYSTATUS-1 = Playing
@@ -35,6 +37,8 @@ BTSTATUS-0 = Disabled
 BTSTATUS-1 = Enabled
 OUTPUT-0 = Speaker Jack
 OUTPUT-1 = Bluetooth
+SHUFFLE-0 = No
+SHUFFLE-1 = Yes
 
 '''
 

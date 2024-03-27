@@ -54,13 +54,12 @@ class YouTubeService(OAuth):
     # The OAuth class needs to be hooked to these 2 handlers
     def customNsHandler(self, key, data):
         # This provides the oAuth config (key='oauth') and saved oAuth tokens (key='oauthTokens))
-        if key == 'oauth':
-            try:
+        try:
                # data['auth_endpoint']=self.getAuthURL(data['client_id'], data['client_secret'])
                # data['scope']=scopes
-                super().customNsHandler(key, data)
-            except Exception as ex:
-                LOGGER.error(ex)
+            super().customNsHandler(key, data)
+        except Exception as ex:
+            LOGGER.error(ex)
 
     def oauthHandler(self, token):
         # This provides initial oAuth tokens following user authentication
@@ -99,12 +98,10 @@ class YouTubeService(OAuth):
     def getVideoURL(self, videoId):
         if videoId == None:
             return None
-        access_token = self.getAccessToken()
-        if access_token == None:
-            return None
         #"url" : f'https://www.youtube.com/watch?v={id}&fmt=audio'
-        url=f"{YT_VIDEO_URL}?v={videoId}&fmt=audio&access_token={access_token}"
+        url=f"{YT_VIDEO_URL}?v={videoId}"
         return url
+
 
     def getPlaylistItems(self, playlist_id):
         if playlist_id == None:
@@ -118,6 +115,8 @@ class YouTubeService(OAuth):
         try:
             while True:
                 playlist_data = self._callApi(url=YT_PLAYLIST_ITEMS_URL, params=params)
+                if playlist_data == None:
+                    return None
 
                 # Process the playlists data
                 for item in playlist_data["items"]:

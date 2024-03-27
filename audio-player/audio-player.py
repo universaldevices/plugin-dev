@@ -27,6 +27,7 @@ if not isAudioPlayerChild:
     from ud_tts import UDTTS
 import version
 import secrets
+import random
 
 MUSIC_TEMP_DIR="tmp_sounds"
 
@@ -45,7 +46,7 @@ stations:str = None
 #vlc_instance = vlc.Instance('--no-xlib')
 #vlc_instance = vlc.Instance('--no-xlib', '--demux=playlist', '--no-video')
 #vlc_instance = vlc.Instance('--no-xlib', '--no-video')
-vlc_instance = vlc.Instance('--no-xlib', '--no-video', '--network-caching=5000' )
+vlc_instance = vlc.Instance('--no-xlib', '--no-video' )
 
 def getPyAudioDevice(dev:str):
     if dev == SPEAKER_OUT:
@@ -68,6 +69,50 @@ if you want to log locally, uncomment
 
 #vlc_instance.log_set(log_callback,None)
 
+
+class MediaList:
+
+    def __init__(self):
+        self.clear(False)
+
+    def clear(self, shuffle:bool):
+        self.elements = [] 
+        self.current_index = -1
+        self.used_indices = set()
+        self.shuffle=shuffle
+
+    def append(self,element:str):
+        if str == None:
+            return
+        self.elements.append(element)
+
+    def next(self):
+        if self.shuffle:
+            return self.random()
+        if self.current_index < len(self.elements) - 1:
+            self.current_index += 1
+        else:
+            self.current_index = 0
+        self.used_indices.add(self.current_index)
+        return self.elements[self.current_index]
+
+    def previous(self):
+        if self.current_index > 0:
+            self.current_index -= 1
+        else:
+            self.current_index = len(self.elements) - 1
+        self.used_indices.add(self.current_index)
+        return self.elements[self.current_index]
+
+    def random(self):
+        available_indices = set(range(len(self.elements))) - self.used_indices
+        if not available_indices:
+            self.used_indices = set()
+            available_indices = set(range(len(self.elements)))
+        self.current_index = random.choice(list(available_indices))
+        self.used_indices.add(self.current_index)
+        return self.elements[self.current_index]
+
 def play_stopped(event, nums):
     global udAudioPlayer
     udAudioPlayer.stopped()
@@ -78,6 +123,10 @@ def audio_player_thread():
         udAudioPlayer.playTTS()
     else:
         udAudioPlayer.playVLC()
+
+def audio_list_play_next():
+    global udAudioPlayer
+    udAudioPlayer.next()
 
 class AudioPlayer:
     def __init__(self): 
@@ -90,14 +139,15 @@ class AudioPlayer:
         self.path: str = None
         self.volume = 100
         self.shuffle:bool = False
+        self.mediaList = MediaList()
+        self.isListPlayer = False
+        self.isAutoNext = False
 
     def setNode(self, node):
         self.node=node
 
     def isPlaylistPlayer(self)->bool:
-        if self.player == None:
-            return False
-        return isinstance(self.player, vlc.MediaListPlayer)
+        return self.isListPlayer
         
 
     def setVolume(self, volume:int)->bool:
@@ -106,11 +156,7 @@ class AudioPlayer:
         self.volume = volume
         if self.player == None:
             return True
-        rc = 0
-        if self.isPlaylistPlayer():
-            rc = self.player.get_media_player().audio_set_volume(volume)
-        else:
-            rc = self.player.audio_set_volume(volume)
+        rc = self.player.audio_set_volume(volume)
         if rc == 0:
             return True
         return False
@@ -119,10 +165,7 @@ class AudioPlayer:
         if self.player == None:
             return self.volume 
         try:
-            if self.isPlaylistPlayer():
-                return self.player.get_media_player().audio_get_volume()
-            else:
-                return self.player.audio_get_volume()
+            return self.player.audio_get_volume()
         except Exception as ex:
             LOGGER.error(str(ex))
             return 0
@@ -130,32 +173,54 @@ class AudioPlayer:
     def getVolumeInDB(self):
         return max(-60, -60 + (self.volume / 100) * 60)
 
+    def getYouTubeAudioURL(self, videoUrl):
+        if videoUrl == None:
+            return None
+        try:
+            from pytube import YouTube
+            # Create a YouTube object
+            yt = YouTube(videoUrl)
+
+            # Get the audio stream with the highest bitrate
+            audio_stream = yt.streams.get_audio_only()
+            if audio_stream == None:
+                return None
+            # Return the URL of the audio stream
+            return audio_stream.url
+        except Exception as ex:
+            LOGGER.error(str(ex))
+
+    def __setMedia(self, url:str):
+        if url == None:
+            return
+        if self.player == None:
+            return
+        murl=None
+        if url.startswith("https://www.youtube.com"):
+            murl=self.getYouTubeAudioURL(url)
+        else:
+            murl=url
+        media = vlc_instance.media_new(murl)
+            # Set the media to the player
+        self.player.set_media(media)
+        
+
     def playVLC(self):
         global vlc_instance
-        isListPlayer=self.path.endswith('.m3u')
         try:
-            if isListPlayer:
-                self.player = vlc_instance.media_list_player_new()
-                # Create a media list
-                media_list = vlc_instance.media_list_new([])  # Create an empty media list
-                with open(self.path, 'r') as file:
-                    for line in file:
-                        media = vlc_instance.media_new(line.strip())  # Strip newline characters
-                        media_list.add_media(media)
-                # Set the media list to the media list player
-                self.player.set_media_list(media_list)
-                #self.player.get_media_player().set_audio_output(self.outputDevice)
-                self.player.get_media_player().audio_output_device_set(None, self.outputDevice)
-
-            else:
-                self.player = vlc_instance.media_player_new()
+            if not self.isAutoNext:
+                self.isListPlayer=self.path.endswith('.m3u')
+                if self.isListPlayer:
+                    self.mediaList.clear(self.shuffle)
+                    with open(self.path, 'r') as file:
+                        for line in file:
+                            self.mediaList.append(line.strip())
+                    self.isAutoNext=True
+                
+            self.player = vlc_instance.media_player_new()
                 # Load the stream
-                media = vlc_instance.media_new(self.path)
-                # Set the media to the player
-                self.player.set_media(media)
-                self.player.audio_output_device_set(None, self.outputDevice)
-
-
+            
+            self.player.audio_output_device_set(None, self.outputDevice)
 
             # Attach the event manager to the media player
             event_manager = self.player.event_manager()
@@ -170,10 +235,13 @@ class AudioPlayer:
                     vol=self.volume
                     self.setVolume(vol)
                 self.node.updateVolume(vol)
-            if self.shuffle:
-                self.player.randomize()
+            if self.isListPlayer:
+                path = self.mediaList.next()
+                self.__setMedia(path)
             else:
-                self.player.play()
+                self.__setMedia(self.path)
+            
+            self.player.play()
 
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -215,16 +283,31 @@ class AudioPlayer:
             LOGGER.error(str(ex))
             self.stopped()
 
+    def startNextPlayDaemon(self):
+   #     if self.nextPlayDaemon != None:
+   #         self.nextPlayDaemon.join()
+        pass
+
     def stopped(self):
         if self.node != None:
             self.node.updateState(0, self.index)
-        self.player=None
         self.toStop=False
+        LOGGER.debug("stopped")
+        if self.isPlaylistPlayer():
+            LOGGER.debug("playing a playlist/calling play thread")
+            nextPlayDaemon = threading.Thread(target = audio_list_play_next)
+            nextPlayDaemon.daemon = False
+            nextPlayDaemon.start()
+           # self.startNextPlayDaemon()
+
+        else:
+            self.player=None
 
     def stop(self):
         if self.player != None:
             self.player.stop()
             self.player.release()
+            self.player=None
             self.stopped()
         else:
             self.toStop=True
@@ -352,30 +435,37 @@ class AudioPlayer:
     def next(self)->bool:
         if not self.isPlaylistPlayer():
             return False
-        self.player.next() 
+        if self.player == None:
+            return False
+        self.player.stop()
+        self.__setMedia(self.mediaList.next())
+        if self.node != None:
+            self.node.updateState(1, self.index)
+        self.player.play() 
         return True
 
     def previous(self)->bool:
         if not self.isPlaylistPlayer():
             return False
-        self.player.previous() 
+        if self.player == None:
+            return False
+        self.player.stop()
+        self.__setMedia(self.mediaList.previous())
+        if self.node != None:
+            self.node.updateState(1, self.index)
+        self.player.play() 
         return True
 
-    def shuffle(self, bShuffle:bool)->bool:
-        if not self.isPlaylistPlayer():
-            return False
-
+    def setShuffle(self, index:int)->bool:
         if self.node == None:
             return False
 
-        if self.shuffle == bShuffle:
-            return True
-
-        self.shuffle=bShuffle 
-        if self.node.isPlaying():
-            self.resume()
+        if index == 0: 
+            self.shuffle=False
+        else:
+            self.shuffle=True
         return True
-    
+
     def query(self, node)->bool:
         if node.isPlaying():
             node.updateState(1, self.index)
@@ -421,7 +511,8 @@ class AudioPlayerNode(udi_interface.Node):
             {'driver': 'GV0', 'value': 0, 'uom': 25},
             {'driver': 'GV1', 'value': 0, 'uom': 25},
             {'driver': 'GV2', 'value': 0, 'uom': 25},
-            {'driver': 'GV3', 'value': 0, 'uom': 51}
+            {'driver': 'GV3', 'value': 0, 'uom': 51},
+            {'driver': 'GV4', 'value': 0, 'uom': 25}
             ]
 
     def __init__(self, polyglot, primary, address, name):
@@ -429,6 +520,7 @@ class AudioPlayerNode(udi_interface.Node):
         udAudioPlayer.setNode(self)
         self.updateState(0,0)
         self.updateOutput(0)
+        self.updateBTStatus(False)
         self._mqttc = None
         try:
             mqttThread = threading.Thread(target=self._startMqtt, name='SysConfigMqtt')
@@ -541,6 +633,7 @@ class AudioPlayerNode(udi_interface.Node):
             self.updateVolume(volume)
 
     def updateBTStatus(self, enabled:bool):
+        LOGGER.debug(f"here{enabled}")
         if enabled:
             self.setDriver('GV1', 1, uom=25, force=True)
         else:
@@ -576,6 +669,10 @@ class AudioPlayerNode(udi_interface.Node):
                 return True
         return False
 
+    def query(self):
+        udAudioPlayer.query(self)
+
+
     def processCommand(self, cmd)->bool:
         global path
         LOGGER.info('Got command: {}'.format(cmd))
@@ -589,12 +686,16 @@ class AudioPlayerNode(udi_interface.Node):
                     if filename == None:
                         return False
                     LOGGER.info('Playing #{}:{}'.format(index, filename))
+                    udAudioPlayer.isAutoNext=False
+                    udAudioPlayer.isListPlayer=False
                     udAudioPlayer.stop()
                     return udAudioPlayer.play(index, filename)
                 except Exception as ex:
                     LOGGER.error(ex)
         
             elif cmd['cmd'] == 'STOP':
+                udAudioPlayer.isAutoNext=False
+                udAudioPlayer.isListPlayer=False
                 udAudioPlayer.stop()
             
             elif cmd['cmd'] == 'BT' :
@@ -610,12 +711,16 @@ class AudioPlayerNode(udi_interface.Node):
                 self.processVolume(volume)
 
             elif cmd['cmd'] == 'QUERY':
-                udAudioPlayer.query(self)
+                self.query()
 
             elif cmd['cmd'] == 'PREVIOUS':
                 udAudioPlayer.previous()
             elif cmd['cmd'] == 'NEXT':
                 udAudioPlayer.next()
+            elif cmd['cmd'] == 'SHUFFLE':
+                index=int(cmd.get('value'))
+                if udAudioPlayer.setShuffle(index):
+                    self.setDriver('GV4', index, uom=25, force=True)
 
     commands = {
             'PLAY': processCommand,
@@ -625,7 +730,8 @@ class AudioPlayerNode(udi_interface.Node):
             'QUERY': processCommand,
             'VOLUME': processCommand,
             'PREVIOUS': processCommand,
-            'NEXT': processCommand
+            'NEXT': processCommand,
+            'SHUFFLE': processCommand
             }
 
 def addAudioNode(address)->bool:

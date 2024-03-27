@@ -2,4 +2,5 @@ udi_interface>=3.0.57
 python-vlc
 google_auth_oauthlib
 google-api-python-client
+pytube
 

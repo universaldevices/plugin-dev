@@ -83,7 +83,7 @@ if __name__ == "__main__":
         polyglot.setCustomParamsDoc()
 
         # Update the profile files
-        polyglot.updateProfile()
+        #polyglot.updateProfile()
 
         # Implements the API calls & Handles the oAuth authentication & token renewals
         ytService = YouTubeService(polyglot)

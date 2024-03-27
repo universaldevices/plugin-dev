@@ -8,12 +8,16 @@
       <st id="GV1" editor="btStatus" />
       <st id="GV2" editor="output" />
       <st id="GV3" editor="volume" />
+      <st id="GV4" editor="shuffle" />
 	  </sts>
     <cmds>
       <sends />
       <accepts>
         <cmd id="PLAY">
           <p id="" editor="mpgNames" />
+        </cmd>
+        <cmd id="SHUFFLE">
+          <p id="" editor="shuffle" init="GV4"/>
         </cmd>
         <cmd id="PREVIOUS">
         </cmd>
