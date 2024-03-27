@@ -192,17 +192,20 @@ class AudioPlayer:
 
     def __setMedia(self, url:str):
         if url == None:
-            return
+            return False
         if self.player == None:
-            return
+            return False
         murl=None
         if url.startswith("https://www.youtube.com"):
             murl=self.getYouTubeAudioURL(url)
         else:
             murl=url
+        if murl == None:
+            return False
         media = vlc_instance.media_new(murl)
             # Set the media to the player
         self.player.set_media(media)
+        return True
         
 
     def playVLC(self):
@@ -235,13 +238,19 @@ class AudioPlayer:
                     vol=self.volume
                     self.setVolume(vol)
                 self.node.updateVolume(vol)
+            rc = False
             if self.isListPlayer:
                 path = self.mediaList.next()
-                self.__setMedia(path)
+                rc = self.__setMedia(path)
             else:
-                self.__setMedia(self.path)
-            
-            self.player.play()
+                rc = self.__setMedia(self.path)
+
+            if not rc:
+                self.isAutoNext=False
+                self.isListPlayer=False
+                self.stop()
+            else: 
+                self.player.play()
 
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -292,9 +301,7 @@ class AudioPlayer:
         if self.node != None:
             self.node.updateState(0, self.index)
         self.toStop=False
-        LOGGER.debug("stopped")
         if self.isPlaylistPlayer():
-            LOGGER.debug("playing a playlist/calling play thread")
             nextPlayDaemon = threading.Thread(target = audio_list_play_next)
             nextPlayDaemon.daemon = False
             nextPlayDaemon.start()
@@ -633,7 +640,6 @@ class AudioPlayerNode(udi_interface.Node):
             self.updateVolume(volume)
 
     def updateBTStatus(self, enabled:bool):
-        LOGGER.debug(f"here{enabled}")
         if enabled:
             self.setDriver('GV1', 1, uom=25, force=True)
         else:
