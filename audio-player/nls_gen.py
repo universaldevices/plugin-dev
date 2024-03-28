@@ -29,6 +29,7 @@ CMD-BT-NAME = Bluetooth
 CMD-OUTPUT-NAME = Output
 CMD-VOLUME-NAME = Volume
 CMD-SHUFFLE-NAME = Shuffle
+CMD-REMOVE-NAME = Remove
 
 PLAYSTATUS-0 = Idle
 PLAYSTATUS-1 = Playing
@@ -223,6 +224,7 @@ class NLSGenerator :
                 if music.endswith(".m3u"):
                     music = music[:-4]  # Remove the last 4 characters (.m3u)
                 nls.write(f"MPGNAME-{index} = {music}\n")
+                nls.write(f"RM_MPGNAME-{index} = {music}\n")
                 last=index
             last+=1
             for index, station in enumerate(self.stationsList):
@@ -258,6 +260,17 @@ class NLSGenerator :
             return None
         return self.stationsList[stationIndex]['url']
             
+    def removeFile(self, path:str)->bool:
+        if path == None:
+            return False
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+            return True
+        except Exception as ex:
+            LOGGER.error(str(ex))
+
+        return False
 
 
     def make_file_dir(self, file_path):

@@ -23,6 +23,9 @@
         <cmd id="VOLUME">
           <p id="" editor="volume" init="GV3"/>
         </cmd>
+        <cmd id="REMOVE">
+          <p id="" editor="rm_mpgNames" />
+        </cmd>
       </accepts>
     </cmds>
   </nodeDef>

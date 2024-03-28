@@ -41,6 +41,7 @@ PAUDIO_BLUETOOTH_OUT=0
 BLUETOOTH_OUT = '/dev/dsp'
 defaultOutputDevice=SPEAKER_OUT
 stations:str = None
+DATA_PATH="./data"
 
 #create vlc instance
 #vlc_instance = vlc.Instance('--no-xlib')
@@ -276,12 +277,12 @@ class AudioPlayer:
                 chunk = pd[i:i + chunk_size] + self.getVolumeInDB()
                 stream.write(chunk.raw_data)
 
-#            i = 0
-#            data = pd[:chunk]._data
-#            while data and not self.toStop:
-#                stream.write(data)
-#                i += chunk
-#                data = pd[i:i + chunk]._data
+            #i = 0
+            #chunk = pd[:chunk_size] + self.getVolumeInDB()
+            #while chunk and not self.toStop:
+            #    stream.write(chunk.raw_data)
+            #    i += chunk_size
+            #    chunk = pd[i:i + chunk_size] + self.getVolumeInDB()
 
             stream.stop_stream()
             stream.close()
@@ -497,12 +498,25 @@ def find_files_with_extension(directory:str, extension:str):
         return None
     file_paths = []
 
-    for root, _, files in os.walk('./'):
+    for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith(extension):
                 # Construct the full path to the file and append it to the list
                 file_path = os.path.join(root, file)
                 file_paths.append(file_path)
+
+    return file_paths
+
+def find_files_in_directory(directory:str):
+    if directory == None :
+        return None
+    file_paths = []
+
+    for root, _, files in os.walk(directory):
+        for file in files:
+                # Construct the full path to the file and append it to the list
+            file_path = os.path.join(root, file)
+            file_paths.append(file_path)
 
     return file_paths
  
@@ -567,7 +581,7 @@ class AudioPlayerNode(udi_interface.Node):
             LOGGER.error(str(ex))
         while True: 
             try:
-                self._mqttc.connect_async('{}'.format(self.polyglot._server), int(self.polyglot._port), 10)
+                self._mqttc.connect_async('{}'.format(self.poly._server), int(self.poly._port), 10)
                 self._mqttc.loop_forever()
             except ssl.SSLError as e:
                 LOGGER.error("MQTT Connection SSLError: {}, Will retry in a few seconds.".format(e), exc_info=True)
@@ -681,6 +695,8 @@ class AudioPlayerNode(udi_interface.Node):
 
     def processCommand(self, cmd)->bool:
         global path
+        global polyglot
+        global stations
         LOGGER.info('Got command: {}'.format(cmd))
         if 'cmd' in cmd:
             if cmd['cmd'] == 'PLAY':
@@ -696,6 +712,23 @@ class AudioPlayerNode(udi_interface.Node):
                     udAudioPlayer.isListPlayer=False
                     udAudioPlayer.stop()
                     return udAudioPlayer.play(index, filename)
+                except Exception as ex:
+                    LOGGER.error(ex)
+
+            elif cmd['cmd'] == 'REMOVE':
+                try:
+                    index=int(cmd.get('value'))
+                    if index == 0:
+                        return False
+                    filename=nlsGen.getFilePath(path, index)
+                    if filename == None or filename.endswith("n/a"):
+                        return False
+                    LOGGER.info('Removing #{}:{}'.format(index, filename))
+                    if nlsGen.removeFile(filename):
+                        nlsGen.generate(path, stations)
+                        polyglot.updateProfile()
+                    return True
+
                 except Exception as ex:
                     LOGGER.error(ex)
         
@@ -737,7 +770,8 @@ class AudioPlayerNode(udi_interface.Node):
             'VOLUME': processCommand,
             'PREVIOUS': processCommand,
             'NEXT': processCommand,
-            'SHUFFLE': processCommand
+            'SHUFFLE': processCommand,
+            'REMOVE': processCommand
             }
 
 def addAudioNode(address)->bool:
@@ -824,6 +858,35 @@ def poll(polltype):
     elif 'longPoll' in polltype:
         LOGGER.info("long poll")
 
+def config(param):
+    global path
+    global stations
+    global nlsGen
+    global polyglot
+    if not os.path.exists(DATA_PATH):
+        return
+    if path == None:
+        LOGGER.warn("no path for the sounds directory ... ")
+        return
+    try:
+        LOGGER.info(f"processing files in {DATA_PATH}")
+        new_files=find_files_in_directory(DATA_PATH)
+
+        if new_files == None or len(new_files) == 0:
+            LOGGER.warn(f"no files in {DATA_PATH}")
+            shutil.rmtree(DATA_PATH)
+            return
+    
+        LOGGER.debug(f"copying files from {DATA_PATH} to {path}") 
+        for new_file in new_files:
+            LOGGER.debug(f"copying {new_file} to {path}")
+            shutil.copy(new_file, path) 
+        nlsGen.generate(path, stations)
+        polyglot.updateProfile()
+        shutil.rmtree(DATA_PATH)
+    except Exception as ex:
+        LOGGER.error(str(ex))
+    
 
 if __name__ == "__main__":
     try:
@@ -834,6 +897,7 @@ if __name__ == "__main__":
         # subscribe to the events we want
         polyglot.subscribe(polyglot.CUSTOMPARAMS, parameterHandler)
         polyglot.subscribe(polyglot.POLL, poll)
+        polyglot.subscribe(polyglot.CONFIG, config)
 
         # Start running
         polyglot.ready()

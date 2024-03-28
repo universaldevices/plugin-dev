@@ -15,5 +15,8 @@
         <editor id="volume">
             <range uom="51" min="0" max="100" nls="VOLUME"/>
         </editor>
+        <editor id="rm_mpgNames">
+            <range uom="25" min="0" max="100" nls="RM_MPGNAME"/>
+        </editor>
     </editors>
     
