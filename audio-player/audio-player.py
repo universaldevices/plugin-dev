@@ -553,6 +553,10 @@ class AudioPlayerNode(udi_interface.Node):
         except Exception as ex:
             LOGGER.error(str(ex))
 
+    def getNLSGen(self)->NLSGenerator:
+        global nlsGen
+        return nlsGen
+
     def _startMqtt(self)->bool:
         cafile= '/usr/local/etc/ssl/certs/ud.ca.cert'
         certs = find_files_with_extension('./','.cert')
@@ -881,7 +885,7 @@ def config(param):
         for new_file in new_files:
             LOGGER.debug(f"copying {new_file} to {path}")
             shutil.copy(new_file, path) 
-        nlsGen.generate(path, stations)
+        nlsGen.generate(path, None)
         polyglot.updateProfile()
         shutil.rmtree(DATA_PATH)
     except Exception as ex:

@@ -20,6 +20,7 @@ CMD-BT-NAME = Bluetooth
 CMD-OUTPUT-NAME = Output
 CMD-VOLUME-NAME = Volume
 CMD-SHUFFLE-NAME = Shuffle
+CMD-REMOVE-NAME = Remove
 
 PLAYSTATUS-0 = Idle
 PLAYSTATUS-1 = Playing
@@ -30,26 +31,5 @@ OUTPUT-0 = Speaker Jack
 OUTPUT-1 = Bluetooth
 SHUFFLE-0 = No
 SHUFFLE-1 = Yes
-
-MPGNAME-0 = None
-MPGNAME-1 = Uncle Nader
-MPGNAME-2 = Mine
-MPGNAME-3 = Hebrew
-MPGNAME-4 = Favorites
-MPGNAME-5 = Home Friends
-MPGNAME-6 = Religious
-MPGNAME-7 = Sia
-MPGNAME-8 = Friends
-MPGNAME-9 = Farsi
-MPGNAME-10 = Euro
-MPGNAME-11 = Classical
-MPGNAME-12 = Vocal
-MPGNAME-13 = Instrumental
-MPGNAME-14 = Pop
-MPGNAME-15 = Shmu Music
-MPGNAME-16 = Sky and Sabzi
-MPGNAME-17 = Opera
-MPGNAME-18 = local.mp3
-MPGNAME-19 = local
 
 

@@ -40,7 +40,7 @@ class YTMNode(audio_player.AudioPlayerNode):
             return False
 
         self.ytService.processPlaylists()
-        nlsGen = NLSGenerator()
+        nlsGen = self.getNLSGen() 
         nlsGen.generate(PLAYLISTS_DIRECTORY, None)
         polyglot.updateProfile()
         polyglot.Notices.clear()
