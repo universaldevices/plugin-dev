@@ -1,0 +1,50 @@
+Provide the modbus configuration in json such as follows
+types can be:
+                        "enum": ["input", "output", "input+output", "holding"]
+{
+    "modbus": {
+      "type": "TCP",
+      "ip": "192.168.1.10",
+      "port": 502,
+      "devices": [
+        {
+          "id": 1,
+          "name": "Device1",
+          "pollingInterval": 1000,
+          "registers": [
+            {
+              "address": 0,
+              "type": "holding",
+              "dataType": "int16",
+              "name": "Temperature"
+            },
+            {
+              "address": 1,
+              "type": "holding",
+              "dataType": "int16",
+              "name": "Pressure"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Device2",
+          "pollingInterval": 2000,
+          "registers": [
+            {
+              "address": 0,
+              "type": "input",
+              "dataType": "float32",
+              "name": "Voltage"
+            },
+            {
+              "address": 2,
+              "type": "input",
+              "dataType": "float32",
+              "name": "Current"
+            }
+          ]
+        }
+      ]
+    }
+  }

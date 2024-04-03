@@ -37,3 +37,5 @@ youtube/.vscode/
 youtube/.vscode/*
 drop/.vscode/
 drop/.vscode/*
+ext/node_modules/*
+ext/node_modules/

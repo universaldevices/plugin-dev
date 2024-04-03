@@ -1,0 +1,96 @@
+2024-04-03 11:32:28,064 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-03 11:32:28,067 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-03 11:32:28,068 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-03 11:32:28,068 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-03 11:32:28,068 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/modbus
+2024-04-03 11:32:28,068 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-03 11:32:28,069 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-03 11:32:28,262 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-03 11:32:28,300 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-03 11:32:28,966 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-03 11:32:28,968 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-03 11:32:28,968 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-03 11:32:28,968 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-03 11:32:28,968 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-03 11:32:28,969 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-03 11:32:28,970 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-03 11:42:53,488 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-03 11:42:53,489 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-03 11:42:53,490 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-03 11:42:53,490 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-03 11:42:53,491 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/modbus
+2024-04-03 11:42:53,491 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-03 11:42:53,491 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-03 11:42:53,630 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-03 11:42:54,966 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-03 11:42:56,038 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-03 11:42:56,040 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-03 11:42:56,041 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-03 11:42:56,041 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-03 11:42:56,041 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-03 11:42:56,042 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-03 11:42:56,043 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-03 11:44:51,249 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-03 11:44:51,250 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-03 11:44:51,251 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-03 11:44:51,251 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-03 11:44:51,251 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/modbus
+2024-04-03 11:44:51,251 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-03 11:44:51,252 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-03 11:44:51,397 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-03 11:44:52,477 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-03 11:44:53,364 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-03 11:44:53,366 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-03 11:44:53,366 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-03 11:44:53,367 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-03 11:44:53,367 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-03 11:44:53,369 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-03 11:44:53,369 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-03 11:45:24,488 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-03 11:45:24,489 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-03 11:45:24,490 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-03 11:45:24,490 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-03 11:45:24,490 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/modbus
+2024-04-03 11:45:24,491 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-03 11:45:24,491 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-03 11:45:24,629 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-03 11:45:25,634 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-03 11:45:26,512 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-03 11:45:26,514 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-03 11:45:26,514 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-03 11:45:26,514 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-03 11:45:26,514 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-03 11:45:26,516 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-03 11:45:26,516 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-03 11:48:42,332 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-03 11:48:42,333 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-03 11:48:42,334 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-03 11:48:42,334 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-03 11:48:42,334 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/modbus
+2024-04-03 11:48:42,335 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-03 11:48:42,335 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-03 11:48:42,479 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-03 11:48:43,480 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-03 11:48:44,345 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-03 11:48:44,347 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-03 11:48:44,347 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-03 11:48:44,347 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-03 11:48:44,348 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-03 11:48:44,349 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-03 11:48:44,349 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-03 11:49:29,889 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-03 11:49:29,890 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-03 11:49:29,891 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-03 11:49:29,891 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-03 11:49:29,891 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/modbus
+2024-04-03 11:49:29,891 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-03 11:49:29,892 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-03 11:49:30,032 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-03 11:49:31,032 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-03 11:49:31,908 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-03 11:49:31,909 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-03 11:49:31,910 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-03 11:49:31,910 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-03 11:49:31,910 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-03 11:49:31,912 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-03 11:49:31,912 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...

@@ -1,0 +1,2 @@
+#!/bin/sh
+tar -czvf modbus.tar.gz modbus.py install.sh requirements.txt 
