@@ -1,0 +1,71 @@
+
+
+{
+    "node": {
+      "id": "a unique id for this node",
+      "parent": "maybe null or the id of the parent such as is the case for controller nodes",
+      "name": "a name for this node",
+      "properties": [
+        {
+          "id": "a unique id to be used for this property. Use Status Names as much as possible",
+          "name": "as it's going to be viewed by clients",
+          "mode": "read, write, read/write. For those that are read/write, a command will be created",
+          "uom": "use the list of UOMs",
+          "range": {
+            "min": "a number",
+            "max": "a number"
+          }
+        },
+        {
+          "id": "a unique id to be used for this property. Use Status Names as much as possible",
+          "name": "as it's going to be viewed by clients",
+          "mode": "read, write, read/write. For those that are read/write, a command will be created",
+          "uom": "use the list of UOMs",
+          "range": {
+            "min": "a number",
+            "max": "a number"
+          }
+        }
+      ],
+      "commands":
+      {
+        "accepts" : [
+            {
+                "id": "unique id for the command",
+                "name": "nls name as it appears on the client",
+                "param": [
+                    {
+                        "id": "id of the parameter ",
+                        "name": "name for the parameter",
+                        "uom": "unit of measure for the param"
+                    },
+                    {
+                        "id": "id of the parameter ",
+                        "name": "name for the parameter",
+                        "uom": "unit of measure for the param"
+                    }
+                ]
+            }
+        ],
+        "sends": [
+            {
+                "id": "unique id for the command",
+                "name": "nls name as it appears on the client",
+                "param": [
+                    {
+                        "id": "id of the parameter ",
+                        "name": "name for the parameter",
+                        "uom": "unit of measure for the param"
+                    },
+                    {
+                        "id": "id of the parameter ",
+                        "name": "name for the parameter",
+                        "uom": "unit of measure for the param"
+                    }
+                ]
+            }
+
+        ]
+      }
+    }
+  }

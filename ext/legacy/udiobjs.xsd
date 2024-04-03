@@ -1,0 +1,1487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			targetNamespace="http://www.universal-devices.com/wsdk/isy/3.0/objects"
+			xmlns:uo="http://www.universal-devices.com/wsdk/isy/3.0/objects"
+			xmlns:uinsteon="http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon"
+			xmlns:uupb="http://www.universal-devices.com/wsdk/isy/3.0/objects/upb"
+			xmlns:uzw="http://www.universal-devices.com/wsdk/isy/zwave/1.0/objects"
+			xmlns:ufamily="http://www.universal-devices.com/wsdk/isy/3.0/objects/family"
+			xmlns:ulog="http://www.universal-devices.com/wsdk/isy/3.0/objects/log"
+			elementFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:documentation>
+			Copyright 2007-2014 Universal Devices, Inc.
+			All Rights Reserved
+			
+			Common objects used across ISY communications
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/upb" schemaLocation="./upb.xsd"/>
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/insteon" schemaLocation="./insteon.xsd"/>
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/zwave/1.0/objects" schemaLocation="./zwobjs.xsd"/>
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/family" schemaLocation="./family.xsd"/>
+	<xsd:import namespace="http://www.universal-devices.com/wsdk/isy/3.0/objects/log" schemaLocation="./log.xsd"/>
+
+	<xsd:complexType name="Empty">
+	</xsd:complexType>
+	
+	<!-- FLAGS -->
+	<xsd:simpleType name="ISYStatusFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				The status of ISY
+				0 = Initializing: in the process of initializing device(s)
+				1 = Querying: in the process of querying a device
+				2 = Discovery: in discovery/linking mode
+				3 = Busy: it's busy may ignore requests
+				10 = Ready: idle or low impact activities
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="0"></xsd:enumeration><!-- Init -->
+			<xsd:enumeration value="1"></xsd:enumeration><!-- Querying -->
+			<xsd:enumeration value="2"></xsd:enumeration><!-- Discovery -->
+			<xsd:enumeration value="3"></xsd:enumeration><!-- Busy -->
+			<xsd:enumeration value="10"></xsd:enumeration><!-- Ready -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="NodeTypeFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				All possible options for the node type:
+				1 = node
+				4 = group/scene
+				8 = X10
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="1"></xsd:enumeration><!-- Node -->
+			<xsd:enumeration value="4"></xsd:enumeration><!-- Scene -->
+			<xsd:enumeration value="8"></xsd:enumeration><!-- X10 -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="NodeOperationsFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				All possible options for when a new node is either created or
+				discovered using the underlying protocol
+				1 = add the node and reset all previous setting if any
+				2 = unused
+				3 = add the node, find all the associated nodes, and create all the linkages thereto
+				4 = add the node, find all the associated nodes, but do not create any linkages
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="LinkModeFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				Possible flags for when a node is linked or the type of mode for
+				the modem in discovery mode
+				0x10 (16 decimal) = Controller; The node is going to be a controller for the scene
+				0x20 (32 decimal) = Responder ; The node is going to be a responder in the scene
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="16"/>
+			<xsd:enumeration value="32"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="InternetAccessFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				0x18 (24 decimal) = Enable Internet Access
+				0x26 (38 decimal) = Disable Internet Access
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="24"/>
+			<xsd:enumeration value="38"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="RestoreDevicesFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				0 = All shall be restored from the configuration files in ISY
+				1 = Does not regenerate groups/scenes - good for testing
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="SetNodeEnabledFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				0 = The node shall be disabled
+				1 = The node shall be enabled
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<xsd:simpleType name="NodeHierarchyFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+				0 = The node type is not set
+				1 = The node type is of type node
+				2 = The node type is of type group/scene
+				3 = The node type is of type folder/location
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte">
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+		</xsd:restriction>
+	</xsd:simpleType>		
+
+	<xsd:simpleType name="HTMLRoleFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+			 	1 = Read only
+				2 = Basic
+				3 = Advanced
+				4 = Admin
+				Default:Basic
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="BatchModeFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+			 	0 = Off
+				1 = On
+				Default:Off
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="BatteryDeviceWriteFlag">
+		<xsd:annotation>
+			<xsd:documentation>
+			 	0 = Off - turn off automatically writing updates to battery powered devices
+				1 = On - turn on automatically writing updates to battery powered devices
+				Default:Off
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="0"/>
+			<xsd:enumeration value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
+	<!-- OBJECTS -->
+	<xsd:simpleType name="DeviceClassDef">
+		<xsd:annotation>
+			<xsd:documentation>
+				Identifies the device classes to be used. Please note
+				the device class element is a bit map and thus multiple
+				device classes may be ORed 	
+				1 			= HVAC / Thermostats
+				2 			= Strip Heater 
+				4 			= Water Heater
+				8 			= Pool Pump
+				16 			= Smart Appliance 
+				32 			= Irrigation Pump 
+				64 			= Managed Load 
+				128			= Simple
+				256			= Exterior Lighting
+				512			= Interior Lighting
+				1024		= Electric Vehicle
+				2048		= Generation System
+				4096		= Washer
+				8192		= Dryer
+				16384		= Oven
+				32768		= Refrigerator 
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:int">
+			<xsd:enumeration value="1"></xsd:enumeration>			<!-- HVAC/Thermostats -->
+			<xsd:enumeration value="2"></xsd:enumeration>			<!-- Strip Heater -->
+			<xsd:enumeration value="4"></xsd:enumeration>			<!-- Water Heater -->
+			<xsd:enumeration value="8"></xsd:enumeration>			<!-- Pool Pump -->
+			<xsd:enumeration value="16"></xsd:enumeration>			<!-- Smart Appliance -->
+			<xsd:enumeration value="32"></xsd:enumeration>			<!-- Irrigation Pump -->
+			<xsd:enumeration value="64"></xsd:enumeration>			<!-- Managed Load -->
+			<xsd:enumeration value="128"></xsd:enumeration>			<!-- Simple -->
+			<xsd:enumeration value="256"></xsd:enumeration>			<!-- Exterior Lighting -->
+			<xsd:enumeration value="512"></xsd:enumeration>			<!-- Interior Lighting -->
+			<xsd:enumeration value="1024"></xsd:enumeration>		<!-- Electric Vehicle -->
+			<xsd:enumeration value="2048"></xsd:enumeration>		<!-- Generation System -->
+			<xsd:enumeration value="4096"></xsd:enumeration>		<!-- Washer -->
+			<xsd:enumeration value="8192"></xsd:enumeration>		<!-- Dryer -->
+			<xsd:enumeration value="16384"></xsd:enumeration>		<!-- Oven -->
+			<xsd:enumeration value="32768"></xsd:enumeration>		<!-- Refrigerator -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="DeviceClass">
+		<xsd:annotation>
+			<xsd:documentation>
+				A bit map of device class definitions (DeviceClassDef) ORed
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="uo:DeviceClassDef"/>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ELKActionCodes">
+		<xsd:annotation>
+			<xsd:documentation>
+				All possible values for communications with ELK
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="a0"></xsd:enumeration><!-- Disarm -->
+			<xsd:enumeration value="a1"></xsd:enumeration><!-- Arm Away -->
+			<xsd:enumeration value="a2"></xsd:enumeration><!-- Arm Stay -->
+			<xsd:enumeration value="a3"></xsd:enumeration><!-- Arm Stay Instant -->
+			<xsd:enumeration value="a4"></xsd:enumeration><!-- Arm Night -->
+			<xsd:enumeration value="a5"></xsd:enumeration><!-- Arm Night Instant -->
+			<xsd:enumeration value="a6"></xsd:enumeration><!-- Arm Vacation -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="NodeParent">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="type" type="uo:NodeHierarchyFlag" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+						The hierarchy type for the parent
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+		
+	
+	<xsd:simpleType name="ResponderTypes">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines the type of responder a node is playing. Used mostly for UPB
+				(see upb.xsd).
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="uupb:UPBResponderTypes uinsteon:INSTEONResponderTypes"/>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="ResponderType">
+		<xsd:attribute name="type" type="uo:ResponderTypes" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UDNode" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="address" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The unique address for a node. This address is the one to be used in subsequent calls to ISY to impact a node/group/scene change
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The user defined name for a device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="family" type="ufamily:NodeFamilyID" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						This element defines the family of a device. Families are basically
+						the protocol/manufacturer level categories for a device. For instance,
+						RCS is a family and so is INSTEON or UPB. Using this element allows
+						supporting multiple protocols using the same system.
+						
+						In case of a device node, each family may have different device types (such as
+						thermostats vs. load controllers).
+						
+						Family definitions maybe found in [id]_fam.xml. e.g. 1_fam.xml defines INSTEON family
+						whereas 3_fam.xml defines RCS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parent" type="uo:NodeParent" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The address of the parent if any
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+		</xsd:sequence>
+		<xsd:attribute name="flag" type="xsd:short" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					A bit mask:
+					0x01 -- Node is initialized (internal)
+					0x02 -- Node is going to be crawled (internal)
+					0x04 -- This is a group node
+					0x08 -- This is the root node for ISY, i.e. My Lighting
+					0x10 -- Device Communications Error
+					0x20 -- Brand new node
+					0x40 -- Node shall be deleted
+					0x80 -- Node is device root
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="UDLink">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="type" type="xsd:short">
+					<xsd:annotation>
+						<xsd:documentation>
+							0x00 -- Node is neither a controller or responder for the enclosing scene. i.e. devices under the My Lighting node
+							0x10 -- Node is a controller for the enclosing scene
+							0x20 -- Node is a responder for the enclosing scene
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UDLinkMembers" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="link" type="uo:UDLink" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						The unique address for a node.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="node" block="extension" final="extension">
+		<xsd:complexContent>
+			<xsd:extension base="uo:UDNode">
+				<xsd:sequence>
+					<xsd:element name="type" type="xsd:string" minOccurs="1" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The type of device. For INSTEON: device-cat.device-subcat.version.reserved (4 bytes)
+								Please note that the if family element is present, then the device type is a 
+								category/sub category within the family.
+								
+								In most cases the device cat/subcat for all families are the same
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="enabled" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Whether or not the node is enabled (plugged in).
+								Note: this feature only works on 99 Series
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>							
+					<xsd:element name="deviceClass" type="uo:DeviceClass" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Type of device which may give a hint as to how to duty cycle	
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>			
+					<xsd:element name="wattage" type="xsd:int" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Approximate wattage for this device	in watts
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>			
+					<xsd:element name="dcPeriod" type="xsd:int" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Duty cycle period in minutes	
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="startDelay" type="xsd:int" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The delay after which this node will respond to OpenADR active event
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="endDelay" type="xsd:int" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The delay after which this node will respond to OpenADR inactive event
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="pnode" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The address of the primary node for the device partially 
+								represented by this node.  If this node is the primary node 
+								then pnode will equal address.
+
+								A device may be represented by one or more nodes.  
+								One of these nodes is designated the primary node and 
+								is used to help group the set of nodes for a device.
+
+								Note:  UPB Mandatory/INSTEON Optional.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="sgid" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The ID identifying the subgroup of end-points for the device.
+
+								Each node representing a subset of the end-points for a device 
+								is identified by a unique subgroup ID.  
+								This is similar in function to the last digit in an Insteon 
+								Node Address.
+
+								Note:  UPB Mandatory/INSTEON Optional.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="qry" type="uo:Empty" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Whether or not a node is queryable. 
+								
+								If this tag is not present, then node is not queryable.
+								
+								A tag was used for future extensibility.
+
+								Note: Currently UPB Only.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ctl" type="uo:Empty" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Whether or not a node may be used as a controller. 
+								
+								If this tag is not present, then node is may not be used as a 
+								controller.
+								
+								A tag was used for future extensibility.
+
+								Note: Currently UPB Only.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tx" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Bitmask indicating the controller endpoints represented by this node.
+								
+								A tag was used for future extensibility.
+
+								Note: Currently UPB Only.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="rx" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								Bitmask indicating the responder endpoints represented by this node.
+								
+								A tag was used for future extensibility.
+
+								Note: Currently UPB Only.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="rsp" type="uo:ResponderType" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								If present, then this node may be used as a scene responder. The
+								type of responder is defined in the type attribute.
+								
+								Note: Currently, UPB Only (see upb.xsd)
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="ELK_ID" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								ELK unique identifier for each node/scene/group
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="group" block="extension" final="extension">
+		<xsd:complexContent>
+			<xsd:extension base="uo:UDNode">
+				<xsd:sequence>
+					<xsd:element name="deviceGroup" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The underlying group/scene number associated with this scene. Normally, not used except for programs made for debugging
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ELK_ID" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								ELK unique identifier for each node/scene/group
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>	
+					<xsd:element name="members" type="uo:UDLinkMembers" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>
+								The address and the type (controller vs. responder) of devices participating in a group/scene
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="folder" block="extension" final="extension">
+		<xsd:complexContent>
+			<xsd:extension base="uo:UDNode">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signifies a folder. Note that folders do not have ELK-IDs
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
+
+	<xsd:complexType name="nodes">
+		<xsd:annotation>
+			<xsd:documentation>
+				The configuration of all the des already set in ISY
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="root" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The name of ISY network. If blank, then it may be construed as the Network node.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="folder" type="uo:folder" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="node" type="uo:node" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="group" type="uo:group" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="DeviceSpecifications">
+		<xsd:annotation>
+			<xsd:documentation>
+				Describes the characteristics of the ISY hardware/firmware and some info about the underlying protocol
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="make" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="manufacturerURL" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="model" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="icon" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="archive" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="chart" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="queryOnInit" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Whether or not ISY queries all devices upon reboot
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="oneNodeAtATime" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Whether or not nodes are queried one at a time
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UPnPSpecifications">
+		<xsd:sequence>
+			<xsd:element name="upnpDevice" type="uo:UPnPInfo" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Provides pertinent information about how ISY will interact with the UPnP subsystem
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="upnpService" type="uo:UPnPInfo" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UPnPInfo">
+		<xsd:sequence>
+			<xsd:element name="utype" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The UPnP device/service type which is advertised and responded to
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="version" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="ControlType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Type of controls for each driver.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="uinsteon:INSTEONControlTypes uupb:UPBControlTypes uzw:ZWaveControlTypes"/>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Control">
+		<xsd:sequence>
+			<xsd:element name="name" type="uo:ControlType" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="label" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="readOnly" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						default is true
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isQueryAble" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						default is false
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isNumeric" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="numericUnit" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="min" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="max" type="xsd:integer" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="isGlobal" type="xsd:boolean"	minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Applies to ISY as a whole
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isGUI" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						It has no correspomding value on the device side
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="actions" type="uo:Actions" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Action">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="label" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="readOnly" type="xsd:boolean" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Actions">
+		<xsd:sequence>
+			<xsd:element name="action" type="uo:Action" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Controls">
+		<xsd:sequence>
+			<xsd:element name="control" type="uo:Control" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="SupportedSecuritySystems">
+		<xsd:annotation>
+			<xsd:documentation>
+				A list of supported Security Systems		
+			</xsd:documentation>	
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ELK"></xsd:enumeration>			<!-- ELK -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="SecuritySystemType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines the type of security system(s) configured for ISY	
+			</xsd:documentation>	
+		</xsd:annotation>
+		<xsd:attribute name="type" type="uo:SupportedSecuritySystems">
+			<xsd:annotation>
+				<xsd:documentation>
+					Supported Security Systems						
+				</xsd:documentation>	
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="version" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					ISY version for the driver
+				</xsd:documentation>	
+			</xsd:annotation>
+		</xsd:attribute>	
+	</xsd:complexType>
+	
+	<xsd:complexType name="ProductDriverType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Product Drivers are tied into functionality for specific 
+				Protocol/Configuration
+			</xsd:documentation>	
+		</xsd:annotation>
+		<xsd:attribute name="type" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					The type/name of the driver. e.g. INSTEON			
+				</xsd:documentation>	
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="version" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					ISY version for the driver
+				</xsd:documentation>	
+			</xsd:annotation>
+		</xsd:attribute>	
+	</xsd:complexType>
+	
+	<xsd:simpleType name="NetworkSecurityProtocol">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SSL"/>
+			<xsd:enumeration value="UPNP"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="NetworkSecurityProtocolVersion">
+		<xsd:restriction base="xsd:double">
+			<xsd:enumeration value="3.0">
+				<xsd:annotation>
+					<xsd:documentation>
+						SSL 3.0
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3.1">
+				<xsd:annotation>
+					<xsd:documentation>
+						TLS 1.0	
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3.2">
+				<xsd:annotation>
+					<xsd:documentation>
+						TLS 1.1	
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3.3">
+				<xsd:annotation>
+					<xsd:documentation>
+						TLS 1.2	
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="NetworkSecurity">
+		<xsd:annotation>
+			<xsd:documentation>
+				SSL vs. TLS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="security" type="uo:NetworkSecurityProtocol" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				SSL or UPnP
+					</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="v" type="uo:NetworkSecurityProtocolVersion" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					SSL/TLS version if any. If this element exists, then the underlying hardware 
+					will support TLS and up to the version defined in this element
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="configuration">
+		<xsd:sequence>
+			<xsd:element name="deviceSpecs" type="uo:DeviceSpecifications" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="upnpSpecs" type="uo:UPnPSpecifications" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="controls" type="uo:Controls" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="driver_timestamp" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="app" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="app_version" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="platform" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="build_timestamp" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="baseDriver" type="uo:ProductDriverType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="root" type="uo:DeviceRoot" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="product" type="uo:Product" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="features" type="uo:Features" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="triggers" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Whether or not Triggers are activated
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="maxTriggers" type="xsd:integer" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Maximum number of triggers supported for this platform. If not present, assume 1024.
+						Examples: 1024, 2048
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="security" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="SSL"/>
+						<xsd:enumeration value="UPNP"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="isDefaultCert" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Whether or not we are using the default SSL certificate which was shipped originally with ISY
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="internetAccessURL" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						The remote/extenal/internet URL by which one can access this system
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="secsys" type="uo:SecuritySystemType" minOccurs="0" maxOccurs="3">
+				<xsd:annotation>
+					<xsd:documentation>
+						If a security system has been installed/configured, include the type/version here
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Product">
+		<xsd:annotation>
+			<xsd:documentation>
+				Describes the type of ISY for which this is the configuration
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="desc" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Feature">
+		<xsd:annotation>
+			<xsd:documentation>
+				An ISY feature or service.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="desc" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="isInstalled" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="isAvailable" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Features">
+		<xsd:annotation>
+			<xsd:documentation>
+				A list of ISY installed features/services
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="feature" type="uo:Feature" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DeviceRoot">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines the root Group for ISY.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>	
+	</xsd:complexType>
+
+	<xsd:complexType name="SystemStatus">
+		<xsd:annotation>
+			<xsd:documentation>
+				ISY's System Status:
+				NumRemainingOps = an estimate of how many operations are left to complete
+				DelayBetweenOps (in miliseconds) = an estimate of any delay between each operation
+				Note: you may assume 1 second per each operation
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Stat" type="uo:ISYStatusFlag" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NumRemainingOps" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="DelayBetweenOps" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="InSafeMode" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="DateTime">
+		<xsd:annotation>
+			<xsd:documentation>
+				ISY's DateTime Structure:
+				NTP			= time in NTP format
+				TMZOffset	= Time zone Offset from GMT (in seconds)
+				DST			= Daylight Saving Time (true/false)
+				DSTRule		= DST Rule Id
+				Lat			= Latitude (in degrees)
+				Long		= Longitude (in degrees)
+				Sunrise		= Sunrise time in NTP format (response only)
+				Sunset		= Sunset time in NTP format (response only)
+				IsMilitary  = Whether or not we should use 24 hour format
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NTP" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="TMZOffset" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="DST" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="DSTRule" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Lat" type="xsd:float" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Long" type="xsd:float" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="Sunrise" type="xsd:long" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="Sunset" type="xsd:long" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="IsMilitary" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="NotificationsOptions">
+	<xsd:annotation>
+			<xsd:documentation>
+				MailTo		= Comma delimited list of notification recipients
+				CompactEmail	= Whether or not to send short notifications
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="MailTo" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="CompactEmail" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ProgramOptions">
+		<xsd:annotation>
+			<xsd:documentation>
+				PCacthUp	= Whether or not programs should catch up upon startup
+				PGracePeriod	= The amount of time (in seconds) after which a schedule is still considered met
+				HTMLRole	= The role for HTML user
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="PCatchUp" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="PGracePeriod" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="HTMLRole" type="uo:HTMLRoleFlag" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="NTPOptions">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		NTPHost		= NTP host name
+		 		NTPEnabled	= Whether or not NTP checking is enabled
+				NTPInterval	= The amount of time (in seconds) between each NTP check
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NTPHost" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NTPEnabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NTPInterval" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SystemOptions">
+		<xsd:annotation>
+			<xsd:documentation>
+				ISY's System Options (configuration of how ISY works)
+				MailTo		= Comma delimited list of notification recipients
+				CompactEmail	= Whether or not to send short notifications
+				QueryOnInit	= Whether or not to query all devices at Restart
+				PCacthUp   	= Whether or not programs should catch up upon startup
+				PGracePeriod	= The amount of time (in seconds) after which a schedule is still considered met
+				NTPHost	   	= NTP host name
+				NTPActive  	= Whether or not ISY has been able to communicate with the NTP host
+				NTPEnabled 	= Whether or not NTP checking is enabled
+				NTPInterval	= The amount of time (in seconds) between each NTP check
+				WaitBusyReading = Whether or not ISY has to wait for "silence" before sending the next packet
+				HTMLRole   	= The role of the HTML user				
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="MailTo" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="CompactEmail" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="QueryOnInit" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="PCatchUp" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="PGracePeriod" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NTPHost" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NTPActive" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NTPEnabled" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="NTPInterval" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="WaitBusyReading" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="HTMLRole" type="uo:HTMLRoleFlag" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SMTPConfiguration">
+		<xsd:annotation>
+			<xsd:documentation>
+				SMTP Configuration
+				UseDefaultSMTP	= Whether or not we should use UDI's default SMTP Server
+				SMTPServer	= SMTP Server
+				SMTPPort  	= SMTP Port
+				SMTPUID	  	= SMTP User ID
+				SMTPPWD	  	= SMTP Password
+				SMTPFrom  	= SMTP From email address
+				SMTPTimeout = SMTP Timeout to wait for each operation
+				UseTLS	  	= Whether or not we should use TLS
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="UseDefaultSMTP" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="SMTPServer" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="SMTPPort" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="SMTPUID" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="SMTPPWD" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="SMTPFrom" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="SMTPTimeout" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="UseTLS" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DriverError">
+		<xsd:annotation>
+			<xsd:documentation>
+				Driver error definitions
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:int" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="param1" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="param2" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="LastError">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		A list of DriverError(s)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="error" type="uo:DriverError" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+
+	<xsd:complexType name="DebugOptions">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		The possible debug levels that can be chosen
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="option" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="DBG">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Debug structure
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="options" type="uo:DebugOptions" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="current" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SceneProfile">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		The structure which represents the profile of responders for a scene
+		 		OL = on level
+		 		RR = ramp rate
+		 		Climate will be added in release 3
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="node" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="OL" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="RR" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+			<!-- Cool Setpoint -->
+			<xsd:element name="CLISPC" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+			<!-- Heat Setpoint -->
+			<xsd:element name="CLISPH" type="xsd:double" minOccurs="0" maxOccurs="1"/>
+			<!-- Fan State -->
+			<xsd:element name="CLIFS" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+			<!-- Thermostat Mode -->
+			<xsd:element name="CLIMD" type="xsd:int" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SceneProfiles">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		The structure which represents the profiles of responders for a scene
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="SP" type="uo:SceneProfile" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="Subscription">
+		<xsd:sequence>
+			<xsd:element name="SID" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="duration" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="DDNSHost">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		DDNS host object. The name is mandatory.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ip" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>	
+	
+	<!-- Variables -->
+	<xsd:simpleType name="UDIVariableType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- Integer Variable -->
+			<xsd:enumeration value="2"/><!-- State Variable -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="UDIInternalVariableType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="VAR_INT"/><!-- Integer,  -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="Variable">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Defines a variable
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="init" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				Initial value of a variable
+					</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:element>
+			<xsd:element name="val" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="ts" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+		 				The last updated time stamp in YYYYMMDD HH:MM:SS
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="uo:UDIVariableType" use="required"/>
+		<xsd:attribute name="id" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+		 			The id of the variable
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<xsd:complexType name="Variables">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		list of variables
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="var" type="uo:Variable" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="VariableDefinition">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Variable definition with name and id for mapping purposes
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="VariableDefinitions">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		A List of varialbe definitions
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="e" type="uo:VariableDefinition" minOccurs="0" maxOccurs="unbounded"/>	
+		</xsd:sequence>	
+		<xsd:attribute name="type" type="uo:UDIInternalVariableType" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:element name="CList" type="uo:VariableDefinitions">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Top level element variable definitions as returned in REST
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	
+<!-- Some generic value types -->
+	<xsd:simpleType name="udiValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+				String representation of some values so that optimization/translation can be 
+				done at runtime instead of compile time
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="uInt16">
+				<xsd:annotation>
+					<xsd:documentation>
+						Unsigned short (2 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="int16">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signed short (2 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="uInt8">
+				<xsd:annotation>
+					<xsd:documentation>
+						Unsigned byte
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="int8">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signed byte
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="uInt32">
+				<xsd:annotation>
+					<xsd:documentation>
+						Unsigned int (4 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="int32">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signed int (4 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="uInt64">
+				<xsd:annotation>
+					<xsd:documentation>
+						Unsigned long (8 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="int64">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signed long (8 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="float">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signed float (4 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+			<xsd:enumeration value="double">
+				<xsd:annotation>
+					<xsd:documentation>
+						Signed double (8 bytes)
+					</xsd:documentation>				
+				</xsd:annotation>
+			</xsd:enumeration>				
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="udiValue">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="type" type="uo:udiValueType" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The type of unit such as currency/KWh
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="unit" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The actual unit such as USD, volts, etc.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<!-- Log -->
+	<xsd:simpleType name="SystemActor">
+		<xsd:annotation>
+			<xsd:documentation>
+				Identifies the actor which initiated the action being logged
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"></xsd:enumeration>		<!-- System -->
+			<xsd:enumeration value="1"></xsd:enumeration>		<!-- Driver -->
+			<xsd:enumeration value="2"></xsd:enumeration>		<!-- Web -->
+			<xsd:enumeration value="3"></xsd:enumeration>		<!-- Scheduler -->
+			<xsd:enumeration value="4"></xsd:enumeration>		<!-- Programs -->
+			<xsd:enumeration value="5"></xsd:enumeration>		<!-- ELK -->
+			<xsd:enumeration value="6"></xsd:enumeration>		<!-- SEP/Meter -->
+			<xsd:enumeration value="7"></xsd:enumeration>		<!-- SEP/Price -->
+			<xsd:enumeration value="8"></xsd:enumeration>		<!-- SEP/Message -->
+			<xsd:enumeration value="9"></xsd:enumeration>		<!-- SEP/DRLC -->
+			<xsd:enumeration value="10"></xsd:enumeration>		<!-- Gas Meter-->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	
+	<!--  REST Objects -->
+	<xsd:complexType name="RestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+		 		Response for REST true/false operations
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="succeeded" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>	
+		</xsd:sequence>	
+		<xsd:attribute name="status" type="xsd:integer" use="required">	
+			<xsd:annotation>
+				<xsd:documentation>
+		 			In most cases, status is the corresponding HTTP status such as 401, 404, 500, etc.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<!-- Log Definitions -->
+	<xsd:complexType name="LogInfo">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines the elements of a log
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="actors" type="ulog:Actors" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Actors which could initiate/cause a log entry.
+						For sub definitions, this element may not be present.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="logEntryTypes" type="ulog:LogEntryTypes" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>
+						Supported log entries.
+						For sub definitions, this element may not be present.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorMessages" type="ulog:Messages" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						Error Messages 
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+</xsd:schema>

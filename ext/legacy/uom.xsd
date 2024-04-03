@@ -1,0 +1,982 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://developer.isy.io/6.0/objects"
+            elementFormDefault="unqualified">
+    <xsd:annotation>
+        <xsd:documentation>
+         Copyright 2007-2024 Universal Devices, Inc.
+         All Rights Reserved
+
+         Common iox units of measure (UOM)
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:simpleType name="UnitOfMeasure">
+        <xsd:annotation>
+            <xsd:documentation>
+            Units of measure uniquely describing a value.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:int">
+            <xsd:enumeration value="0">
+                <xsd:annotation>
+                    <xsd:documentation>Unit of measure is unknown</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="1">
+                <xsd:annotation>
+                    <xsd:documentation>ampere (amp)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="2">
+                <xsd:annotation>
+                    <xsd:documentation>boolean</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="3">
+                <xsd:annotation>
+                    <xsd:documentation>btu/h</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="4">
+                <xsd:annotation>
+                    <xsd:documentation>celsius (C)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="5">
+                <xsd:annotation>
+                    <xsd:documentation>centimeter (cm)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="6">
+                <xsd:annotation>
+                    <xsd:documentation>cubic feet</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="7">
+                <xsd:annotation>
+                    <xsd:documentation>cubic feet per minute (cfm)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="8">
+                <xsd:annotation>
+                    <xsd:documentation>cubic meter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="9">
+                <xsd:annotation>
+                    <xsd:documentation>day</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="10">
+                <xsd:annotation>
+                    <xsd:documentation>days</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="11">
+                <xsd:annotation>
+                    <xsd:documentation>
+Deadbolt status
+
+0    = Unlocked
+100  = Locked
+101  = Unknown
+102  = Jammed
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="12">
+                <xsd:annotation>
+                    <xsd:documentation>decibel</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="13">
+                <xsd:annotation>
+                    <xsd:documentation>decibel A</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="14">
+                <xsd:annotation>
+                    <xsd:documentation>degree</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="15">
+                <xsd:annotation>
+                    <xsd:documentation>door lock alarm
+1  = Master Code Changed
+2  = Tamper Code Entry Limit
+3  = Escutcheon Removed
+4  = Key/Manually Locked
+5  = Locked by Touch
+6  = Key/Manually Unlocked
+7  = Remote Locking Jammed Bolt
+8  = Remotely Locked
+9  = Remotely Unlocked
+10 = Deadbolt Jammed
+11 = Battery Too Low to Operate
+12 = Critical Low Battery
+13 = Low Battery
+14 = Automatically Locked
+15 = Automatic Locking Jammed Bolt
+16 = Remotely Power Cycled
+17 = Lock Handling Completed
+19 = User Deleted
+20 = User Added
+21 = Duplicate PIN
+22 = Jammed Bolt by Locking with Keypad
+23 = Locked by Keypad
+24 = Unlocked by Keypad
+25 = Keypad Attempt outside Schedule
+26 = Hardware Failure
+27 = Factory Reset
+28 = Manually Not Fully Locked
+29 = All User Codes Deleted
+30 = New User Code Not Added (Duplicate Code)
+31 = Keypad Temporarily Disabled
+32 = Keypad Busy
+33 = New Program Code Entered
+34 = RF Unlock With Invalid User Code
+35 = RF Lock With Invalid User Codes
+36 = Window/Door Is Open
+37 = Window/Door Is Closed
+38 = Window/Door Handle Is Open
+39 = Window/Door Handle Is Closed
+40 = User Code Entered On Keypad
+41 = Power Cycled
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="16">
+                <xsd:annotation>
+                    <xsd:documentation>european macroseismic</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="17">
+                <xsd:annotation>
+                    <xsd:documentation>fahrenheit</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="18">
+                <xsd:annotation>
+                    <xsd:documentation>feet</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="19">
+                <xsd:annotation>
+                    <xsd:documentation>hour</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="20">
+                <xsd:annotation>
+                    <xsd:documentation>hours</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="21">
+                <xsd:annotation>
+                    <xsd:documentation>absolute humidity</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="22">
+                <xsd:annotation>
+                    <xsd:documentation>relative humidity</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="23">
+                <xsd:annotation>
+                    <xsd:documentation>inches of mercury (inHg)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="24">
+                <xsd:annotation>
+                    <xsd:documentation>inches/hour</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="25">
+                <xsd:annotation>
+                    <xsd:documentation>index</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="26">
+                <xsd:annotation>
+                    <xsd:documentation>kelvin</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="27">
+                <xsd:annotation>
+                    <xsd:documentation>keyword</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="28">
+                <xsd:annotation>
+                    <xsd:documentation>kilogram (kg)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="29">
+                <xsd:annotation>
+                    <xsd:documentation>kilovolt (kV)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="30">
+                <xsd:annotation>
+                    <xsd:documentation>kilowatt (kW)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="31">
+                <xsd:annotation>
+                    <xsd:documentation>kilopascal (kPa)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="32">
+                <xsd:annotation>
+                    <xsd:documentation>kilometers/hour (KPH)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="33">
+                <xsd:annotation>
+                    <xsd:documentation>kilowatts/hour (kWH)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="34">
+                <xsd:annotation>
+                    <xsd:documentation>liedu</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="35">
+                <xsd:annotation>
+                    <xsd:documentation>liter (l)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="36">
+                <xsd:annotation>
+                    <xsd:documentation>lux</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="37">
+                <xsd:annotation>
+                    <xsd:documentation>mercalli</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="38">
+                <xsd:annotation>
+                    <xsd:documentation>meter (m)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="39">
+                <xsd:annotation>
+                    <xsd:documentation>cubic meters/hour</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="40">
+                <xsd:annotation>
+                    <xsd:documentation>meters/sec (m/s)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="41">
+                <xsd:annotation>
+                    <xsd:documentation>milliamp (mA)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="42">
+                <xsd:annotation>
+                    <xsd:documentation>millisecond (ms)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="43">
+                <xsd:annotation>
+                    <xsd:documentation>millivolt (mV)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="44">
+                <xsd:annotation>
+                    <xsd:documentation>minute</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="45">
+                <xsd:annotation>
+                    <xsd:documentation>duration in minutes</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="46">
+                <xsd:annotation>
+                    <xsd:documentation>millimeters/hour (mm/hr)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="47">
+                <xsd:annotation>
+                    <xsd:documentation>month</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="48">
+                <xsd:annotation>
+                    <xsd:documentation>miles/hour (MPH)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="49">
+                <xsd:annotation>
+                    <xsd:documentation>reserved</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="50">
+                <xsd:annotation>
+                    <xsd:documentation>ohm</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="51">
+                <xsd:annotation>
+                    <xsd:documentation>percent</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="52">
+                <xsd:annotation>
+                    <xsd:documentation>pound</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="53">
+                <xsd:annotation>
+                    <xsd:documentation>Power Factor</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="54">
+                <xsd:annotation>
+                    <xsd:documentation>Parts/Million (PPM)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="55">
+                <xsd:annotation>
+                    <xsd:documentation>pulse count</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="56">
+                <xsd:annotation>
+                    <xsd:documentation>The raw value as reported by the device</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="57">
+                <xsd:annotation>
+                    <xsd:documentation>second</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="58">
+                <xsd:annotation>
+                    <xsd:documentation>Duration in seconds</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="59">
+                <xsd:annotation>
+                    <xsd:documentation>seimens/meter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="60">
+                <xsd:annotation>
+                    <xsd:documentation>body wave magnitude scale</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="61">
+                <xsd:annotation>
+                    <xsd:documentation>Richter scale</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="62">
+                <xsd:annotation>
+                    <xsd:documentation>moment magnitude scale</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="63">
+                <xsd:annotation>
+                    <xsd:documentation>surface wave magnitude scale</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="64">
+                <xsd:annotation>
+                    <xsd:documentation>shindo</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="65">
+                <xsd:annotation>
+                    <xsd:documentation>SML</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="66">
+                <xsd:annotation>
+                    <xsd:documentation>
+Thermostat heat/cool state
+
+0  = Idle
+1  = Heating
+2  = Cooling
+3  = Fan Only
+4  = Pending Heat
+5  = Pending Cool
+6  = Vent
+7  = Aux Heat
+8  = 2nd Stage Heating
+9  = 2nd Stage Cooling
+10 = 2nd Stage Aux Heat
+11 = 3rd Stage Aux Heat
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="67">
+                <xsd:annotation>
+                    <xsd:documentation>
+Thermostat mode
+0 - Off
+1 - Heat
+2 - Cool
+3 - Auto
+4 - Aux/Emergency Heat
+5 - Resume
+6 - Fan Only
+7 - Furnace
+8 - Dry Air
+9 - Moist Air
+10 - Auto Changeover
+11 - Energy Save Heat
+12 - Energy Save Cool
+13 - Away
+14 = Program Auto
+15 = Program Heat
+16 = Program Cool
+                      </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="68">
+                <xsd:annotation>
+                    <xsd:documentation>
+Thermostat fan mode
+0 - Auto
+1 - On
+2 - Auto High
+3 - High
+4 - Auto Medium
+5 - Medium
+6 - Circulation
+7 - Humidity Circulation
+8 = Left and Right Circulation
+9 = Up and Down Circulation
+10 = Quiet
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="69">
+                <xsd:annotation>
+                    <xsd:documentation>US gallon</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="70">
+                <xsd:annotation>
+                    <xsd:documentation>User number</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="71">
+                <xsd:annotation>
+                    <xsd:documentation>UV index</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="72">
+                <xsd:annotation>
+                    <xsd:documentation>volt</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="73">
+                <xsd:annotation>
+                    <xsd:documentation>watt</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="74">
+                <xsd:annotation>
+                    <xsd:documentation>watts/square meter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="75">
+                <xsd:annotation>
+                    <xsd:documentation>weekday</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="76">
+                <xsd:annotation>
+                    <xsd:documentation>
+Wind Direction in degrees
+0 = No Wind
+90 = East
+180 = South
+270 = West
+360 = North
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="77">
+                <xsd:annotation>
+                    <xsd:documentation>year</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="78">
+                <xsd:annotation>
+                    <xsd:documentation>0-Off 100-On</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="79">
+                <xsd:annotation>
+                    <xsd:documentation>0-Open 100-Close</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="80">
+                <xsd:annotation>
+                    <xsd:documentation>
+Thermostat fan run state
+
+0 = Off
+1 = On
+2 = On High
+3 = On Medium
+4 = Circulation
+5 = Humidity Circulation
+6 = Right/Left Circulation
+7 = Up/Down Circulation
+8 = Quiet Circulation
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="81">
+                <xsd:annotation>
+                    <xsd:documentation>Thermostat fan mode override</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="82">
+                <xsd:annotation>
+                    <xsd:documentation>millimeter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="83">
+                <xsd:annotation>
+                    <xsd:documentation>kilometer</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="84">
+                <xsd:annotation>
+                    <xsd:documentation>Secure Mode 0-Unlock 1-Lock
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="85">
+                <xsd:annotation>
+                    <xsd:documentation>Ohm Meter (Electrical resistivity)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="86">
+                <xsd:annotation>
+                    <xsd:documentation>KiloOhm</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="87">
+                <xsd:annotation>
+                    <xsd:documentation>cubic meter/cubic meter</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="88">
+                <xsd:annotation>
+                    <xsd:documentation>Water activity</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="89">
+                <xsd:annotation>
+                    <xsd:documentation>rotations/Minute (RPM)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="90">
+                <xsd:annotation>
+                    <xsd:documentation>Hertz (Hz)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="91">
+                <xsd:annotation>
+                    <xsd:documentation>Angle Position degrees relative to North Pole</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="92">
+                <xsd:annotation>
+                    <xsd:documentation>Angle Position degrees relative to South Pole</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="93">
+                <xsd:annotation>
+                    <xsd:documentation>
+ Power Management Alarm
+
+ 1 = Power Applied
+ 2 = Ac Mains Disconnected
+ 3 = Ac Mains Reconnected
+ 4 = Surge Detection
+ 5 = Volt Drop Or Drift
+ 6 = Over Current Detected
+ 7 = Over Voltage Detected
+ 8 = Over Load Detected
+ 9 = Load Error
+10 = Replace Battery Soon
+11 = Replace Battery Now
+12 = Battery Is Charging
+13 = Battery Is Fully Charged
+14 = Charge Battery Soon
+15 = Charge Battery Now
+                        </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="94">
+                <xsd:annotation>
+                    <xsd:documentation>
+Appliance Alarm
+
+ 1 = Program Started
+ 2 = Program In Progress
+ 3 = Program Completed
+ 4 = Replace Main Filter
+ 5 = Failure To Set Target Temperature
+ 6 = Supplying Water
+ 7 = Water Supply Failure
+ 8 = Boiling
+ 9 = Boiling Failure
+10 = Washing
+11 = Washing Failure
+12 = Rinsing
+13 = Rinsing Failure
+14 = Draining
+15 = Draining Failure
+16 = Spinning
+17 = Spinning Failure
+18 = Drying
+19 = Drying Failure
+20 = Fan Failure
+21 = Compressor Failure
+                        </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="95">
+                <xsd:annotation>
+                    <xsd:documentation>
+Home Health Alarm
+
+1 = Leaving Bed
+2 = Sitting On Bed
+3 = Lying On Bed
+4 = Posture Changed
+5 = Sitting On Edge Of Bed
+                        </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="96">
+                <xsd:annotation>
+                    <xsd:documentation>
+VOC Level
+
+1 = Clean
+2 = Slightly Polluted
+3 = Moderately Polluted
+4 = Highly Polluted
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="97">
+                <xsd:annotation>
+                    <xsd:documentation>
+Barrier Status
+
+0    = Closed
+1-99 = Percent Closed (1% = almost Closed, 99% = almost Open)
+100  = Open
+101  = Unknown
+102  = Stopped
+103  = Closing
+104  = Opening
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="98">
+                <xsd:annotation>
+                    <xsd:documentation>
+Insteon Thermostat Mode
+
+0 = Off
+1 = Heat
+2 = Cool
+3 = Auto
+4 = Fan Only
+5 = Program Auto
+6 = Program Heat
+7 = Program Cool
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="99">
+                <xsd:annotation>
+                    <xsd:documentation>
+Insteon Thermostat Fan Mode
+
+7 = On
+8 = Auto
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="100">
+                <xsd:annotation>
+                    <xsd:documentation>Level from 0-255</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="101">
+                <xsd:annotation>
+                    <xsd:documentation>Degree X 2</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="102">
+                <xsd:annotation>
+                    <xsd:documentation>Kilowatt Second</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="103">
+                <xsd:annotation>
+                    <xsd:documentation>Dollar</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="104">
+                <xsd:annotation>
+                    <xsd:documentation>Cents</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="105">
+                <xsd:annotation>
+                    <xsd:documentation>Inches</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="106">
+                <xsd:annotation>
+                    <xsd:documentation>Millimeters per day</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="107">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 1-Byte unsigned value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="108">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 2-Byte unsigned value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="109">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 3-Byte unsigned value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="110">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 4-Byte unsigned value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="111">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 1-Byte signed value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="112">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 2-Byte signed value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="113">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 3-Byte signed value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="114">
+                <xsd:annotation>
+                    <xsd:documentation>Raw 4-Byte signed value</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="115">
+                <xsd:annotation>
+                    <xsd:documentation>Most recent On style action taken for lamp control</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="116">
+                <xsd:annotation>
+                    <xsd:documentation>Mile</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="117">
+                <xsd:annotation>
+                    <xsd:documentation>Millibar (mb), typically used in barometric reports</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="118">
+                <xsd:annotation>
+                    <xsd:documentation>Hectopascal (hPa), typically used in barometric reports</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="119">
+                <xsd:annotation>
+                    <xsd:documentation>Watt Hour</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="120">
+                <xsd:annotation>
+                    <xsd:documentation>Inches per day</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="121">
+                <xsd:annotation>
+                    <xsd:documentation>Mole per cubic meter (mol/m3)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="122">
+                <xsd:annotation>
+                    <xsd:documentation>Microgram per cubic meter (ug/m3)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="123">
+                <xsd:annotation>
+                    <xsd:documentation>Bequerel per cubic meter (bg/m3)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="124">
+                <xsd:annotation>
+                    <xsd:documentation>Picocuries per liter(pCi/l)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="125">
+                <xsd:annotation>
+                    <xsd:documentation>Acidity (pH)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="126">
+                <xsd:annotation>
+                    <xsd:documentation>Beats per Minut (bpm)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="127">
+                <xsd:annotation>
+                    <xsd:documentation>Millimeters of mercury (for blood pressure)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="128">
+                <xsd:annotation>
+                    <xsd:documentation>Joule (J)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="129">
+                <xsd:annotation>
+                    <xsd:documentation>Body Mass Index (BMI)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="130">
+                <xsd:annotation>
+                    <xsd:documentation>Liters per hour</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="131">
+                <xsd:annotation>
+                    <xsd:documentation>Decibel Milliwatts (dBm) </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="132">
+                <xsd:annotation>
+                    <xsd:documentation>Breaths per minute </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="133">
+                <xsd:annotation>
+                    <xsd:documentation>Kilohertz (kHz) </xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="134">
+                <xsd:annotation>
+                    <xsd:documentation>Meters per squared Seconds (m/sec2)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="135">
+                <xsd:annotation>
+                    <xsd:documentation>For Apparent Power, VA = Volt-Amp</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="136">
+                <xsd:annotation>
+                    <xsd:documentation>For Reactive Power, VAR = Volt-Amp Reactive</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="137">
+                <xsd:annotation>
+                    <xsd:documentation>NTP DateTime - Number of seconds since 1900</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="138">
+                <xsd:annotation>
+                    <xsd:documentation>Pound per square inch (PSI)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="139">
+                <xsd:annotation>
+                    <xsd:documentation>0 to 360 degrees</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="140">
+                <xsd:annotation>
+                    <xsd:documentation>Milligram per liter (mg/l)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="141">
+                <xsd:annotation>
+                    <xsd:documentation>Newton (N)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="142">
+                <xsd:annotation>
+                    <xsd:documentation>US Gallons per Second</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="143">
+                <xsd:annotation>
+                    <xsd:documentation>US Gallons per Minute</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="144">
+                <xsd:annotation>
+                    <xsd:documentation>US Gallons per Hour</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="145">
+                <xsd:annotation>
+                    <xsd:documentation>Text</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="146">
+                <xsd:annotation>
+                    <xsd:documentation>Reserved for System Editors (Do not use)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="147">
+                <xsd:annotation>
+                    <xsd:documentation>XML</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="148">
+                <xsd:annotation>
+                    <xsd:documentation>Reserved for System Editors (Do not use)</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="149">
+                <xsd:annotation>
+                    <xsd:documentation>0-360 Degree of Hue</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="150">
+                <xsd:annotation>
+                    <xsd:documentation>URL for Streaming Video/Audio/etc.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+            <xsd:enumeration value="151">
+                <xsd:annotation>
+                    <xsd:documentation>Unix Timestamp</xsd:documentation>
+                </xsd:annotation>
+            </xsd:enumeration>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

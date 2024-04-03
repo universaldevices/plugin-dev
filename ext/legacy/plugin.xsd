@@ -1,0 +1,74 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			elementFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:documentation>
+			Copyright 2007-2024 Universal Devices, Inc.
+			All Rights Reserved
+            Schema for an IoX Plugin
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="nodeDefs">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="nodeDef" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="sts">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="st" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="id" type="xs:string" use="required"/>
+                                                <xs:attribute name="editor" type="xs:string" use="required"/>
+                                                <xs:attribute name="hide" type="xs:string"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="cmds">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="sends">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="cmd" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" type="xs:string" use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="accepts">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="cmd" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" type="xs:string" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string" use="required"/>
+                        <xs:attribute name="nls" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+</xsd:schema>
