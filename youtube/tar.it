@@ -4,7 +4,7 @@ unlink audio_player.py
 unlink nls_gen.py
 cp ../audio-player/audio-player.py audio_player.py
 cp ../audio-player/nls_gen.py nls_gen.py 
-tar -czvf youtube-${version}.tar.gz version.py youtube_music.py youtube_svc.py audio_player.py install.sh nls_gen.py profile requirements.txt 
+tar -czvf youtube-${version}.tar.gz version.py youtube_music.py youtube_svc.py audio_player.py install.sh nls_gen.py profile requirements.txt POLYGLOT_CONFIG.MD 
 rm audio_player.py
 rm nls_gen.py 
 ln -s ../audio-player/audio-player.py audio_player.py

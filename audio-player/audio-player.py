@@ -445,7 +445,7 @@ class AudioPlayer:
             return False
         if self.player == None:
             return False
-        self.player.stop()
+        self.player.pause()
         self.__setMedia(self.mediaList.next())
         if self.node != None:
             self.node.updateState(1, self.index)
@@ -457,7 +457,7 @@ class AudioPlayer:
             return False
         if self.player == None:
             return False
-        self.player.stop()
+        self.player.pause()
         self.__setMedia(self.mediaList.previous())
         if self.node != None:
             self.node.updateState(1, self.index)
