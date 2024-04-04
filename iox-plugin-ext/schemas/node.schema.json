@@ -18,7 +18,7 @@
           "description": "The human readable name. If you have NLS files, this name will be translated"
         },
         "properties": {
-          "$ref": "./properties.class.schema.json"
+          "$ref": "./node.properties.schema.json"
         },
         "commands": {
           "$ref": "./commands.schema.json"
