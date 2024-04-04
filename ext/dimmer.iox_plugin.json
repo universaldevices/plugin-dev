@@ -1,0 +1,16 @@
+[
+    {
+        "node": {
+            "properties": [
+                {
+                    "id": "ACCX",
+                    "name": "Sample Dimmer",
+                    "mode": "set+get",
+                    "editor": {
+                        
+                    }
+                }
+            ]
+        }
+    }
+]

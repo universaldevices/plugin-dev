@@ -1,0 +1,43 @@
+{
+  "name": "iox-plugin-ext",
+  "displayName": "IoX Plugin Extension",
+  "description": "Define your plugin in JSON and let this extension take care of the rest",
+  "publisher": "Universal Devices",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "jsonValidation": [
+      {
+        "fileMatch":"*.iox_plugin.json",
+        "url":"./schemas/plugin.schema.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "json",
+        "path": "./snippets/tstat.iox_plugin.json",
+        "description": "sample thermostat"
+      },
+      {
+        "language": "json",
+        "path": "./snippets/dimmer.iox_plugin.json",
+        "description": "sample dimmer"
+      },
+      {
+        "language": "json",
+        "path": "./snippets/sensor.iox_plugin.json",
+        "description": "sample sensor"
+      },
+      {
+        "language": "json",
+        "path": "./snippets/modbus.iox_plugin.json",
+        "description": "sample mocbus"
+      }
+    ]
+  }
+}

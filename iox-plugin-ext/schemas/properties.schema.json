@@ -1,0 +1,694 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "string",
+    "oneOf": [
+      {
+        "enum":["ACCX"],
+        "description": "Acceleration X axis",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["ACCY"],
+        "description": "Acceleration Y axis",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["ACCZ"],
+        "description": "Acceleration Z axis",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["ADRPST"],
+        "description": "Auto DR Processing State"
+      },
+      {
+        "enum":["AIRFLOW"],
+        "description": "Air Flow"
+      },
+      {
+        "enum":["ALARM"],
+        "description": "An alarm occurred (values are different for each device type)"
+      },
+      {
+        "enum":["ANGLPOS"],
+        "description": "Angle Position"
+      },
+      {
+        "enum":["AQI"],
+        "description": "Air Quality Index",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["ATMPRES"],
+        "description": "Atmospheric Pressure"
+      },
+      {
+        "enum":["AWAKE"],
+        "description": "Awake"
+      },
+      {
+        "enum":["BARPRES"],
+        "description": "Barometric Pressure"
+      },
+      {
+        "enum":["BATLVL"],
+        "description": "Battery level"
+      },
+      {
+        "enum":["BEEP"],
+        "description": "Beep"
+      },
+      {
+        "enum":["BMAN"],
+        "description": "Deprecated - Use FDUP or FDDOWN"
+      },
+      {
+        "enum":["BMI"],
+        "description": "Body Mass Index",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["BMR"],
+        "description": "Basic Metabolic Rate",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["BONEM"],
+        "description": "Bone Mass",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["BPDIA"],
+        "description": "Blood pressure Diastolic",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["BPSYS"],
+        "description": "Blood pressure Systolic",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["BRT"],
+        "description": "Brighten"
+      },
+      {
+        "enum":["BUSY"],
+        "description": "Device is Busy"
+      },
+      {
+        "enum":["CC"],
+        "description": "Current Current"
+      },
+      {
+        "enum":["CH20"],
+        "description": "Formaldehyde CH2O level",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["CLIEMD"],
+        "description": "Energy Mode"
+      },
+      {
+        "enum":["CLIFRS"],
+        "description": "Fan Running State"
+      },
+      {
+        "enum":["CLIFS"],
+        "description": "Fan Setting"
+      },
+      {
+        "enum":["CLIFSO"],
+        "description": "Fan Setting Override"
+      },
+      {
+        "enum":["CLIHCS"],
+        "description": "Heat/Cool State"
+      },
+      {
+        "enum":["CLIHUM"],
+        "description": "Humidity"
+      },
+      {
+        "enum":["CLIMD"],
+        "description": "Thermostat Mode"
+      },
+      {
+        "enum":["CLISMD"],
+        "description": "Schedule Mode"
+      },
+      {
+        "enum":["CLISPC"],
+        "description": "Cool Setpoint"
+      },
+      {
+        "enum":["CLISPH"],
+        "description": "Heat Setpoint"
+      },
+      {
+        "enum":["CLITEMP"],
+        "description": "Current Temperature"
+      },
+      {
+        "enum":["CO"],
+        "description": "Carbon Monoxide Level",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["CO2LVL"],
+        "description": "CO2 Level"
+      },
+      {
+        "enum":["CPW"],
+        "description": "Current Power Used"
+      },
+      {
+        "enum":["CTL"],
+        "description": "Controller Action"
+      },
+      {
+        "enum":["CV"],
+        "description": "Current Voltage"
+      },
+      {
+        "enum":["DELAY"],
+        "description": "Delay"
+      },
+      {
+        "enum":["DEWPT"],
+        "description": "Dew Point"
+      },
+      {
+        "enum":["DFOF"],
+        "description": "Fast Off"
+      },
+      {
+        "enum":["DFON"],
+        "description": "Fast On"
+      },
+      {
+        "enum":["DIM"],
+        "description": "Dim"
+      },
+      {
+        "enum":["DISTANC"],
+        "description": "Distance"
+      },
+      {
+        "enum":["DOF"],
+        "description": "Off"
+      },
+      {
+        "enum":["DOF3"],
+        "description": "Off 3 Key Presses"
+      },
+      {
+        "enum":["DOF4"],
+        "description": "Off 4 Key Presses"
+      },
+      {
+        "enum":["DOF5"],
+        "description": "Off 5 Key Presses"
+      },
+      {
+        "enum":["DON"],
+        "description": "On"
+      },
+      {
+        "enum":["DON3"],
+        "description": "On 3 Key Presses"
+      },
+      {
+        "enum":["DON4"],
+        "description": "On 4 Key Presses"
+      },
+      {
+        "enum":["DON5"],
+        "description": "On 5 Key Presses"
+      },
+      {
+        "enum":["DUR"],
+        "description": "Duration"
+      },
+      {
+        "enum":["ELECCON"],
+        "description": "Electrical Conductivity"
+      },
+      {
+        "enum":["ELECRES"],
+        "description": "Electrical Resistivity"
+      },
+      {
+        "enum":["ERR"],
+        "description": "Error"
+      },
+      {
+        "enum":["ETO"],
+        "description": "Evapotranspiration",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["FATM"],
+        "description": "Fat Mass",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["FDDOWN"],
+        "description": "Fade Down"
+      },
+      {
+        "enum":["FDSTOP"],
+        "description": "Fade Stop"
+      },
+      {
+        "enum":["FDUP"],
+        "description": "Fade Up"
+      },
+      {
+        "enum":["FREQ"],
+        "description": "Frequency",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GPV"],
+        "description": "General Purpose Value"
+      },
+      {
+        "enum":["GUST"],
+        "description": "Gust",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV0"],
+        "description": "Custom Control 0"
+      },
+      {
+        "enum":["GV1"],
+        "description": "Custom Control 1"
+      },
+      {
+        "enum":["GV2"],
+        "description": "Custom Control 2"
+      },
+      {
+        "enum":["GV3"],
+        "description": "Custom Control 3"
+      },
+      {
+        "enum":["GV4"],
+        "description": "Custom Control 4"
+      },
+      {
+        "enum":["GV5"],
+        "description": "Custom Control 5"
+      },
+      {
+        "enum":["GV6"],
+        "description": "Custom Control 6"
+      },
+      {
+        "enum":["GV7"],
+        "description": "Custom Control 7"
+      },
+      {
+        "enum":["GV8"],
+        "description": "Custom Control 8"
+      },
+      {
+        "enum":["GV9"],
+        "description": "Custom Control 9"
+      },
+      {
+        "enum":["GV10"],
+        "description": "Custom Control 10"
+      },
+      {
+        "enum":["GV11"],
+        "description": "Custom Control 11"
+      },
+      {
+        "enum":["GV12"],
+        "description": "Custom Control 12"
+      },
+      {
+        "enum":["GV13"],
+        "description": "Custom Control 13"
+      },
+      {
+        "enum":["GV14"],
+        "description": "Custom Control 14"
+      },
+      {
+        "enum":["GV15"],
+        "description": "Custom Control 15"
+      },
+      {
+        "enum":["GV16"],
+        "description": "Custom Control 16"
+      },
+      {
+        "enum":["GV17"],
+        "description": "Custom Control 17"
+      },
+      {
+        "enum":["GV18"],
+        "description": "Custom Control 18"
+      },
+      {
+        "enum":["GV19"],
+        "description": "Custom Control 19"
+      },
+      {
+        "enum":["GV20"],
+        "description": "Custom Control 20"
+      },
+      {
+        "enum":["GV21"],
+        "description": "Custom Control 21",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV22"],
+        "description": "Custom Control 22",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV23"],
+        "description": "Custom Control 23",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV24"],
+        "description": "Custom Control 24",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV25"],
+        "description": "Custom Control 25",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV26"],
+        "description": "Custom Control 26",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV27"],
+        "description": "Custom Control 27",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV28"],
+        "description": "Custom Control 28",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV29"],
+        "description": "Custom Control 29",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GV30"],
+        "description": "Custom Control 30",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["GVOL"],
+        "description": "Water Volume"
+      },
+      {
+        "enum":["HAIL"],
+        "description": "Hail"
+      },
+      {
+        "enum":["HEATIX"],
+        "description": "Heat Index",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["HR"],
+        "description": "Heart Rate",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["LUMIN"],
+        "description": "Luminance"
+      },
+      {
+        "enum":["METHANE"],
+        "description": "Methane Density",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["MODE"],
+        "description": "Mode"
+      },
+      {
+        "enum":["MOIST"],
+        "description": "Moisture"
+      },
+      {
+        "enum":["MOON"],
+        "description": "Moon Phase",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["MUSCLEM"],
+        "description": "Muscle Mass",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["OL"],
+        "description": "On Level"
+      },
+      {
+        "enum":["OZONE"],
+        "description": "Ozone",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["PF"],
+        "description": "Power Factor"
+      },
+      {
+        "enum":["PM10"],
+        "description": "Particulate Matter 10",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["PM25"],
+        "description": "Particulate Matter 2.5",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["POP"],
+        "description": "Percent chance of precipitation",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["PPW"],
+        "description": "Polarized Power Used"
+      },
+      {
+        "enum":["PRECIP"],
+        "description": "Precipitation",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["PULSCNT"],
+        "description": "Pulse Count"
+      },
+      {
+        "enum":["QUERY"],
+        "description": "Query Device"
+      },
+      {
+        "enum":["RADON"],
+        "description": "Radon concentration",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["RAINRT"],
+        "description": "Rain Rate"
+      },
+      {
+        "enum":["RELMOD"],
+        "description": "Relative modulation level",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["RESET"],
+        "description": "Reset values"
+      },
+      {
+        "enum":["RESPR"],
+        "description": "Respiratory rate",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["RFSS"],
+        "description": "RF Signal Strength",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["ROTATE"],
+        "description": "Rotation"
+      },
+      {
+        "enum":["RR"],
+        "description": "Ramp Rate"
+      },
+      {
+        "enum":["SECMD"],
+        "description": "Device secure mode"
+      },
+      {
+        "enum":["SEISINT"],
+        "description": "Seismic Intensity"
+      },
+      {
+        "enum":["SEISMAG"],
+        "description": "Seismic Magnitude"
+      },
+      {
+        "enum":["SMAN"],
+        "description": "Deprecated - Use FDSTOP"
+      },
+      {
+        "enum":["SMOKED"],
+        "description": "Smoke Density",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["SOILH"],
+        "description": "Soil Humidity",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["SOILR"],
+        "description": "Soil Reactivity",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["SOILS"],
+        "description": "Soil Salinity",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["SOILT"],
+        "description": "Soil Temperature"
+      },
+      {
+        "enum":["SOLRAD"],
+        "description": "Solar Radiation"
+      },
+      {
+        "enum":["SPEED"],
+        "description": "Velocity"
+      },
+      {
+        "enum":["ST"],
+        "description": "Status"
+      },
+      {
+        "enum":["SVOL"],
+        "description": "Sound Volume"
+      },
+      {
+        "enum":["TANKCAP"],
+        "description": "Tank Capacity"
+      },
+      {
+        "enum":["TBW"],
+        "description": "Total body water"
+      },
+      {
+        "enum":["TEMPEXH"],
+        "description": "Exhaust Temperature",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["TEMPOUT"],
+        "description": "Outside Temperature",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["TIDELVL"],
+        "description": "Tide Level"
+      },
+      {
+        "enum":["TIME"],
+        "description": "Time",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["TIMEREM"],
+        "description": "Time remaining"
+      },
+      {
+        "enum":["TPW"],
+        "description": "Total Power Used"
+      },
+      {
+        "enum":["UAC"],
+        "description": "Valid user access code entered"
+      },
+      {
+        "enum":["UOM"],
+        "description": "Unit"
+      },
+      {
+        "enum":["USRNUM"],
+        "description": "The user access code that associated with the most recent Alarm"
+      },
+      {
+        "enum":["UV"],
+        "description": "Ultraviolet"
+      },
+      {
+        "enum":["VOCLVL"],
+        "description": "Volatile Organic Compound (VOC) level"
+      },
+      {
+        "enum":["WATERF"],
+        "description": "Water Flow",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["WATERP"],
+        "description": "Water Pressure",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["WATERT"],
+        "description": "Water Temperature"
+      },
+      {
+        "enum":["WATERTB"],
+        "description": "Boiler Water Temperature",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["WATERTD"],
+        "description": "Domestic Hot Water Temperature",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["WEIGHT"],
+        "description": "Weight"
+      },
+      {
+        "enum":["WINDCH"],
+        "description": "Wind Chill",
+        "versionIntroduced": "5.2"
+      },
+      {
+        "enum":["WINDDIR"],
+        "description": "Wind Direction"
+      },
+      {
+        "enum":["WVOL"],
+        "description": "Water Volume"
+      }
+    ]
+  }
+  
