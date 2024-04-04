@@ -1,0 +1,28 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "description":"Properties are the characteristics that define a node such as temp, humidity, etc.",
+  "items": {
+    "type": "object",
+    "properties":{
+      "id": {
+        "$ref": "./properties.schema.json",
+        "description": "This is the property's id and how you will be able to reference is in python code."
+      },
+      "name": {
+        "type": "string",
+        "description": "This is the human readable name of this property such as Cool Setpoint. If there's an NLS file, this may be translated"
+      },
+      "mode": {
+        "enum": ["set","get","set+get"] ,
+        "description": "Set becomes a command only without any status being presented. Get will only show the value for the property. Set+Get does both + synch them "
+      },
+      "editor": {
+        "$ref": "./editor.schema.json",
+        "description":"Editors help the UI with constraints ... "
+      }
+    },
+    "required": ["id", "name", "mode", "editor"]
+  }
+}

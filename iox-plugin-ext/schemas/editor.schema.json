@@ -6,32 +6,43 @@
     "oneOf":
     [
             {
-                "id": "string",
-                "required": ["id"]
+                "properties":{
+                    "idref": {
+                        "type":"string",
+                        "description": "A reference to the previously used id."
+
+                    }
+                },
+                "required": ["idref"]
             },
             {
-                "id":"string",
-                "uom":{
-                    "$ref": "./uom.schema.json",
-                    "description": "Each UOM has its own unique identifier."
-                },
-                "min":{
-                    "type":"integer",
-                    "description": "Minimum value (mandatory)"
-                },
-                "max":{
-                    "type":"integer",
-                    "description": "Maximum value (mandatory)"
-                },
-                "precision":{
-                    "type":"integer",
-                    "description": "The precision for the number (optional)"
-                },
-                "options":{
-                    "type":"array",
-                    "description": "For index and percentage, these are human readable options for each index. Starts from 0 to max",
-                    "items":{
-                        "type":"string"
+                "properties":{
+                    "id":{
+                        "type":"string",
+                        "description": "A unique id for this editor that can be reused by idref in other instances"
+                    },
+                    "uom":{
+                        "$ref": "./uom.schema.json",
+                        "description": "Each UOM has its own unique identifier."
+                    },
+                    "min":{
+                        "type":"integer",
+                        "description": "Minimum value (mandatory)"
+                    },
+                    "max":{
+                        "type":"integer",
+                        "description": "Maximum value (mandatory)"
+                    },
+                    "precision":{
+                        "type":"integer",
+                        "description": "The precision for the number (optional)"
+                    },
+                    "options":{
+                        "type":"array",
+                        "description": "For index and percentage, these are human readable options for each index. Starts from 0 to max",
+                        "items":{
+                            "type":"string"
+                        }
                     }
                 },
                 "required": ["min","max","id"]
