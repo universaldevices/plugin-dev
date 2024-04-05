@@ -2,20 +2,21 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "node": {
-      "type": "object",
-      "properties": {
-        "id": {
+       "id": {
           "type": "string",
           "description": "The id used to identify this node"
+        },
+        "name": {
+          "type": "string",
+          "description": "The human readable name. If you have NLS files, this name will be translated"
         },
         "parent": {
           "type": "string",
           "description": "If you have a controller / child relationship, parent is the id of the controller node"
         },
-        "name": {
+        "icon":{
           "type": "string",
-          "description": "The human readable name. If you have NLS files, this name will be translated"
+          "$ref": "./icon.schema.json"
         },
         "properties": {
           "$ref": "./node.properties.schema.json"
@@ -23,10 +24,7 @@
         "commands": {
           "$ref": "./commands.schema.json"
         }
-    },
-    "required": ["id", "name", "properties", "commands"]
-  }
- },
- "required": ["node"]
+  },
+  "required": ["id", "name", "properties", "commands"]
 }
  

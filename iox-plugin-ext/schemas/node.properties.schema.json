@@ -16,6 +16,7 @@
       },
       "mode": {
         "enum": ["set","get","set+get"] ,
+        "default":"get",
         "description": "Set becomes a command only without any status being presented. Get will only show the value for the property. Set+Get does both + synch them "
       },
       "editor": {
