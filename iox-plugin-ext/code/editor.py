@@ -5,114 +5,82 @@ Plugin schema processor and validator
 Copyright (C) 2024 Universal Devices
 """
 
-import fastjsonschema
 import json
 import os
 
-EDITOR_SCHEMA_FILE="schemas/editor.schema.json"
+class EditorDetails:
+    def __int__(self, editor):
+        self.id=None
+        self.uom=None
+        self.min=None
+        self.max=None
+        self.step=None
+        self.precision=None
+        self.subset=None
+        self.options=[]
+        if editor == None:
+            raise
+        try:
+            if 'idref' in editor:
+                self.id = editor['idref']
+            else:
+                self.id=editor['id']
+                self.uom=editor['uom']
 
-def validate_json(schema:str, json:str)->bool:
-    if schema == None or json == None:
-        return False
-    try:
-        validate = fastjsonschema.compile(schema)
-        validate(json)
-        return True
-    except Exception as ex:
-        return False
+                if 'subset' in editor:
+                    self.subset = editor ['subset']
+                else:
+                    if 'min' in editor:
+                        self.min = editor['min']
+                    if 'max' in editor:
+                        self.min = editor['min']
+                    if 'step' in editor:
+                        self.step = editor['step']
+                    if 'precision' in editor:
+                        self.precision = editor['precision']
+                if 'options' in editor:
+                    self.options = editor['options']
+        except Exception as ex:
+            raise
 
-class NodeProperty:
-    def __init__(self, property_data):
-        self._property_data = property_data
-        self.isValid=validate_json(PROPERTY_SCHEMA_FILE, property_data)
+        def isSubset(self):
+            return self.subset != None
+        
+        def isIdRef(self):
+            return self.idref != None
 
-    @property
-    def id(self):
-        return self._property_data.get('id')
+__allEditors = None
 
-    @id.setter
-    def id(self, value):
-        self._property_data['id'] = value
+class Editors:
+    def __init__(self):
+        global __allEditors
+        self.editors = {}
+        __allEditors=self
+        
+    def addEditors(self, editors):
+        if editors == None:
+            return
+        try:
+            for editor in editors:
+                self.addEditor(editor)
+        except Exception as ex:
+            raise
 
-    @property
-    def name(self):
-        return self._property_data.get('name')
+    def addEditor(self, editor)->EditorDetails:
+        if editor == None:
+            return None
+        try:
+            ed=Editor(editor)
+            if not ed.isIdRef():
+                self.editors[ed.id]=ed
+            return ed
+        except Exception as ex:
+            raise
+            return None
 
-    @name.setter
-    def name(self, value):
-        self._property_data['name'] = value
-
-    @property
-    def mode(self):
-        return self._property_data.get('mode')
-
-    @mode.setter
-    def mode(self, value):
-        self._property_data['mode'] = value
-
-    @property
-    def editor(self):
-        return self._property_data.get('editor')
-
-    @editor.setter
-    def editor(self, value):
-        self._property_data['editor'] = value
-
-
-class Editor:
-    def __init__(self, editor_data):
-        self._editor_data = editor_data
-        self.isValid=validate_json(EDITOR_SCHEMA_FILE, editor_data)
-
-    @property
-    def id(self):
-        return self._editor_data.get('id')
-
-    @id.setter
-    def id(self, value):
-        self._editor_data['id'] = value
-
-    @property
-    def uom(self):
-        return self._editor_data.get('uom')
-
-    @uom.setter
-    def uom(self, value):
-        self._editor_data['uom'] = value
-
-    @property
-    def min(self):
-        return self._editor_data.get('min')
-
-    @min.setter
-    def min(self, value):
-        self._editor_data['min'] = value
-
-    @property
-    def max(self):
-        return self._editor_data.get('max')
-
-    @max.setter
-    def max(self, value):
-        self._editor_data['max'] = value
-
-    @property
-    def precision(self):
-        return self._editor_data.get('precision')
-
-    @precision.setter
-    def precision(self, value):
-        self._editor_data['precision'] = value
-
-    @property
-    def options(self):
-        return self._editor_data.get('options')
-
-    @options.setter
-    def options(self, value):
-        self._editor_data['options'] = value
-
-
-dir = os.getcwd()
-pluginUOM = PluginUOM()
-pluginUOM.print()
+    @staticmethod
+    def getEditors()->Editors:
+        global __allEditors
+        if __allEditors == None:
+            return None
+        return __allEditors

@@ -18,7 +18,7 @@
             "type": "string",
             "description": "NLS name presented to the clients"
           },
-          "param": {
+          "params": {
             "type": "array",
             "description":"Parameters for the command",
             "items": {
@@ -52,7 +52,7 @@
           "name": {
             "type": "string"
           },
-          "param": {
+          "params": {
             "type": "array",
             "items": {
               "type": "object",

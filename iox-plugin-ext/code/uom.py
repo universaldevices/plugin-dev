@@ -10,6 +10,9 @@ import os
 
 UOM_SCHEMA_FILE="schemas/uom.schema.json"
 
+INDEX_UOM = 25
+PERCENT_UOM = 51
+
 class UOMOption:
     def __init__(self, element):
         if element == None:
@@ -50,6 +53,7 @@ class UOMDetails:
                 self.options[uomOption.id]=uomOption
         except Exception as ex:
             raise
+
 class UOMs:
     def __init__(self):
        self.uoms = {}
@@ -73,5 +77,13 @@ class UOMs:
 
     def getUOM(self, uom:int)->UOMDetails:
         return self.uoms[uom]
+
+    @staticmethod
+    def isIndex(uom:int):
+        return uom == INDEX_UOM
+
+    @staticmethod
+    def isPercent(uom:int):
+        return uom == PERCENT_UOM
 
        

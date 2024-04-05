@@ -28,8 +28,8 @@ class Properties:
        except Exception as ex:
             raise
 
-    def __init_elements(self, json_data:str)->object:
-       all = json_data['oneOf']
+    def __init_elements(self, properties:str)->object:
+       all = properties['oneOf']
        if all == None: 
             return None
        for p in all: 
@@ -41,6 +41,3 @@ class Properties:
 
     def getProperty(self, property:str)->PropertyDetails:
         return self.properties[property]
-
-properties=Properties()
-pass 

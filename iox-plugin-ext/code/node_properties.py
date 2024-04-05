@@ -1,118 +1,61 @@
 #!/usr/bin/env python3
 
 """
-Plugin schema processor and validator
+Class for handling node properties
 Copyright (C) 2024 Universal Devices
 """
 
-import fastjsonschema
 import json
 import os
-
-NODE_PROPERTIES_SCHEMA_FILE="schemas/node.properties.schema.json"
-
-def validate_json(schema:str, json:str)->bool:
-    if schema == None or json == None:
-        return False
-    try:
-        validate = fastjsonschema.compile(schema)
-        validate(json)
-        return True
-    except Exception as ex:
-        return False
-
-class NodeProperty:
-    def __init__(self, property_data):
-        self._property_data = property_data
-        self.isValid=validate_json(PROPERTY_SCHEMA_FILE, property_data)
-
-    @property
-    def id(self):
-        return self._property_data.get('id')
-
-    @id.setter
-    def id(self, value):
-        self._property_data['id'] = value
-
-    @property
-    def name(self):
-        return self._property_data.get('name')
-
-    @name.setter
-    def name(self, value):
-        self._property_data['name'] = value
-
-    @property
-    def mode(self):
-        return self._property_data.get('mode')
-
-    @mode.setter
-    def mode(self, value):
-        self._property_data['mode'] = value
-
-    @property
-    def editor(self):
-        return self._property_data.get('editor')
-
-    @editor.setter
-    def editor(self, value):
-        self._property_data['editor'] = value
+from editor import Editors 
 
 
-class Editor:
-    def __init__(self, editor_data):
-        self._editor_data = editor_data
-        self.isValid=validate_json(EDITOR_SCHEMA_FILE, editor_data)
 
-    @property
-    def id(self):
-        return self._editor_data.get('id')
+class NodePropertyDetails:
+    def __init__(self, node_property):
+        self.id = None
+        self.name = None
+        self.mode = None
+        self.Editor = None
 
-    @id.setter
-    def id(self, value):
-        self._editor_data['id'] = value
+        if node_property == None:
+            return
+        try: 
+            if 'id' in node_property:
+                self.id = node_property['id']
+            if 'name' in node_property:
+                self.name = node_property['name']
+            if 'mode' in node_property:
+                self.mode = node_property['mode']
+            if 'editor' in node_property:
+                self.editor = Editors.getEditors().addEditor(node_property['editor'])
+        except Exception as ex:
+            raise
 
-    @property
-    def uom(self):
-        return self._editor_data.get('uom')
+    def getMode(self):
+        return self.mode
 
-    @uom.setter
-    def uom(self, value):
-        self._editor_data['uom'] = value
+    def isSet(self)->bool:
+        if self.mode == None:
+            return true
+        return 'set' in self.mode 
 
-    @property
-    def min(self):
-        return self._editor_data.get('min')
+class NodeProperties:
+    def __init__(self, node_properties):
+        self.node_properties={}
+        if node_properties == None:
+            return
+        try:
+            for node_property in node_properties:
+                np = NodePropertyDetails(node_property)
+                self.node_properties[np.id]=np
+                
+        except Exception as ex:
+            raise
 
-    @min.setter
-    def min(self, value):
-        self._editor_data['min'] = value
+    def getProperty(self, property):
+        if property == None:
+            return
 
-    @property
-    def max(self):
-        return self._editor_data.get('max')
+        return self.node_properties[property]
 
-    @max.setter
-    def max(self, value):
-        self._editor_data['max'] = value
-
-    @property
-    def precision(self):
-        return self._editor_data.get('precision')
-
-    @precision.setter
-    def precision(self, value):
-        self._editor_data['precision'] = value
-
-    @property
-    def options(self):
-        return self._editor_data.get('options')
-
-    @options.setter
-    def options(self, value):
-        self._editor_data['options'] = value
-
-
-dir = os.getcwd()
-pluginUOM = PluginUOM()
-pluginUOM.print()
