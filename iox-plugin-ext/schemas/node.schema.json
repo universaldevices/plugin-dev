@@ -16,13 +16,13 @@
         },
         "icon":{
           "type": "string",
-          "$ref": "./icon.schema.json"
+          "$ref": "icon.schema.json"
         },
         "properties": {
-          "$ref": "./node.properties.schema.json"
+          "$ref": "node.properties.schema.json"
         },
         "commands": {
-          "$ref": "./commands.schema.json"
+          "$ref": "commands.schema.json"
         }
   },
   "required": ["id", "name", "properties", "commands"]

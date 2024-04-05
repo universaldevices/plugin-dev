@@ -7,7 +7,7 @@
     "type": "object",
     "properties":{
       "id": {
-        "$ref": "./properties.schema.json",
+        "$ref": "properties.schema.json",
         "description": "This is the property's id and how you will be able to reference is in python code."
       },
       "name": {
@@ -20,7 +20,7 @@
         "description": "Set becomes a command only without any status being presented. Get will only show the value for the property. Set+Get does both + synch them "
       },
       "editor": {
-        "$ref": "./editor.schema.json",
+        "$ref": "editor.schema.json",
         "description":"Editors help the UI with constraints ... "
       }
     },

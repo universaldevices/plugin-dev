@@ -31,7 +31,7 @@
                   "type": "string"
                 },
                 "editor": {
-                  "$ref": "./editor.schema.json"
+                  "$ref": "editor.schema.json"
                 }
               },
               "required": ["id", "name", "editor"]
@@ -64,14 +64,14 @@
                   "type": "string"
                 },
                 "editor": {
-                  "$ref": "./editor.schema.json"
+                  "$ref": "editor.schema.json"
                 }
               },
               "required": ["id", "name", "editor"]
             }
           }
         },
-        "required": ["id", "name", "param"]
+        "required": ["id", "name"]
       }
     }
   },

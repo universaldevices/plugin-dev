@@ -44,6 +44,7 @@ class CommandDetails:
             if 'name' in command:
                 self.name = command['name']
             if 'params' in command:
+                params = command['params']
                 for param in params:
                     p = CommandParam(param)
                     self.params[p.id]=p
@@ -59,13 +60,13 @@ class Commands:
             return
         try:
             if 'accepts' in commands:
-                accepts = command['accepts']
+                accepts = commands['accepts']
                 for accept in accepts:
                     a = CommandDetails(accept)
                     self.acceptCommands[a.id]=a
 
             if 'sends' in commands:
-                sends = command['sends']
+                sends = commands['sends']
                 for send in sends:
                     s = CommandDetails(send)
                     self.sendCommands[s.id]=s

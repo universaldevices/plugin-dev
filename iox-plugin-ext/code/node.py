@@ -7,8 +7,8 @@ Copyright (C) 2024 Universal Devices
 
 import json
 import os
-import node_properties
-import commands
+from node_properties import NodeProperties
+from commands import Commands
 
 
 class NodeDetails:
@@ -28,7 +28,7 @@ class NodeDetails:
             if 'name' in node:
                 self.name = node['name']
             if 'parent' in node:
-                self.parent = node['mode']
+                self.parent = node['parent']
             if 'icon' in node:
                 self.icon = node['icon']
             if 'properties' in node:
@@ -49,7 +49,7 @@ class Nodes:
         try:
             for node in nodes:
                 n = NodeDetails(node)
-                nodes[n.id] = n
+                self.nodes[n.id] = n
         except Exception as ex:
             raise
         

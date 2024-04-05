@@ -2,7 +2,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "description":"Editors are what help clients and program with constraints. \"options\" are used to provide human readable version of lists.\\nYou have 3 choices:\\n1.idref to reference another editor already used\\n2. min/max/steps/precision/options, or \\n3.sbuset/options",
+  "description":"Editors are what help clients and program with constraints. \"options\" are used to provide human readable version of lists.\nYou have 3 choices:\n1.idref to reference another editor already used\n2. min/max/steps/precision/options, or \n3.sbuset/options",
     "oneOf":
     [
             {
@@ -22,7 +22,7 @@
                         "description": "A unique id for this editor that can be reused by idref in other instances"
                     },
                     "uom":{
-                        "$ref": "./uom.schema.json",
+                        "$ref": "uom.schema.json",
                         "description": "Each UOM has its own unique identifier."
                     },
                     "min":{
@@ -58,12 +58,12 @@
                         "description": "A unique id for this editor that can be reused by idref in other instances"
                     },
                     "uom":{
-                        "$ref": "./uom.schema.json",
+                        "$ref": "uom.schema.json",
                         "description": "Each UOM has its own unique identifier."
                     },
                     "subset":{
                         "type":"string",
-                        "description": "The subset of values supported is defined as a set of ranges and individual values.\\nThey must be in increasing value with no duplicates or overlap\\nRanges are separated by a '-', individual digits are separated by a ','\\n e.g. subset=\"0-5,7,9,11-14\" means these numbers: 0,1,2,3,4,5,7,9,11,12,13,14\\n e.g. subset=\"-50--48,-2-3\" means -50 to -48, -2 to 3 -50,-49,-48,-2,-1,0,1,2,3"
+                        "description": "The subset of values supported is defined as a set of ranges and individual values.\nThey must be in increasing value with no duplicates or overlap\nRanges are separated by a '-', individual digits are separated by a ','\n e.g. subset=\"0-5,7,9,11-14\" means these numbers: 0,1,2,3,4,5,7,9,11,12,13,14\n e.g. subset=\"-50--48,-2-3\" means -50 to -48, -2 to 3 -50,-49,-48,-2,-1,0,1,2,3"
                     },
                     "options":{
                         "type":"array",

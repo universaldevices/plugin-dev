@@ -9,7 +9,8 @@ import json
 import os
 
 class EditorDetails:
-    def __int__(self, editor):
+
+    def __init__(self, editor):
         self.id=None
         self.uom=None
         self.min=None
@@ -18,11 +19,13 @@ class EditorDetails:
         self.precision=None
         self.subset=None
         self.options=[]
+        self.idref=False
         if editor == None:
             raise
         try:
             if 'idref' in editor:
                 self.id = editor['idref']
+                self.idref = True
             else:
                 self.id=editor['id']
                 self.uom=editor['uom']
@@ -33,7 +36,7 @@ class EditorDetails:
                     if 'min' in editor:
                         self.min = editor['min']
                     if 'max' in editor:
-                        self.min = editor['min']
+                        self.max = editor['max']
                     if 'step' in editor:
                         self.step = editor['step']
                     if 'precision' in editor:
@@ -43,11 +46,11 @@ class EditorDetails:
         except Exception as ex:
             raise
 
-        def isSubset(self):
-            return self.subset != None
-        
-        def isIdRef(self):
-            return self.idref != None
+    def isSubset(self):
+        return self.subset != None
+
+    def isRef(self):
+        return self.idref 
 
 __allEditors = None
 
@@ -70,8 +73,8 @@ class Editors:
         if editor == None:
             return None
         try:
-            ed=Editor(editor)
-            if not ed.isIdRef():
+            ed=EditorDetails(editor)
+            if not ed.isRef() :
                 self.editors[ed.id]=ed
             return ed
         except Exception as ex:
@@ -79,7 +82,7 @@ class Editors:
             return None
 
     @staticmethod
-    def getEditors()->Editors:
+    def getEditors():
         global __allEditors
         if __allEditors == None:
             return None

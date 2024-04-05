@@ -13,7 +13,7 @@
           "description":"Optionally, define editors that may be used globally across all your nodes.",
           "items":{
             "type":"object",
-            "$ref":"./editor.schema.json"
+            "$ref":"editor.schema.json"
           }
         },
         "nodes":{
@@ -21,7 +21,7 @@
           "description":"An array of node definitions",
           "items":{
               "type":"object",
-              "$ref":"./node.schema.json",
+              "$ref":"node.schema.json",
               "required": ["node"]
           }
         }
