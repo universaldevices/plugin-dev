@@ -27,7 +27,7 @@
                 {
                     "enum":[1],
                     "description": "Node.js"
-                }
+                },
                 {
                     "enum":[2],
                     "description": "Binary"
