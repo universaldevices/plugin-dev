@@ -7,6 +7,7 @@ Copyright (C) 2024 Universal Devices
 
 import json
 import os
+from log import LOGGER
 
 PROPERTIES_SCHEMA_FILE="schemas/properties.schema.json"
 
@@ -16,6 +17,7 @@ class PropertyDetails:
             self.id = elements['enum'][0]
             self.description = elements ['description']
         except Exception as ex:
+            LOGGER.critical(str(ex))
             raise
 
 class Properties:
@@ -26,6 +28,7 @@ class Properties:
                 json_data = json.load(file)
                 self.__init_elements(json_data)
        except Exception as ex:
+            LOGGER.critical(str(ex))
             raise
 
     def __init_elements(self, properties:str)->object:

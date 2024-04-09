@@ -11,6 +11,8 @@ import os
 from node import Nodes
 from editor import Editors
 from plugin_meta import PluginMetaData
+from log import LOGGER
+from profile import ProfileWriter
 
 
 PLUGIN_SCHEMA_FILE="schemas/plugin.schema.json"
@@ -24,6 +26,8 @@ PMETA_SCHEMA="schemas/plugin.meta.schema.json"
 PROP_SCHEMA="schemas/properties.schema.json"
 UOM_SCHEMA="schemas/uom.schema.json"
 
+
+
 class Plugin:
 
     def __init__(self, plugin_file, schema=PLUGIN_SCHEMA_FILE):
@@ -32,11 +36,14 @@ class Plugin:
         self.nodes:Nodes 
         self.isValid = False
         if plugin_file == None:
+            LOGGER.critical("plugin file does not exist ... ")
             return
+        self.profileWriter=ProfileWriter()
 
         try:
             self.isValid=self.validate_json(schema, plugin_file)
             if not self.isValid:
+                LOGGER.critical("not a valid plugin configuration file ... ")
                 return
             with open(plugin_file, 'r') as file:
                 plugin_json = json.load(file)
@@ -47,6 +54,20 @@ class Plugin:
                 self.editors.addEditors(plugin_json['editors'])
             if 'nodes' in plugin_json:
                 self.nodes = Nodes(plugin_json['nodes'])
+
+            nodedefs, nls = self.nodes.toXML()
+            if nodedefs:
+                self.profileWriter.writeToNodeDef(nodedefs)
+            if nls:
+                self.profileWriter.writeToNLS(nls)
+
+            editors, nls = self.editors.toXML()
+            if editors:
+                self.profileWriter.writeToEditor(editors)
+            if nls:
+                self.profileWriter.writeToNLS(nls)
+            
+            pass
 
         except Exception as ex:
             raise
@@ -59,6 +80,7 @@ class Plugin:
         ''' 
             Does not suppot file refernences
         '''
+        LOGGER.info('fastjsonschema does not currently support file references ... ignoring validation request.')
         return True
 
         #use later when supported

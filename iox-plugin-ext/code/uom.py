@@ -7,6 +7,7 @@ Copyright (C) 2024 Universal Devices
 
 import json
 import os
+from log import LOGGER
 
 UOM_SCHEMA_FILE="schemas/uom.schema.json"
 
@@ -30,6 +31,7 @@ class UOMOption:
                 self.max=element['max']
             self.name = element['description']
         except Exception as ex:
+            LOGGER.log(str(ex))
             raise
 
 class UOMDetails:
@@ -42,6 +44,7 @@ class UOMDetails:
             if 'oneOf' in elements:
                 self.__init_options(elements ['oneOf'])
         except Exception as ex:
+            LOGGER.log(str(ex))
             raise
 
     def __init_options(self, options):
@@ -52,6 +55,7 @@ class UOMDetails:
                 uomOption = UOMOption(option)
                 self.options[uomOption.id]=uomOption
         except Exception as ex:
+            LOGGER.log(str(ex))
             raise
 
 class UOMs:
@@ -62,6 +66,7 @@ class UOMs:
                 json_data = json.load(file)
                 self.__init_elements(json_data)
        except Exception as ex:
+            LOGGER.log(str(ex))
             raise
 
     def __init_elements(self, json_data:str)->object:

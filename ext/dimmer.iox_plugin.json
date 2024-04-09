@@ -1,16 +1,194 @@
-[
-    {
-        "node": {
+{
+    "plugin": {
+          "name":"hello world",
+          "description":"this is my first plugin",
+          "author":"me",
+          "language": 0,
+          "executableName":"plugin.py",
+          "installScript":"install_2.sh",
+          "documentationLink":"docs",
+          "licenseLink":"lic",
+          "shortPoll":61,
+          "longPoll":601,
+          "profileVersion":"3.0.0",
+          "initialLogLevel":3,
+          "enableDiscovery":true,
+          "enableOAUTH2":true,
+          "worksOnPolisy":true,
+          "worksOnEisy":true,
+          "requiresIoXAccess": false
+    },
+    "editors": [
+        {
+            "id": "ix_111",
+            "min": 0,
+            "max": 3,
+            "uom": 25,
+            "options": ["one","two","three"]
+        },
+        {
+            "idref":"ix_111"
+        },
+        {
+            "id": "min_max_no_options",
+            "min": 33,
+            "max": 30,
+            "uom": 51
+        },
+        {
+            "id": "subset",
+            "subset": "1,2-5,6",
+            "uom": 50,
+            "options": ["yes"]
+        },
+        {
+            "id": "with_sub_options",
+            "uom":15,
+            "min":0,
+            "max":5
+        }
+    ],
+    "nodes": [
+        {
+            "id":"hell",
+            "name":"mic",
+            "parent": "papa",
+            "icon":{
+                "path": "file/kkkadsfk"
+            },
             "properties": [
                 {
                     "id": "ACCX",
-                    "name": "Sample Dimmer",
-                    "mode": "set+get",
+                    "name": "temp",
                     "editor": {
-                        
-                    }
+                        "idref": "with_sub_options"
+                    },
+                    "mode": "set+get"
+                },
+                {
+                    "id": "CTL",
+                    "name": "ctl",
+                    "editor": {
+                        "id":"haven't seen before",
+                        "uom": 25,
+                        "min": 0,
+                        "max": 100,
+                        "precision": 1,
+                        "step": 5
+                    } ,
+                    "mode": "get"
+                },
+                {
+                    "id": "GV1",
+                    "name": "Generic Val",
+                    "editor": {
+                        "id":"haven't seen before_sub",
+                        "uom": 50,
+                        "subset": "1,2 ,3 "
+                    } ,
+                    "mode": "set"
                 }
-            ]
+            ],
+            "commands": {
+                "accepts": [
+                    {
+                        "id": "acc_cmd1",
+                        "name": "accept 1",
+                        "params": [
+                            {
+                                "id": "param_c_1",
+                                "editor": {
+                                    "idref": "haven't seen before_sub"
+                                },
+                                "name": "hello param"
+                            },
+                            {
+                                "id": "param_c_2",
+                                "editor": {
+                                    "id":"param_c_2_editor",
+                                    "uom": 25,
+                                    "min": 0,
+                                    "max": 100,
+                                    "precision": 1,
+                                    "step": 5
+                                },
+                                "name": "hello param_2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "acc_cmd2",
+                        "name": "accept 2",
+                        "params": [
+                            {
+                                "id": "param_c_1a",
+                                "editor": {
+                                    "idref": "haven't seen before"
+                                },
+                                "name": "hello param 2 accept"
+                            },
+                            {
+                                "id": "param_c_2_a",
+                                "editor": {
+                                    "id":"param_c_2_editor_a",
+                                    "uom": 25,
+                                    "min": 0,
+                                    "max": 100
+                                },
+                                "name": "hello param_2_accept"
+                            }
+                        ]
+                    }
+                ],
+                "sends": [
+                    {
+                        "id": "send_cmd1",
+                        "name": "send 1",
+                        "params": [
+                            {
+                                "id": "param_s_1",
+                                "editor": {
+                                    "idref": "seen before_sub"
+                                },
+                                "name": "hello param send"
+                            },
+                            {
+                                "id": "param_s_2",
+                                "editor": {
+                                    "id":"param_c_s_editor",
+                                    "uom": 25,
+                                    "min": 0,
+                                    "max": 100
+                                },
+                                "name": "hello param_2_s"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "snd_cmd2",
+                        "name": "sends 2",
+                        "params": [
+                            {
+                                "id": "param_s_1a",
+                                "editor": {
+                                    "idref": "haven't seen before"
+                                },
+                                "name": "hello param 2 send"
+                            },
+                            {
+                                "id": "param_s_2_a",
+                                "editor": {
+                                    "id":"param_s_2_editor_a",
+                                    "uom": 25,
+                                    "max": 100
+                                },
+                                "name": "hello param_2_sends"
+                            }
+                        ]
+                    }
+
+                ]
+            } 
         }
-    }
-]
+    ]
+}
