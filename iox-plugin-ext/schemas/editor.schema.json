@@ -41,9 +41,9 @@
                         "type":"integer",
                         "description": "The precision for the number (optional)"
                     },
-                    "options":{
+                    "index_names":{
                         "type":"array",
-                        "description": "For index and percentage, these are human readable options for each index. Starts from 0 to max",
+                        "description": "For index and percentage, these are human readable names for each index. Starts from 0 to max",
                         "items":{
                             "type":"string"
                         }

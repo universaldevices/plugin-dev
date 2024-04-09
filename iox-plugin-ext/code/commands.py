@@ -164,7 +164,7 @@ class Commands:
                     cmd = self.acceptCommands[c]
                     cmd_x, cmd_nls = cmd.toXML(node_id)
                     if cmd_x:
-                        cmds += f"\n${cmd_x}"
+                        cmds += f"\n{cmd_x}"
                     if cmd_nls:
                         nls += f"\n{cmd_nls}"
                 cmds += "\n</accepts>"

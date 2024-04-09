@@ -14,10 +14,10 @@
         "type": "string",
         "description": "This is the human readable name of this property such as Cool Setpoint. If there's an NLS file, this may be translated"
       },
-      "mode": {
-        "enum": ["set","get","set+get"] ,
-        "default":"get",
-        "description": "Set becomes a command only without any status being presented. Get will only show the value for the property. Set+Get does both + synch them "
+      "is_settable": {
+        "type": "boolean",
+        "default":false, 
+        "description": "Whether or not this property can also be set by the user. In the case of set, a command is created using the same UOM and editor"
       },
       "editor": {
         "$ref": "editor.schema.json",
@@ -31,6 +31,6 @@
 
       }
     },
-    "required": ["id", "name", "mode", "editor"]
+    "required": ["id", "name", "is_settable", "editor"]
   }
 }

@@ -16,7 +16,7 @@ class NodePropertyDetails:
     def __init__(self, node_property):
         self.id = None
         self.name = None
-        self.mode = None
+        self.is_settable = False
         self.editor = None
         self.hide = False
 
@@ -27,8 +27,8 @@ class NodePropertyDetails:
                 self.id = node_property['id']
             if 'name' in node_property:
                 self.name = node_property['name']
-            if 'mode' in node_property:
-                self.mode = node_property['mode']
+            if 'is_settable' in node_property:
+                self.is_settable = node_property['is_settable']
             if 'editor' in node_property:
                 self.editor = Editors.getEditors().addEditor(node_property['editor'])
             if 'hide' in node_property:
@@ -37,13 +37,8 @@ class NodePropertyDetails:
             LOGGER.critical(str(ex))
             raise
 
-    def getMode(self):
-        return self.mode
-
     def isSet(self)->bool:
-        if self.mode == None:
-            return true
-        return 'set' in self.mode 
+        return self.is_settable 
 
     def toXML(self, node_id:str)->(str, str):
         nls = ""

@@ -16,16 +16,15 @@
             "$ref":"editor.schema.json"
           }
         },
-        "nodes":{
+        "nodedefs":{
           "type": "array",
           "description":"An array of node definitions",
           "items":{
               "type":"object",
-              "$ref":"node.schema.json",
-              "required": ["node"]
+              "$ref":"node.schema.json"
           }
         }
   },
-  "required":["nodes"]
+  "required":["nodedefs"]
 }
  

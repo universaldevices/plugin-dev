@@ -52,8 +52,8 @@ class Plugin:
                 self.meta = PluginMetaData(plugin_json['plugin'])
             if 'editors' in plugin_json:
                 self.editors.addEditors(plugin_json['editors'])
-            if 'nodes' in plugin_json:
-                self.nodes = Nodes(plugin_json['nodes'])
+            if 'nodedefs' in plugin_json:
+                self.nodes = Nodes(plugin_json['nodedefs'])
 
             nodedefs, nls = self.nodes.toXML()
             if nodedefs:

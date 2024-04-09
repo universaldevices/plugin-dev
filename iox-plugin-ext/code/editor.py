@@ -8,6 +8,7 @@ Copyright (C) 2024 Universal Devices
 import json
 import os
 from log import LOGGER
+from validator import validate_id
 
 class EditorDetails:
 
@@ -19,7 +20,7 @@ class EditorDetails:
         self.step=None
         self.precision=None
         self.subset=None
-        self.options=[]
+        self.index_names=[]
         self.idref=None
         if editor == None:
             LOGGER.critical("no editor given for EditorDetails ...")
@@ -43,8 +44,8 @@ class EditorDetails:
                         self.step = editor['step']
                     if 'precision' in editor:
                         self.precision = editor['precision']
-                if 'options' in editor:
-                    self.options = editor['options']
+                if 'index_names' in editor:
+                    self.index_names = editor['index_names']
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
@@ -68,10 +69,10 @@ class EditorDetails:
                 editor += (f" prec=\"{self.precision}\"")
             if self.step != None:
                 editor += (f" step=\"{self.step}\"")
-            if len(self.options) > 0 :
+            if len(self.index_names) > 0 :
                 editor += (f" nls=\"NLSIX_{self.id}\"")
-                for i in range(len(self.options)):
-                    nls += f"\nNLSIX_{self.id}-{i}={self.options[i]}"
+                for i in range(len(self.index_names)):
+                    nls += f"\nNLSIX_{self.id}-{i} = {self.index_names[i]}"
 
         editor += ("/>\n</editor>\n")
         return editor, nls
@@ -111,8 +112,14 @@ class Editors:
                 LOGGER.warn("the editor is missing id ... ignoring")
                 return None
             if ed.isRef() :
+                if not validate_id(ed.idref):
+                    LOGGER.critical(f"editor ids cannot include spaces ({ed.idref})... ")
+                    return None
                 self.refs.append(ed.idref)
             else:
+                if not validate_id(ed.id):
+                    LOGGER.critical(f"editor ids cannot include spaces ({ed.id})... ")
+                    return None
                 self.editors[ed.id]=ed
             return ed
         except Exception as ex:
