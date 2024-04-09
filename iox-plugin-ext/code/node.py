@@ -64,11 +64,11 @@ class NodeDetails:
                     editor_id = pty.editor.idref
                 self.commands.addInit("accepts", pty.id, editor_id)
 
-            cmds, cmds_nls = self.commands.toXML(self.id)
-            if cmds:
-                nodedef+=f"\n{cmds}"
-            if cmds_nls:
-                nls += f"\n{cmds_nls}"
+        cmds, cmds_nls = self.commands.toXML(self.id)
+        if cmds:
+            nodedef+=f"\n{cmds}"
+        if cmds_nls:
+            nls += f"\n{cmds_nls}"
             
 
         nodedef += "\n<nodedef>"

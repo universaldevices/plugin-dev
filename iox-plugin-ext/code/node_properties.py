@@ -86,7 +86,7 @@ class NodeProperties:
                 if nls_np:
                     nls += f"\n{nls_np}"
             sts += "\n</sts>"
-            return sts, np
+            return sts, nls
         except Exception as ex:
             LOGGER.critical(str(ex))
 

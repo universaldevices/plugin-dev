@@ -34,12 +34,16 @@ class CommandParam:
     def toXML(self, cmd_id:str, init_prop=None)->(str,str):
         nls=""
         param=""
+        editor_id = self.editor.id
+        if self.editor.isRef():
+            editor_id = self.editor.idref
 
-        param=f"<p id=\"{self.id}\" editor=\"{self.editor.id}\""
+        param=f"<p id=\"{self.id}\" editor=\"{editor_id}\""
         if init_prop:
-            param+=f" init=\"{init_prop}\"/>"
+            param+=f" init=\"{init_prop}\""
+        param+="/>"
         if self.name:
-            nls+=f"CMDP-{cmd_id}-{self.id}-NAME = self.name"
+            nls+=f"CMDP-{cmd_id}-{self.id}-NAME = {self.name}"
 
         return param, nls
 
@@ -85,7 +89,7 @@ class CommandDetails:
                    cmd+=f"\n{param_x}"
                 if param_nls:
                    nls+=f"\n{param_nls}"
-            cmd += f"</cmd>"
+            cmd += f"\n</cmd>"
 
         return cmd, nls
 
@@ -140,22 +144,22 @@ class Commands:
         cmds = "<cmds>"
         try:
             if len (self.sendCommands) == 0:
-                cmds += "<sends/>"
+                cmds += "\n<sends/>"
             else:
-                cmds += "<sends>"
+                cmds += "\n<sends>"
                 for c in self.sendCommands:
                     cmd = self.sendCommands[c]
                     cmd_x, cmd_nls = cmd.toXML(node_id)
                     if cmd_x:
-                        cmds += f"\n${cmd_x}"
+                        cmds += f"\n{cmd_x}"
                     if cmd_nls:
                         nls += f"\n{cmd_nls}"
-                cmds += "</sends>"
+                cmds += "\n</sends>"
 
             if len (self.acceptCommands) == 0:
-                cmds += "<accepts/>"
+                cmds += "\n<accepts/>"
             else:
-                cmds += "<accepts>"
+                cmds += "\n<accepts>"
                 for c in self.acceptCommands:
                     cmd = self.acceptCommands[c]
                     cmd_x, cmd_nls = cmd.toXML(node_id)
@@ -163,8 +167,8 @@ class Commands:
                         cmds += f"\n${cmd_x}"
                     if cmd_nls:
                         nls += f"\n{cmd_nls}"
-                cmds += "</accepts>"
-            cmds = "\n<cmds>"
+                cmds += "\n</accepts>"
+            cmds += "\n<cmds>"
             return cmds,nls
 
         except Exception as ex:

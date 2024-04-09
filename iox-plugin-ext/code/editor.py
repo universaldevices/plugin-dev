@@ -69,9 +69,9 @@ class EditorDetails:
             if self.step != None:
                 editor += (f" step=\"{self.step}\"")
             if len(self.options) > 0 :
-                editor += (f" nls=\"nls_{self.id}\"")
+                editor += (f" nls=\"NLSIX_{self.id}\"")
                 for i in range(len(self.options)):
-                    nls += f"nls_{self.id}-{i}={self.options[i]}\n"
+                    nls += f"\nNLSIX_{self.id}-{i}={self.options[i]}"
 
         editor += ("/>\n</editor>\n")
         return editor, nls

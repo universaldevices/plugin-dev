@@ -106,7 +106,7 @@ IX_LEAK-0 = No Leak Detected
 IX_LEAK-1 = Leak Detected 
 
 IX_SALT-0 = Normal
-IX_SALT_1 = Low
+IX_SALT-1 = Low
 
 IX_PUMP-0 = Off
 IX_PUMP-1 = Running
