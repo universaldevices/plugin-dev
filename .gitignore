@@ -39,3 +39,10 @@ drop/.vscode/
 drop/.vscode/*
 ext/iox-plugin-developer/node_modules/*
 ext/iox-plugin-developer/node_modules/
+iox-plugin-ext/code/__pycache__
+iox-plugin-ext/code/__pycache__/*
+iox-plugin-ext/profile
+iox-plugin-ext/profile/*
+iox-plugin-ext/vsc-extension-quickstart.md
+iox-plugin-ext/*.log
+
