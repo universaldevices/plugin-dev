@@ -13,6 +13,7 @@ from editor import Editors
 from plugin_meta import PluginMetaData
 from log import LOGGER
 from profile import ProfileWriter
+from validator import validate_id
 
 
 PLUGIN_SCHEMA_FILE="schemas/plugin.schema.json"
@@ -55,26 +56,30 @@ class Plugin:
             if 'nodedefs' in plugin_json:
                 self.nodes = Nodes(plugin_json['nodedefs'])
 
-            nodedefs, nls = self.nodes.toXML()
+        except Exception as ex:
+            raise
+
+    def toIoX(self)->bool:
+        if not self.validate():
+            LOGGER.critical("invalid json file ... ")
+            return False
+
+        try:
+            nodedefs, nls = self.nodes.toIoX()
             if nodedefs:
                 self.profileWriter.writeToNodeDef(nodedefs)
             if nls:
                 self.profileWriter.writeToNLS(nls)
 
-            editors, nls = self.editors.toXML()
+            editors, nls = self.editors.toIoX()
             if editors:
                 self.profileWriter.writeToEditor(editors)
             if nls:
                 self.profileWriter.writeToNLS(nls)
-            
-            pass
-
         except Exception as ex:
-            raise
+            LOGGER.critical(str(ex))
 
-
-         
-
+        return True
 
     def validate_json(self, schema:str, payload:str)->bool:
         ''' 
@@ -123,7 +128,13 @@ class Plugin:
         except Exception as ex:
             return False
 
-         
+    def validate(self):
+        n = self.nodes.validate()
+        e = self.editors.validate()
+
+        return n and e
+
 
 mod=Plugin("../ext/dimmer.iox_plugin.json")
+mod.toIoX()
 pass

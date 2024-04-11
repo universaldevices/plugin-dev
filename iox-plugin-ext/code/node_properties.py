@@ -8,7 +8,8 @@ Copyright (C) 2024 Universal Devices
 import json
 import os
 from editor import Editors
-from log import LOGGER 
+from log import LOGGER
+from validator import validate_id 
 
 
 
@@ -40,11 +41,14 @@ class NodePropertyDetails:
     def isSet(self)->bool:
         return self.is_settable 
 
-    def toXML(self, node_id:str)->(str, str):
+    def toIoX(self, node_id:str)->(str, str):
         nls = ""
         st = f"<st id=\"{self.id}\" editor=\"{self.editor.id}\" />"
         nls = f"ST-{node_id}-{self.id}-NAME = {self.name}"
         return st, nls
+
+    def validate(self):
+        return validate_id(self.id)
 
 
 class NodeProperties:
@@ -69,19 +73,30 @@ class NodeProperties:
 
         return self.node_properties[property]
 
-    def toXML(self, node_id:str)->(str, str):
+    def toIoX(self, node_id:str)->(str, str):
         nls = ""
         sts = "<sts>"
         try:
             for np in self.node_properties:
                 node_property = self.node_properties[np]
-                sts_np, nls_np = node_property.toXML(node_id)
+                sts_np, nls_np = node_property.toIoX(node_id)
                 if sts_np:
                     sts += f"\n{sts_np}"
                 if nls_np:
                     nls += f"\n{nls_np}"
             sts += "\n</sts>"
             return sts, nls
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+
+
+    def validate(self):
+        try:
+            rc = True
+            for n in self.node_properties:
+                if not self.node_properties[n].validate():
+                    rc = False
+            return rc
         except Exception as ex:
             LOGGER.critical(str(ex))
 

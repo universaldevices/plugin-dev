@@ -10,6 +10,7 @@ import os
 from node_properties import NodeProperties
 from commands import Commands
 from log import LOGGER
+from validator import validate_id
 
 
 class NodeDetails:
@@ -42,14 +43,14 @@ class NodeDetails:
             LOGGER.critical(str(ex))
             raise
 
-    def toXML(self)->(str,str):
+    def toIoX(self)->(str,str):
         nls = ""
         nodedef = f"<nodedef id=\"{self.id}\" nls=\"{self.id}\">"
         nls += f"\nND-{self.id}-NAME={self.name}"
         if self.icon != None:
             nls += f"\nND-{self.id}-ICON={self.icon}"
 
-        nprops, nprops_nls = self.properties.toXML(self.id)
+        nprops, nprops_nls = self.properties.toIoX(self.id)
         if nprops:
             nodedef += f"\n{nprops}" 
         if nprops_nls:
@@ -64,7 +65,7 @@ class NodeDetails:
                     editor_id = pty.editor.idref
                 self.commands.addInit("accepts", pty.id, editor_id)
 
-        cmds, cmds_nls = self.commands.toXML(self.id)
+        cmds, cmds_nls = self.commands.toIoX(self.id)
         if cmds:
             nodedef+=f"\n{cmds}"
         if cmds_nls:
@@ -73,6 +74,9 @@ class NodeDetails:
 
         nodedef += "\n<nodedef>"
         return nodedef, nls
+
+    def validate(self):
+        return validate_id(self.id) and self.commands.validate() and self.properties.validate()
 
 class Nodes:
     
@@ -90,12 +94,12 @@ class Nodes:
             LOGGER.critical(str(ex))
             raise
 
-    def toXML(self)->(str, str):
+    def toIoX(self)->(str, str):
         nls=""
         nodedefs="<nodedefs>\n"
         for n in self.nodes:
             node=self.nodes[n]
-            nd, nlsx = node.toXML()
+            nd, nlsx = node.toIoX()
             if nd:
                 nodedefs+=f"\n{nd}"
             if nlsx:
@@ -103,3 +107,14 @@ class Nodes:
 
         nodedefs += "\n<nodedefs>" 
         return nodedefs, nls
+
+    def validate(self):
+        try:
+            rc = True
+            for n in self.nodes:
+                if not self.nodes[n].validate():
+                    rc = False
+            return rc
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            return False

@@ -52,7 +52,7 @@ class EditorDetails:
 
 
     #returns editors + nls  
-    def toXML(self)->(str, str):
+    def toIoX(self)->(str, str):
         if self.id == None:
             LOGGER.warn("editor without an id ... ")
             return None, None
@@ -77,6 +77,11 @@ class EditorDetails:
         editor += ("/>\n</editor>\n")
         return editor, nls
 
+    def validate(self):
+        if self.isRef() :
+           return validate_id(self.idref)
+
+        return validate_id(self.id)
 
     def isSubset(self):
         return self.subset != None
@@ -112,14 +117,8 @@ class Editors:
                 LOGGER.warn("the editor is missing id ... ignoring")
                 return None
             if ed.isRef() :
-                if not validate_id(ed.idref):
-                    LOGGER.critical(f"editor ids cannot include spaces ({ed.idref})... ")
-                    return None
                 self.refs.append(ed.idref)
             else:
-                if not validate_id(ed.id):
-                    LOGGER.critical(f"editor ids cannot include spaces ({ed.id})... ")
-                    return None
                 self.editors[ed.id]=ed
             return ed
         except Exception as ex:
@@ -127,17 +126,13 @@ class Editors:
             return None
 
     #returns editor + nls
-    def toXML(self)->(str,str):
-        #warn if a ref does not exist
-        for idref in self.refs:
-            if idref not in self.editors:
-                LOGGER.warn(f"no editor with id of {idref} exists, so it cannot be referenced ... ")
+    def toIoX(self)->(str,str):
         try:
             editors = "<editors>" 
             nls = ""
             for ed in self.editors:
                 editor = self.editors[ed]
-                edx,nlsx=editor.toXML()
+                edx,nlsx=editor.toIoX()
                 if edx:
                     editors += edx
                 if nlsx:
@@ -147,6 +142,23 @@ class Editors:
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
+
+    def validate(self):
+        try:
+            rc = True
+            #warn if a ref does not exist
+            for idref in self.refs:
+                if idref not in self.editors:
+                    LOGGER.critical(f"no editor with id of \"{idref}\" exists, so it cannot be referenced ... ")
+                    rc = False
+
+            for e in self.editors:
+                if not self.editors[e].validate():
+                    rc = False
+            return rc
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            return False
             
     @staticmethod
     def getEditors():

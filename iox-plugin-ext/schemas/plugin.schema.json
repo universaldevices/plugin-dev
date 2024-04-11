@@ -25,6 +25,7 @@
           }
         }
   },
-  "required":["nodedefs"]
+  "required":["nodedefs"],
+  "additionalProperties": false
 }
  

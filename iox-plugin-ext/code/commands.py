@@ -9,6 +9,8 @@ import json
 import os
 from editor import Editors 
 from log import LOGGER
+from validator import validate_id
+
 
 class CommandParam:
 
@@ -31,7 +33,7 @@ class CommandParam:
             LOGGER.critical(str(ex))
             raise
 
-    def toXML(self, cmd_id:str, init_prop=None)->(str,str):
+    def toIoX(self, cmd_id:str, init_prop=None)->(str,str):
         nls=""
         param=""
         editor_id = self.editor.id
@@ -46,6 +48,11 @@ class CommandParam:
             nls+=f"CMDP-{cmd_id}-{self.id}-NAME = {self.name}"
 
         return param, nls
+
+    def validate(self)->bool:
+        return validate_id(self.id)
+
+
 
 class CommandDetails:
 
@@ -73,7 +80,7 @@ class CommandDetails:
             LOGGER.critical(str(ex))
             raise
 
-    def toXML(self, node_id:str)->(str,str):
+    def toIoX(self, node_id:str)->(str,str):
         nls = ""
         cmd = ""
         if self.name:
@@ -84,7 +91,7 @@ class CommandDetails:
             cmd = f"<cmd id=\"{self.id}\">"
             for p in self.params:
                 param=self.params[p]
-                param_x, param_nls=param.toXML(self.id, self.init_prop)
+                param_x, param_nls=param.toIoX(self.id, self.init_prop)
                 if param_x:
                    cmd+=f"\n{param_x}"
                 if param_nls:
@@ -93,6 +100,19 @@ class CommandDetails:
 
         return cmd, nls
 
+    def validate(self):
+        try:
+            if validate_id(self.id):
+                rc = True
+                for p in self.params:
+                    if not self.params[p].validate():
+                        rc = False
+                return rc
+            return False
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            return False
+
 
 class Commands:
     def __init__(self, commands):
@@ -100,6 +120,7 @@ class Commands:
         self.sendCommands={}
         if commands == None:
             LOGGER.critical("no commands given for the commands class ... ")
+            raise ValueError("no commands given for the commands class ... ")
             return
         try:
             if 'accepts' in commands:
@@ -139,7 +160,7 @@ class Commands:
         cmdList[i.id]=i
         return i
 
-    def toXML(self, node_id:str)->(str, str):
+    def toIoX(self, node_id:str)->(str, str):
         nls = ""
         cmds = "<cmds>"
         try:
@@ -149,7 +170,7 @@ class Commands:
                 cmds += "\n<sends>"
                 for c in self.sendCommands:
                     cmd = self.sendCommands[c]
-                    cmd_x, cmd_nls = cmd.toXML(node_id)
+                    cmd_x, cmd_nls = cmd.toIoX(node_id)
                     if cmd_x:
                         cmds += f"\n{cmd_x}"
                     if cmd_nls:
@@ -162,7 +183,7 @@ class Commands:
                 cmds += "\n<accepts>"
                 for c in self.acceptCommands:
                     cmd = self.acceptCommands[c]
-                    cmd_x, cmd_nls = cmd.toXML(node_id)
+                    cmd_x, cmd_nls = cmd.toIoX(node_id)
                     if cmd_x:
                         cmds += f"\n{cmd_x}"
                     if cmd_nls:
@@ -175,4 +196,18 @@ class Commands:
             LOGGER.critical(str(ex))
             return None, None
 
+    def validate(self)->bool:
+        try:
+            rc = True
+            for c in self.sendCommands:
+                if not self.sendCommands[c].validate():
+                    rc = False
 
+            for c in self.acceptCommands:
+                if not self.acceptCommands[c].validate():
+                    rc = False
+
+            return rc
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            return False

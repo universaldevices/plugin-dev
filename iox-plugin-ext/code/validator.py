@@ -9,16 +9,18 @@ from log import LOGGER
 import re
 
 def validate_id(id)->bool:
-    if id == None:
-        LOGGER.critical('validate_id - missing object ...')
-        return False
     try:
         if id == None or id == '':
             LOGGER.critical('validate_id - id does not exist ... ') 
             return False
 
         #cannot have spaces in ids
-        return not re.search(" ", id)
+        if re.search(" ", id):
+            LOGGER.critical(f'\"{id}\": ids cannot have spaces in between' )
+            return False
+
+        return True
 
     except Exception as ex:
-        raise
+        LOGGER.critical(str(ex))
+        return False

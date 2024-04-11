@@ -25,6 +25,7 @@
           "$ref": "commands.schema.json"
         }
   },
-  "required": ["id", "name", "properties", "commands"]
+  "required": ["id", "name", "properties", "commands"],
+  "additionalProperties": false
 }
  

@@ -75,5 +75,6 @@
       }
     }
   },
-  "required": ["accepts", "sends"]
+  "required": ["accepts", "sends"],
+  "additionalProperties": false
 }
