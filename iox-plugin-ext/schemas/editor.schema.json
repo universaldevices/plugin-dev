@@ -2,15 +2,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "description":"Editors are what help clients and program with constraints. \"options\" are used to provide human readable version of lists.\nYou have 3 choices:\n1.idref to reference another editor already used\n2. min/max/steps/precision/options, or \n3.sbuset/options",
-    "oneOf":
+  "description":"Editors are what help clients and program with constraints. \"index_names\" are used to provide human readable version of lists.\nYou have 3 choices:\n1.idref to reference another editor already used\n2. min/max/steps/precision/index_names, or \n3.sbuset/index_names",
+  "oneOf":
     [
             {
                 "properties":{
                     "idref": {
                         "type":"string",
+                        "pattern": "^[^\\s]+$",
                         "description": "A reference to the previously used id."
-
                     }
                 },
                 "required": ["idref"]
@@ -19,6 +19,7 @@
                 "properties":{
                     "id":{
                         "type":"string",
+                        "pattern": "^[^\\s]+$",
                         "description": "A unique id for this editor that can be reused by idref in other instances"
                     },
                     "uom":{
@@ -331,9 +332,10 @@
                                                                             "properties":{
                                                                                 "index_names":{
                                                                                     "type":"array",
-                                                                                    "description": "For index and percentage, these are human readable names for each index. Starts from 0 to max",
+                                                                                    "description": "Format is : name | index ",
                                                                                     "items":{
-                                                                                        "type":"string"
+                                                                                        "type":"string",
+                                                                                        "pattern": "^[^\\s]+\\|\\d+$"
                                                                                     }
                                                                                 }
                                                                             }
@@ -370,9 +372,10 @@
                     },
                     "index_names":{
                         "type":"array",
-                        "description": "For index and percentage, these are human readable options for each index. Starts from 0 to max",
+                        "description": "Format is : name | index ",
                         "items":{
-                            "type":"string"
+                            "type":"string",
+                            "pattern": "^[^\\s]+\\|\\d+$"
                         }
                     }
                 },

@@ -39,8 +39,10 @@ class UOMDetails:
         
         self.options = {}
         try:
-            self.uom = elements['enum'][0]
-            self.description = elements ['description']
+            val = elements['enum'][0]
+            parsed_list = [item.strip() for item in val.split('|')]
+            self.uom = parsed_list[1] 
+            self.description = parsed_list[0] 
             if 'oneOf' in elements:
                 self.__init_options(elements ['oneOf'])
         except Exception as ex:

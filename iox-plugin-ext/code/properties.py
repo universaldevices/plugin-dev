@@ -14,8 +14,10 @@ PROPERTIES_SCHEMA_FILE="schemas/properties.schema.json"
 class PropertyDetails:
     def __init__(self, elements):
         try:
-            self.id = elements['enum'][0]
-            self.description = elements ['description']
+            val = elements['enum'][0]
+            parsed_list = [item.strip() for item in val.split('|')]
+            self.id = parsed_list[1] 
+            self.description = parsed_list[0] 
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise

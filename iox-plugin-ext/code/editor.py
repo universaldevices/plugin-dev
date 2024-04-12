@@ -31,7 +31,9 @@ class EditorDetails:
                 self.id = None
             else:
                 self.id=editor['id']
-                self.uom=editor['uom']
+                val = editor['uom'] 
+                parsed_list = [item.strip() for item in val.split('|')]
+                self.uom=val[1]
 
                 if 'subset' in editor:
                     self.subset = editor ['subset']
@@ -72,7 +74,9 @@ class EditorDetails:
             if len(self.index_names) > 0 :
                 editor += (f" nls=\"NLSIX_{self.id}\"")
                 for i in range(len(self.index_names)):
-                    nls += f"\nNLSIX_{self.id}-{i} = {self.index_names[i]}"
+                    val = self.index_names[i] 
+                    parsed_list = [item.strip() for item in val.split('|')]
+                    nls += f"\nNLSIX_{self.id}-{parsed_list[1]} = {parsed_list[0]}"
 
         editor += ("/>\n</editor>\n")
         return editor, nls

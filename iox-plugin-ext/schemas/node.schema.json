@@ -4,6 +4,7 @@
   "properties": {
        "id": {
           "type": "string",
+          "pattern": "^[^\\s]+$",
           "description": "The id used to identify this node"
         },
         "name": {
