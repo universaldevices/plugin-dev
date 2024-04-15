@@ -130,3 +130,10 @@ class PluginMetaData:
         except Exception as ex:
             LOGGER.critical(str(ex))
             return None
+
+    def getRequirements(self):
+        try:
+            return self.metadata['requirements']
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            return None

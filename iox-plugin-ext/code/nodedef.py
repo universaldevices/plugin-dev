@@ -11,9 +11,10 @@ from node_properties import NodeProperties
 from commands import Commands
 from log import LOGGER
 from validator import validate_id
+import ast
 
 
-class NodeDetails:
+class NodeDefDetails:
     def __init__(self, node):
         self.id = None
         self.name = None
@@ -43,6 +44,21 @@ class NodeDetails:
             LOGGER.critical(str(ex))
             raise
 
+    def getPG3Commands(self)->[]:
+        commands = []
+
+        for c in self.commands.acceptCommands:
+            command = self.commands.acceptCommands[c]
+            commands.append(
+                {
+                    "id": f"{command.id}",
+                    "name": f"{command.name}"
+                }
+            )
+        return commands
+                    
+
+
     def toIoX(self)->(str,str):
         nls = ""
         nodedef = f"<nodedef id=\"{self.id}\" nls=\"{self.id}\">"
@@ -60,9 +76,7 @@ class NodeDetails:
         for p in self.properties.getAll():
             pty = self.properties.getProperty(p)
             if pty.isSet(): #set/init
-                editor_id = pty.editor.id
-                if pty.editor.isRef():
-                    editor_id = pty.editor.idref
+                editor_id = pty.editor.getEditorId()
                 self.commands.addInit("accepts", pty.id, editor_id)
 
         cmds, cmds_nls = self.commands.toIoX(self.id)
@@ -78,27 +92,33 @@ class NodeDetails:
     def validate(self):
         return validate_id(self.id) and self.commands.validate() and self.properties.validate()
 
-class Nodes:
+class NodeDefs:
     
     def __init__(self,nodes):
-        self.nodes = {}
+        self.nodedefs = {}
 
         if nodes == None:
             LOGGER.critical("no nodes were given ... ")
             return
         try:
             for node in nodes:
-                n = NodeDetails(node)
-                self.nodes[n.id] = n
+                n = NodeDefDetails(node)
+                self.nodedefs[n.id] = n
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
 
+    def size(self):
+        return len (self.nodedefs)
+
+    def getNodeDefs(self):
+        return self.nodedefs
+
     def toIoX(self)->(str, str):
         nls=""
         nodedefs="<nodedefs>\n"
-        for n in self.nodes:
-            node=self.nodes[n]
+        for n in self.nodedefs:
+            node=self.nodedefs[n]
             nd, nlsx = node.toIoX()
             if nd:
                 nodedefs+=f"\n{nd}"
@@ -111,8 +131,8 @@ class Nodes:
     def validate(self):
         try:
             rc = True
-            for n in self.nodes:
-                if not self.nodes[n].validate():
+            for n in self.nodedefs:
+                if not self.nodedefs[n].validate():
                     rc = False
             return rc
         except Exception as ex:

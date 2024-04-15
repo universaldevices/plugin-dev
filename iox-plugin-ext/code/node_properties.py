@@ -42,8 +42,9 @@ class NodePropertyDetails:
         return self.is_settable 
 
     def toIoX(self, node_id:str)->(str, str):
+        editorId = self.editor.getEditorId()
         nls = ""
-        st = f"<st id=\"{self.id}\" editor=\"{self.editor.id}\" />"
+        st = f"<st id=\"{self.id}\" editor=\"{editorId}\" />"
         nls = f"ST-{node_id}-{self.id}-NAME = {self.name}"
         return st, nls
 
@@ -89,6 +90,22 @@ class NodeProperties:
         except Exception as ex:
             LOGGER.critical(str(ex))
 
+    def getPG3Drivers(self)->[]:
+        drivers = []
+        for np in self.node_properties:
+            prop = self.node_properties[np]
+            if prop == None:
+                continue
+            editor = Editors.getEditors().editors[prop.editor.getEditorId()]
+            drivers.append(
+                {
+                  "driver": f"{prop.id}", 
+                  "value": 0, 
+                  "uom": editor.uom,
+                  "name": f"{prop.name}"
+                }
+            )
+        return drivers
 
     def validate(self):
         try:

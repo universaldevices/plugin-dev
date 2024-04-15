@@ -33,7 +33,7 @@ class EditorDetails:
                 self.id=editor['id']
                 val = editor['uom'] 
                 parsed_list = [item.strip() for item in val.split('|')]
-                self.uom=val[1]
+                self.uom=int(parsed_list[1])
 
                 if 'subset' in editor:
                     self.subset = editor ['subset']
@@ -82,16 +82,16 @@ class EditorDetails:
         return editor, nls
 
     def validate(self):
-        if self.isRef() :
-           return validate_id(self.idref)
-
-        return validate_id(self.id)
+        return validate_id(self.getEditorId())
 
     def isSubset(self):
         return self.subset != None
 
     def isRef(self):
         return self.idref != None
+
+    def getEditorId(self):
+        return self.idref if self.isRef() else self.id
 
 __allEditors = None
 

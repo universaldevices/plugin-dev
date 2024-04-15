@@ -122,6 +122,13 @@
             "type":"boolean",
             "default":false,
             "description": "Whether or not this plugin can directly communiate with IoX. If you choose true, the customer must explicitly accept"
+          },
+          "requirements":{
+            "type":"array",
+            "description": "pip packages to be installed",
+            "items":{
+              "type":"string"
+            }
           }
     }
   }

@@ -36,9 +36,7 @@ class CommandParam:
     def toIoX(self, cmd_id:str, init_prop=None)->(str,str):
         nls=""
         param=""
-        editor_id = self.editor.id
-        if self.editor.isRef():
-            editor_id = self.editor.idref
+        editor_id = self.editor.getEditorId()
 
         param=f"<p id=\"{self.id}\" editor=\"{editor_id}\""
         if init_prop:

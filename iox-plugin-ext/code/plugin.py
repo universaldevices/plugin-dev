@@ -8,12 +8,14 @@ Copyright (C) 2024 Universal Devices
 import fastjsonschema
 import json
 import os
-from node import Nodes
+from nodedef import NodeDefs
 from editor import Editors
 from plugin_meta import PluginMetaData
 from log import LOGGER
 from profile import ProfileWriter
 from validator import validate_id
+from iox_node_gen import IoXNodeGen
+import astor
 
 
 PLUGIN_SCHEMA_FILE="schemas/plugin.schema.json"
@@ -34,7 +36,7 @@ class Plugin:
     def __init__(self, plugin_file, schema=PLUGIN_SCHEMA_FILE):
         self.meta = None
         self.editors=Editors()
-        self.nodes:Nodes 
+        self.nodedefs:NodeDefs 
         self.isValid = False
         if plugin_file == None:
             LOGGER.critical("plugin file does not exist ... ")
@@ -54,7 +56,7 @@ class Plugin:
             if 'editors' in plugin_json:
                 self.editors.addEditors(plugin_json['editors'])
             if 'nodedefs' in plugin_json:
-                self.nodes = Nodes(plugin_json['nodedefs'])
+                self.nodedefs = NodeDefs(plugin_json['nodedefs'])
 
         except Exception as ex:
             raise
@@ -65,7 +67,7 @@ class Plugin:
             return False
 
         try:
-            nodedefs, nls = self.nodes.toIoX()
+            nodedefs, nls = self.nodedefs.toIoX()
             if nodedefs:
                 self.profileWriter.writeToNodeDef(nodedefs)
             if nls:
@@ -129,12 +131,42 @@ class Plugin:
             return False
 
     def validate(self):
-        n = self.nodes.validate()
+        n = self.nodedefs.validate()
         e = self.editors.validate()
 
         return n and e
 
+    def makePythonClasses(self, path:str):
+        try:
+            if path == None:
+                LOGGER.critical("need path to write python files to")
+                raise Exception("path to write python files to")
+
+            name = self.meta.getName()
+            excecutableName = self.meta.getExecutableName()
+            if name == None or excecutableName == None:
+                LOGGER.critical("need name for the plugin and the executable")
+                raise Exception("need name for the plugin and the executable")
+
+            if self.nodedefs.size() == 0:
+                LOGGER.critical("no nodedefs defined ...")
+                raise Exception("no nodedefs")
+
+            for nd in self.nodedefs.getNodeDefs():
+                ndef = self.nodedefs.getNodeDefs()[nd]
+                ngen = IoXNodeGen(ndef, path)
+                nc = ngen.create_node_class()
+                python_code = astor.to_source(nc)
+                with open(f'{path}/{ndef.name}.py', 'w') as file:
+                    file.write(python_code)
+                print (str(nc))
+
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            raise Exception(ex)
+
 
 mod=Plugin("../ext/dimmer.iox_plugin.json")
 mod.toIoX()
+mod.makePythonClasses(".")
 pass
