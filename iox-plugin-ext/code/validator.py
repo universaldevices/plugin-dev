@@ -24,3 +24,11 @@ def validate_id(id)->bool:
     except Exception as ex:
         LOGGER.critical(str(ex))
         return False
+
+def getValidName(name:str, capitalize=True)->str:
+    if name == None:
+        return "_Null_Name"
+    name = name.replace(' ','')
+    if capitalize:
+        return name[0].upper() + name[1:]
+    return name

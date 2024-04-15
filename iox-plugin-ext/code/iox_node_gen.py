@@ -2,6 +2,7 @@
 import ast
 from nodedef import NodeDefDetails, NodeProperties
 from log import LOGGER
+from validator import getValidName
 
 class IoXNodeGen():
     def __init__(self, nodedef:NodeDefDetails, path:str):
@@ -11,6 +12,9 @@ class IoXNodeGen():
 
         self.nodedef = nodedef
         self.path = path
+
+
+   
 
     def create_node_class(self ):
         # Create the class for the node 
@@ -58,8 +62,8 @@ class IoXNodeGen():
             targets=[ast.Name(id='commands', ctx=ast.Store())],
             value=ast.List(elts=[
                     ast.Dict(
-                        keys=[ast.Str(s='id'), ast.Str(s='name')],
-                        values=[ast.Str(s=command['id']), ast.Str(s=command['name'])]
+                        keys=[ast.Str(s=f"{command['id']}")],
+                        values=[ast.Name(id=f"{getValidName(command['name'],False)}", ctx=ast.Load())]
                     ) for command in commands
             ], ctx=ast.Load())
         )
@@ -83,23 +87,108 @@ class IoXNodeGen():
 
         class_def.body.append(init_method)
 
-        # Add updateInfo method
-        update_info_method = ast.FunctionDef(
-            name='updateInfo',
+        #create update and get methods
+
+        for driver in drivers:
+            set_driver_call=ast.Call(
+                        func=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),  # 'self' object
+                        attr='setDriver',  # Method name 'setDriver'
+                        ctx=ast.Load()
+                    ),
+                    args=[
+                        ast.Name(id=f"\"{driver['driver']}\"", ctx=ast.Load()),  # First, driver id
+                        ast.Name(id='value', ctx=ast.Load()),        # Second, value
+                        ast.Name(id=f"{driver['uom']}", ctx=ast.Load()) ,    # Third uom
+                        ast.Name(id='force', ctx=ast.Load())          # Whether or not to force update/boolean
+                    ],
+                    keywords=[],
+                    decorator_list=[]
+                )
+            return_stmt = ast.Return( value=set_driver_call)  # Return the result of update 
+            method = ast.FunctionDef(
+            name=f"update{getValidName(driver['name'])}",
             args=ast.arguments(
-                args=[ast.arg(arg='self'), ast.arg(arg='payload'), ast.arg(arg='topic', annotation=ast.Name(id='str', ctx=ast.Load()))],
+                args=[ast.arg(arg='self'), ast.arg(arg='value'), ast.arg(arg='force', annotation=ast.Name(id='bool', ctx=ast.Load()))],
                 defaults=[],
                 kwonlyargs=[], kw_defaults=[], vararg=None, kwarg=None
             ),
-            body=[],
+            body=[
+                return_stmt
+            ],
+            keywords=[],
             decorator_list=[]
-        )
-        class_def.body.append(update_info_method)
+            )
+            class_def.body.append(method)
 
-        # Add other methods and command dictionary similar to updateInfo
-        # For brevity, those parts are skipped. You can add them similarly.
+            ## Now getDriver
+            get_driver_call=ast.Call(
+                        func=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),  # 'self' object
+                        attr='getDriver',  # Method name 'getDriver'
+                        ctx=ast.Load()
+                    ),
+                    args=[
+                        ast.Name(id=f"\"{driver['driver']}\"", ctx=ast.Load())  # First, driver id
+                    ],
+                    keywords=[],
+                    decorator_list=[]
+                )
+            return_stmt = ast.Return( value=get_driver_call)  # Return the result of update 
+            method = ast.FunctionDef(
+            name=f"get{getValidName(driver['name'])}",
+            args=ast.arguments(
+                args=[ast.arg(arg='self')],
+                defaults=[],
+                kwonlyargs=[], kw_defaults=[], vararg=None, kwarg=None
+            ),
+            body=[
+                return_stmt
+            ],
+            keywords=[],
+            decorator_list=[]
+            )
+            class_def.body.append(method)
+
+        #now make the commands
+        for command in commands:
+            '''
+            set_driver_call=ast.Call(
+                        func=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),  # 'self' object
+                        attr='setDriver',  # Method name 'setDriver'
+                        ctx=ast.Load()
+                    ),
+                    args=[
+                        ast.Name(id=f"\"{driver['driver']}\"", ctx=ast.Load()),  # First, driver id
+                        ast.Name(id='value', ctx=ast.Load()),        # Second, value
+                        ast.Name(id=f"{driver['uom']}", ctx=ast.Load()) ,    # Third uom
+                        ast.Name(id='force', ctx=ast.Load())          # Whether or not to force update/boolean
+                    ],
+                    keywords=[],
+                    decorator_list=[]
+                )
+            return_stmt = ast.Return( value=set_driver_call)  # Return the result of update 
+            '''
+            pass_stmt = ast.Pass()
+            method = ast.FunctionDef(
+                name=getValidName(command['name'],False),
+                args=ast.arguments(
+                    args=[ast.arg(arg='self'), ast.arg(arg='command')],
+                    defaults=[],
+                    kwonlyargs=[], kw_defaults=[], vararg=None, kwarg=None
+                ),
+                body=[
+                    pass_stmt
+                ],
+                keywords=[],
+                decorator_list=[]
+            )
+            class_def.body.append(method)
 
         # Print the AST dump to verify
         print(ast.dump(class_def, indent=4))
 
         return class_def
+
+    

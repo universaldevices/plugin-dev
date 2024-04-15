@@ -9,7 +9,7 @@ import json
 import os
 from editor import Editors 
 from log import LOGGER
-from validator import validate_id
+from validator import validate_id, getValidName
 
 
 class CommandParam:
@@ -137,13 +137,14 @@ class Commands:
             LOGGER.critical(str(ex))
             raise
 
-    def addInit(self, type:str, property_id:str, editor_id:str):
+    def addInit(self, type:str, property_id:str, property_name:str, editor_id:str):
         cmdList = self.acceptCommands
         if type == "sends":
             cmdList = self.sendCommands
 
         init = {
                 "id": f"{property_id}",
+                "name":f"set{getValidName(property_name)}",
                 "params": [
                     {
                         "id" : f"{property_id}" ,

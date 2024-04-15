@@ -77,7 +77,7 @@ class NodeDefDetails:
             pty = self.properties.getProperty(p)
             if pty.isSet(): #set/init
                 editor_id = pty.editor.getEditorId()
-                self.commands.addInit("accepts", pty.id, editor_id)
+                self.commands.addInit("accepts", pty.id, pty.name, editor_id)
 
         cmds, cmds_nls = self.commands.toIoX(self.id)
         if cmds:
