@@ -20,6 +20,7 @@ class NodeDefDetails:
         self.name = None
         self.parent = None
         self.icon = None
+        self.isController = False
         self.properties:NodeProperties
         self.commands:Commands
 
@@ -62,9 +63,9 @@ class NodeDefDetails:
     def toIoX(self)->(str,str):
         nls = ""
         nodedef = f"<nodedef id=\"{self.id}\" nls=\"{self.id}\">"
-        nls += f"\nND-{self.id}-NAME={self.name}"
+        nls += f"\nND-{self.id}-NAME = {self.name}"
         if self.icon != None:
-            nls += f"\nND-{self.id}-ICON={self.icon}"
+            nls += f"\nND-{self.id}-ICON = {self.icon}"
 
         nprops, nprops_nls = self.properties.toIoX(self.id)
         if nprops:
@@ -107,6 +108,56 @@ class NodeDefs:
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
+
+    def addController(self, controllerName, icon=None):
+        controllerId = f'{controllerName}Ctrl'
+        addedController=False
+        for n in self.nodedefs:
+            node=self.nodedefs[n]
+            if not node.parent:
+                node.parent=controllerId
+                addedController=True
+
+        controllerNodeDefDict = {
+            "id":controllerId,
+            "name":controllerName,
+            "parent":controllerId,
+            "icon":icon if icon else "GenericCtl",
+            "properties":[ 
+                {
+                    "id": "Status | ST",
+                    "name": "Status",
+                    "editor": {
+                        "id":"CTL_BOOL",
+                        "uom": "Boolean | 2",
+                        "min": 0,
+                        "max": 1
+                    } ,
+                    "is_settable": False
+                }
+            ],
+            "commands": {
+                "accepts": [
+                    {
+                        "id": "discover",
+                        "name": "Discover"
+                    },
+                    {
+                        "id": "query",
+                        "name": "Query"
+                    }
+                ],
+                "sends": []
+                }
+           }
+
+
+        if addedController:
+            controllerNodeDef = NodeDefDetails(controllerNodeDefDict)
+            controllerNodeDef.isController = True
+            self.nodedefs[controllerId]=controllerNodeDef
+
+
 
     def size(self):
         return len (self.nodedefs)

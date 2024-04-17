@@ -25,7 +25,9 @@ class NodePropertyDetails:
             return
         try: 
             if 'id' in node_property:
-                self.id = node_property['id']
+                val = node_property['id']
+                parsed_list = [item.strip() for item in val.split('|')]
+                self.id=parsed_list[1] if len(parsed_list)==2 else val
             if 'name' in node_property:
                 self.name = node_property['name']
             if 'is_settable' in node_property:

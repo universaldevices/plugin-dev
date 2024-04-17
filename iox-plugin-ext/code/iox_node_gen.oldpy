@@ -148,83 +148,12 @@ class Controller(udi_interface.Node):
         self.poly.addNode(self)
 
     def addAllNodes(self): 
-        config = self.poly.getConfig()
-        if config == None or config['nodes'] == None:
-            self.valid_configuration=True
-            return
-
-        for node in config['nodes']:
-            nodeDef = node['nodeDefId']
-            if nodeDef == "DROPCTRL":
-                continue
-            address = node['address']
-            primary = node['primaryNode']
-            name = node['name']
-            if nodeDef == "DROPHUB":
-                self.addHub(address, name)
-            else:
-                self.addDevice(nodeDef, address, name)
-        LOGGER.info("Done adding nodes, ...")
-        self.valid_configuration=True
 
     def addHub(self, address, name)->udi_interface.Node:
         self.poly.addNode(DropHub(self.poly,address,name))
         return self.poly.getNode(address)
 
-    def addDevice(self, nodeDef:str, endDeviceAddress:str, devName:str):
-        if nodeDef == None:
-            return
-        devNode = None
-        if nodeDef == "DROPSOFT":
-            devNode=DropSoftener(self.poly, self, endDeviceAddress, devName)
-        elif nodeDef == "DROPFILT":
-            devNode=DropSoftener(self.poly, self, endDeviceAddress, devName)
-        elif nodeDef == "DROPSALT":
-            devNode=DropSalt(self.poly, self, endDeviceAddress, devName)
-        elif nodeDef == "DROPPV":
-            devNode=DropPV(self.poly, self, endDeviceAddress, devName)
-        elif nodeDef == "DROPPC":
-            devNode=DropPC(self.poly, self, endDeviceAddress, devName)
-        elif nodeDef == "DROPLEAK":
-            devNode=DropLeakDetector(self.poly, self, endDeviceAddress, devName)
-        elif nodeDef == "DROPRO":
-            devNode=DropRO(self.poly, self, endDeviceAddress, devName)
 
-        if devNode == None:
-            LOGGER.error("invalid nodedef id {}".format(nodeDef))
-            return
-        self.poly.addNode(devNode)
-        #address map should already have them
-
-    def parameter_handler(self, params):
-        self.poly.Notices.clear()
-        self.Parameters.load(params)
-        LOGGER.info("Started MQTT controller")
-        self.mqtt_server = self.Parameters["mqtt_server"] or 'localhost'
-        self.mqtt_port = int(self.Parameters["mqtt_port"] or 1884)
-
-        return True
-
-    def start(self):
-        self.addAllNodes()
-        polyglot.updateProfile()
-        self.poly.setCustomParamsDoc()
-
-        self.mqttc = mqtt.Client()
-        self.mqttc.on_connect = self._on_connect
-        self.mqttc.on_disconnect = self._on_disconnect
-        self.mqttc.on_message = self._on_message
-        self.mqttc.is_connected = False
-
-        #self.mqttc.username_pw_set(self.mqtt_user, self.mqtt_password)
-        try:
-            self.mqttc.connect(self.mqtt_server, self.mqtt_port, 10)
-            self.mqttc.loop_start()
-        except Exception as ex:
-            LOGGER.error("Error connecting to Poly MQTT broker {}".format(ex))
-            return False
-
-        LOGGER.info("Start")
 
     def _add_status_topics(self, dev, status_topics: List[str]):
         for status_topic in status_topics:
@@ -366,12 +295,6 @@ class Controller(udi_interface.Node):
     def mqtt_pub(self, topic, message):
         self.mqttc.publish(topic, message, retain=False)
 
-    def stop(self):
-        if self.mqttc is None:
-            return
-        self.mqttc.loop_stop()
-        self.mqttc.disconnect()
-        LOGGER.info("MQTT is stopping")
 
     def query(self, command=None):
         for node in self.poly.getNodes().values():
@@ -507,6 +430,7 @@ class DropHub(udi_interface.Node):
             return devNode
         except Exception as ex:
             LOGGER.error("failed creating {} node".format(devType))
+        LOGGER.info("MQTT is stopping")
 
     def water(self, command):
         try:

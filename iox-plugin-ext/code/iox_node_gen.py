@@ -4,7 +4,8 @@ from nodedef import NodeDefDetails, NodeProperties
 from commands import CommandDetails, CommandParam
 from log import LOGGER
 from validator import getValidName
-from ast_util import astReturnBoolean, astIndexAssignment, astCommandParamAssignment, astTryExcept, astLogger, astCommandQueryParams, astComment
+from ast_util import astReturnBoolean, astIndexAssignment, astCommandParamAssignment, astTryExcept, astLogger, \
+astCommandQueryParams, astComment, astControllerBody, astParamHandlerFunc, astStartFunc, astStopFunc, astStartFunc
 from uom import UOMs
 from editor import Editors
 
@@ -146,6 +147,12 @@ class IoXNodeGen():
 
         class_def.body.append(commands_list)
 
+        init_body=[ast.Expr(value=ast.Call(func=ast.Attribute(value=ast.Name(id='super', ctx=ast.Load()), attr='__init__', ctx=ast.Load()),
+                                       args=[ast.Name(id='self'), ast.Name(id='poly'), ast.Name(id='controller'), ast.Name(id='address'), ast.Name(id='name')],
+                                       keywords=[]))]
+        if self.nodedef.isController:
+           init_body+=astControllerBody() 
+
         # Add __init__ method
         init_method = ast.FunctionDef(
             name='__init__',
@@ -155,13 +162,17 @@ class IoXNodeGen():
                      ast.Str(self.nodedef.parent if self.nodedef.parent else self.nodedef.id),  ast.Str(s=self.nodedef.id),  ast.Str(s=self.nodedef.name)],
                 kwonlyargs=[], kw_defaults=[], vararg=None, kwarg=None
             ),
-            body=[ast.Expr(value=ast.Call(func=ast.Attribute(value=ast.Name(id='super', ctx=ast.Load()), attr='__init__', ctx=ast.Load()),
-                                       args=[ast.Name(id='self'), ast.Name(id='poly'), ast.Name(id='controller'), ast.Name(id='address'), ast.Name(id='name')],
-                                       keywords=[]))],
+            body = init_body,
+            #body=[ast.Expr(value=ast.Call(func=ast.Attribute(value=ast.Name(id='super', ctx=ast.Load()), attr='__init__', ctx=ast.Load()),
+                           #            args=[ast.Name(id='self'), ast.Name(id='poly'), ast.Name(id='controller'), ast.Name(id='address'), ast.Name(id='name')],
+                           #            keywords=[]))],
             decorator_list=[]
         )
 
         class_def.body.append(init_method)
+        class_def.body.append(astParamHandlerFunc())
+        class_def.body.append(astStartFunc())
+        class_def.body.append(astStopFunc())
 
         #create update and get methods
 
