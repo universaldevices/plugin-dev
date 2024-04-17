@@ -5,7 +5,8 @@ from commands import CommandDetails, CommandParam
 from log import LOGGER
 from validator import getValidName
 from ast_util import astReturnBoolean, astIndexAssignment, astCommandParamAssignment, astTryExcept, astLogger, \
-astCommandQueryParams, astComment, astControllerBody, astParamHandlerFunc, astStartFunc, astStopFunc, astStartFunc
+astCommandQueryParams, astComment, astControllerBody, astParamHandlerFunc, astStartFunc, astStopFunc, astStartFunc, \
+astPollFunc, astAddAllNodesFunc, astAddNodeFunc
 from uom import UOMs
 from editor import Editors
 
@@ -173,6 +174,9 @@ class IoXNodeGen():
         class_def.body.append(astParamHandlerFunc())
         class_def.body.append(astStartFunc())
         class_def.body.append(astStopFunc())
+        class_def.body.append(astPollFunc())
+        class_def.body.append(astAddAllNodesFunc())
+        class_def.body.append(astAddNodeFunc())
 
         #create update and get methods
 

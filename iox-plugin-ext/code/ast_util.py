@@ -32,7 +32,6 @@ def astLogger(level, message, add_exception=True):
     # Create an AST node for the LOGGER.error call with an f-string
     t_values=[
                 ast.Str(s=message),  # Static part of the string
-                ast.Str(s="Stopping "),
                 ast.FormattedValue(
                     value=ast.Attribute(
                         value=ast.Name(id='self', ctx=ast.Load()),
@@ -174,6 +173,11 @@ def astControllerBody():
             keywords=[]
         )
     )
+    
+    valid_config = ast.Assign(
+                targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
+                value=ast.Constant(value=False)
+    )
 
     # Create a list to store method calls
     method_calls = []
@@ -207,7 +211,7 @@ def astControllerBody():
     ))
     method_calls.append(add_all_nodes_call)
 
-    return [assignment] + method_calls
+    return [assignment, valid_config] + method_calls
 
 def astParamHandlerFunc():
     # Create AST nodes for each statement in the function body
@@ -295,7 +299,7 @@ def astStopFunc():
     log_stop = astLogger('info', 'Stopping ... ', False)
     return_true = astReturnBoolean(True)
 
-    # Function definition: def stop(self):
+    #dFunction definition: def stop(self):
     function_def = ast.FunctionDef(
         name='stop',
         args=ast.arguments(
@@ -306,6 +310,258 @@ def astStopFunc():
             defaults=[]
         ),
         body=[log_stop, return_true],
+        decorator_list=[],
+        returns=None
+    )
+
+    return function_def
+
+def astPollFunc():
+    # LOGGER.info("short poll")
+    log_short_poll = astLogger('info', 'Short poll ... ', False)
+    log_long_poll = astLogger('info', 'Long poll ... ', False)
+
+    # Elif 'longPoll' in polltype
+    elif_long_poll = ast.If(
+        test=ast.Compare(
+            left=ast.Constant(value='longPoll'),
+            ops=[ast.In()],
+            comparators=[ast.Name(id='polltype', ctx=ast.Load())]
+        ),
+        body=[log_long_poll],
+        orelse=[]
+    )
+
+    # If 'shortPoll' in polltype
+    if_short_poll = ast.If(
+        test=ast.Compare(
+            left=ast.Constant(value='shortPoll'),
+            ops=[ast.In()],
+            comparators=[ast.Name(id='polltype', ctx=ast.Load())]
+        ),
+        body=[log_short_poll],
+        orelse=[elif_long_poll]  # Elif is represented by an If in the orelse of the first If
+    )
+
+    # Function definition: def poll(polltype):
+    function_def = ast.FunctionDef(
+        name='poll',
+        args=ast.arguments(
+            posonlyargs=[],
+            args=[ast.arg(arg='polltype')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]
+        ),
+        body=[if_short_poll],
+        decorator_list=[],
+        returns=None
+    )
+
+    return function_def
+
+def astAddAllNodesFunc():
+    # Method call: config = self.poly.getConfig()
+    config_assignment = ast.Assign(
+        targets=[ast.Name(id='config', ctx=ast.Store())],
+        value=ast.Call(
+            func=ast.Attribute(
+                value=ast.Attribute(
+                    value=ast.Name(id='self', ctx=ast.Load()),
+                    attr='poly',
+                    ctx=ast.Load()),
+                attr='getConfig',
+                ctx=ast.Load()),
+            args=[],
+            keywords=[]
+        )
+    )
+
+    # Check if config is None or config['nodes'] is None
+    if_config = ast.If(
+        test=ast.BoolOp(
+            op=ast.Or(),
+            values=[
+                ast.Compare(
+                    left=ast.Name(id='config', ctx=ast.Load()),
+                    ops=[ast.Is()],
+                    comparators=[ast.Constant(value=None)]
+                ),
+                ast.Compare(
+                    left=ast.Subscript(
+                        value=ast.Name(id='config', ctx=ast.Load()),
+                        slice=ast.Index(value=ast.Str(s='nodes')),
+                        ctx=ast.Load()
+                    ),
+                    ops=[ast.Is()],
+                    comparators=[ast.Constant(value=None)]
+                )
+            ]
+        ),
+        body=[
+            ast.Assign(
+                targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
+                value=ast.Constant(value=True)
+            ),
+            ast.Return(value=None)
+        ],
+        orelse=[]
+    )
+
+    # For loop over config['nodes']
+    for_loop = ast.For(
+        target=ast.Name(id='node', ctx=ast.Store()),
+        iter=ast.Subscript(
+            value=ast.Name(id='config', ctx=ast.Load()),
+            slice=ast.Index(value=ast.Str(s='nodes')),
+            ctx=ast.Load()
+        ),
+        body=[
+            ast.Assign(
+                targets=[ast.Name(id='nodeDef', ctx=ast.Store())],
+                value=ast.Subscript(
+                    value=ast.Name(id='node', ctx=ast.Load()),
+                    slice=ast.Index(value=ast.Str(s='nodeDefId')),
+                    ctx=ast.Load()
+                )
+            ),
+            ast.Assign(
+                targets=[ast.Name(id='address', ctx=ast.Store())],
+                value=ast.Subscript(
+                    value=ast.Name(id='node', ctx=ast.Load()),
+                    slice=ast.Index(value=ast.Str(s='address')),
+                    ctx=ast.Load()
+                )
+            ),
+            ast.Assign(
+                targets=[ast.Name(id='primary', ctx=ast.Store())],
+                value=ast.Subscript(
+                    value=ast.Name(id='node', ctx=ast.Load()),
+                    slice=ast.Index(value=ast.Str(s='primaryNode')),
+                    ctx=ast.Load()
+                )
+            ),
+            ast.Assign(
+                targets=[ast.Name(id='name', ctx=ast.Store())],
+                value=ast.Subscript(
+                    value=ast.Name(id='node', ctx=ast.Load()),
+                    slice=ast.Index(value=ast.Str(s='name')),
+                    ctx=ast.Load()
+                )
+            ),
+            ast.Expr(
+                value=ast.Call(
+                    func=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),
+                        attr='__addNode',
+                        ctx=ast.Load()
+                    ),
+                    args=[
+                        ast.Name(id='nodeDef', ctx=ast.Load()),
+                        ast.Name(id='address', ctx=ast.Load()),
+                        ast.Name(id='name', ctx=ast.Load())
+                    ],
+                    keywords=[]
+                )
+            )
+        ],
+        orelse=[]
+    )
+    logger_info = astLogger('info', 'Done adding nodes ...', False)
+
+    # Set self.valid_configuration = True
+    set_valid_config = ast.Assign(
+        targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
+        value=ast.Constant(value=True)
+    )
+
+    # Function definition: def addAllNodes(self):
+    function_def = ast.FunctionDef(
+        name='addAllNodes',
+        args=ast.arguments(
+            posonlyargs=[],
+            args=[ast.arg(arg='self')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]
+        ),
+        body=[config_assignment, if_config, for_loop, logger_info, set_valid_config],
+        decorator_list=[],
+        returns=None
+    )
+
+    return function_def
+
+
+import ast
+
+def astAddNodeFunc():
+    # Create nodes for function parameters with type annotations
+    args = ast.arguments(
+        posonlyargs=[],
+        args=[
+            ast.arg(arg='self'),
+            ast.arg(arg='nodeDef', annotation=ast.Name(id='str', ctx=ast.Load())),
+            ast.arg(arg='endDeviceAddress', annotation=ast.Name(id='str', ctx=ast.Load())),
+            ast.arg(arg='devName', annotation=ast.Name(id='str', ctx=ast.Load())),
+        ],
+        kwonlyargs=[],
+        kw_defaults=[],
+        defaults=[]
+    )
+
+    # Check if nodeDef is None
+    if_node_def_none = ast.If(
+        test=ast.Compare(
+            left=ast.Name(id='nodeDef', ctx=ast.Load()),
+            ops=[ast.Is()],
+            comparators=[ast.Constant(value=None)]
+        ),
+        body=[ast.Return(value=None)],
+        orelse=[]
+    )
+
+    # Initialize devNode to None
+    init_dev_node = ast.Assign(
+        targets=[ast.Name(id='devNode', ctx=ast.Store())],
+        value=ast.Constant(value=None)
+    )
+
+    # Check if devNode is None and log error
+    if_dev_node_none = ast.If(
+        test=ast.Compare(
+            left=ast.Name(id='devNode', ctx=ast.Load()),
+            ops=[ast.Is()],
+            comparators=[ast.Constant(value=None)]
+        ),
+        body=[
+            astLogger('error', 'invalid noddef id ...', False),
+            ast.Return(value=None)
+        ],
+        orelse=[]
+    )
+
+    # Add devNode to poly
+    add_node_call = ast.Expr(value=ast.Call(
+        func=ast.Attribute(
+            value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()),
+            attr='addNode',
+            ctx=ast.Load()
+        ),
+        args=[ast.Name(id='devNode', ctx=ast.Load())],
+        keywords=[]
+    ))
+
+    # Function definition
+    function_def = ast.FunctionDef(
+        name='__addNode',
+        args=args,
+        body=[
+            if_node_def_none,
+            init_dev_node,
+            if_dev_node_none,
+            add_node_call
+        ],
         decorator_list=[],
         returns=None
     )
