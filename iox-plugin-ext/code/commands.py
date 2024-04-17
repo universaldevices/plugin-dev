@@ -111,6 +111,12 @@ class CommandDetails:
             LOGGER.critical(str(ex))
             return False
 
+    def hasParams(self):
+        return len(self.params) > 0
+
+    def getParams(self):
+        return self.params
+
 
 class Commands:
     def __init__(self, commands):
