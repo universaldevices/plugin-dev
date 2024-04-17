@@ -1,5 +1,6 @@
 import ast
 
+
 def astComment(comment):
     return None
     #return ast.Expr(value=ast.Constant(value=comment))
@@ -9,6 +10,59 @@ def astReturnBoolean(val:bool):
     return ast.Return(
         value=ast.Constant(value=val)  # Using ast.Constant for Python 3.8 and later
     )
+
+def astCreateImports():
+    import_node = ast.Import(
+        names=[
+                ast.alias(name='udi_interface', asname=None),
+                ast.alias(name='os', asname=None),
+                ast.alias(name='sys', asname=None),
+                ast.alias(name='json', asname=None),
+                ast.alias(name='time', asname=None)
+            ]
+    )
+    return import_node 
+
+def astCreateImport(import_name):
+    return ast.Import(
+        names=[
+                ast.alias(name=import_name, asname=None)
+            ]
+    )
+
+def astCreateImportFrom(module_name, class_name):
+    # Creating an AST node for 'from udi_interface import crap'
+    return ast.ImportFrom(
+        module=module_name,
+        names=[ast.alias(name=class_name, asname=None)],
+        level=0
+    )
+
+def astCreateGlobals(logger_only=False):
+    # AST node for 'LOGGER = udi_interface.LOGGER'
+    assign_LOGGER = ast.Assign(
+    targets=[ast.Name(id='LOGGER', ctx=ast.Store())],
+    value=ast.Attribute(
+            value=ast.Name(id='udi_interface', ctx=ast.Load()),
+            attr='LOGGER',
+            ctx=ast.Load()
+            )
+        )
+
+    if logger_only:
+        return [assign_LOGGER]
+
+    # AST node for 'Custom = udi_interface.Custom'
+    assign_Custom = ast.Assign(
+    targets=[ast.Name(id='Custom', ctx=ast.Store())],
+    value=ast.Attribute(
+            value=ast.Name(id='udi_interface', ctx=ast.Load()),
+            attr='Custom',
+            ctx=ast.Load()
+            )
+    )
+
+    return [assign_LOGGER, assign_Custom]
 
 
 def astIndexAssignment(variable_name, param, command):
@@ -31,16 +85,17 @@ def astIndexAssignment(variable_name, param, command):
 def astLogger(level, message, add_exception=True):
     # Create an AST node for the LOGGER.error call with an f-string
     t_values=[
-                ast.Str(s=message),  # Static part of the string
-                ast.FormattedValue(
-                    value=ast.Attribute(
-                        value=ast.Name(id='self', ctx=ast.Load()),
-                        attr='name',
-                        ctx=ast.Load()
-                    ),
-                    conversion=-1,  # -1 indicates default string conversion
-                    format_spec=None
-                )
+                ast.Str(s=message)  # Static part of the string
+                #ast.Str(s=message),  # Static part of the string
+                #ast.FormattedValue(
+                #    value=ast.Attribute(
+                #        value=ast.Name(id='self', ctx=ast.Load()),
+                #        attr='name',
+                #        ctx=ast.Load()
+                #    ),
+                #    conversion=-1,  # -1 indicates default string conversion
+                #    format_spec=None
+                #)
             ]
 
     if add_exception:
@@ -183,8 +238,8 @@ def astControllerBody():
     method_calls = []
 
     # Subscribing to various events
-    events = ['START', 'CUSTOMPARAMS', 'POLL', 'STOP']
-    methods = ['start', 'parameter_handler', 'poll', 'stop']
+    events = ['START', 'CUSTOMPARAMS', 'POLL', 'STOP', 'CONFIG']
+    methods = ['start', 'parameter_handler', 'poll', 'stop', 'config']
     for event, method in zip(events, methods):
         subscribe_call = ast.Expr(value=ast.Call(
             func=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()),
@@ -302,6 +357,28 @@ def astStopFunc():
     #dFunction definition: def stop(self):
     function_def = ast.FunctionDef(
         name='stop',
+        args=ast.arguments(
+            posonlyargs=[],
+            args=[ast.arg(arg='self')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]
+        ),
+        body=[log_stop, return_true],
+        decorator_list=[],
+        returns=None
+    )
+
+    return function_def
+
+def astConfigFunc():
+    # Function body: LOGGER.info(f"Stopping {self.name}")
+    log_stop = astLogger('info', 'Config ... ', False)
+    return_true = astReturnBoolean(True)
+
+    #dFunction definition: def stop(self):
+    function_def = ast.FunctionDef(
+        name='config',
         args=ast.arguments(
             posonlyargs=[],
             args=[ast.arg(arg='self')],
@@ -567,4 +644,83 @@ def astAddNodeFunc():
     )
 
     return function_def
+
+def astCreateMainFunc(controller):
+    try_body = [
+        ast.Assign(
+            targets=[ast.Name(id='polyglot', ctx=ast.Store())],
+            value=ast.Call(
+                func=ast.Attribute(value=ast.Name(id='udi_interface', ctx=ast.Load()), attr='Interface', ctx=ast.Load()),
+                args=[ast.List(elts=[], ctx=ast.Load())],
+                keywords=[]
+            )
+        ),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='start', ctx=ast.Load()),
+            args=[ast.Attribute(value=ast.Name(id='version', ctx=ast.Load()), attr='ud_plugin_version', ctx=ast.Load())],
+            keywords=[]
+        )),
+        ast.Assign(
+            targets=[ast.Name(id='controller', ctx=ast.Store())],
+            value=ast.Call(
+                func=ast.Name(id=controller, ctx=ast.Load()),
+                args=[ast.Name(id='polyglot', ctx=ast.Load())],
+                keywords=[]
+            )
+        ),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='addNode', ctx=ast.Load()),
+            args=[ast.Name(id='controller', ctx=ast.Load())],
+            keywords=[]
+        )),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='runForever', ctx=ast.Load()),
+            args=[],
+            keywords=[]
+        ))
+    ]
+
+    # The except block handling KeyboardInterrupt and SystemExit
+    except_handlers = [
+        ast.ExceptHandler(
+            type=ast.Tuple(elts=[
+                ast.Name(id='KeyboardInterrupt', ctx=ast.Load()),
+                ast.Name(id='SystemExit', ctx=ast.Load())
+            ], ctx=ast.Load()),
+            name=None,
+            body=[
+                ast.Expr(value=ast.Call(
+                    func=ast.Attribute(value=ast.Name(id='LOGGER', ctx=ast.Load()), attr='info', ctx=ast.Load()),
+                    args=[ast.Constant(value="exiting ...")],
+                    keywords=[]
+                )),
+                ast.Expr(value=ast.Call(
+                    func=ast.Name(id='sys', ctx=ast.Load()),
+                    attr='exit',
+                    args=[ast.Constant(value=0)],
+                    keywords=[]
+                ))
+            ]
+        )
+    ]
+
+    # The main if block
+    main_if = ast.If(
+        test=ast.Compare(
+            left=ast.Name(id='__name__', ctx=ast.Load()),
+            ops=[ast.Eq()],
+            comparators=[ast.Constant(value="__main__")]
+        ),
+        body=[
+            ast.Try(
+                body=try_body,
+                handlers=except_handlers,
+                orelse=[],
+                finalbody=[]
+            )
+        ],
+        orelse=[]
+    )
+
+    return main_if
 

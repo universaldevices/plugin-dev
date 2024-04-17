@@ -16,6 +16,8 @@ from profile import ProfileWriter
 from validator import validate_id
 from iox_node_gen import IoXNodeGen
 import astor
+import ast_util
+from main_gen import PluginMain
 
 
 PLUGIN_SCHEMA_FILE="schemas/plugin.schema.json"
@@ -153,29 +155,8 @@ class Plugin:
                 LOGGER.critical("no nodedefs defined ...")
                 raise Exception("no nodedefs")
 
-
-            for nd in self.nodedefs.getNodeDefs():
-                ndef = self.nodedefs.getNodeDefs()[nd]
-                ngen = IoXNodeGen(ndef, path)
-
-                file_path=f'{path}/{ndef.name}Node.py'
-
-                imports = ngen.create_imports()
-                python_code = astor.to_source(imports)
-                with open(file_path, 'w') as file:
-                    file.write(python_code)
-
-                global_defs = ngen.create_globals()
-                for global_def in global_defs:
-                    python_code = astor.to_source(global_def)
-                    with open(file_path, 'a') as file:
-                        file.write(python_code)
-
-                nc = ngen.create_node_class()
-                python_code = astor.to_source(nc)
-                with open(file_path, 'a') as file:
-                    file.write(python_code)
-                print (str(nc))
+            main = PluginMain(path, self.meta, self.nodedefs)
+            main.create()
 
         except Exception as ex:
             LOGGER.critical(str(ex))

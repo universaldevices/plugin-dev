@@ -1,12 +1,9 @@
-
-import ast
+import ast, astor
 from nodedef import NodeDefDetails, NodeProperties
 from commands import CommandDetails, CommandParam
 from log import LOGGER
 from validator import getValidName
-from ast_util import astReturnBoolean, astIndexAssignment, astCommandParamAssignment, astTryExcept, astLogger, \
-astCommandQueryParams, astComment, astControllerBody, astParamHandlerFunc, astStartFunc, astStopFunc, astStartFunc, \
-astPollFunc, astAddAllNodesFunc, astAddNodeFunc
+import ast_util 
 from uom import UOMs
 from editor import Editors
 
@@ -20,48 +17,13 @@ class IoXNodeGen():
         self.path = path
 
 
-    def create_imports(self):
-        import_node = ast.Import(
-            names=[
-                ast.alias(name='udi_interface', asname=None),
-                ast.alias(name='os', asname=None),
-                ast.alias(name='sys', asname=None),
-                ast.alias(name='json', asname=None),
-                ast.alias(name='time', asname=None)
-            ]
-        )
-        return import_node 
-
-    
-    def create_globals(self):
-        # AST node for 'LOGGER = udi_interface.LOGGER'
-        assign_LOGGER = ast.Assign(
-        targets=[ast.Name(id='LOGGER', ctx=ast.Store())],
-        value=ast.Attribute(
-            value=ast.Name(id='udi_interface', ctx=ast.Load()),
-            attr='LOGGER',
-            ctx=ast.Load()
-            )
-        )
-
-        # AST node for 'Custom = udi_interface.Custom'
-        assign_Custom = ast.Assign(
-        targets=[ast.Name(id='Custom', ctx=ast.Store())],
-        value=ast.Attribute(
-            value=ast.Name(id='udi_interface', ctx=ast.Load()),
-            attr='Custom',
-            ctx=ast.Load()
-            )
-        )
-
-        return [assign_LOGGER, assign_Custom]
-
+ 
     def create_command_body(self, command:CommandDetails):
         if command == None:
             return None
         
         if not command.hasParams():
-            return astReturnBoolean(True)
+            return ast_util.astReturnBoolean(True)
         
         out = []
         error = []
@@ -73,28 +35,46 @@ class IoXNodeGen():
             param = params[p] 
             editor = Editors.getEditors().editors[param.editor.getEditorId()]
             if UOMs.isIndex(editor.uom):
-                out.append(astIndexAssignment(param.name.replace(' ','_') if param.name else param.id, param.id, 'command'))
+                out.append(ast_util.astIndexAssignment(param.name.replace(' ','_') if param.name else param.id, param.id, 'command'))
             else:
                 if not added_jparams:
-                    stmts = astCommandQueryParams('command')
+                    stmts = ast_util.astCommandQueryParams('command')
                     for stmt in stmts:
                         out.append(stmt)
                     added_jparams=True
                 
-                out.append(astCommandParamAssignment(f'{param.id}.uom{editor.uom}', param.id))
+                out.append(ast_util.astCommandParamAssignment(f'{param.id}.uom{editor.uom}', param.id))
 
-        out.append(astReturnBoolean(True))
+        out.append(ast_util.astReturnBoolean(True))
 
-        error.append(astLogger("error", "failed parsing parameters ... "))
-        error.append(astReturnBoolean(False))
+        error.append(ast_util.astLogger("error", "failed parsing parameters ... "))
+        error.append(ast_util.astReturnBoolean(False))
 
-        return astTryExcept(out, error)
-        
+        return ast_util.astTryExcept(out, error)
 
-    def create_node_class(self ):
+    def create(self, node_imports):
+        file_path=f'{self.path}/{self.nodedef.getPythonFileName()}'
+        imports = ast_util.astCreateImports()
+        python_code = astor.to_source(imports)
+        with open(file_path, 'w') as file:
+            file.write(python_code)
+
+        global_defs = ast_util.astCreateGlobals()
+        for global_def in global_defs:
+            python_code = astor.to_source(global_def)
+            with open(file_path, 'a') as file:
+                file.write(python_code) 
+
+        if self.nodedef.isController:
+            for node_import in node_imports:
+                import_stmt = ast_util.astCreateImportFrom(node_import, node_import)
+                python_code = astor.to_source(import_stmt)
+                with open(file_path, 'a') as file:
+                    file.write(python_code) 
+
         # Create the class for the node 
         class_def = ast.ClassDef(
-            name=f'{self.nodedef.name}Node',
+            name=f'{self.nodedef.getPythonClassName()}',
             bases=[ast.Attribute(value=ast.Name(id='udi_interface', ctx=ast.Load()), attr='Node', ctx=ast.Load())],
             keywords=[],
             body=[],
@@ -113,7 +93,7 @@ class IoXNodeGen():
             LOGGER.critical(str(ex))
             raise
 
-        class_def.body.append(astComment('This is a list of properties that were defined in the nodedef'))
+        class_def.body.append(ast_util.astComment('This is a list of properties that were defined in the nodedef'))
 
         # Add the drivers list
         drivers_list = ast.Assign(
@@ -134,7 +114,7 @@ class IoXNodeGen():
             LOGGER.critical(str(ex))
             raise
         
-        class_def.body.append(astComment('This is a list of commands that were defined in the nodedef'))
+        class_def.body.append(ast_util.astComment('This is a list of commands that were defined in the nodedef'))
         # Add the drivers list
         commands_list = ast.Assign(
             targets=[ast.Name(id='commands', ctx=ast.Store())],
@@ -152,7 +132,7 @@ class IoXNodeGen():
                                        args=[ast.Name(id='self'), ast.Name(id='poly'), ast.Name(id='controller'), ast.Name(id='address'), ast.Name(id='name')],
                                        keywords=[]))]
         if self.nodedef.isController:
-           init_body+=astControllerBody() 
+           init_body+=ast_util.astControllerBody() 
 
         # Add __init__ method
         init_method = ast.FunctionDef(
@@ -171,12 +151,13 @@ class IoXNodeGen():
         )
 
         class_def.body.append(init_method)
-        class_def.body.append(astParamHandlerFunc())
-        class_def.body.append(astStartFunc())
-        class_def.body.append(astStopFunc())
-        class_def.body.append(astPollFunc())
-        class_def.body.append(astAddAllNodesFunc())
-        class_def.body.append(astAddNodeFunc())
+        class_def.body.append(ast_util.astParamHandlerFunc())
+        class_def.body.append(ast_util.astConfigFunc())
+        class_def.body.append(ast_util.astStartFunc())
+        class_def.body.append(ast_util.astStopFunc())
+        class_def.body.append(ast_util.astPollFunc())
+        class_def.body.append(ast_util.astAddAllNodesFunc())
+        class_def.body.append(ast_util.astAddNodeFunc())
 
         #create update and get methods
 
@@ -210,7 +191,7 @@ class IoXNodeGen():
             keywords=[],
             decorator_list=[]
             )
-            class_def.body.append(astComment(f"Use this method to update {getValidName(driver['name'])} in IoX"))
+            class_def.body.append(ast_util.astComment(f"Use this method to update {getValidName(driver['name'])} in IoX"))
             class_def.body.append(method)
 
             ## Now getDriver
@@ -281,7 +262,7 @@ class IoXNodeGen():
             class_def.body.append(method)
 
         # Print the AST dump to verify
-        print(ast.dump(class_def, indent=4))
+        #print(ast.dump(class_def, indent=4))
 
         return class_def
 

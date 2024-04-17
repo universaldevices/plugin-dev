@@ -18,22 +18,26 @@ class micNode(udi_interface.Node):
         self.Parameters.load(params)
         return True
 
+    def config(self):
+        LOGGER.info(f'Config ... ')
+        return True
+
     def start(self):
-        LOGGER.info(f'Starting ... {self.name}')
+        LOGGER.info(f'Starting ... ')
         self.addAllNodes()
         polyglot.updateProfile()
         self.poly.setCustomParamsDoc()
         return True
 
     def stop(self):
-        LOGGER.info(f'Stopping ... {self.name}')
+        LOGGER.info(f'Stopping ... ')
         return True
 
     def poll(polltype):
         if 'shortPoll' in polltype:
-            LOGGER.info(f'Short poll ... {self.name}')
+            LOGGER.info(f'Short poll ... ')
         elif 'longPoll' in polltype:
-            LOGGER.info(f'Long poll ... {self.name}')
+            LOGGER.info(f'Long poll ... ')
 
     def addAllNodes(self):
         config = self.poly.getConfig()
@@ -46,7 +50,7 @@ class micNode(udi_interface.Node):
             primary = node['primaryNode']
             name = node['name']
             self.__addNode(nodeDef, address, name)
-        LOGGER.info(f'Done adding nodes ...{self.name}')
+        LOGGER.info(f'Done adding nodes ...')
         self.valid_configuration = True
 
     def __addNode(self, nodeDef: str, endDeviceAddress: str, devName: str):
@@ -54,7 +58,7 @@ class micNode(udi_interface.Node):
             return
         devNode = None
         if devNode is None:
-            LOGGER.error(f'invalid noddef id ...{self.name}')
+            LOGGER.error(f'invalid noddef id ...')
             return
         self.poly.addNode(devNode)
 
@@ -84,7 +88,7 @@ class micNode(udi_interface.Node):
             param_c_2 = int(jparam['param_c_2.uom1'])
             return True
         except Exception as ex:
-            LOGGER.error(f'failed parsing parameters ... {self.name}')
+            LOGGER.error(f'failed parsing parameters ... ')
             return False
 
     def accept2(self, command):
@@ -95,7 +99,7 @@ class micNode(udi_interface.Node):
             param_c_2_a = int(jparam['param_c_2_a.uom103'])
             return True
         except Exception as ex:
-            LOGGER.error(f'failed parsing parameters ... {self.name}')
+            LOGGER.error(f'failed parsing parameters ... ')
             return False
 
     def setTemp(self, command):
@@ -105,7 +109,7 @@ class micNode(udi_interface.Node):
             ACCX = int(jparam['ACCX.uom94'])
             return True
         except Exception as ex:
-            LOGGER.error(f'failed parsing parameters ... {self.name}')
+            LOGGER.error(f'failed parsing parameters ... ')
             return False
 
     def setCtl(self, command):
@@ -113,5 +117,5 @@ class micNode(udi_interface.Node):
             CTL = command.get('CTL')
             return True
         except Exception as ex:
-            LOGGER.error(f'failed parsing parameters ... {self.name}')
+            LOGGER.error(f'failed parsing parameters ... ')
             return False

@@ -58,7 +58,12 @@ class NodeDefDetails:
             )
         return commands
                     
+    def getPythonClassName(self):
+        return f'{self.name}Node'
 
+    def getPythonFileName(self):
+        return f'{self.getPythonClassName()}.py'
+    
 
     def toIoX(self)->(str,str):
         nls = ""
@@ -108,6 +113,13 @@ class NodeDefs:
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
+
+    def getControllerNodeDef(self):
+        for ndi in self.nodedefs:
+            nd = self.nodedefs[ndi]
+            if nd.isController:
+                return nd
+        return None
 
     def addController(self, controllerName, icon=None):
         controllerId = f'{controllerName}Ctrl'

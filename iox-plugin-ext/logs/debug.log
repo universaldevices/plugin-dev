@@ -1,51 +1,4174 @@
-2024-04-16 23:19:00,429 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
-2024-04-16 23:19:00,431 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
-2024-04-16 23:19:00,431 MainThread udi_interface      INFO     __init__:<module>: User=admin
-2024-04-16 23:19:00,431 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
-2024-04-16 23:19:00,432 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
-2024-04-16 23:19:00,432 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
-2024-04-16 23:19:00,432 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
-2024-04-16 23:19:00,573 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
-2024-04-16 23:19:01,586 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
-2024-04-16 23:19:02,586 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
-2024-04-16 23:19:02,588 MainThread udi_interface      INFO     __init__:<module>: Loading node module
-2024-04-16 23:19:02,588 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
-2024-04-16 23:19:02,589 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
-2024-04-16 23:19:02,589 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
-2024-04-16 23:19:02,590 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
-2024-04-16 23:19:02,591 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
-2024-04-16 23:19:05,339 MainThread udi_interface.interface CRITICAL interface:__init__: Failed to parse init. Exiting...
-2024-04-16 23:20:13,797 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
-2024-04-16 23:20:13,798 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
-2024-04-16 23:20:13,799 MainThread udi_interface      INFO     __init__:<module>: User=admin
-2024-04-16 23:20:13,799 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
-2024-04-16 23:20:13,799 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
-2024-04-16 23:20:13,799 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
-2024-04-16 23:20:13,800 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
-2024-04-16 23:20:13,941 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
-2024-04-16 23:20:14,934 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
-2024-04-16 23:20:15,805 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
-2024-04-16 23:20:15,807 MainThread udi_interface      INFO     __init__:<module>: Loading node module
-2024-04-16 23:20:15,807 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
-2024-04-16 23:20:15,807 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
-2024-04-16 23:20:15,807 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
-2024-04-16 23:20:15,809 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
-2024-04-16 23:20:15,809 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
-2024-04-16 23:20:17,738 MainThread udi_interface.interface CRITICAL interface:__init__: Failed to parse init. Exiting...
-2024-04-16 23:20:51,367 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
-2024-04-16 23:20:51,368 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
-2024-04-16 23:20:51,369 MainThread udi_interface      INFO     __init__:<module>: User=admin
-2024-04-16 23:20:51,369 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
-2024-04-16 23:20:51,369 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
-2024-04-16 23:20:51,369 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
-2024-04-16 23:20:51,370 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
-2024-04-16 23:20:51,510 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
-2024-04-16 23:20:52,492 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
-2024-04-16 23:20:53,353 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
-2024-04-16 23:20:53,355 MainThread udi_interface      INFO     __init__:<module>: Loading node module
-2024-04-16 23:20:53,355 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
-2024-04-16 23:20:53,355 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
-2024-04-16 23:20:53,355 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
-2024-04-16 23:20:53,356 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
-2024-04-16 23:20:53,357 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
-2024-04-16 23:20:55,570 MainThread udi_interface.interface CRITICAL interface:__init__: Failed to parse init. Exiting...
+2024-04-17 13:41:48,836 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 13:41:48,839 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 13:41:48,840 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 13:41:48,840 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 13:41:48,840 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 13:41:48,841 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 13:41:48,841 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 13:41:48,979 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 13:41:50,164 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 13:41:51,417 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 13:41:51,422 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 13:41:51,422 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 13:41:51,423 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 13:41:51,423 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 13:41:51,426 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 13:41:51,426 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 13:46:34,279 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 13:46:34,280 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 13:46:34,281 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 13:46:34,281 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 13:46:34,281 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 13:46:34,282 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 13:46:34,282 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 13:46:34,420 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 13:46:35,700 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 13:46:36,612 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 13:46:36,613 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 13:46:36,613 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 13:46:36,614 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 13:46:36,614 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 13:46:36,615 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 13:46:36,615 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 13:46:46,258 MainThread udi_interface      DEBUG    udi_interface:write: ClassDef(
+    name='micNode',
+    bases=[
+        Attribute(
+            value=Name(id='udi_interface', ctx=Load()),
+            attr='Node',
+            ctx=Load())],
+    keywords=[],
+    body=[
+        Assign(
+            targets=[
+                Name(id='id', ctx=Store())],
+            value=Constant(value='hell')),
+        None,
+        Assign(
+            targets=[
+                Name(id='drivers', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='ACCX'),
+                            Constant(value=0),
+                            Constant(value=94),
+                            Constant(value='temp')]),
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='CTL'),
+                            Constant(value=0),
+                            Constant(value=25),
+                            Constant(value='ctl')]),
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='GV1'),
+                            Constant(value=0),
+                            Constant(value=136),
+                            Constant(value='Generic Val')])],
+                ctx=Load())),
+        None,
+        Assign(
+            targets=[
+                Name(id='commands', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='acc_cmd1')],
+                        values=[
+                            Name(id='accept1', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='acc_cmd2')],
+                        values=[
+                            Name(id='accept2', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='ACCX')],
+                        values=[
+                            Name(id='setTemp', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='CTL')],
+                        values=[
+                            Name(id='setCtl', ctx=Load())])],
+                ctx=Load())),
+        FunctionDef(
+            name='__init__',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='poly'),
+                    arg(arg='controller'),
+                    arg(arg='address'),
+                    arg(arg='name')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hell'),
+                    Constant(value='mic')]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='super', ctx=Load()),
+                            attr='__init__',
+                            ctx=Load()),
+                        args=[
+                            Name(id='self'),
+                            Name(id='poly'),
+                            Name(id='controller'),
+                            Name(id='address'),
+                            Name(id='name')],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='parameter_handler',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(arg='params')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='Notices.clear',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='Parameters',
+                                ctx=Load()),
+                            attr='load',
+                            ctx=Load()),
+                        args=[
+                            Name(id='params', ctx=Load())],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='config',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Config ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='start',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Starting ... ')])],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Name(id='polyglot.updateProfile', ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.setCustomParamsDoc',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='stop',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Stopping ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='poll',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='polltype')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Constant(value='shortPoll'),
+                        ops=[
+                            In()],
+                        comparators=[
+                            Name(id='polltype', ctx=Load())]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='info',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='Short poll ... ')])],
+                                keywords=[]))],
+                    orelse=[
+                        If(
+                            test=Compare(
+                                left=Constant(value='longPoll'),
+                                ops=[
+                                    In()],
+                                comparators=[
+                                    Name(id='polltype', ctx=Load())]),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='info',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='Long poll ... ')])],
+                                        keywords=[]))],
+                            orelse=[])])],
+            decorator_list=[]),
+        FunctionDef(
+            name='addAllNodes',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Assign(
+                    targets=[
+                        Name(id='config', ctx=Store())],
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='getConfig',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                If(
+                    test=BoolOp(
+                        op=Or(),
+                        values=[
+                            Compare(
+                                left=Name(id='config', ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)]),
+                            Compare(
+                                left=Subscript(
+                                    value=Name(id='config', ctx=Load()),
+                                    slice=Constant(value='nodes'),
+                                    ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)])]),
+                    body=[
+                        Assign(
+                            targets=[
+                                Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='valid_configuration',
+                                    ctx=Store())],
+                            value=Constant(value=True)),
+                        Return()],
+                    orelse=[]),
+                For(
+                    target=Name(id='node', ctx=Store()),
+                    iter=Subscript(
+                        value=Name(id='config', ctx=Load()),
+                        slice=Constant(value='nodes'),
+                        ctx=Load()),
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='nodeDef', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='nodeDefId'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='address', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='address'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='primary', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='primaryNode'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='name', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='name'),
+                                ctx=Load())),
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='__addNode',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='nodeDef', ctx=Load()),
+                                    Name(id='address', ctx=Load()),
+                                    Name(id='name', ctx=Load())],
+                                keywords=[]))],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Done adding nodes ...')])],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='__addNode',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(
+                        arg='nodeDef',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='endDeviceAddress',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='devName',
+                        annotation=Name(id='str', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Name(id='nodeDef', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Return()],
+                    orelse=[]),
+                Assign(
+                    targets=[
+                        Name(id='devNode', ctx=Store())],
+                    value=Constant(value=None)),
+                If(
+                    test=Compare(
+                        left=Name(id='devNode', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='error',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='invalid noddef id ...')])],
+                                keywords=[])),
+                        Return()],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='addNode',
+                            ctx=Load()),
+                        args=[
+                            Name(id='devNode', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ACCX"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='94', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ACCX"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"CTL"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='25', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"CTL"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateGenericVal',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"GV1"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='136', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getGenericVal',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"GV1"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='accept1',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_1', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_1.uom136'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_2', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_2.uom1'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='accept2',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='hello_param_2_accept', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='command', ctx=Load()),
+                                    attr='get',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value='param_c_1a')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_2_a', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_2_a.uom103'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='setTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='ACCX', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='ACCX.uom94'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='setCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='CTL', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='command', ctx=Load()),
+                                    attr='get',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value='CTL')],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[])],
+    decorator_list=[])
+2024-04-17 13:46:46,291 MainThread udi_interface      DEBUG    udi_interface:write: ClassDef(
+    name='hello_worldNode',
+    bases=[
+        Attribute(
+            value=Name(id='udi_interface', ctx=Load()),
+            attr='Node',
+            ctx=Load())],
+    keywords=[],
+    body=[
+        Assign(
+            targets=[
+                Name(id='id', ctx=Store())],
+            value=Constant(value='hello_worldCtrl')),
+        None,
+        Assign(
+            targets=[
+                Name(id='drivers', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='ST'),
+                            Constant(value=0),
+                            Constant(value=2),
+                            Constant(value='Status')])],
+                ctx=Load())),
+        None,
+        Assign(
+            targets=[
+                Name(id='commands', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='discover')],
+                        values=[
+                            Name(id='Discover', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='query')],
+                        values=[
+                            Name(id='Query', ctx=Load())])],
+                ctx=Load())),
+        FunctionDef(
+            name='__init__',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='poly'),
+                    arg(arg='controller'),
+                    arg(arg='address'),
+                    arg(arg='name')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hello_world')]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='super', ctx=Load()),
+                            attr='__init__',
+                            ctx=Load()),
+                        args=[
+                            Name(id='self'),
+                            Name(id='poly'),
+                            Name(id='controller'),
+                            Name(id='address'),
+                            Name(id='name')],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='Parameters',
+                            ctx=Store())],
+                    value=Call(
+                        func=Name(id='Custom', ctx=Load()),
+                        args=[
+                            Name(id='polyglot', ctx=Load()),
+                            Constant(value='customparams')],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=False)),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='START',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='start',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='CUSTOMPARAMS',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='parameter_handler',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='POLL',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poll',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='STOP',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='stop',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='CONFIG',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='config',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.ready',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='parameter_handler',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(arg='params')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='Notices.clear',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='Parameters',
+                                ctx=Load()),
+                            attr='load',
+                            ctx=Load()),
+                        args=[
+                            Name(id='params', ctx=Load())],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='config',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Config ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='start',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Starting ... ')])],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Name(id='polyglot.updateProfile', ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.setCustomParamsDoc',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='stop',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Stopping ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='poll',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='polltype')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Constant(value='shortPoll'),
+                        ops=[
+                            In()],
+                        comparators=[
+                            Name(id='polltype', ctx=Load())]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='info',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='Short poll ... ')])],
+                                keywords=[]))],
+                    orelse=[
+                        If(
+                            test=Compare(
+                                left=Constant(value='longPoll'),
+                                ops=[
+                                    In()],
+                                comparators=[
+                                    Name(id='polltype', ctx=Load())]),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='info',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='Long poll ... ')])],
+                                        keywords=[]))],
+                            orelse=[])])],
+            decorator_list=[]),
+        FunctionDef(
+            name='addAllNodes',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Assign(
+                    targets=[
+                        Name(id='config', ctx=Store())],
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='getConfig',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                If(
+                    test=BoolOp(
+                        op=Or(),
+                        values=[
+                            Compare(
+                                left=Name(id='config', ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)]),
+                            Compare(
+                                left=Subscript(
+                                    value=Name(id='config', ctx=Load()),
+                                    slice=Constant(value='nodes'),
+                                    ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)])]),
+                    body=[
+                        Assign(
+                            targets=[
+                                Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='valid_configuration',
+                                    ctx=Store())],
+                            value=Constant(value=True)),
+                        Return()],
+                    orelse=[]),
+                For(
+                    target=Name(id='node', ctx=Store()),
+                    iter=Subscript(
+                        value=Name(id='config', ctx=Load()),
+                        slice=Constant(value='nodes'),
+                        ctx=Load()),
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='nodeDef', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='nodeDefId'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='address', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='address'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='primary', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='primaryNode'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='name', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='name'),
+                                ctx=Load())),
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='__addNode',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='nodeDef', ctx=Load()),
+                                    Name(id='address', ctx=Load()),
+                                    Name(id='name', ctx=Load())],
+                                keywords=[]))],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Done adding nodes ...')])],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='__addNode',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(
+                        arg='nodeDef',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='endDeviceAddress',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='devName',
+                        annotation=Name(id='str', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Name(id='nodeDef', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Return()],
+                    orelse=[]),
+                Assign(
+                    targets=[
+                        Name(id='devNode', ctx=Store())],
+                    value=Constant(value=None)),
+                If(
+                    test=Compare(
+                        left=Name(id='devNode', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='error',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='invalid noddef id ...')])],
+                                keywords=[])),
+                        Return()],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='addNode',
+                            ctx=Load()),
+                        args=[
+                            Name(id='devNode', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateStatus',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ST"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='2', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getStatus',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ST"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='Discover',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='Query',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[])],
+    decorator_list=[])
+2024-04-17 13:48:21,918 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 13:48:21,919 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 13:48:21,919 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 13:48:21,920 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 13:48:21,920 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 13:48:21,920 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 13:48:21,920 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 13:48:22,064 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 13:48:23,190 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 13:48:24,125 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 13:48:24,127 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 13:48:24,127 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 13:48:24,128 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 13:48:24,128 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 13:48:24,129 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 13:48:24,129 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 13:48:28,693 MainThread udi_interface      DEBUG    udi_interface:write: ClassDef(
+    name='micNode',
+    bases=[
+        Attribute(
+            value=Name(id='udi_interface', ctx=Load()),
+            attr='Node',
+            ctx=Load())],
+    keywords=[],
+    body=[
+        Assign(
+            targets=[
+                Name(id='id', ctx=Store())],
+            value=Constant(value='hell')),
+        None,
+        Assign(
+            targets=[
+                Name(id='drivers', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='ACCX'),
+                            Constant(value=0),
+                            Constant(value=94),
+                            Constant(value='temp')]),
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='CTL'),
+                            Constant(value=0),
+                            Constant(value=25),
+                            Constant(value='ctl')]),
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='GV1'),
+                            Constant(value=0),
+                            Constant(value=136),
+                            Constant(value='Generic Val')])],
+                ctx=Load())),
+        None,
+        Assign(
+            targets=[
+                Name(id='commands', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='acc_cmd1')],
+                        values=[
+                            Name(id='accept1', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='acc_cmd2')],
+                        values=[
+                            Name(id='accept2', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='ACCX')],
+                        values=[
+                            Name(id='setTemp', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='CTL')],
+                        values=[
+                            Name(id='setCtl', ctx=Load())])],
+                ctx=Load())),
+        FunctionDef(
+            name='__init__',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='poly'),
+                    arg(arg='controller'),
+                    arg(arg='address'),
+                    arg(arg='name')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hell'),
+                    Constant(value='mic')]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='super', ctx=Load()),
+                            attr='__init__',
+                            ctx=Load()),
+                        args=[
+                            Name(id='self'),
+                            Name(id='poly'),
+                            Name(id='controller'),
+                            Name(id='address'),
+                            Name(id='name')],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='parameter_handler',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(arg='params')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='Notices.clear',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='Parameters',
+                                ctx=Load()),
+                            attr='load',
+                            ctx=Load()),
+                        args=[
+                            Name(id='params', ctx=Load())],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='config',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Config ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='start',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Starting ... ')])],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Name(id='polyglot.updateProfile', ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.setCustomParamsDoc',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='stop',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Stopping ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='poll',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='polltype')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Constant(value='shortPoll'),
+                        ops=[
+                            In()],
+                        comparators=[
+                            Name(id='polltype', ctx=Load())]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='info',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='Short poll ... ')])],
+                                keywords=[]))],
+                    orelse=[
+                        If(
+                            test=Compare(
+                                left=Constant(value='longPoll'),
+                                ops=[
+                                    In()],
+                                comparators=[
+                                    Name(id='polltype', ctx=Load())]),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='info',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='Long poll ... ')])],
+                                        keywords=[]))],
+                            orelse=[])])],
+            decorator_list=[]),
+        FunctionDef(
+            name='addAllNodes',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Assign(
+                    targets=[
+                        Name(id='config', ctx=Store())],
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='getConfig',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                If(
+                    test=BoolOp(
+                        op=Or(),
+                        values=[
+                            Compare(
+                                left=Name(id='config', ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)]),
+                            Compare(
+                                left=Subscript(
+                                    value=Name(id='config', ctx=Load()),
+                                    slice=Constant(value='nodes'),
+                                    ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)])]),
+                    body=[
+                        Assign(
+                            targets=[
+                                Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='valid_configuration',
+                                    ctx=Store())],
+                            value=Constant(value=True)),
+                        Return()],
+                    orelse=[]),
+                For(
+                    target=Name(id='node', ctx=Store()),
+                    iter=Subscript(
+                        value=Name(id='config', ctx=Load()),
+                        slice=Constant(value='nodes'),
+                        ctx=Load()),
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='nodeDef', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='nodeDefId'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='address', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='address'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='primary', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='primaryNode'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='name', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='name'),
+                                ctx=Load())),
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='__addNode',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='nodeDef', ctx=Load()),
+                                    Name(id='address', ctx=Load()),
+                                    Name(id='name', ctx=Load())],
+                                keywords=[]))],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Done adding nodes ...')])],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='__addNode',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(
+                        arg='nodeDef',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='endDeviceAddress',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='devName',
+                        annotation=Name(id='str', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Name(id='nodeDef', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Return()],
+                    orelse=[]),
+                Assign(
+                    targets=[
+                        Name(id='devNode', ctx=Store())],
+                    value=Constant(value=None)),
+                If(
+                    test=Compare(
+                        left=Name(id='devNode', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='error',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='invalid noddef id ...')])],
+                                keywords=[])),
+                        Return()],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='addNode',
+                            ctx=Load()),
+                        args=[
+                            Name(id='devNode', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ACCX"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='94', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ACCX"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"CTL"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='25', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"CTL"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateGenericVal',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"GV1"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='136', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getGenericVal',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"GV1"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='accept1',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_1', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_1.uom136'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_2', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_2.uom1'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='accept2',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='hello_param_2_accept', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='command', ctx=Load()),
+                                    attr='get',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value='param_c_1a')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_2_a', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_2_a.uom103'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='setTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='ACCX', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='ACCX.uom94'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='setCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='CTL', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='command', ctx=Load()),
+                                    attr='get',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value='CTL')],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[])],
+    decorator_list=[])
+2024-04-17 13:48:28,735 MainThread udi_interface      DEBUG    udi_interface:write: ClassDef(
+    name='hello_worldNode',
+    bases=[
+        Attribute(
+            value=Name(id='udi_interface', ctx=Load()),
+            attr='Node',
+            ctx=Load())],
+    keywords=[],
+    body=[
+        Assign(
+            targets=[
+                Name(id='id', ctx=Store())],
+            value=Constant(value='hello_worldCtrl')),
+        None,
+        Assign(
+            targets=[
+                Name(id='drivers', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='ST'),
+                            Constant(value=0),
+                            Constant(value=2),
+                            Constant(value='Status')])],
+                ctx=Load())),
+        None,
+        Assign(
+            targets=[
+                Name(id='commands', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='discover')],
+                        values=[
+                            Name(id='Discover', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='query')],
+                        values=[
+                            Name(id='Query', ctx=Load())])],
+                ctx=Load())),
+        FunctionDef(
+            name='__init__',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='poly'),
+                    arg(arg='controller'),
+                    arg(arg='address'),
+                    arg(arg='name')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hello_world')]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='super', ctx=Load()),
+                            attr='__init__',
+                            ctx=Load()),
+                        args=[
+                            Name(id='self'),
+                            Name(id='poly'),
+                            Name(id='controller'),
+                            Name(id='address'),
+                            Name(id='name')],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='Parameters',
+                            ctx=Store())],
+                    value=Call(
+                        func=Name(id='Custom', ctx=Load()),
+                        args=[
+                            Name(id='polyglot', ctx=Load()),
+                            Constant(value='customparams')],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=False)),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='START',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='start',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='CUSTOMPARAMS',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='parameter_handler',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='POLL',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poll',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='STOP',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='stop',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly',
+                            ctx=Load()),
+                        args=[
+                            Attribute(
+                                value=Name(id='polyglot', ctx=Load()),
+                                attr='CONFIG',
+                                ctx=Load()),
+                            Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='config',
+                                ctx=Load())],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.ready',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='parameter_handler',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(arg='params')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='Notices.clear',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='Parameters',
+                                ctx=Load()),
+                            attr='load',
+                            ctx=Load()),
+                        args=[
+                            Name(id='params', ctx=Load())],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='config',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Config ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='start',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Starting ... ')])],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Name(id='polyglot.updateProfile', ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.setCustomParamsDoc',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='stop',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Stopping ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='poll',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='polltype')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Constant(value='shortPoll'),
+                        ops=[
+                            In()],
+                        comparators=[
+                            Name(id='polltype', ctx=Load())]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='info',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='Short poll ... ')])],
+                                keywords=[]))],
+                    orelse=[
+                        If(
+                            test=Compare(
+                                left=Constant(value='longPoll'),
+                                ops=[
+                                    In()],
+                                comparators=[
+                                    Name(id='polltype', ctx=Load())]),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='info',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='Long poll ... ')])],
+                                        keywords=[]))],
+                            orelse=[])])],
+            decorator_list=[]),
+        FunctionDef(
+            name='addAllNodes',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Assign(
+                    targets=[
+                        Name(id='config', ctx=Store())],
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='getConfig',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                If(
+                    test=BoolOp(
+                        op=Or(),
+                        values=[
+                            Compare(
+                                left=Name(id='config', ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)]),
+                            Compare(
+                                left=Subscript(
+                                    value=Name(id='config', ctx=Load()),
+                                    slice=Constant(value='nodes'),
+                                    ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)])]),
+                    body=[
+                        Assign(
+                            targets=[
+                                Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='valid_configuration',
+                                    ctx=Store())],
+                            value=Constant(value=True)),
+                        Return()],
+                    orelse=[]),
+                For(
+                    target=Name(id='node', ctx=Store()),
+                    iter=Subscript(
+                        value=Name(id='config', ctx=Load()),
+                        slice=Constant(value='nodes'),
+                        ctx=Load()),
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='nodeDef', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='nodeDefId'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='address', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='address'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='primary', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='primaryNode'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='name', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='name'),
+                                ctx=Load())),
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='__addNode',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='nodeDef', ctx=Load()),
+                                    Name(id='address', ctx=Load()),
+                                    Name(id='name', ctx=Load())],
+                                keywords=[]))],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Done adding nodes ...')])],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='__addNode',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(
+                        arg='nodeDef',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='endDeviceAddress',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='devName',
+                        annotation=Name(id='str', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Name(id='nodeDef', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Return()],
+                    orelse=[]),
+                Assign(
+                    targets=[
+                        Name(id='devNode', ctx=Store())],
+                    value=Constant(value=None)),
+                If(
+                    test=Compare(
+                        left=Name(id='devNode', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='error',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='invalid noddef id ...')])],
+                                keywords=[])),
+                        Return()],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='addNode',
+                            ctx=Load()),
+                        args=[
+                            Name(id='devNode', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateStatus',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ST"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='2', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getStatus',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ST"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='Discover',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='Query',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[])],
+    decorator_list=[])
+2024-04-17 14:09:30,620 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:09:30,621 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:09:30,622 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:09:30,622 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:09:30,622 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:09:30,623 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:09:30,623 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:09:30,759 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:09:31,770 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:09:32,642 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:09:32,643 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:09:32,643 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:09:32,644 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:09:32,644 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:09:32,645 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:09:32,645 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:10:48,318 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:10:48,319 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:10:48,320 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:10:48,320 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:10:48,320 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:10:48,320 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:10:48,321 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:10:48,467 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:10:49,465 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:10:50,345 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:10:50,347 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:10:50,347 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:10:50,348 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:10:50,348 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:10:50,349 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:10:50,349 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:11:25,528 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:11:25,529 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:11:25,530 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:11:25,530 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:11:25,530 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:11:25,530 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:11:25,530 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:11:25,665 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:11:26,676 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:11:27,548 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:11:27,550 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:11:27,550 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:11:27,550 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:11:27,550 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:11:27,551 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:11:27,552 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:12:19,854 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:12:19,855 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:12:19,856 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:12:19,856 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:12:19,856 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:12:19,856 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:12:19,857 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:12:19,997 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:12:21,001 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:12:21,868 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:12:21,870 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:12:21,870 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:12:21,870 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:12:21,871 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:12:21,872 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:12:21,872 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:13:13,392 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:13:13,393 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:13:13,394 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:13:13,394 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:13:13,395 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:13:13,395 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:13:13,395 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:13:13,539 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:13:14,536 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:13:15,414 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:13:15,416 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:13:15,416 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:13:15,416 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:13:15,417 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:13:15,418 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:13:15,418 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:15:29,130 MainThread udi_interface      DEBUG    udi_interface:write: ClassDef(
+    name='micNode',
+    bases=[
+        Attribute(
+            value=Name(id='udi_interface', ctx=Load()),
+            attr='Node',
+            ctx=Load())],
+    keywords=[],
+    body=[
+        Assign(
+            targets=[
+                Name(id='id', ctx=Store())],
+            value=Constant(value='hell')),
+        None,
+        Assign(
+            targets=[
+                Name(id='drivers', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='ACCX'),
+                            Constant(value=0),
+                            Constant(value=94),
+                            Constant(value='temp')]),
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='CTL'),
+                            Constant(value=0),
+                            Constant(value=25),
+                            Constant(value='ctl')]),
+                    Dict(
+                        keys=[
+                            Constant(value='driver'),
+                            Constant(value='value'),
+                            Constant(value='uom'),
+                            Constant(value='name')],
+                        values=[
+                            Constant(value='GV1'),
+                            Constant(value=0),
+                            Constant(value=136),
+                            Constant(value='Generic Val')])],
+                ctx=Load())),
+        None,
+        Assign(
+            targets=[
+                Name(id='commands', ctx=Store())],
+            value=List(
+                elts=[
+                    Dict(
+                        keys=[
+                            Constant(value='acc_cmd1')],
+                        values=[
+                            Name(id='accept1', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='acc_cmd2')],
+                        values=[
+                            Name(id='accept2', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='ACCX')],
+                        values=[
+                            Name(id='setTemp', ctx=Load())]),
+                    Dict(
+                        keys=[
+                            Constant(value='CTL')],
+                        values=[
+                            Name(id='setCtl', ctx=Load())])],
+                ctx=Load())),
+        FunctionDef(
+            name='__init__',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='poly'),
+                    arg(arg='controller'),
+                    arg(arg='address'),
+                    arg(arg='name')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[
+                    Constant(value='hello_worldCtrl'),
+                    Constant(value='hell'),
+                    Constant(value='mic')]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='super', ctx=Load()),
+                            attr='__init__',
+                            ctx=Load()),
+                        args=[
+                            Name(id='self'),
+                            Name(id='poly'),
+                            Name(id='controller'),
+                            Name(id='address'),
+                            Name(id='name')],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='parameter_handler',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(arg='params')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='Notices.clear',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='Parameters',
+                                ctx=Load()),
+                            attr='load',
+                            ctx=Load()),
+                        args=[
+                            Name(id='params', ctx=Load())],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='config',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Config ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='start',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Starting ... ')])],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='addAllNodes',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Name(id='polyglot.updateProfile', ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='poly.setCustomParamsDoc',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='stop',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Stopping ... ')])],
+                        keywords=[])),
+                Return(
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='poll',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='polltype')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Constant(value='shortPoll'),
+                        ops=[
+                            In()],
+                        comparators=[
+                            Name(id='polltype', ctx=Load())]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='info',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='Short poll ... ')])],
+                                keywords=[]))],
+                    orelse=[
+                        If(
+                            test=Compare(
+                                left=Constant(value='longPoll'),
+                                ops=[
+                                    In()],
+                                comparators=[
+                                    Name(id='polltype', ctx=Load())]),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='info',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='Long poll ... ')])],
+                                        keywords=[]))],
+                            orelse=[])])],
+            decorator_list=[]),
+        FunctionDef(
+            name='addAllNodes',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Assign(
+                    targets=[
+                        Name(id='config', ctx=Store())],
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='getConfig',
+                            ctx=Load()),
+                        args=[],
+                        keywords=[])),
+                If(
+                    test=BoolOp(
+                        op=Or(),
+                        values=[
+                            Compare(
+                                left=Name(id='config', ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)]),
+                            Compare(
+                                left=Subscript(
+                                    value=Name(id='config', ctx=Load()),
+                                    slice=Constant(value='nodes'),
+                                    ctx=Load()),
+                                ops=[
+                                    Is()],
+                                comparators=[
+                                    Constant(value=None)])]),
+                    body=[
+                        Assign(
+                            targets=[
+                                Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='valid_configuration',
+                                    ctx=Store())],
+                            value=Constant(value=True)),
+                        Return()],
+                    orelse=[]),
+                For(
+                    target=Name(id='node', ctx=Store()),
+                    iter=Subscript(
+                        value=Name(id='config', ctx=Load()),
+                        slice=Constant(value='nodes'),
+                        ctx=Load()),
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='nodeDef', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='nodeDefId'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='address', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='address'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='primary', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='primaryNode'),
+                                ctx=Load())),
+                        Assign(
+                            targets=[
+                                Name(id='name', ctx=Store())],
+                            value=Subscript(
+                                value=Name(id='node', ctx=Load()),
+                                slice=Constant(value='name'),
+                                ctx=Load())),
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='__addNode',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='nodeDef', ctx=Load()),
+                                    Name(id='address', ctx=Load()),
+                                    Name(id='name', ctx=Load())],
+                                keywords=[]))],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='LOGGER', ctx=Load()),
+                            attr='info',
+                            ctx=Load()),
+                        args=[
+                            JoinedStr(
+                                values=[
+                                    Constant(value='Done adding nodes ...')])],
+                        keywords=[])),
+                Assign(
+                    targets=[
+                        Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='valid_configuration',
+                            ctx=Store())],
+                    value=Constant(value=True))],
+            decorator_list=[]),
+        FunctionDef(
+            name='__addNode',
+            args=arguments(
+                posonlyargs=[],
+                args=[
+                    arg(arg='self'),
+                    arg(
+                        arg='nodeDef',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='endDeviceAddress',
+                        annotation=Name(id='str', ctx=Load())),
+                    arg(
+                        arg='devName',
+                        annotation=Name(id='str', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                If(
+                    test=Compare(
+                        left=Name(id='nodeDef', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Return()],
+                    orelse=[]),
+                Assign(
+                    targets=[
+                        Name(id='devNode', ctx=Store())],
+                    value=Constant(value=None)),
+                If(
+                    test=Compare(
+                        left=Name(id='devNode', ctx=Load()),
+                        ops=[
+                            Is()],
+                        comparators=[
+                            Constant(value=None)]),
+                    body=[
+                        Expr(
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='LOGGER', ctx=Load()),
+                                    attr='error',
+                                    ctx=Load()),
+                                args=[
+                                    JoinedStr(
+                                        values=[
+                                            Constant(value='invalid noddef id ...')])],
+                                keywords=[])),
+                        Return()],
+                    orelse=[]),
+                Expr(
+                    value=Call(
+                        func=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='poly',
+                                ctx=Load()),
+                            attr='addNode',
+                            ctx=Load()),
+                        args=[
+                            Name(id='devNode', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ACCX"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='94', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"ACCX"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"CTL"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='25', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"CTL"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        None,
+        FunctionDef(
+            name='updateGenericVal',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='value'),
+                    arg(
+                        arg='force',
+                        annotation=Name(id='bool', ctx=Load()))],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='setDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"GV1"', ctx=Load()),
+                            Name(id='value', ctx=Load()),
+                            Name(id='136', ctx=Load()),
+                            Name(id='force', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='getGenericVal',
+            args=arguments(
+                args=[
+                    arg(arg='self')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Return(
+                    value=Call(
+                        func=Attribute(
+                            value=Name(id='self', ctx=Load()),
+                            attr='getDriver',
+                            ctx=Load()),
+                        args=[
+                            Name(id='"GV1"', ctx=Load())],
+                        keywords=[]))],
+            decorator_list=[]),
+        FunctionDef(
+            name='accept1',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_1', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_1.uom136'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_2', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_2.uom1'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='accept2',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='hello_param_2_accept', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='command', ctx=Load()),
+                                    attr='get',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value='param_c_1a')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='param_c_2_a', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='param_c_2_a.uom103'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='setTemp',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='query', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Call(
+                                        func=Name(id='str', ctx=Load()),
+                                        args=[
+                                            Subscript(
+                                                value=Name(id='command', ctx=Load()),
+                                                slice=Constant(value='query'),
+                                                ctx=Load())],
+                                        keywords=[]),
+                                    attr='replace',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value="'"),
+                                    Constant(value='"')],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='jparam', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='json', ctx=Load()),
+                                    attr='loads',
+                                    ctx=Load()),
+                                args=[
+                                    Name(id='query', ctx=Load())],
+                                keywords=[])),
+                        Assign(
+                            targets=[
+                                Name(id='ACCX', ctx=Store())],
+                            value=Call(
+                                func=Name(id='int', ctx=Load()),
+                                args=[
+                                    Subscript(
+                                        value=Name(id='jparam', ctx=Load()),
+                                        slice=Constant(value='ACCX.uom94'),
+                                        ctx=Load())],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[]),
+        FunctionDef(
+            name='setCtl',
+            args=arguments(
+                args=[
+                    arg(arg='self'),
+                    arg(arg='command')],
+                kwonlyargs=[],
+                kw_defaults=[],
+                defaults=[]),
+            body=[
+                Try(
+                    body=[
+                        Assign(
+                            targets=[
+                                Name(id='CTL', ctx=Store())],
+                            value=Call(
+                                func=Attribute(
+                                    value=Name(id='command', ctx=Load()),
+                                    attr='get',
+                                    ctx=Load()),
+                                args=[
+                                    Constant(value='CTL')],
+                                keywords=[])),
+                        Return(
+                            value=Constant(value=True))],
+                    handlers=[
+                        ExceptHandler(
+                            type=Name(id='Exception', ctx=Load()),
+                            name=Name(id='ex', ctx=Store()),
+                            body=[
+                                Expr(
+                                    value=Call(
+                                        func=Attribute(
+                                            value=Name(id='LOGGER', ctx=Load()),
+                                            attr='error',
+                                            ctx=Load()),
+                                        args=[
+                                            JoinedStr(
+                                                values=[
+                                                    Constant(value='failed parsing parameters ... ')])],
+                                        keywords=[])),
+                                Return(
+                                    value=Constant(value=False))])],
+                    orelse=[],
+                    finalbody=[])],
+            decorator_list=[])],
+    decorator_list=[])
+2024-04-17 14:15:47,888 MainThread IoX-Plugin-Ext-Logger CRITICAL plugin:makePythonClasses: name 'astControllerBody' is not defined
+2024-04-17 14:16:19,640 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:16:19,641 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:16:19,642 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:16:19,642 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:16:19,642 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:16:19,642 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:16:19,643 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:16:19,786 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:16:20,803 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:16:21,674 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:16:21,676 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:16:21,676 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:16:21,676 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:16:21,676 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:16:21,678 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:16:21,678 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:17:56,868 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:17:56,869 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:17:56,870 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:17:56,870 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:17:56,870 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:17:56,870 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:17:56,870 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:17:57,003 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:17:58,003 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:17:58,870 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:17:58,871 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:17:58,872 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:17:58,872 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:17:58,872 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:17:58,873 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:17:58,874 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-17 14:18:54,634 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-17 14:18:54,635 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-17 14:18:54,636 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-17 14:18:54,636 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-17 14:18:54,636 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-17 14:18:54,637 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=Not set
+2024-04-17 14:18:54,637 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-17 14:18:54,781 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-17 14:18:55,779 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-17 14:18:56,635 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-17 14:18:56,636 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-17 14:18:56,637 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-17 14:18:56,637 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-17 14:18:56,637 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-17 14:18:56,638 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-17 14:18:56,639 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
