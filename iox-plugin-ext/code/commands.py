@@ -194,7 +194,7 @@ class Commands:
                     if cmd_nls:
                         nls += f"\n{cmd_nls}"
                 cmds += "\n</accepts>"
-            cmds += "\n<cmds>"
+            cmds += "\n</cmds>"
             return cmds,nls
 
         except Exception as ex:

@@ -33,7 +33,7 @@ class PluginMain:
             file.write(python_code)
 
         self.controllerNode = None
-        node_imports = []
+        children = []
         #add import for each node
         nodedefs = self.node_defs.nodedefs
         for ndi in nodedefs:
@@ -41,7 +41,14 @@ class PluginMain:
             if nd.isController:
                 self.controllerNode = nd
             else:
-                node_imports.append(nd.getPythonClassName())
+                children.append(
+                    {
+                        'node_class': nd.getPythonClassName(),
+                        'id': nd.id,
+                        'name': nd.name,
+                        'parent': None
+                    }
+                )
             import_stmt = ast_util.astCreateImportFrom(nd.getPythonClassName(), nd.getPythonClassName())
             python_code = astor.to_source(import_stmt)
             with open(file_path, 'a') as file:
@@ -58,11 +65,14 @@ class PluginMain:
         with open(file_path, 'a') as file:
             file.write(python_code)
 
+        for child in children:
+            child['parent'] = self.controllerNode.id
+
         for ndi in nodedefs:
             ndef = nodedefs[ndi]
             file_path=f'{self.path}/{ndef.getPythonFileName()}'
             ngen = IoXNodeGen(ndef, self.path)
-            nc = ngen.create(node_imports)
+            nc = ngen.create(children)
             python_code = astor.to_source(nc)
             with open(file_path, 'a') as file:
                     file.write(python_code)

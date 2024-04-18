@@ -52,7 +52,7 @@ class IoXNodeGen():
 
         return ast_util.astTryExcept(out, error)
 
-    def create(self, node_imports):
+    def create(self, children):
         file_path=f'{self.path}/{self.nodedef.getPythonFileName()}'
         imports = ast_util.astCreateImports()
         python_code = astor.to_source(imports)
@@ -66,8 +66,8 @@ class IoXNodeGen():
                 file.write(python_code) 
 
         if self.nodedef.isController:
-            for node_import in node_imports:
-                import_stmt = ast_util.astCreateImportFrom(node_import, node_import)
+            for child in children:
+                import_stmt = ast_util.astCreateImportFrom(child['node_class'], child['node_class'])
                 python_code = astor.to_source(import_stmt)
                 with open(file_path, 'a') as file:
                     file.write(python_code) 
@@ -114,50 +114,28 @@ class IoXNodeGen():
             LOGGER.critical(str(ex))
             raise
         
-        class_def.body.append(ast_util.astComment('This is a list of commands that were defined in the nodedef'))
-        # Add the drivers list
-        commands_list = ast.Assign(
-            targets=[ast.Name(id='commands', ctx=ast.Store())],
-            value=ast.List(elts=[
-                    ast.Dict(
-                        keys=[ast.Str(s=f"{command['id']}")],
-                        values=[ast.Name(id=f"{getValidName(command['name'],False)}", ctx=ast.Load())]
-                    ) for command in commands
-            ], ctx=ast.Load())
-        )
-
-        class_def.body.append(commands_list)
-
-        init_body=[ast.Expr(value=ast.Call(func=ast.Attribute(value=ast.Name(id='super', ctx=ast.Load()), attr='__init__', ctx=ast.Load()),
-                                       args=[ast.Name(id='self'), ast.Name(id='poly'), ast.Name(id='controller'), ast.Name(id='address'), ast.Name(id='name')],
-                                       keywords=[]))]
         if self.nodedef.isController:
-           init_body+=ast_util.astControllerBody() 
+            children_list = ast.Assign(
+                targets=[ast.Name(id='children', ctx=ast.Store())],
+                value=ast.List(elts=[
+                    ast.Dict(
+                        keys=[ast.Str(s='node_class'), ast.Str(s='id'), ast.Str(s='name'), ast.Str(s='parent')],
+                        values=[ast.Str(s=child['node_class']), ast.Str(s=child['id']), ast.Str(s=child['name']), ast.Str(s=child['parent'])]
+                    ) for child in children
+                ], ctx=ast.Load())
+            )
+            class_def.body.append(children_list)
 
-        # Add __init__ method
-        init_method = ast.FunctionDef(
-            name='__init__',
-            args=ast.arguments(
-                args=[ast.arg(arg='self'), ast.arg(arg='poly'), ast.arg(arg='controller'), ast.arg(arg='address'), ast.arg(arg='name')],
-                defaults=[
-                     ast.Str(self.nodedef.parent if self.nodedef.parent else self.nodedef.id),  ast.Str(s=self.nodedef.id),  ast.Str(s=self.nodedef.name)],
-                kwonlyargs=[], kw_defaults=[], vararg=None, kwarg=None
-            ),
-            body = init_body,
-            #body=[ast.Expr(value=ast.Call(func=ast.Attribute(value=ast.Name(id='super', ctx=ast.Load()), attr='__init__', ctx=ast.Load()),
-                           #            args=[ast.Name(id='self'), ast.Name(id='poly'), ast.Name(id='controller'), ast.Name(id='address'), ast.Name(id='name')],
-                           #            keywords=[]))],
-            decorator_list=[]
-        )
-
-        class_def.body.append(init_method)
-        class_def.body.append(ast_util.astParamHandlerFunc())
-        class_def.body.append(ast_util.astConfigFunc())
-        class_def.body.append(ast_util.astStartFunc())
-        class_def.body.append(ast_util.astStopFunc())
-        class_def.body.append(ast_util.astPollFunc())
-        class_def.body.append(ast_util.astAddAllNodesFunc())
-        class_def.body.append(ast_util.astAddNodeFunc())
+        defaults=[self.nodedef.parent if self.nodedef.parent else self.nodedef.id,  self.nodedef.id,  self.nodedef.name]
+        class_def.body.append(ast_util.astAddClassInit(self.nodedef.isController, defaults))
+        if self.nodedef.isController:
+            class_def.body.append(ast_util.astParamHandlerFunc())
+            class_def.body.append(ast_util.astConfigFunc())
+            class_def.body.append(ast_util.astStartFunc())
+            class_def.body.append(ast_util.astStopFunc())
+            class_def.body.append(ast_util.astPollFunc())
+            class_def.body.append(ast_util.astAddAllNodesFunc())
+            class_def.body.append(ast_util.astAddNodeFunc())
 
         #create update and get methods
 
@@ -263,6 +241,19 @@ class IoXNodeGen():
 
         # Print the AST dump to verify
         #print(ast.dump(class_def, indent=4))
+        class_def.body.append(ast_util.astComment('This is a list of commands that were defined in the nodedef'))
+        # Add the drivers list
+        commands_list = ast.Assign(
+            targets=[ast.Name(id='commands', ctx=ast.Store())],
+            value=ast.List(elts=[
+                    ast.Dict(
+                        keys=[ast.Str(s=f"{command['id']}")],
+                        values=[ast.Name(id=f"{getValidName(command['name'],False)}", ctx=ast.Load())]
+                    ) for command in commands
+            ], ctx=ast.Load())
+        )
+        class_def.body.append(commands_list)
+
 
         return class_def
 

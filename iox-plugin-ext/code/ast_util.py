@@ -215,6 +215,117 @@ def astCommandParamAssignment(param_uom, val_name, toInt=True):
         )
     )
 
+def astInitBody():
+    return [ast.Expr(value=ast.Call(
+        func=ast.Attribute(
+            value=ast.Call(
+                func=ast.Name(id='super', ctx=ast.Load()),
+                args=[],
+                keywords=[]
+            ),
+            attr='__init__',
+            ctx=ast.Load()
+        ),
+        args=[
+            ast.Name(id='polyglot', ctx=ast.Load()),
+            ast.Name(id='controller', ctx=ast.Load()),
+            ast.Name(id='address', ctx=ast.Load()),
+            ast.Name(id='name', ctx=ast.Load())
+        ],
+        keywords=[]
+    ))]
+
+def astInitBodyController():
+    return [
+        ast.Assign(
+            targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='Parameters', ctx=ast.Store())],
+            value=ast.Call(
+                func=ast.Name(id='Custom', ctx=ast.Load()),
+                args=[
+                    ast.Name(id='polyglot', ctx=ast.Load()),
+                    ast.Constant(value='customparams')
+                ],
+                keywords=[]
+            )
+        ),
+        # Setting valid_configuration attribute
+        ast.Assign(
+            targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
+            value=ast.Constant(value=False)
+        ),
+        # Multiple subscribe method calls
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='subscribe', ctx=ast.Load()),
+            args=[ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='START', ctx=ast.Load()), ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='start', ctx=ast.Load())],
+            keywords=[]
+        )),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='subscribe', ctx=ast.Load()),
+            args=[ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='CUSTOMPARAMS', ctx=ast.Load()), ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='parameter_handler', ctx=ast.Load())],
+            keywords=[]
+        )),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='subscribe', ctx=ast.Load()),
+            args=[ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='POLL', ctx=ast.Load()), ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poll', ctx=ast.Load())],
+            keywords=[]
+        )),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='subscribe', ctx=ast.Load()),
+            args=[ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='STOP', ctx=ast.Load()), ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='stop', ctx=ast.Load())],
+            keywords=[]
+        )),
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='subscribe', ctx=ast.Load()),
+            args=[ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='CONFIG', ctx=ast.Load()), ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='config', ctx=ast.Load())],
+            keywords=[]
+        )),
+        # Poly is ready
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='ready', ctx=ast.Load()),
+            args=[],
+            keywords=[]
+        )),
+        # Adding all nodes
+        ast.Expr(value=ast.Call(
+            func=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='addAllNodes', ctx=ast.Load()),
+            args=[],
+            keywords=[]
+        ))
+    ]   
+
+
+def astAddClassInit(is_controller, defaults_array):
+    init_body = astInitBody()
+    if (is_controller):
+       init_body += astInitBodyController()
+
+    # Function definition with default arguments
+    function_def = ast.FunctionDef(
+        name='__init__',
+        args=ast.arguments(
+            posonlyargs=[],
+            args=[
+                ast.arg(arg='self'),
+                ast.arg(arg='polyglot'),
+                ast.arg(arg='controller', annotation=None, type_comment=None),
+                ast.arg(arg='address', annotation=None, type_comment=None),
+                ast.arg(arg='name', annotation=None, type_comment=None)
+            ],
+            defaults=[
+               ast.Constant(value=d) for d in defaults_array
+            ],
+            kwonlyargs=[],
+            kw_defaults=[],
+            vararg=None,
+            kwarg=None
+        ),
+        body=init_body,
+        decorator_list=[],
+        returns=None
+    )
+
+    return function_def
+
 def astControllerBody(): 
     # Create an AST node for the assignment to self.Parameters
     assignment = ast.Assign(
@@ -425,7 +536,7 @@ def astPollFunc():
         name='poll',
         args=ast.arguments(
             posonlyargs=[],
-            args=[ast.arg(arg='polltype')],
+            args=[ast.arg(arg='self'), ast.arg(arg='polltype')],
             kwonlyargs=[],
             kw_defaults=[],
             defaults=[]
@@ -437,122 +548,8 @@ def astPollFunc():
 
     return function_def
 
-def astAddAllNodesFunc():
-    # Method call: config = self.poly.getConfig()
-    config_assignment = ast.Assign(
-        targets=[ast.Name(id='config', ctx=ast.Store())],
-        value=ast.Call(
-            func=ast.Attribute(
-                value=ast.Attribute(
-                    value=ast.Name(id='self', ctx=ast.Load()),
-                    attr='poly',
-                    ctx=ast.Load()),
-                attr='getConfig',
-                ctx=ast.Load()),
-            args=[],
-            keywords=[]
-        )
-    )
-
-    # Check if config is None or config['nodes'] is None
-    if_config = ast.If(
-        test=ast.BoolOp(
-            op=ast.Or(),
-            values=[
-                ast.Compare(
-                    left=ast.Name(id='config', ctx=ast.Load()),
-                    ops=[ast.Is()],
-                    comparators=[ast.Constant(value=None)]
-                ),
-                ast.Compare(
-                    left=ast.Subscript(
-                        value=ast.Name(id='config', ctx=ast.Load()),
-                        slice=ast.Index(value=ast.Str(s='nodes')),
-                        ctx=ast.Load()
-                    ),
-                    ops=[ast.Is()],
-                    comparators=[ast.Constant(value=None)]
-                )
-            ]
-        ),
-        body=[
-            ast.Assign(
-                targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
-                value=ast.Constant(value=True)
-            ),
-            ast.Return(value=None)
-        ],
-        orelse=[]
-    )
-
-    # For loop over config['nodes']
-    for_loop = ast.For(
-        target=ast.Name(id='node', ctx=ast.Store()),
-        iter=ast.Subscript(
-            value=ast.Name(id='config', ctx=ast.Load()),
-            slice=ast.Index(value=ast.Str(s='nodes')),
-            ctx=ast.Load()
-        ),
-        body=[
-            ast.Assign(
-                targets=[ast.Name(id='nodeDef', ctx=ast.Store())],
-                value=ast.Subscript(
-                    value=ast.Name(id='node', ctx=ast.Load()),
-                    slice=ast.Index(value=ast.Str(s='nodeDefId')),
-                    ctx=ast.Load()
-                )
-            ),
-            ast.Assign(
-                targets=[ast.Name(id='address', ctx=ast.Store())],
-                value=ast.Subscript(
-                    value=ast.Name(id='node', ctx=ast.Load()),
-                    slice=ast.Index(value=ast.Str(s='address')),
-                    ctx=ast.Load()
-                )
-            ),
-            ast.Assign(
-                targets=[ast.Name(id='primary', ctx=ast.Store())],
-                value=ast.Subscript(
-                    value=ast.Name(id='node', ctx=ast.Load()),
-                    slice=ast.Index(value=ast.Str(s='primaryNode')),
-                    ctx=ast.Load()
-                )
-            ),
-            ast.Assign(
-                targets=[ast.Name(id='name', ctx=ast.Store())],
-                value=ast.Subscript(
-                    value=ast.Name(id='node', ctx=ast.Load()),
-                    slice=ast.Index(value=ast.Str(s='name')),
-                    ctx=ast.Load()
-                )
-            ),
-            ast.Expr(
-                value=ast.Call(
-                    func=ast.Attribute(
-                        value=ast.Name(id='self', ctx=ast.Load()),
-                        attr='__addNode',
-                        ctx=ast.Load()
-                    ),
-                    args=[
-                        ast.Name(id='nodeDef', ctx=ast.Load()),
-                        ast.Name(id='address', ctx=ast.Load()),
-                        ast.Name(id='name', ctx=ast.Load())
-                    ],
-                    keywords=[]
-                )
-            )
-        ],
-        orelse=[]
-    )
-    logger_info = astLogger('info', 'Done adding nodes ...', False)
-
-    # Set self.valid_configuration = True
-    set_valid_config = ast.Assign(
-        targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
-        value=ast.Constant(value=True)
-    )
-
-    # Function definition: def addAllNodes(self):
+def astAddAllNodesFunc(): 
+    # Create AST for the function definition
     function_def = ast.FunctionDef(
         name='addAllNodes',
         args=ast.arguments(
@@ -562,85 +559,319 @@ def astAddAllNodesFunc():
             kw_defaults=[],
             defaults=[]
         ),
-        body=[config_assignment, if_config, for_loop, logger_info, set_valid_config],
+        body=[
+            # Assign config from self.poly.getConfig()
+            ast.Assign(
+                targets=[ast.Name(id='config', ctx=ast.Store())],
+                value=ast.Call(
+                    func=ast.Attribute(
+                        value=ast.Attribute(
+                            value=ast.Name(id='self', ctx=ast.Load()),
+                            attr='poly',
+                            ctx=ast.Load()),
+                        attr='getConfig',
+                        ctx=ast.Load()),
+                    args=[],
+                    keywords=[]
+                )
+            ),
+            # Conditional to check and reset config if necessary
+            ast.If(
+                test=ast.BoolOp(
+                op=ast.Or(),
+                values=[
+                    ast.Compare(
+                        left=ast.Name(id='config', ctx=ast.Load()),
+                        ops=[ast.Is()],
+                        comparators=[ast.Constant(value=None)]
+                    ),
+                    ast.Compare(
+                        left=ast.Subscript(
+                            value=ast.Name(id='config', ctx=ast.Load()),
+                            slice=ast.Index(value=ast.Constant(value='nodes')),
+                            ctx=ast.Load()
+                        ),
+                        ops=[ast.Is()],
+                        comparators=[ast.Constant(value=None)]
+                    ),
+                    ast.Compare(
+                        left=ast.Call(
+                            func=ast.Name(id='len', ctx=ast.Load()),
+                            args=[ast.Subscript(
+                                value=ast.Name(id='config', ctx=ast.Load()),
+                                slice=ast.Index(value=ast.Constant(value='nodes')),
+                                ctx=ast.Load()
+                            )],
+                            keywords=[]
+                        ),
+                        ops=[ast.LtE()],
+                        comparators=[ast.Constant(value=0)]
+                    )
+                ]
+                ),
+                body=[
+                    ast.Assign(
+                        targets=[ast.Name(id='config', ctx=ast.Store())],
+                        value=ast.Dict(keys=[], values=[])
+                    ),
+                    ast.Assign(
+                        targets=[ast.Subscript(
+                            value=ast.Name(id='config', ctx=ast.Load()),
+                            slice=ast.Index(value=ast.Constant(value='nodes')),
+                            ctx=ast.Store()
+                        )],
+                        value=ast.List(elts=[], ctx=ast.Load())
+                    ),
+                    ast.For(
+                        target=ast.Name(id='child', ctx=ast.Store()),
+                        iter=ast.Attribute(
+                            value=ast.Name(id='self', ctx=ast.Load()),  # The object being iterated over
+                            attr='children',  # The attribute of the object that provides the iterable
+                            ctx=ast.Load()),
+                        body=[
+                            ast.Expr(
+                                value=ast.Call(
+                                    func=ast.Attribute(
+                                        value=ast.Subscript(
+                                            value=ast.Name(id='config', ctx=ast.Load()),
+                                            slice=ast.Index(value=ast.Constant(value='nodes')),
+                                            ctx=ast.Load()
+                                        ),
+                                        attr='append',
+                                        ctx=ast.Load()
+                                    ),
+                                    args=[ast.Dict(
+                                        keys=[
+                                            ast.Constant(value='nodeDefId'),
+                                            ast.Constant(value='address'),
+                                            ast.Constant(value='name'),
+                                            ast.Constant(value='primaryNode')
+                                        ],
+                                        values=[
+                                            ast.Subscript(
+                                                value=ast.Name(id='child', ctx=ast.Load()),
+                                                slice=ast.Index(value=ast.Constant(value='id')),
+                                                ctx=ast.Load()
+                                            ),
+                                            ast.Subscript(
+                                                value=ast.Name(id='child', ctx=ast.Load()),
+                                                slice=ast.Index(value=ast.Constant(value='node_class')),
+                                                ctx=ast.Load()
+                                            ),
+                                            ast.Subscript(
+                                                value=ast.Name(id='child', ctx=ast.Load()),
+                                                slice=ast.Index(value=ast.Constant(value='name')),
+                                                ctx=ast.Load()
+                                            ),
+                                            ast.Subscript(
+                                                value=ast.Name(id='child', ctx=ast.Load()),
+                                                slice=ast.Index(value=ast.Constant(value='parent')),
+                                                ctx=ast.Load()
+                                            )
+                                        ]
+                                    )],
+                                    keywords=[]
+                                )
+                            )
+                        ],
+                        orelse=[]
+                    )
+                ],
+                orelse=[]
+            ),
+            # Loop through config['nodes']
+            ast.For(
+                target=ast.Name(id='node', ctx=ast.Store()),
+                iter=ast.Subscript(
+                    value=ast.Name(id='config', ctx=ast.Load()),
+                    slice=ast.Index(value=ast.Constant(value='nodes')),
+                    ctx=ast.Load()
+                ),
+                body=[
+                    ast.If(
+                        test=ast.UnaryOp(
+                            op=ast.Not(),
+                            operand=ast.Call(
+                                func=ast.Attribute(
+                                    value=ast.Name(id='self', ctx=ast.Load()),
+                                    attr='__addNode',
+                                    ctx=ast.Load()
+                                ),
+                                args=[ast.Name(id='node', ctx=ast.Load())],
+                                keywords=[]
+                            )
+                        ),
+                        body=[ast.Return(value=None)],
+                        orelse=[]
+                    )
+                ],
+                orelse=[]
+            ),
+            # Logging and setting configuration validity
+            astLogger('info', 'Done adding nodes ...', False),
+            ast.Assign(
+                targets=[ast.Attribute(
+                    value=ast.Name(id='self', ctx=ast.Load()),
+                    attr='valid_configuration',
+                    ctx=ast.Store()
+                )],
+                value=ast.Constant(value=True)
+            )
+        ],
         decorator_list=[],
         returns=None
     )
 
     return function_def
 
-
-import ast
-
 def astAddNodeFunc():
-    # Create nodes for function parameters with type annotations
-    args = ast.arguments(
-        posonlyargs=[],
-        args=[
-            ast.arg(arg='self'),
-            ast.arg(arg='nodeDef', annotation=ast.Name(id='str', ctx=ast.Load())),
-            ast.arg(arg='endDeviceAddress', annotation=ast.Name(id='str', ctx=ast.Load())),
-            ast.arg(arg='devName', annotation=ast.Name(id='str', ctx=ast.Load())),
-        ],
-        kwonlyargs=[],
-        kw_defaults=[],
-        defaults=[]
-    )
-
-    # Check if nodeDef is None
-    if_node_def_none = ast.If(
-        test=ast.Compare(
-            left=ast.Name(id='nodeDef', ctx=ast.Load()),
-            ops=[ast.Is()],
-            comparators=[ast.Constant(value=None)]
-        ),
-        body=[ast.Return(value=None)],
-        orelse=[]
-    )
-
-    # Initialize devNode to None
-    init_dev_node = ast.Assign(
-        targets=[ast.Name(id='devNode', ctx=ast.Store())],
-        value=ast.Constant(value=None)
-    )
-
-    # Check if devNode is None and log error
-    if_dev_node_none = ast.If(
-        test=ast.Compare(
-            left=ast.Name(id='devNode', ctx=ast.Load()),
-            ops=[ast.Is()],
-            comparators=[ast.Constant(value=None)]
-        ),
-        body=[
-            astLogger('error', 'invalid noddef id ...', False),
-            ast.Return(value=None)
-        ],
-        orelse=[]
-    )
-
-    # Add devNode to poly
-    add_node_call = ast.Expr(value=ast.Call(
-        func=ast.Attribute(
-            value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()),
-            attr='addNode',
-            ctx=ast.Load()
-        ),
-        args=[ast.Name(id='devNode', ctx=ast.Load())],
-        keywords=[]
-    ))
-
-    # Function definition
+    # Define the function
     function_def = ast.FunctionDef(
         name='__addNode',
-        args=args,
+        args=ast.arguments(
+            posonlyargs=[],
+            args=[ast.arg(arg='self'), ast.arg(arg='node_info')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[],
+            vararg=None,
+            kwarg=None
+        ),
+        returns=ast.Name(id='bool', ctx=ast.Load()),
         body=[
-            if_node_def_none,
-            init_dev_node,
-            if_dev_node_none,
-            add_node_call
+            # If check for node_info being None
+            ast.If(
+                test=ast.Compare(
+                    left=ast.Name(id='node_info', ctx=ast.Load()),
+                    ops=[ast.Is()],
+                    comparators=[ast.Constant(value=None)]
+                ),
+                body=[
+                    ast.Expr(value=ast.Call(
+                        func=ast.Attribute(
+                            value=ast.Name(id='LOGGER', ctx=ast.Load()),
+                            attr='error',
+                            ctx=ast.Load()
+                        ),
+                        args=[ast.Constant(value="node cannot be null")],
+                        keywords=[]
+                    )),
+                    ast.Return(value=ast.Constant(value=False))
+                ],
+                orelse=[]
+            ),
+            # Try block
+            ast.Try(
+                body=[
+                    # Assign class from globals based on 'address'
+                    ast.Assign(
+                        targets=[ast.Name(id='cls', ctx=ast.Store())],
+                        value=ast.Subscript(
+                            value=ast.Call(
+                                func=ast.Name(id='globals', ctx=ast.Load()),
+                                args=[],
+                                keywords=[]
+                            ),
+                            slice=ast.Index(value=ast.Subscript(
+                                value=ast.Name(id='node_info', ctx=ast.Load()),
+                                slice=ast.Index(value=ast.Constant(value='address')),
+                                ctx=ast.Load()
+                            )),
+                            ctx=ast.Load()
+                        )
+                    ),
+                    # Instantiate node object
+                    ast.Assign(
+                        targets=[ast.Name(id='node', ctx=ast.Store())],
+                        value=ast.Call(
+                            func=ast.Name(id='cls', ctx=ast.Load()),
+                            args=[
+                                ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()),
+                                ast.Subscript(
+                                    value=ast.Name(id='node_info', ctx=ast.Load()),
+                                    slice=ast.Index(value=ast.Constant(value='primaryNode')),
+                                    ctx=ast.Load()
+                                ),
+                                ast.Subscript(
+                                    value=ast.Name(id='node_info', ctx=ast.Load()),
+                                    slice=ast.Index(value=ast.Constant(value='nodeDefId')),
+                                    ctx=ast.Load()
+                                ),
+                                ast.Subscript(
+                                    value=ast.Name(id='node_info', ctx=ast.Load()),
+                                    slice=ast.Index(value=ast.Constant(value='name')),
+                                    ctx=ast.Load()
+                                )
+                            ],
+                            keywords=[]
+                        )
+                    ),
+                    # Check if node instantiation was successful
+                    ast.If(
+                        test=ast.Compare(
+                            left=ast.Name(id='node', ctx=ast.Load()),
+                            ops=[ast.Is()],
+                            comparators=[ast.Constant(value=None)]
+                        ),
+                        body=[
+                            ast.Expr(value=ast.Call(
+                                func=ast.Attribute(
+                                    value=ast.Name(id='LOGGER', ctx=ast.Load()),
+                                    attr='error',
+                                    ctx=ast.Load()
+                                ),
+                                args=[ast.JoinedStr(values=[
+                                    ast.Str(s="invalid noddef id ...")
+                                ])],
+                                keywords=[]
+                            )),
+                            ast.Return(value=ast.Constant(value=False))
+                        ],
+                        orelse=[
+                            ast.Expr(value=ast.Call(
+                                func=ast.Attribute(
+                                    value=ast.Attribute(
+                                        value=ast.Name(id='self', ctx=ast.Load()),
+                                        attr='poly',
+                                        ctx=ast.Load()
+                                    ),
+                                    attr='addNode',
+                                    ctx=ast.Load()
+                                ),
+                                args=[ast.Name(id='node', ctx=ast.Load())],
+                                keywords=[]
+                            )),
+                            ast.Return(value=ast.Constant(value=True))
+                        ]
+                    )
+                ],
+                handlers=[
+                    ast.ExceptHandler(
+                        type=ast.Name(id='Exception', ctx=ast.Load()),
+                        name=ast.Name(id='ex', ctx=ast.Store()),
+                        body=[
+                            ast.Expr(value=ast.Call(
+                                func=ast.Attribute(
+                                    value=ast.Name(id='LOGGER', ctx=ast.Load()),
+                                    attr='error',
+                                    ctx=ast.Load()
+                                ),
+                                args=[ast.Call(
+                                    func=ast.Name(id='str', ctx=ast.Load()),
+                                    args=[ast.Name(id='ex', ctx=ast.Load())],
+                                    keywords=[]
+                                )],
+                                keywords=[]
+                            )),
+                            ast.Return(value=ast.Constant(value=False))
+                        ]
+                    )
+                ],
+                orelse=[],
+                finalbody=[]
+            )
         ],
-        decorator_list=[],
-        returns=None
+        decorator_list=[]
     )
 
     return function_def

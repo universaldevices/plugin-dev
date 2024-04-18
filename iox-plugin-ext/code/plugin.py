@@ -164,6 +164,6 @@ class Plugin:
 
 
 mod=Plugin("../ext/dimmer.iox_plugin.json")
-mod.toIoX()
 mod.makePythonClasses(".")
+mod.toIoX()
 pass

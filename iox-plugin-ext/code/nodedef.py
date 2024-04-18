@@ -92,7 +92,7 @@ class NodeDefDetails:
             nls += f"\n{cmds_nls}"
             
 
-        nodedef += "\n<nodedef>"
+        nodedef += "\n</nodedef>"
         return nodedef, nls
 
     def validate(self):
@@ -122,7 +122,7 @@ class NodeDefs:
         return None
 
     def addController(self, controllerName, icon=None):
-        controllerId = f'{controllerName}Ctrl'
+        controllerId = f'{controllerName}ctrl'
         addedController=False
         for n in self.nodedefs:
             node=self.nodedefs[n]
@@ -188,7 +188,7 @@ class NodeDefs:
             if nlsx:
                 nls+=f"\n{nlsx}"
 
-        nodedefs += "\n<nodedefs>" 
+        nodedefs += "\n</nodedefs>\n" 
         return nodedefs, nls
 
     def validate(self):
