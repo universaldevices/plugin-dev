@@ -253,6 +253,11 @@ def astInitBodyController():
             targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='valid_configuration', ctx=ast.Store())],
             value=ast.Constant(value=False)
         ),
+        # Setting started attribute
+        ast.Assign(
+            targets=[ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='started', ctx=ast.Store())],
+            value=ast.Constant(value=False)
+        ),
         # Multiple subscribe method calls
         ast.Expr(value=ast.Call(
             func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='subscribe', ctx=ast.Load()),
@@ -279,18 +284,6 @@ def astInitBodyController():
             args=[ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='CONFIG', ctx=ast.Load()), ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='config', ctx=ast.Load())],
             keywords=[]
         )),
-        # Poly is ready
-        ast.Expr(value=ast.Call(
-            func=ast.Attribute(value=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly', ctx=ast.Load()), attr='ready', ctx=ast.Load()),
-            args=[],
-            keywords=[]
-        )),
-        # Adding all nodes
-        ast.Expr(value=ast.Call(
-            func=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='addAllNodes', ctx=ast.Load()),
-            args=[],
-            keywords=[]
-        ))
     ]   
 
 
@@ -423,34 +416,96 @@ def astParamHandlerFunc():
 import ast
 
 def astStartFunc():
-    # Function body statements
     log_info = astLogger('info', 'Starting ... ', False)
-
-    add_all_nodes = ast.Expr(value=ast.Call(
-        func=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='addAllNodes', ctx=ast.Load()),
-        args=[],
-        keywords=[]
-    ))
-
-    update_profile = ast.Expr(value=ast.Call(
-        func=ast.Name(id='polyglot.updateProfile', ctx=ast.Load()),
-        args=[],
-        keywords=[]
-    ))
-
-    set_custom_params_doc = ast.Expr(value=ast.Call(
-        func=ast.Attribute(value=ast.Name(id='self', ctx=ast.Load()), attr='poly.setCustomParamsDoc', ctx=ast.Load()),
-        args=[],
-        keywords=[]
-    ))
-
-    return_true = astReturnBoolean(True)
-
-    # Function definition
     function_def = ast.FunctionDef(
         name='start',
-        args=ast.arguments(posonlyargs=[], args=[ast.arg(arg='self')], vararg=None, kwonlyargs=[], kw_defaults=[], defaults=[]),
-        body=[log_info, add_all_nodes, update_profile, set_custom_params_doc, return_true],
+        args=ast.arguments(
+            posonlyargs=[],
+            args=[ast.arg(arg='self')],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[]
+        ),
+        body=[
+            # LOGGER.info(f'Starting... ')
+            ast.Expr(value=ast.Call(
+                func=ast.Attribute(
+                    value=ast.Name(id='LOGGER', ctx=ast.Load()),
+                    attr='info',
+                    ctx=ast.Load()
+                ),
+                args=[ast.JoinedStr(
+                    values=[
+                        ast.Constant(value='Starting... ')
+                    ]
+                )],
+                keywords=[]
+            )),
+            # self.poly.addNode(self)
+            ast.Expr(value=ast.Call(
+                func=ast.Attribute(
+                    value=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),
+                        attr='poly',
+                        ctx=ast.Load()
+                    ),
+                    attr='addNode',
+                    ctx=ast.Load()
+                ),
+                args=[ast.Name(id='self', ctx=ast.Load())],
+                keywords=[]
+            )),
+            # self.addAllNodes()
+            ast.Expr(value=ast.Call(
+                func=ast.Attribute(
+                    value=ast.Name(id='self', ctx=ast.Load()),
+                    attr='addAllNodes',
+                    ctx=ast.Load()
+                ),
+                args=[],
+                keywords=[]
+            )),
+            # polyglot.updateProfile()
+            ast.Expr(value=ast.Call(
+                func=ast.Attribute(
+                    value=ast.Name(id='self', ctx=ast.Load()),
+                    attr='poly.updateProfile',
+                    ctx=ast.Load()
+                ),
+                args=[],
+                keywords=[]
+            )),
+            # self.poly.setCustomParamsDoc()
+            ast.Expr(value=ast.Call(
+                func=ast.Attribute(
+                    value=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),
+                        attr='poly',
+                        ctx=ast.Load()
+                    ),
+                    attr='setCustomParamsDoc',
+                    ctx=ast.Load()
+                ),
+                args=[],
+                keywords=[]
+            )),
+            # self.poly.ready()
+            ast.Expr(value=ast.Call(
+                func=ast.Attribute(
+                    value=ast.Attribute(
+                        value=ast.Name(id='self', ctx=ast.Load()),
+                        attr='poly',
+                        ctx=ast.Load()
+                    ),
+                    attr='ready',
+                    ctx=ast.Load()
+                ),
+                args=[],
+                keywords=[]
+            )),
+            # return True
+            ast.Return(value=ast.Constant(value=True))
+        ],
         decorator_list=[],
         returns=None
     )
@@ -900,8 +955,8 @@ def astCreateMainFunc(controller):
             )
         ),
         ast.Expr(value=ast.Call(
-            func=ast.Attribute(value=ast.Name(id='polyglot', ctx=ast.Load()), attr='addNode', ctx=ast.Load()),
-            args=[ast.Name(id='controller', ctx=ast.Load())],
+            func=ast.Attribute(value=ast.Name(id='controller', ctx=ast.Load()), attr='start', ctx=ast.Load()),
+            args=[],
             keywords=[]
         )),
         ast.Expr(value=ast.Call(

@@ -8,7 +8,7 @@ if __name__ == '__main__':
         polyglot = udi_interface.Interface([])
         polyglot.start(version.ud_plugin_version)
         controller = helloworldNode(polyglot)
-        polyglot.addNode(controller)
+        controller.start()
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
         LOGGER.info('exiting ...')

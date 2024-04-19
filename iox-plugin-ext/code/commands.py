@@ -33,7 +33,7 @@ class CommandParam:
             LOGGER.critical(str(ex))
             raise
 
-    def toIoX(self, cmd_id:str, init_prop=None)->(str,str):
+    def toIoX(self, node_id:str, init_prop=None)->(str,str):
         nls=""
         param=""
         editor_id = self.editor.getEditorId()
@@ -43,7 +43,10 @@ class CommandParam:
             param+=f" init=\"{init_prop}\""
         param+="/>"
         if self.name:
-            nls+=f"CMDP-{cmd_id}-{self.id}-NAME = {self.name}"
+            nls+=f"CMDP-{node_id}-{editor_id}-{self.id}-NAME = {self.name}"
+        elif init_prop:
+            nls+=f"CMDP-{node_id}-{editor_id}:{init_prop} = {self.name}"
+
 
         return param, nls
 
@@ -82,14 +85,14 @@ class CommandDetails:
         nls = ""
         cmd = ""
         if self.name:
-            nls+=f"CMD-{node_id}-NAME = {self.name}"
+            nls+=f"CMD-{node_id}-{self.id}-NAME = {self.name}"
         if len(self.params) == 0:
             cmd = f"<cmd id=\"{self.id}\"/>"
         else:
             cmd = f"<cmd id=\"{self.id}\">"
             for p in self.params:
                 param=self.params[p]
-                param_x, param_nls=param.toIoX(self.id, self.init_prop)
+                param_x, param_nls=param.toIoX(node_id, self.init_prop)
                 if param_x:
                    cmd+=f"\n{param_x}"
                 if param_nls:
@@ -153,9 +156,10 @@ class Commands:
                 "name":f"set{getValidName(property_name)}",
                 "params": [
                     {
-                        "id" : f"{property_id}" ,
+                        "id" : property_id ,
+                        "name": getValidName(property_name),
                         "editor":{
-                            "idref": f"{editor_id}"
+                            "idref": editor_id
                         }
                     }
                 ]

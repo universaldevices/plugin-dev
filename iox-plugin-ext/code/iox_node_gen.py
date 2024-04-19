@@ -34,16 +34,16 @@ class IoXNodeGen():
         for p in params:
             param = params[p] 
             editor = Editors.getEditors().editors[param.editor.getEditorId()]
-            if UOMs.isIndex(editor.uom):
-                out.append(ast_util.astIndexAssignment(param.name.replace(' ','_') if param.name else param.id, param.id, 'command'))
-            else:
-                if not added_jparams:
-                    stmts = ast_util.astCommandQueryParams('command')
-                    for stmt in stmts:
-                        out.append(stmt)
-                    added_jparams=True
-                
-                out.append(ast_util.astCommandParamAssignment(f'{param.id}.uom{editor.uom}', param.id))
+            #if UOMs.isIndex(editor.uom):
+            #    out.append(ast_util.astIndexAssignment(param.name.replace(' ','_') if param.name else param.id, param.id, 'command'))
+            #else:
+            if not added_jparams:
+                stmts = ast_util.astCommandQueryParams('command')
+                for stmt in stmts:
+                    out.append(stmt)
+                added_jparams=True
+            
+            out.append(ast_util.astCommandParamAssignment(f'{param.id}.uom{editor.uom}', param.id))
 
         out.append(ast_util.astReturnBoolean(True))
 
@@ -245,12 +245,10 @@ class IoXNodeGen():
         # Add the drivers list
         commands_list = ast.Assign(
             targets=[ast.Name(id='commands', ctx=ast.Store())],
-            value=ast.List(elts=[
-                    ast.Dict(
-                        keys=[ast.Str(s=f"{command['id']}")],
-                        values=[ast.Name(id=f"{getValidName(command['name'],False)}", ctx=ast.Load())]
-                    ) for command in commands
-            ], ctx=ast.Load())
+            value= ast.Dict(
+                        keys=[ast.Str(s=f"{command['id']}") for command in commands],
+                        values=[ast.Name(id=f"{getValidName(command['name'],False)}", ctx=ast.Load()) for command in commands]
+                    ) 
         )
         class_def.body.append(commands_list)
 

@@ -42,12 +42,33 @@ class micNode(udi_interface.Node):
 
     def accept2(self, command):
         try:
-            hello_param_2_accept = command.get('param_c_1a')
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            param_c_1a = int(jparam['param_c_1a.uom25'])
             param_c_2_a = int(jparam['param_c_2_a.uom103'])
             return True
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
-    commands = [{'acc_cmd1': accept1}, {'acc_cmd2': accept2}]
+
+    def setTemp(self, command):
+        try:
+            query = str(command['query']).replace("'", '"')
+            jparam = json.loads(query)
+            ACCX = int(jparam['ACCX.uom94'])
+            return True
+        except Exception as ex:
+            LOGGER.error(f'failed parsing parameters ... ')
+            return False
+
+    def setCtl(self, command):
+        try:
+            query = str(command['query']).replace("'", '"')
+            jparam = json.loads(query)
+            CTL = int(jparam['CTL.uom25'])
+            return True
+        except Exception as ex:
+            LOGGER.error(f'failed parsing parameters ... ')
+            return False
+    commands = {'acc_cmd1': accept1, 'acc_cmd2': accept2, 'ACCX': setTemp,
+        'CTL': setCtl}
