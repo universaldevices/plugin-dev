@@ -45,4 +45,8 @@ iox-plugin-ext/profile
 iox-plugin-ext/profile/*
 iox-plugin-ext/vsc-extension-quickstart.md
 iox-plugin-ext/*.log
+iox-plugin-ext/logs
+iox-plugin-ext/logs/*
+iox-plugin-ext/*.cert
+iox-plugin-ext/*.key
 
