@@ -73,7 +73,7 @@ async function createNewIoXPluginProject(context: vscode.ExtensionContext)
     return true;
 }
 
-async function generatePluginCode(context: vscode.ExtensionContext) 
+async function generatePluginCode(context: vscode.ExtensionContext, fileUri: vscode.Uri) 
 {
     try {
         let workspaceFolder = vscode.workspace.workspaceFolders == undefined? "type path here": vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -85,7 +85,7 @@ async function generatePluginCode(context: vscode.ExtensionContext)
 
         const scriptPath = path.join(context.extensionPath, 'code', 'plugin.py');
 
-        const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, context.extensionPath]);
+        const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
 
         pythonProcess.stdout.on('data', (data) => {
               console.log(`${data}`);
@@ -137,8 +137,8 @@ export function activate(context: vscode.ExtensionContext) {
       context.subscriptions.push(createProject)
   });
 
-  let generateCode = vscode.commands.registerCommand('extension.generatePluginCode', async () => {
-    let prc = await generatePluginCode(context);
+  let generateCode = vscode.commands.registerCommand('extension.generatePluginCode', async (fileUri: vscode.Uri)  => {
+    let prc = await generatePluginCode(context, fileUri);
     if (prc.valueOf())
       context.subscriptions.push(generateCode)
   });

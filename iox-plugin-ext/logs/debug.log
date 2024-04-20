@@ -58,3 +58,21 @@
 2024-04-19 17:39:24,843 MainThread udi_interface      ERROR    udi_interface:write: plugin.py: error: the following arguments are required: project_path, json_file
 2024-04-19 17:39:24,844 MainThread udi_interface      DEBUG    udi_interface:write: /usr/home/admin/workspace/plugin-dev/ext
 2024-04-19 17:39:24,844 MainThread udi_interface      DEBUG    udi_interface:write: /usr/home/admin/workspace/plugin-dev/ext/dimmer.iox_plugin.json
+2024-04-19 17:51:38,691 MainThread udi_interface      INFO     polylogger:set_basic_config: set_basic_config: enable=True level=30
+2024-04-19 17:51:38,691 MainThread udi_interface      INFO     __init__:<module>: UDI interface initializing
+2024-04-19 17:51:38,691 MainThread udi_interface      INFO     __init__:<module>: User=admin
+2024-04-19 17:51:38,691 MainThread udi_interface      INFO     __init__:<module>: Home=/home/admin
+2024-04-19 17:51:38,691 MainThread udi_interface      INFO     __init__:<module>: Node Server Path=/usr/home/admin/workspace/plugin-dev/iox-plugin-ext
+2024-04-19 17:51:38,692 MainThread udi_interface      INFO     __init__:<module>: PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjoyLCJsb2dMZXZlbCI6IklORk8iLCJ0b2tlbiI6IlRpejMvODAhMTRWM2s/U0ciLCJtcXR0SG9zdCI6ImxvY2FsaG9zdCIsIm1xdHRQb3J0Ijo4ODgzLCJzZWN1cmUiOjEsImlzUEczeCI6dHJ1ZSwicGczVmVyc2lvbiI6IjMuMi4yMiIsImlzeVZlcnNpb24iOiI1LjguMSIsImVkaXRpb24iOiJGcmVlIn0=
+2024-04-19 17:51:38,692 MainThread udi_interface      INFO     __init__:<module>: Loading interface module
+2024-04-19 17:51:38,763 MainThread udi_interface      INFO     interface:<module>: Loading MQTT module
+2024-04-19 17:51:39,447 MainThread udi_interface      INFO     interface:<module>: MQTT module loaded
+2024-04-19 17:51:39,999 MainThread udi_interface      INFO     __init__:<module>: Loading udi_interface module
+2024-04-19 17:51:40,000 MainThread udi_interface      INFO     __init__:<module>: Loading node module
+2024-04-19 17:51:40,000 MainThread udi_interface      INFO     __init__:<module>: Loading custom module
+2024-04-19 17:51:40,001 MainThread udi_interface      INFO     __init__:<module>: Loading isy module
+2024-04-19 17:51:40,001 MainThread udi_interface      INFO     __init__:<module>: Loading OAuth module
+2024-04-19 17:51:40,002 MainThread udi_interface      INFO     __init__:<module>: UDI interface initialized
+2024-04-19 17:51:40,003 MainThread udi_interface      INFO     __init__:<module>: UDI Python Interface for Polyglot version 3 3.3.4 Starting...
+2024-04-19 17:51:40,005 MainThread udi_interface      DEBUG    udi_interface:write: /home/admin/workspace/plugin-dev/ext
+2024-04-19 17:51:40,005 MainThread udi_interface      DEBUG    udi_interface:write: /home/admin/workspace/plugin-dev/ext/dimmer.iox_plugin.json

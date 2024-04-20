@@ -104,7 +104,7 @@ function createNewIoXPluginProject(context) {
         return true;
     });
 }
-function generatePluginCode(context) {
+function generatePluginCode(context, fileUri) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let workspaceFolder = vscode.workspace.workspaceFolders == undefined ? "type path here" : vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -113,7 +113,7 @@ function generatePluginCode(context) {
                 return false;
             }
             const scriptPath = path.join(context.extensionPath, 'code', 'plugin.py');
-            const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, context.extensionPath]);
+            const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
             pythonProcess.stdout.on('data', (data) => {
                 console.log(`${data}`);
                 vscode.window.showInformationMessage(`${data}`);
@@ -159,8 +159,8 @@ function activate(context) {
         if (prc.valueOf())
             context.subscriptions.push(createProject);
     }));
-    let generateCode = vscode.commands.registerCommand('extension.generatePluginCode', () => __awaiter(this, void 0, void 0, function* () {
-        let prc = yield generatePluginCode(context);
+    let generateCode = vscode.commands.registerCommand('extension.generatePluginCode', (fileUri) => __awaiter(this, void 0, void 0, function* () {
+        let prc = yield generatePluginCode(context, fileUri);
         if (prc.valueOf())
             context.subscriptions.push(generateCode);
     }));
