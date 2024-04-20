@@ -20,7 +20,7 @@ class ProfileWriter:
 
     def __init__(self, is_new:bool=True, path="./profile"):
         try:
-            self.path = path
+            self.path = f"{path}/profile" if path != "./profile" else path
             self.nls_path=f"{self.path}/{NLS_PATH}"
             self.editor_path=f"{self.path}/{EDITOR_PATH}"
             self.nodedef_path=f"{self.path}/{NODEDEF_PATH}"

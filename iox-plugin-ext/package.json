@@ -13,10 +13,35 @@
   "contributes": {
     "jsonValidation": [
       {
-        "fileMatch":"*.iox_plugin.json",
-        "url":"./schemas/plugin.schema.json"
+        "fileMatch": "*.iox_plugin.json",
+        "url": "./schemas/plugin.schema.json"
       }
     ],
+    "commands": [
+      {
+        "command": "extension.createProject",
+        "title": "Create IoX Plugin Project"
+      },
+      {
+        "command": "extension.generatePluginCode",
+        "title": "Generate IoX Plugin Code"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "extension.createProject",
+          "when": "true"
+        }
+      ],
+      "explorer/context": [
+        {
+          "when": "resourceFilename =~ /\\.iox_plugin\\.json$/",
+          "command": "extension.generatePluginCode",
+          "group": "navigation"
+        }
+      ]
+    },
     "snippets": [
       {
         "language": "json",
@@ -39,5 +64,14 @@
         "description": "sample mocbus"
       }
     ]
-  }
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "vscode": "^1.1.37"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7"
+  },
+  "main": "./extensions/compiled/extension.js"
 }

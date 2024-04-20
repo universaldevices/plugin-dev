@@ -18,6 +18,7 @@ from iox_node_gen import IoXNodeGen
 import astor
 import ast_util
 from main_gen import PluginMain
+import argparse
 
 
 PLUGIN_SCHEMA_FILE="schemas/plugin.schema.json"
@@ -35,7 +36,7 @@ UOM_SCHEMA="schemas/uom.schema.json"
 
 class Plugin:
 
-    def __init__(self, plugin_file, schema=PLUGIN_SCHEMA_FILE):
+    def __init__(self, plugin_file, path:str, schema=PLUGIN_SCHEMA_FILE):
         self.meta = None
         self.editors=Editors()
         self.nodedefs:NodeDefs 
@@ -43,7 +44,7 @@ class Plugin:
         if plugin_file == None:
             LOGGER.critical("plugin file does not exist ... ")
             return
-        self.profileWriter=ProfileWriter()
+        self.profileWriter=ProfileWriter(True, path)
 
         try:
             self.isValid=self.validate_json(schema, plugin_file)
@@ -139,7 +140,7 @@ class Plugin:
 
         return n and e
 
-    def makePythonClasses(self, path:str):
+    def generateCode(self, path:str):
         try:
             if path == None:
                 LOGGER.critical("need path to write python files to")
@@ -163,7 +164,30 @@ class Plugin:
             raise Exception(ex)
 
 
-mod=Plugin("../ext/dimmer.iox_plugin.json")
-mod.toIoX()
-mod.makePythonClasses(".")
-pass
+def generate_code():
+    project_path = "/usr/home/admin/workspace/plugin-dev/ext"
+    json_file = f"{project_path}/dimmer.iox_plugin.json"
+    try:
+        parser = argparse.ArgumentParser(description="the path IoX Plugin json file")
+    
+        parser.add_argument('project_path', type=str, help='path to the project directory')
+        parser.add_argument('json_file', type=str, help='path to the json file')
+        
+        args = parser.parse_args()
+
+        project_path = args.project_path
+        json_file = args.json_file
+    except SystemExit as ex:
+        pass
+
+    print (project_path)
+    print (json_file)
+    mod=Plugin(json_file, project_path)
+    mod.toIoX()
+    mod.generateCode(project_path)
+
+
+
+if __name__ == "__main__":
+    generate_code()
+
