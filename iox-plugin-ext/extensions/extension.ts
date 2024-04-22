@@ -71,7 +71,7 @@ function createCommandPanel(context: vscode.ExtensionContext){
 async function checkAndInstallPythonModules() {
   const pythonInterpreter = vscode.workspace.getConfiguration('python3').get<string>('pythonPath', 'pip3');
 
-  const modules = ['astor'];  // Example modules
+  const modules = ['astor','udi_interface','fastjsonschema'];  // Example modules
   modules.forEach(module => {
       child_process.exec(`${pythonInterpreter} -c "import ${module}"`, (error, stdout, stderr) => {
           if (error) {
@@ -169,10 +169,8 @@ async function createJSON(context: vscode.ExtensionContext)
                 const destinationPath = path.join(workspaceFolders[0].uri.fsPath, path.basename(pickedSnippet.fullPath));
                 fs.copyFileSync(pickedSnippet.fullPath, destinationPath);
                 vscode.window.showInformationMessage(`Template copied to ${destinationPath}`);
-                if (vscode.workspace.workspaceFolders != undefined)
-                    vscode.commands.executeCommand('vscode.openFolder', vscode.workspace.workspaceFolders[0].uri, false);
-            } else {
-                vscode.window.showErrorMessage('No workspace folder found. Please open a workspace.');
+                vscode.commands.executeCommand('workbench.action.focusSideBar');
+                vscode.commands.executeCommand('workbench.view.explorer');
             }
         }
     } catch (error: unknown) {
@@ -266,8 +264,8 @@ async function generatePluginCode(context: vscode.ExtensionContext, fileUri: vsc
               } else {
                   console.log('IoX Plugin Code generation completed successfully');
                   vscode.window.showInformationMessage('IoX Plugin Code generation completed successfully');
-                  if (vscode.workspace.workspaceFolders != undefined)
-                    vscode.commands.executeCommand('vscode.openFolder', vscode.workspace.workspaceFolders[0].uri, false);
+                  vscode.commands.executeCommand('workbench.action.focusSideBar');
+                  vscode.commands.executeCommand('workbench.view.explorer');
               }
         });
 

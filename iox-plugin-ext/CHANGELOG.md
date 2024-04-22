@@ -6,4 +6,20 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-- Initial release
+- Initial release 
+
+## [1.0.5] - 2024-04-22
+
+### Added
+- Command buttons
+- Templates
+- Additional paths for creation of JSON
+- fastjsonschema, udi_interface
+
+### Changed
+
+### Removed
+
+### Fixed
+- Auto install fastjsonschema
+

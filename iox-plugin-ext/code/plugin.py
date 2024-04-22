@@ -5,7 +5,7 @@ Plugin schema processor and validator
 Copyright (C) 2024 Universal Devices
 """
 
-import fastjsonschema
+#import fastjsonschema
 import json
 import os
 from nodedef import NodeDefs
@@ -128,8 +128,8 @@ class Plugin:
                     'uom.schema.json': uom_schema
                     }
 
-            validate = fastjsonschema.compile(plugin_schema, handlers)
-            validate(payload)
+            #validate = fastjsonschema.compile(plugin_schema, handlers)
+            #validate(payload)
             return True
         except Exception as ex:
             return False
