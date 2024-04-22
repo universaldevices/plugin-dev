@@ -1,0 +1,78 @@
+{
+    "plugin": {
+          "name":"sensors",
+          "description":"A Multisensor",
+          "author":"UD",
+          "language": 0,
+          "executableName":"sensors.py",
+          "installScript":"install.sh",
+          "documentationLink":"docs",
+          "licenseLink":"lic",
+          "shortPoll":60,
+          "longPoll":600,
+          "profileVersion":"3.0.0",
+          "initialLogLevel":3,
+          "enableDiscovery":true,
+          "enableOAUTH2":false,
+          "worksOnPolisy":true,
+          "worksOnEisy":true,
+          "requiresIoXAccess": false
+    },
+    "editors": [
+        {
+            "id": "humidity",
+            "min": 0,
+            "max": 100,
+            "uom": "Absolute humidity | 21"
+        },
+        {
+            "id": "temp",
+            "min": 30,
+            "max": 120,
+            "uom": "Fahrenheit | 17"
+        },
+        {
+            "id": "lum",
+            "min": 0,
+            "max": 100,
+            "uom": "Percent | 51"
+        }
+    ],
+    "nodedefs": [
+        {
+            "id":"sensors",
+            "name":"Sensors",
+            "icon":"MotionSensor",
+            "properties": [
+                {
+                    "id":"Humidity | CLIHUM",
+                    "name": "Humidity",
+                    "editor": {
+                        "idref": "humidity"
+                    },
+                    "is_settable": false
+                },
+                {
+                    "id": "Current Temperature | CLITEMP",
+                    "name": "Temperature",
+                    "editor": {
+                        "idref": "temp"
+                    } ,
+                    "is_settable": false
+                },
+                {
+                    "id": "Luminance | LUMIN",
+                    "name": "Luminance",
+                    "editor": {
+                        "idref": "lum"
+                    } ,
+                    "is_settable": false
+                }
+            ],
+            "commands": {
+                "accepts": [],
+                "sends": []
+            } 
+        }
+    ]
+}

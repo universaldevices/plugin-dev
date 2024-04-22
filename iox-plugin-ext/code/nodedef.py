@@ -59,7 +59,7 @@ class NodeDefDetails:
         return commands
                     
     def getPythonClassName(self):
-        return f'{self.name}Node'
+        return f'{self.name}Node'.replace(' ','').replace('_','')
 
     def getPythonFileName(self):
         return f'{self.getPythonClassName()}.py'
@@ -122,7 +122,7 @@ class NodeDefs:
         return None
 
     def addController(self, controllerName, icon=None):
-        controllerId = f'{controllerName}ctrl'
+        controllerId = controllerName.replace(' ', '').replace('_','').lower()[0:14]
         addedController=False
         for n in self.nodedefs:
             node=self.nodedefs[n]

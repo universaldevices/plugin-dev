@@ -1,192 +1,126 @@
 {
     "plugin": {
-          "name":"hello world",
-          "description":"this is my first plugin",
-          "author":"me",
+          "name":"dimmer",
+          "description":"A dimmer",
+          "author":"UD",
           "language": 0,
-          "executableName":"plugin.py",
-          "installScript":"install_2.sh",
+          "executableName":"dimmer.py",
+          "installScript":"install.sh",
           "documentationLink":"docs",
-          "licenseLink":"lic",
-          "shortPoll":61,
-          "longPoll":601,
+          "licenseLink":"license",
+          "shortPoll":60,
+          "longPoll":600,
           "profileVersion":"3.0.0",
           "initialLogLevel":3,
           "enableDiscovery":true,
-          "enableOAUTH2":true,
+          "enableOAUTH2":false,
           "worksOnPolisy":true,
           "worksOnEisy":true,
           "requiresIoXAccess": false
     },
     "editors": [
         {
-            "id": "",
+            "id": "onlevel",
             "min": 0,
-            "max": 3,
-            "uom": 25,
-            "options": ["one","two","three"]
+            "max": 100,
+            "uom": "Percent | 51"
         },
         {
-            "idref":"ix_111"
-        },
-        {
-            "id": "min_max_no_options",
-            "min": 33,
-            "max": 30,
-            "uom": 51
-        },
-        {
-            "id": "subset",
-            "subset": "1,2-5,6",
-            "uom": 50,
-            "options": ["yes"]
-        },
-        {
-            "id": "with_sub_options",
-            "uom":15,
-            "min":0,
-            "max":5
+            "id": "ramprate",
+            "min": 0,
+            "max": 600,
+            "uom": "Second | 57"
         }
     ],
-    "nodes": [
+    "nodedefs": [
         {
-            "id":"hell",
-            "name":"mic",
-            "parent": "papa",
-            "icon":{
-                "path": "file/kkkadsfk"
-            },
+            "id":"dimmer",
+            "name":"Dimmer",
+            "icon":"GenericRspCtl",
             "properties": [
                 {
-                    "id": "ACCX",
-                    "name": "temp",
+                    "id":"Status | ST", 
+                    "name": "Status",
                     "editor": {
-                        "idref": "with_sub_options"
+                        "idref": "onlevel"
                     },
-                    "mode": "set+get"
+                    "is_settable": false
                 },
                 {
-                    "id": "CTL",
-                    "name": "ctl",
+                    "id": "Ramp Rate | RR",
+                    "name": "Ramp Rate",
                     "editor": {
-                        "id":"haven't seen before",
-                        "uom": 25,
-                        "min": 0,
-                        "max": 100,
-                        "precision": 1,
-                        "step": 5
+                        "idref": "ramprate"
                     } ,
-                    "mode": "get"
+                    "is_settable": true
                 },
                 {
-                    "id": "GV1",
-                    "name": "Generic Val",
+                    "id": "On Level | OL",
+                    "name": "On Level",
                     "editor": {
-                        "id":"haven't seen before_sub",
-                        "uom": 50,
-                        "subset": "1,2 ,3 "
+                        "idref": "onlevel"
                     } ,
-                    "mode": "set"
+                    "is_settable": true
                 }
             ],
             "commands": {
                 "accepts": [
                     {
-                        "id": "acc_cmd1",
-                        "name": "accept 1",
+                        "id": "on",
+                        "name": "On",
                         "params": [
                             {
-                                "id": "param_c_1",
+                                "id": "onlevel",
                                 "editor": {
-                                    "idref": "haven't seen before_sub"
+                                    "idref": "onlevel"
                                 },
-                                "name": "hello param"
+                                "name": "Level"
                             },
                             {
-                                "id": "param_c_2",
+                                "id": "ramprate",
                                 "editor": {
-                                    "id":"param_c_2_editor",
-                                    "uom": 25,
-                                    "min": 0,
-                                    "max": 100,
-                                    "precision": 1,
-                                    "step": 5
+                                    "idref": "ramprate"
                                 },
-                                "name": "hello param_2"
+                                "name": "Ramp Rate"
                             }
                         ]
                     },
                     {
-                        "id": "acc_cmd2",
-                        "name": "accept 2",
+                        "id": "off",
+                        "name": "Off",
                         "params": [
                             {
-                                "id": "param_c_1a",
+                                "id": "ramprate",
                                 "editor": {
-                                    "idref": "haven't seen before"
+                                    "idref": "ramprate"
                                 },
-                                "name": "hello param 2 accept"
-                            },
-                            {
-                                "id": "param_c_2_a",
-                                "editor": {
-                                    "id":"param_c_2_editor_a",
-                                    "uom": 25,
-                                    "min": 0,
-                                    "max": 100
-                                },
-                                "name": "hello param_2_accept"
+                                "name": "Ramp Rate"
                             }
                         ]
+                    },
+                    {
+                        "id": "faston",
+                        "name": "Fast On"
+                    },
+                    {
+                        "id": "fastoff",
+                        "name": "Fast Off"
                     }
                 ],
                 "sends": [
                     {
-                        "id": "send_cmd1",
-                        "name": "send 1",
+                        "id": "status",
+                        "name": "Status",
                         "params": [
                             {
-                                "id": "param_s_1",
+                                "id": "level",
                                 "editor": {
-                                    "idref": "seen before_sub"
+                                    "idref": "onlevel"
                                 },
-                                "name": "hello param send"
-                            },
-                            {
-                                "id": "param_s_2",
-                                "editor": {
-                                    "id":"param_c_s_editor",
-                                    "uom": 25,
-                                    "min": 0,
-                                    "max": 100
-                                },
-                                "name": "hello param_2_s"
-                            }
-                        ]
-                    },
-                    {
-                        "id": "snd_cmd2",
-                        "name": "sends 2",
-                        "params": [
-                            {
-                                "id": "param_s_1a",
-                                "editor": {
-                                    "idref": "haven't seen before"
-                                },
-                                "name": "hello param 2 send"
-                            },
-                            {
-                                "id": "param_s_2_a",
-                                "editor": {
-                                    "id":"param_s_2_editor_a",
-                                    "uom": 25,
-                                    "max": 100
-                                },
-                                "name": "hello param_2_sends"
+                                "name": "Level"
                             }
                         ]
                     }
-
                 ]
             } 
         }

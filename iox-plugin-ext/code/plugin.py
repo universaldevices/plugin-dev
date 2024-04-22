@@ -60,7 +60,7 @@ class Plugin:
                 self.editors.addEditors(plugin_json['editors'])
             if 'nodedefs' in plugin_json:
                 self.nodedefs = NodeDefs(plugin_json['nodedefs'])
-                self.nodedefs.addController(self.meta.getName().replace(' ','_'))
+                self.nodedefs.addController(f"{self.meta.getName().replace(' ','_').capitalize()} Controller")
 
         except Exception as ex:
             raise
