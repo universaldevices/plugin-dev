@@ -34,6 +34,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const child_process = __importStar(require("child_process"));
 class CommandItem extends vscode.TreeItem {
@@ -162,6 +163,85 @@ function createNewIoXPluginProject(context) {
         return true;
     });
 }
+function createJSON(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const packageJsonPath = path.join(context.extensionPath, 'package.json');
+            const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf8');
+            const packageJson = JSON.parse(packageJsonContent);
+            const snippetOptions = packageJson.contributes.snippets.map((snippet) => ({
+                label: snippet.description,
+                detail: snippet.path,
+                fullPath: path.join(context.extensionPath, snippet.path)
+            }));
+            // Show quick pick and use the correct type for the picked result
+            const pickedSnippet = yield vscode.window.showQuickPick(snippetOptions, {
+                placeHolder: 'Please choose a template ...'
+            });
+            if (pickedSnippet) {
+                const workspaceFolders = vscode.workspace.workspaceFolders;
+                if (workspaceFolders) {
+                    const destinationPath = path.join(workspaceFolders[0].uri.fsPath, path.basename(pickedSnippet.fullPath));
+                    fs.copyFileSync(pickedSnippet.fullPath, destinationPath);
+                    vscode.window.showInformationMessage(`Template copied to ${destinationPath}`);
+                    if (vscode.workspace.workspaceFolders != undefined)
+                        vscode.commands.executeCommand('vscode.openFolder', vscode.workspace.workspaceFolders[0].uri, false);
+                }
+                else {
+                    vscode.window.showErrorMessage('No workspace folder found. Please open a workspace.');
+                }
+            }
+        }
+        catch (error) {
+            if (typeof error === "object" && error !== null && "message" in error) {
+                const message = error.message;
+                vscode.window.showErrorMessage(`Failed to copy template: ${message}`);
+            }
+            else {
+                vscode.window.showErrorMessage(`Failed to copy template due to an unknown error`);
+            }
+            return false;
+        }
+        return true;
+    });
+}
+function getPluginJSONFile(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const fileExtension = '.iox_plugin.json';
+            if (!vscode.workspace.workspaceFolders) {
+                vscode.window.showErrorMessage('No open workspace. Please open a directory first.');
+                return null;
+            }
+            const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+            const pattern = new vscode.RelativePattern(workspaceFolder, `**/*${fileExtension}`);
+            const files = yield vscode.workspace.findFiles(pattern, null, 1); // Limit search to 100 files
+            if (files.length === 0) {
+                vscode.window.showErrorMessage("You don't have any IoX Plugin JSON Files. Let's create one!");
+                createJSON(context);
+            }
+            else {
+                const items = files.map(file => ({
+                    detail: file.fsPath,
+                    uri: file
+                }));
+                vscode.window.showInformationMessage(`Generating Plugin Code for ${items[0].detail}.`);
+                return items[0].uri;
+            }
+        }
+        catch (error) {
+            if (typeof error === "object" && error !== null && "message" in error) {
+                const message = error.message;
+                vscode.window.showErrorMessage(`Failed to copy template: ${message}`);
+            }
+            else {
+                vscode.window.showErrorMessage(`Failed to copy template due to an unknown error`);
+            }
+            return null;
+        }
+        return null;
+    });
+}
 function generatePluginCode(context, fileUri) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -171,6 +251,12 @@ function generatePluginCode(context, fileUri) {
                 return false;
             }
             const scriptPath = path.join(context.extensionPath, 'code', 'plugin.py');
+            if (!fileUri) {
+                const fu = yield getPluginJSONFile(context);
+                fileUri = fu;
+            }
+            if (!fileUri)
+                return false;
             const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
             pythonProcess.stdout.on('data', (data) => {
                 console.log(`${data}`);
@@ -189,6 +275,8 @@ function generatePluginCode(context, fileUri) {
                 else {
                     console.log('IoX Plugin Code generation completed successfully');
                     vscode.window.showInformationMessage('IoX Plugin Code generation completed successfully');
+                    if (vscode.workspace.workspaceFolders != undefined)
+                        vscode.commands.executeCommand('vscode.openFolder', vscode.workspace.workspaceFolders[0].uri, false);
                 }
             });
         }
@@ -216,6 +304,11 @@ function activate(context) {
         let prc = yield createNewIoXPluginProject(context);
         if (prc.valueOf())
             context.subscriptions.push(createProject);
+    }));
+    let create_JSON = vscode.commands.registerCommand('iox-plugin-ext.createJSON', (fileUri) => __awaiter(this, void 0, void 0, function* () {
+        let prc = yield createJSON(context);
+        if (prc.valueOf())
+            context.subscriptions.push(create_JSON);
     }));
     let generateCode = vscode.commands.registerCommand('iox-plugin-ext.generatePluginCode', (fileUri) => __awaiter(this, void 0, void 0, function* () {
         let prc = yield generatePluginCode(context, fileUri);

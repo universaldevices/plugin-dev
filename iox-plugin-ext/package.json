@@ -41,28 +41,28 @@
     "commands": [
       {
         "command": "iox-plugin-ext.createProject",
-        "title": "Create IoX Plugin Project",
+        "title": "1. Create IoX Plugin Project",
         "icon": "add.svg"
       },
       {
-        "command": "iox-plugin-ext.generateJSON",
-        "title": "Generate an IoX Plugin JSON meta file" ,
+        "command": "iox-plugin-ext.createJSON",
+        "title": "2. Create IoX Plugin JSON File" ,
         "icon": "json.svg"
       },
       {
         "command": "iox-plugin-ext.generatePluginCode",
-        "title": "Generate IoX Plugin Code",
+        "title": "3. Generate IoX Plugin Code",
         "icon": "file-code.svg"
 
       },
       {
         "command": "iox-plugin-ext.runInIoX",
-        "title": "Run in IoX",
+        "title": "4. Run in IoX",
         "icon":"run-above.svg"
       },
       {
         "command": "iox-plugin-ext.packageAndPublish",
-        "title": "Package and Publish",
+        "title": "5. Package and Publish",
         "icon":"package.svg"
       },
       {
@@ -94,23 +94,28 @@
     "snippets": [
       {
         "language": "json",
+        "path": "./snippets/none.iox_plugin.json",
+        "description": "From scratch"
+      },
+      {
+        "language": "json",
         "path": "./snippets/tstat.iox_plugin.json",
-        "description": "sample thermostat"
+        "description": "Sample thermostat"
       },
       {
         "language": "json",
         "path": "./snippets/dimmer.iox_plugin.json",
-        "description": "sample dimmer"
+        "description": "Sample dimmer"
       },
       {
         "language": "json",
-        "path": "./snippets/sensor.iox_plugin.json",
-        "description": "sample sensor"
+        "path": "./snippets/sensors.iox_plugin.json",
+        "description": "Sample sensors"
       },
       {
         "language": "json",
         "path": "./snippets/modbus.iox_plugin.json",
-        "description": "sample modbus"
+        "description": "Sample modbus"
       }
     ]
   },
