@@ -1,8 +1,9 @@
 {
   "name": "iox-plugin-ext",
-  "displayName": "IoX Plugin Extension",
+  "displayName": "IoX Plugin Developer",
   "description": "Define your plugin in JSON and let this extension take care of the rest",
-  "publisher": "Universal Devices",
+  "publisher": "UniversalDevices",
+  "icon": "images/icon.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -11,6 +12,26 @@
     "Programming Languages"
   ],
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+          {
+              "id": "ioxPluginContainer",
+              "title": "IoX Plugin Developer",
+              "icon": "images/icon.png"
+          }
+      ]
+    },
+    "views": {
+      "ioxPluginContainer": [
+          {
+              "id": "ioxPluginSidebar",
+              "name": "Command Panel"
+          }
+      ]
+    },
+    "activationEvents": [
+      "onView:ioxPluginSidebar"
+    ],
     "jsonValidation": [
       {
         "fileMatch": "*.iox_plugin.json",
@@ -19,25 +40,48 @@
     ],
     "commands": [
       {
-        "command": "extension.createProject",
-        "title": "Create IoX Plugin Project"
+        "command": "iox-plugin-ext.createProject",
+        "title": "Create IoX Plugin Project",
+        "icon": "add.svg"
       },
       {
-        "command": "extension.generatePluginCode",
-        "title": "Generate IoX Plugin Code"
+        "command": "iox-plugin-ext.generateJSON",
+        "title": "Generate an IoX Plugin JSON meta file" ,
+        "icon": "json.svg"
+      },
+      {
+        "command": "iox-plugin-ext.generatePluginCode",
+        "title": "Generate IoX Plugin Code",
+        "icon": "file-code.svg"
+
+      },
+      {
+        "command": "iox-plugin-ext.runInIoX",
+        "title": "Run in IoX",
+        "icon":"run-above.svg"
+      },
+      {
+        "command": "iox-plugin-ext.packageAndPublish",
+        "title": "Package and Publish",
+        "icon":"package.svg"
+      },
+      {
+        "command": "iox-plugin-ext.generateHelp",
+        "title": "Help",
+        "icon":"question.svg"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "extension.createProject",
+          "command": "iox-plugin-ext.createProject",
           "when": "true"
         }
       ],
       "explorer/context": [
         {
           "when": "resourceFilename =~ /\\.iox_plugin\\.json$/",
-          "command": "extension.generatePluginCode",
+          "command": "iox-plugin-ext.generatePluginCode",
           "group": "navigation",
           "arguments": [
             {
@@ -66,14 +110,13 @@
       {
         "language": "json",
         "path": "./snippets/modbus.iox_plugin.json",
-        "description": "sample mocbus"
+        "description": "sample modbus"
       }
     ]
   },
   "dependencies": {
     "fs": "^0.0.1-security",
-    "path": "^0.12.7",
-    "vscode": "^1.1.37"
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@types/node": "^20.12.7"

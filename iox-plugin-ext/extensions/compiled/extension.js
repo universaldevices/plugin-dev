@@ -36,6 +36,62 @@ exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(require("vscode"));
 const path = __importStar(require("path"));
 const child_process = __importStar(require("child_process"));
+class CommandItem extends vscode.TreeItem {
+    constructor(label, commandId, icon, context) {
+        super(label, vscode.TreeItemCollapsibleState.None);
+        this.label = label;
+        this.commandId = commandId;
+        this.icon = icon;
+        this.context = context;
+        this.command = {
+            command: commandId,
+            title: this.label,
+        };
+        if (icon) {
+            this.iconPath = {
+                light: path.join(context.extensionPath, 'images', 'light', icon),
+                dark: path.join(context.extensionPath, 'images', 'dark', icon)
+            };
+        }
+    }
+}
+class CommandTreeDataProvider {
+    constructor(items) {
+        this.items = items;
+    }
+    getTreeItem(element) {
+        return element;
+    }
+    getChildren(element) {
+        if (element === undefined) {
+            return Promise.resolve(this.items);
+        }
+        return Promise.resolve([]);
+    }
+}
+function createCommandPanel(context) {
+    const extension = vscode.extensions.getExtension('UniversalDevices.iox-plugin-ext');
+    if (!extension) {
+        console.error('Extension not found.');
+        return;
+    }
+    const commands = extension.packageJSON.contributes.commands;
+    if (!commands) {
+        console.error('Commands not found in packageJSON.');
+        return;
+    }
+    const commandItems = commands.map((cmd) => new CommandItem(cmd.title, cmd.command, cmd.icon, context));
+    const treeDataProvider = new CommandTreeDataProvider(commandItems);
+    vscode.window.createTreeView('ioxPluginSidebar', { treeDataProvider });
+    /* context.subscriptions.push(
+         vscode.commands.registerCommand('myExtension.command1', () => {
+             vscode.window.showInformationMessage('Command 1 executed!');
+         }),
+         vscode.commands.registerCommand('myExtension.command2', () => {
+             vscode.window.showInformationMessage('Command 2 executed!');
+         })
+     );*/
+}
 function checkAndInstallPythonModules() {
     return __awaiter(this, void 0, void 0, function* () {
         const pythonInterpreter = vscode.workspace.getConfiguration('python3').get('pythonPath', 'pip3');
@@ -87,6 +143,8 @@ function createNewIoXPluginProject(context) {
                 else {
                     console.log('Generating IoX Plugin project completed successfully');
                     vscode.window.showInformationMessage('Generating IoX Plugin project completed successfully');
+                    const uri = vscode.Uri.file(workspaceFolder);
+                    vscode.commands.executeCommand('vscode.openFolder', uri, false);
                 }
             });
         }
@@ -149,21 +207,22 @@ function generatePluginCode(context, fileUri) {
     });
 }
 function activate(context) {
-    let python_dep = vscode.commands.registerCommand('extension.ensurePythonDependencies', () => __awaiter(this, void 0, void 0, function* () {
+    let python_dep = vscode.commands.registerCommand('iox-plugin-ext.ensurePythonDependencies', () => __awaiter(this, void 0, void 0, function* () {
         checkAndInstallPythonModules();
     }));
     context.subscriptions.push(python_dep);
     checkAndInstallPythonModules();
-    let createProject = vscode.commands.registerCommand('extension.createProject', () => __awaiter(this, void 0, void 0, function* () {
+    let createProject = vscode.commands.registerCommand('iox-plugin-ext.createProject', () => __awaiter(this, void 0, void 0, function* () {
         let prc = yield createNewIoXPluginProject(context);
         if (prc.valueOf())
             context.subscriptions.push(createProject);
     }));
-    let generateCode = vscode.commands.registerCommand('extension.generatePluginCode', (fileUri) => __awaiter(this, void 0, void 0, function* () {
+    let generateCode = vscode.commands.registerCommand('iox-plugin-ext.generatePluginCode', (fileUri) => __awaiter(this, void 0, void 0, function* () {
         let prc = yield generatePluginCode(context, fileUri);
         if (prc.valueOf())
             context.subscriptions.push(generateCode);
     }));
+    createCommandPanel(context);
 }
 exports.activate = activate;
 function deactivate() { }

@@ -33,7 +33,7 @@ def create_project():
 
     for asset in assets:
         try:
-            shutil.copy(os.path.join(vscode_path, asset), os.path.join(project_path,asset))
+            shutil.copy(os.path.join(vscode_path, 'assets', asset), os.path.join(project_path,asset))
         except Exception as ex: 
             print(str(ex))
 

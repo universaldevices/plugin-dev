@@ -1,0 +1,41 @@
+
+
+ND-hell-NAME = mic
+ND-hell-ICON = {'path': 'file/kkkadsfk'}
+
+ST-hell-ACCX-NAME = temp
+ST-hell-CTL-NAME = ctl
+ST-hell-GV1-NAME = Generic Val
+
+CMD-hell-send_cmd1-NAME = send 1
+CMDP-hell-param_c_s_editor-param_s_1-NAME = hello param send
+CMDP-hell-param_c_s_editor-param_s_2-NAME = hello param_2_s
+CMD-hell-snd_cmd2-NAME = sends 2
+CMDP-hell-havent_seen_before-param_s_1a-NAME = hello param 2 send
+CMDP-hell-param_s_2_editor_a-param_s_2_a-NAME = hello param_2_sends
+CMD-hell-acc_cmd1-NAME = accept 1
+CMDP-hell-havent_seen_before_sub-param_c_1-NAME = hello param
+CMDP-hell-param_c_2_editor-param_c_2-NAME = hello param_2
+CMD-hell-acc_cmd2-NAME = accept 2
+CMDP-hell-havent_seen_before-param_c_1a-NAME = hello param 2 accept
+CMDP-hell-param_c_2_editor_a-param_c_2_a-NAME = hello param_2_accept
+CMD-hell-ACCX-NAME = setTemp
+CMDP-hell-with_sub_options-ACCX-NAME = Temp
+CMD-hell-CTL-NAME = setCtl
+CMDP-hell-havent_seen_before-CTL-NAME = Ctl
+
+ND-helloworldctrl-NAME = helloworld
+ND-helloworldctrl-ICON = GenericCtl
+
+ST-helloworldctrl-ST-NAME = Status
+
+CMD-helloworldctrl-discover-NAME = Discover
+CMD-helloworldctrl-query-NAME = Query
+NLSIX_ix_111-3 = asd
+NLSIX_ix_111-5 = slsdfkj
+NLSIX_min_max_no_options-3 = alsdjkfsf
+NLSIX_min_max_no_options-4 = yesl
+NLSIX_with_sub_options-18 = Drying
+NLSIX_with_sub_options-2 = Program In Progress
+NLSIX_param_c_s_editor-10 = Auto Changeover
+NLSIX_param_c_s_editor-11 = Energy Save Heat
