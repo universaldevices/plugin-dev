@@ -254,6 +254,14 @@ function generatePluginCode(context, fileUri) {
             }
             if (!fileUri)
                 return false;
+            const pythonPath = context.extensionPath;
+            child_process.execFile(pythonPath, ["-c", "import sys; print(sys.version)"], (error, stdout, stderr) => {
+                if (error) {
+                    vscode.window.showErrorMessage(`Error: ${stderr}`);
+                    return;
+                }
+                vscode.window.showInformationMessage(`Python Version: ${stdout}`);
+            });
             const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
             pythonProcess.stdout.on('data', (data) => {
                 console.log(`${data}`);

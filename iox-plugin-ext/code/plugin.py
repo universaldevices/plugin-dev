@@ -7,16 +7,12 @@ Copyright (C) 2024 Universal Devices
 
 #import fastjsonschema
 import json
-import os
 from nodedef import NodeDefs
 from editor import Editors
 from plugin_meta import PluginMetaData
-from log import LOGGER
-from profile import ProfileWriter
-from validator import validate_id
+from log import init_ext_logging, LOGGER
+from iox_profile import ProfileWriter
 from iox_node_gen import IoXNodeGen
-import astor
-import ast_util
 from main_gen import PluginMain
 import argparse
 
@@ -37,6 +33,7 @@ UOM_SCHEMA="schemas/uom.schema.json"
 class Plugin:
 
     def __init__(self, plugin_file, path:str, schema=PLUGIN_SCHEMA_FILE):
+        init_ext_logging(path)
         self.meta = None
         self.editors=Editors()
         self.nodedefs:NodeDefs 

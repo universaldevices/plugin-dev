@@ -37,8 +37,6 @@ youtube/.vscode/
 youtube/.vscode/*
 drop/.vscode/
 drop/.vscode/*
-ext/iox-plugin-developer/node_modules/*
-ext/iox-plugin-developer/node_modules/
 iox-plugin-ext/code/__pycache__
 iox-plugin-ext/code/__pycache__/*
 iox-plugin-ext/profile
@@ -49,4 +47,6 @@ iox-plugin-ext/logs
 iox-plugin-ext/logs/*
 iox-plugin-ext/*.cert
 iox-plugin-ext/*.key
+iox-plugin-ext/node_modules/*
+iox-plugin-ext/node_modules/
 

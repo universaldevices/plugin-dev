@@ -5,8 +5,6 @@ Class for handling node properties
 Copyright (C) 2024 Universal Devices
 """
 
-import json
-import os
 from editor import Editors
 from log import LOGGER
 from validator import validate_id 
@@ -43,7 +41,7 @@ class NodePropertyDetails:
     def isSet(self)->bool:
         return self.is_settable 
 
-    def toIoX(self, node_id:str)->(str, str):
+    def toIoX(self, node_id:str):
         editorId = self.editor.getEditorId()
         nls = ""
         st = f"<st id=\"{self.id}\" editor=\"{editorId}\" />"
@@ -76,7 +74,7 @@ class NodeProperties:
 
         return self.node_properties[property]
 
-    def toIoX(self, node_id:str)->(str, str):
+    def toIoX(self, node_id:str):
         nls = ""
         sts = "<sts>"
         try:
@@ -92,7 +90,7 @@ class NodeProperties:
         except Exception as ex:
             LOGGER.critical(str(ex))
 
-    def getPG3Drivers(self)->[]:
+    def getPG3Drivers(self):
         drivers = []
         for np in self.node_properties:
             prop = self.node_properties[np]

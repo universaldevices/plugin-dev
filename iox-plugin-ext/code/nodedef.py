@@ -5,13 +5,10 @@ Class for handling node definitions
 Copyright (C) 2024 Universal Devices
 """
 
-import json
-import os
 from node_properties import NodeProperties
 from commands import Commands
 from log import LOGGER
 from validator import validate_id
-import ast
 
 
 class NodeDefDetails:
@@ -45,7 +42,7 @@ class NodeDefDetails:
             LOGGER.critical(str(ex))
             raise
 
-    def getPG3Commands(self)->[]:
+    def getPG3Commands(self):
         commands = []
 
         for c in self.commands.acceptCommands:
@@ -65,7 +62,7 @@ class NodeDefDetails:
         return f'{self.getPythonClassName()}.py'
     
 
-    def toIoX(self)->(str,str):
+    def toIoX(self):
         nls = ""
         nodedef = f"<nodedef id=\"{self.id}\" nls=\"{self.id}\">"
         nls += f"\nND-{self.id}-NAME = {self.name}"
@@ -177,7 +174,7 @@ class NodeDefs:
     def getNodeDefs(self):
         return self.nodedefs
 
-    def toIoX(self)->(str, str):
+    def toIoX(self):
         nls=""
         nodedefs="<nodedefs>\n"
         for n in self.nodedefs:

@@ -1,6 +1,5 @@
 
-import udi_interface
-import ast, astor
+import astor
 from nodedef import NodeDefs, NodeDefDetails, NodeProperties
 from plugin_meta import PluginMetaData
 from log import LOGGER
