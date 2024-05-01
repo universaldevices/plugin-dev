@@ -4,9 +4,9 @@
   "description": "Define your plugin in JSON and let this extension take care of the rest",
   "publisher": "UniversalDevices",
   "icon": "images/icon.png",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.85.1"
   },
   "categories": [
     "Programming Languages"

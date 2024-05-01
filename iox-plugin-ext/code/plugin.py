@@ -177,8 +177,8 @@ def generate_code():
     except SystemExit as ex:
         pass
 
-    print (project_path)
-    print (json_file)
+    #print (project_path)
+    #print (json_file)
     mod=Plugin(json_file, project_path)
     mod.toIoX()
     mod.generateCode(project_path)

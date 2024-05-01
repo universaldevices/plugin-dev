@@ -2,8 +2,8 @@ import logging
 import os
 
 # Set up the basic configuration for the logger
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#logging.basicConfig(level=logging.DEBUG,
+#                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # Create a logger instance
 LOGGER = logging.getLogger('IoX-Plugin-Ext-Logger')
@@ -23,7 +23,7 @@ def init_ext_logging(path:str):
 
     # Create a stream handler to output logs to the console
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
+    console_handler.setLevel(logging.ERROR)
     console_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
 
     # Add the file handler and stream handler to the logger

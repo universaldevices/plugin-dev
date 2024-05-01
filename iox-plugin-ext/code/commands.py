@@ -153,7 +153,7 @@ class Commands:
 
         init = {
                 "id": f"{property_id}",
-                "name":"Set",
+                "name":f"set{getValidName(property_name)}",
                 "params": [
                     {
                         "id" : property_id ,

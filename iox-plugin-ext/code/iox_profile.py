@@ -58,8 +58,8 @@ class ProfileWriter:
                 file.write(nls)
             return True
         except Exception as ex:
-            return False 
             LOGGER.critical(str(ex))
+            return False 
 
     def writeToEditor(self,editor:str)->bool:
         try:
@@ -67,8 +67,8 @@ class ProfileWriter:
                 file.write(editor)
             return True
         except Exception as ex:
-            return False 
             LOGGER.critical(str(ex))
+            return False 
 
     def writeToNodeDef(self,nodedef:str)->bool:
         try:
@@ -76,5 +76,5 @@ class ProfileWriter:
                 file.write(nodedef)
             return True
         except Exception as ex:
-            return False 
             LOGGER.critical(str(ex))
+            return False 

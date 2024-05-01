@@ -16,3 +16,13 @@ if __name__ == "__main__":
     except (KeyboardInterrupt, SystemExit):
         LOGGER.info("exiting ..." )
         sys.exit(0)
+
+
+In FreeBSD, you need to change extensionsGallery to point to visualstudio.com:
+/usr/local/share/code-oss/resources/app/product.json
+
+        "extensionsGallery": {
+                "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+                "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
+                "itemUrl": "https://marketplace.visualstudio.com/items"
+        },
