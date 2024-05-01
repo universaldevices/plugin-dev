@@ -23,12 +23,10 @@
         "$ref": "editor.schema.json",
         "description":"Editors help the UI with constraints ... "
       },
-      "hide":
-      {
+      "hide": {
         "type":"boolean",
         "description":"(Optional) Set to T or True, hides status in views but is available in program conditions",
         "default":false
-
       }
     },
     "required": ["id", "name", "is_settable", "editor"],

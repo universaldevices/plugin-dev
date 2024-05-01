@@ -2,6 +2,22 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
+       "protocol": {
+          "type":"string",
+          "oneOf": [
+            {
+              "enum":["Proprietary"]
+            },
+            {
+              "enum":["Modbus"]
+            },
+            {
+              "enum":["Shelly"]
+            }
+          ],
+          "description": "The underyling protoocol",
+          "default":"Proprietary"
+        },
        "id": {
           "type": "string",
           "pattern": "^[^\\s]+$",
@@ -20,7 +36,17 @@
           "$ref": "icon.schema.json"
         },
         "properties": {
-          "$ref": "node.properties.schema.json"
+          "if": {
+            "properties":{
+                "protocol":{
+                    "const" : "Modbus"
+                }
+            }
+            },"then":{
+              "$ref": "modbus.node.properties.schema.json"
+            },"else":{
+              "$ref": "node.properties.schema.json"
+            }
         },
         "commands": {
           "$ref": "commands.schema.json"
