@@ -10,6 +10,7 @@ import paho.mqtt.client as mqtt
 import json
 import yaml
 import time
+import version
 
 LOGGER = udi_interface.LOGGER
 Custom = udi_interface.Custom
@@ -996,7 +997,7 @@ class DropRO(udi_interface.Node):
 if __name__ == "__main__":
     try:
         polyglot = udi_interface.Interface([])
-        polyglot.start('1.0.4')
+        polyglot.start(version.ud_plugin_version)
         Controller(polyglot)
         polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
