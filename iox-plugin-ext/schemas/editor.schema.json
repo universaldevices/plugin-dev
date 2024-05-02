@@ -43,7 +43,7 @@
                         "description": "The precision for the number (optional)"
                     },
                     "scale":{
-                        "type":"integer",
+                        "type":"number",
                         "description": "The scale (division) for the number (optional)"
                     }
                 },

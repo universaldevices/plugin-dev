@@ -3,22 +3,9 @@
   "type": "object",
   "properties": {
        "protocol": {
-          "type":"string",
-          "oneOf": [
-            {
-              "enum":["Proprietary"]
-            },
-            {
-              "enum":["Modbus"]
-            },
-            {
-              "enum":["Shelly"]
-            }
-          ],
-          "description": "The underyling protoocol",
-          "default":"Proprietary"
+          "$ref": "protocol.schema.json"
         },
-       "id": {
+        "id": {
           "type": "string",
           "pattern": "^[^\\s]+$",
           "description": "The id used to identify this node"
@@ -36,21 +23,34 @@
           "$ref": "icon.schema.json"
         },
         "properties": {
-          "if": {
-            "properties":{
-                "protocol":{
-                    "const" : "Modbus"
-                }
-            }
-            },"then":{
-              "$ref": "modbus.node.properties.schema.json"
-            },"else":{
-              "$ref": "node.properties.schema.json"
-            }
+          "type": "array"
         },
         "commands": {
           "$ref": "commands.schema.json"
         }
+  },
+  "if": {
+    "properties":{
+        "protocol":{
+            "properties":{
+            "name":{
+              "const" : "Modbus"
+            }
+          }
+        }
+    }
+    },"then":{
+      "properties":{
+        "properties":{
+          "$ref": "modbus.node.properties.schema.json"
+        }
+      }
+    },"else":{
+      "properties":{
+        "properties":{
+          "$ref": "node.properties.schema.json"
+        }
+      }
   },
   "required": ["id", "name", "properties", "commands"],
   "additionalProperties": false
