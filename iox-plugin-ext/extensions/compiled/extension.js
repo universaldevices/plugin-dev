@@ -96,7 +96,7 @@ function createCommandPanel(context) {
 function checkAndInstallPythonModules() {
     return __awaiter(this, void 0, void 0, function* () {
         const pythonInterpreter = vscode.workspace.getConfiguration('python3').get('pythonPath', 'pip3');
-        const modules = ['astor', 'udi_interface', 'fastjsonschema']; // Example modules
+        const modules = ['ioxplugin', 'fastjsonschema']; // Example modules
         modules.forEach(module => {
             child_process.exec(`${pythonInterpreter} -c "import ${module}"`, (error, stdout, stderr) => {
                 if (error) {
