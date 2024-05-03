@@ -49,4 +49,6 @@ iox-plugin-ext/*.cert
 iox-plugin-ext/*.key
 iox-plugin-ext/node_modules/*
 iox-plugin-ext/node_modules/
+ext/*
+ext/
 
