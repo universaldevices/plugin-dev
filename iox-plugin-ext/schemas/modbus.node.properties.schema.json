@@ -89,6 +89,8 @@
         "default":false
       }
     },
+    "allOf": [
+    {
     "if": {
       "anyOf": [
         {
@@ -122,7 +124,22 @@
           "const": false
         }
       }
+    }
+  },
+  {
+    "if":{
+      "properties": {
+        "register_data_type":
+        {
+          "const":"string"
+        }
+      }
     },
+    "then":{
+        "required": ["num_registers"]
+    }
+  }
+  ],
     "required": ["id", "register_address", "name", "is_settable", "editor"],
     "additionalProperties": false
   }
