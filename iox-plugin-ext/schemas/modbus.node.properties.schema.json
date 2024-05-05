@@ -79,6 +79,11 @@
         "default":false, 
         "description": "Whether or not this property can also be set by the user. In the case of set, a command is created using the same UOM and editor"
       },
+      "scale":{
+        "type": "number",
+        "description": "The number by which the actual value is multiplied. So, 0.001, multiplies the actual value by 1/1000 (or divide by 1000)",
+        "default": 1
+      },
       "editor": {
         "$ref": "editor.schema.json",
         "description":"Editors help the UI with constraints ... "
