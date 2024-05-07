@@ -3,19 +3,15 @@
   "type":"object",
   "description": "This object defines various options for Modbus communications",
   "properties":{
-        "communication_mode":{ 
-          "type":"string",
+        "transport":{ 
           "oneOf": [
             {
-              "enum":["TCP"],
-              "description": "Communicates over TCP sockets"
+                "$ref":"tcp.schema.json"
             },
             {
-              "enum":["Serial"],
-              "description": "Communicates over the serial port"
+                "$ref":"serial.schema.json"
             }
-          ],
-          "default":"TCP"
+          ]
         },
         "addressing_mode":{
           "type":"string",

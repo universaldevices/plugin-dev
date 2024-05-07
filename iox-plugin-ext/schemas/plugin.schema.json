@@ -6,7 +6,12 @@
   {
         "plugin":{
           "type":"object",
-          "$ref":"plugin.meta.schema.json"
+          "$ref":"plugin.meta.schema.json",
+          "propertyOrder":1
+        },
+        "protocol":{
+          "type":"object",
+          "$ref":"protocol.schema.json"
         },
         "editors":{
           "type":"array",
@@ -14,14 +19,46 @@
           "items":{
             "type":"object",
             "$ref":"editor.schema.json"
-          }
+          },
+          "propertyOrder":2
         },
         "nodedefs":{
           "type": "array",
           "description":"An array of node definitions",
           "items":{
+              "type":"object"
+          },
+          "propertyOrder":3
+        }
+  },
+  "if":{
+        "properties":{
+              "protocol":{
+                  "properties":{
+                    "name":{
+                          "const":"Modbus"
+                    }
+                  }
+              }
+        }
+  },
+  "then":{
+        "properties":{
+          "nodedefs":{
+            "items": {
+              "type":"object",
+              "$ref":"modbus.node.schema.json"
+            }
+          }
+        }
+  },"else":
+  {
+        "properties":{
+          "nodedefs":{
+            "items": {
               "type":"object",
               "$ref":"node.schema.json"
+            }
           }
         }
   },

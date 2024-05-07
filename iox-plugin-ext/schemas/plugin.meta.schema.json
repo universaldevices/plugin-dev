@@ -6,15 +6,18 @@
     {
           "name":{
             "type":"string",
-            "description":"Give your plugin a name!"
+            "description":"Give your plugin a name!",
+            "propertyOrder":1
           },
           "description":{
             "type":"string",
-            "description":"Give your plugin a nice description!"
+            "description":"Give your plugin a nice description!",
+            "propertyOrder":2
           },
           "author":{
             "type":"string",
-            "description": "Provide the email address associated with your developer account"
+            "description": "Provide the email address associated with your developer account",
+            "propertyOrder":3
           },
           "language":{
             "type":"integer",
@@ -32,16 +35,19 @@
                     "enum":[2],
                     "description": "Binary"
                 }
-            ]
+            ],
+            "propertyOrder":4
           },
           "executableName":{
             "type":"string",
-            "description": "The name of your executable such as plugin.py"
+            "description": "The name of your executable such as plugin.py",
+            "propertyOrder":5
           },
           "installScript":{
             "type":"string",
             "default":"install.sh",
-            "description": "The installation script. If none, default (install.sh) will be used."
+            "description": "The installation script. If none, default (install.sh) will be used.",
+            "propertyOrder":6
           },
           "documentationLink":{
             "type":"string",
@@ -54,12 +60,14 @@
           "shortPoll":{
             "type":"integer",
             "default":60,
-            "description": "Initial short poll interval in seconds"
+            "description": "Initial short poll interval in seconds",
+            "propertyOrder":7
           },
           "longPoll":{
             "type":"integer",
             "default":600,
-            "description": "Initial long poll interval in seconds"
+            "description": "Initial long poll interval in seconds",
+            "propertyOrder":8
           },
           "profileVersion":{
             "type":"string",
@@ -69,7 +77,8 @@
                 {
                     "enum" :["3.0.0"]
                 }
-            ]
+            ],
+            "propertyOrder":9
           },
           "initialLogLevel":{
             "type": "integer",
