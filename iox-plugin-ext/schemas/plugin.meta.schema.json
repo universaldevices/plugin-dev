@@ -134,11 +134,18 @@
           },
           "requirements":{
             "type":"array",
-            "description": "pip packages to be installed",
-            "items":{
+            "description": "pip packages to be installed. udi_interface and ioxplugin are installed by default.",
+            "items":
+            {
               "type":"string"
             }
+          },
+          "version":{
+            "type":"string",
+            "description": "The version that's displayed to the user and then installed in iox",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$"
           }
-    }
+    },
+    "required": ["name", "executableName", "description", "author","language","installScript","documentationLink", "licenseLink", "requirements", "version"]
   }
    
