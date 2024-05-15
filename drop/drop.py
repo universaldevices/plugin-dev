@@ -67,7 +67,7 @@ class DeviceAddressMap:
         if pg3_addr not in self.map:
             self.map[pg3_addr]=pg3_hub_addr+"_"+dev_addr
         self.save()
-        return true
+        return True
 
     #returns the hub and end device addresses in an array
     #0 = hub
