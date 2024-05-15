@@ -40,7 +40,7 @@
                     },
                     "precision":{
                         "type":"integer",
-                        "description": "The precision for the number (optional)"
+                        "description": "The precision for the number (optional). You can always convert scale to precision: .1 = precision 1, .01 = precision 2, 0.001 = precision 3, etc. In short, the number of 0s in scale + 1"
                     }
                 },
                 "if": {
@@ -335,7 +335,7 @@
                                                                                     "description": "Format is : name | index ",
                                                                                     "items":{
                                                                                         "type":"string",
-                                                                                        "pattern": "^[^\\s]+\\|\\d+$"
+                                                                                        "pattern": "^.*\\ \\|\\ \\d+$"
                                                                                     }
                                                                                 }
                                                                             }
@@ -375,7 +375,7 @@
                         "description": "Format is : name | index ",
                         "items":{
                             "type":"string",
-                            "pattern": "^[^\\s]+\\|\\d+$"
+                            "pattern": "^.*\\ \\|\\ \\d+$"
                         }
                     }
                 },

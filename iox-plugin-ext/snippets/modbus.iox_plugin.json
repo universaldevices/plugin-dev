@@ -16,7 +16,9 @@
           "enableOAUTH2":false,
           "worksOnPolisy":true,
           "worksOnEisy":true,
-          "requiresIoXAccess": false
+          "requiresIoXAccess": false,
+          "requirements": ["pymodbus"],
+          "version": "1.0.1"
     },
     "editors": [
         {
@@ -55,17 +57,20 @@
             ]
         }
     ],
+    "protocol": {
+        "name": "Modbus",
+        "config": {
+            "transport": {
+                "mode": "TCP",
+                "host": "192.168.1.26",
+                "port": 502
+            }
+        } 
+    },
     "nodedefs": [
         {
-            "id":"conext",
-            "protocol": {
-                "name": "Modbus",
-                "config": {
-                    "addressing_mode": "1-based",
-                    "communication_mode": "TCP"
-                }
-            }, 
-            "name":"Conext Inverter",
+            "id":"modbus",
+            "name":"ModbusDevice",
             "icon":"Electricity",
             "properties": [
                 {
@@ -75,7 +80,7 @@
                         "idref": "load_shave"
                     } ,
                     "protocol":{
-                        "register_address": 434,
+                        "register_address": "0x01b2",
                         "register_data_type": "uint16",
                         "register_type": "holding"
                     },
@@ -88,10 +93,10 @@
                         "idref": "support_voltage"
                     },
                     "protocol":{
-                        "register_address": 376, 
+                        "register_address": "0x0178", 
                         "register_data_type": "uint32",
                         "register_type": "holding",
-                        "scale":0.001
+                        "precision": 3
                     },
                     "is_settable": true
                 },
@@ -102,10 +107,10 @@
                         "idref": "sell_amps"
                     } ,
                     "protocol":{
-                        "register_address": 436,
+                        "register_address": "0x01b4",
                         "register_data_type": "uint32",
                         "register_type": "holding",
-                        "scale": 0.001
+                        "precision": 3
                     },
                     "is_settable": true
                 },
@@ -116,10 +121,10 @@
                         "idref": "load_shave_amps"
                     } ,
                     "protocol":{
-                        "register_address": 438,
+                        "register_address": "0x01b6",
                         "register_data_type": "uint32",
                         "register_type": "holding",
-                        "scale": 0.001
+                        "precision": 3
                     },
                     "is_settable": true
                 },
@@ -130,7 +135,7 @@
                         "idref": "dc_voltage"
                     } ,
                     "protocol":{
-                        "register_address": 80,
+                        "register_address": "0x0050",
                         "register_data_type": "uint32",
                         "register_type": "input",
                         "scale": 0.001
