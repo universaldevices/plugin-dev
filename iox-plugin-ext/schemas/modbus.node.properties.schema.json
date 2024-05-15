@@ -81,8 +81,11 @@
           },
           "eval":{
             "type":"string",
-            "description": "A user defined python expression that uses available data in the register ${register_num} and/or property ${property_id} and returns the value needed by the editor. for instance: ${register_num} & 1, bitwise ands the register value and 1 = the value of bit 0"
+            "description": "A user defined python expression that uses available data in the register (self.rval) and/or property (self.pval) and returns the value needed by the editor." 
           }
+        },
+        "if":{
+          "required":["register_type"]
         },
         "required": ["register_address"]
       },
@@ -101,6 +104,35 @@
         "default":false
       }
     },
+    "if": {
+      "allOf": [
+        {
+          "not": {
+            "properties":{
+              "protocol":{
+                "type" :"null"
+              }
+            }
+          }
+        },
+        {
+          "not":{
+            "properties" : 
+            {
+              "protocol":{
+                "properties":{
+                  "register_type": {
+                    "type":"null"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "then":
+    {
     "allOf": [
     {
     "if": {
@@ -139,25 +171,55 @@
       }
     },
     "else":{
-      "properties": {
-        "is_settable": {
-          "const": false
+      "if":{
+        "anyOf": [
+          {
+            "properties" : 
+            {
+              "protocol":{
+                "properties":{
+                  "register_type": {
+                    "const": "input"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties" : 
+            {
+              "protocol":{
+                "properties":{
+                  "register_type": {
+                    "const": "discrete-input"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then":{
+        "properties": {
+          "is_settable": {
+            "const": false
+          }
         }
       }
     }
   },
-  {
+  { 
     "if":{
-        "properties":{
-          "protocol":{
-            "properties":{
-              "register_data_type":
-              {
-                "const":"string"
+          "properties":{
+            "protocol":{
+              "properties":{
+                "register_data_type":
+                {
+                  "const":"string"
+                }
               }
-            }
-          }
-        }
+           }
+       }
     },
     "then":{
         "properties": { 
@@ -167,7 +229,8 @@
       }
     }
   }
-  ],
+  ]
+},
     "required": ["id", "name", "is_settable", "editor"],
     "additionalProperties": false
   }
