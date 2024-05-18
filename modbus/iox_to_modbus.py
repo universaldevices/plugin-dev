@@ -8,12 +8,16 @@ Copyright (C) 2024 Universal Devices
 import udi_interface
 LOGGER = udi_interface.LOGGER
 import os
+from datetime import datetime
 from ioxplugin import NodePropertyDetails, NodeProperties, NodeDefs, NodeDefDetails, Plugin, IoXTransport, IoXTCPTransport
 from pymodbus.client import ModbusTcpClient
+from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.payload import BinaryPayloadBuilder
+from pymodbus.constants import Endian
 
 
 MODBUS_REGISTER_TYPES=('coil', 'discrete-input', 'input', 'holding')
-MODBUS_REGISTER_DATA_TYPES=('int16','uint16','int32','uint32','float32','string')
+MODBUS_REGISTER_DATA_TYPES=('int16','uint16','int32','uint32','float32', 'int64', 'uint64', 'float64', 'string')
 
 
 #MODBUS_COMMUNICATION_MODES=('TCP', 'Serial')
@@ -50,7 +54,7 @@ class ModbusRegister:
     def __init__(self, protocol_data):
         if protocol_data == None:
             raise Exception ("Need protocol data ...")
-        
+
         self.register_address = None
         self.ref_address = None
         self.register_type = None
@@ -58,17 +62,23 @@ class ModbusRegister:
         self.num_registers = 1
         self.eval = None
         self.value = None
+        self.unit = 1
         self.is_master = True
+        self.last_updated_time = datetime.now()
+        self._client:ModbusTcpClient = None
 
         try:
             if 'register_address' in protocol_data:
-                self.register_address = protocol_data['register_address']
+                address = protocol_data['register_address']
+                self.register_address = int(protocol_data['register_address'], 16) if address else 0
             if 'register_type' in protocol_data:
                 self.register_type = protocol_data['register_type']
             if 'register_data_type' in protocol_data:
                 self.register_data_type = protocol_data['register_data_type']
             if 'num_registers' in protocol_data:
                 self.num_registers = protocol_data['num_registers']
+            if 'unit' in protocol_data:
+                self.unit = protocol_data['unit']
             if 'eval' in protocol_data:
                 self.eval = protocol_data['eval']
 
@@ -93,46 +103,148 @@ class ModbusRegister:
 
             if self.register_data_type == 'int16' or self.register_data_type == 'uint16':
                 self.num_registers = 1
-            elif self.register_data_type == 'int32' or self.register_data_type == 'uint32':
+            elif self.register_data_type == 'int32' or self.register_data_type == 'uint32' or self.register_data_type == 'float32':
                 self.num_registers = 2
-            elif self.register_data_type == 'float32': 
-                self.num_registers = 2
+            elif self.register_data_type == 'int64' or self.register_data_type == 'uint64' or self.register_data_type == 'float64':
+                self.num_registers = 4
 
 
         except Exception as ex:
             raise
 
-        def getRegisterValue(self):
-            try:
-                #get the value from modbus sending it the number of registers to be read
-                val = 1
-                if self.register_data_type == 'string':
-                    return str(val)
+    def canRead(self):
+        now = datetime.now()
+        elapsed_time:datetime = now - self.last_updated_time
+        return True if (elapsed_time.total_seconds() * 1000) >= 750 else False
 
-                return (val)
-            except Exception as ex:
-                LOGGER.critical(str(ex))
-                return -1
+    #return the last value stored and apply the eval expression
+    #the eval expression that is passed takes precedence over the eval expression in the object
+    def getRegisterValue(self, eval_expression):
+        #apply eval
+        eeval = eval_expression if eval_expression else self.eval
+        if not eeval:
+            return self.val
+
+        eeval = eeval.replace('{rval}', 'self.val')
+        unsafe_array = ['return','def','class','import', 'as', 'from', 'os', 'json', 'with', 'file', 'for', 'while', 'url', 'requests']
+        for unsafe in unsafe_array:
+            if unsafe in eeval:
+                LOGGER.error(f"eval expression is not safe and cannot be run for {self.register_address if self.is_master else self.ref_address}")
+                return None
+        try:
+            return eval(eeval)
+        except Excpetion as ex:
+            LOGGER.error(str(ex))
+            return None
+    
+    def readRegister(self, eval_expression):
+        if self._client == None or not self._client.connected:
+            return None
+
+        if not self.canRead():
+            return self.getRegisterValue(eval)
+
+        try:
+            response = None
+
+            if self.register_type == 'coil':
+                response = self._client.read_coils(self.register_address, self.num_registers)
+            elif self.register_type == 'holding':
+                response = self._client.read_holding_registers(self.register_address, self.num_registers)
+            elif self.register_type == 'input':
+                response = self._client.read_input_registers(self.register_address, self.num_registers)
+            elif self.register_type == 'discrete-input':
+                response = self._client.read_discrete_inputs(self.register_address, self.num_registers)
+            
+            if response.isError():
+                LOGGER.error(f"Failed reading {self.register_type} @ {self.register_address}")
+                return None
+
+            decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=Endian.AUTO)
         
-        def setRegisterValue(self, value)->bool:
-            try:
-                if value == None:
-                    return False
-                #get the value from modbus sending it the number of registers to be read
-                if self.register_data_type == 'string' and not isinstance(value, str):
+            if self.register_data_type == 'int16': 
+                self.val = decoder.decode_16bit_int()
+            if self.register_data_type == 'int32':
+                self.val = decoder.decode_32bit_int()
+            if self.register_data_type == 'int64':
+                self.val = decoder.decode_64bit_int()
+            if self.register_data_type == 'uint16': 
+                self.val = decoder.decode_16bit_uint()
+            if self.register_data_type == 'uint32':
+                self.val = decoder.decode_32bit_uint()
+            if self.register_data_type == 'uint64': 
+                self.val = decoder.decode_64bit_uint()
+            elif self.register_data_type == 'float32':
+                self.val = decoder.decode_32bit_float()
+            elif self.register_data_type == 'float64':
+                self.val = decoder.decode_64bit_float()
+            elif self.register_data_type == 'string':
+                byte_array = decoder.decode_string(self.num_registers*2)
+                self.val = byte_array.decode('utf-8').rstrip('\x00')
+            else:
+                LOGGER.error(f"Invalid register data type : {self.register_data_type}")
+                return None
+
+            return self.getRegisterValue(eval_expression) 
+
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            return None
+        
+    def writeRegister(self, value)->bool:
+        try:
+            if value == None:
+                return False
+            if not self.is_master:
+                LOGGER.error(f"This is a reference register {self.ref_address} ... ignore writing to it ")
+                return False
+
+            builder = BinaryPayloadBuilder(byteorder=Endian.AUTO, wordorder=Endian.AUTO)
+            #get the value from modbus sending it the number of registers to be read
+            if self.register_data_type == 'string': 
+                if not isinstance(value, str):
                     LOGGER.error(f"{value} is not a string ")
                     return False
-                    #set the string value
-                    return True
+                builder.add_string(value)
+            elif self.register_data_type == 'int16':
+                builder.add_16bit_int(value) 
+            elif self.register_data_type == 'int32': 
+                builder.add_32bit_int(value) 
+            elif self.register_data_type == 'int64': 
+                builder.add_64bit_int(value) 
+            elif self.register_data_type == 'uint16':
+                builder.add_16bit_uint(value) 
+            elif self.register_data_type == 'uint32': 
+                builder.add_32bit_uint(value) 
+            elif self.register_data_type == 'uint64': 
+                builder.add_64bit_uint(value) 
+            elif self.register_data_type == 'float32':
+                builder.add_32bit_float(value) 
+            elif self.register_data_type == 'float64':
+                builder.add_64bit_float(value) 
+            else:
+                LOGGER.error(f"Invalid data type {self.register_data.type}")
+                return False
 
-                value = (value)
-                #set the value
-                return True
-            except Exception as ex:
-                LOGGER.critical(str(ex))
-                return False 
+            payload = builder.to_registers()
+            if not payload:
+                LOGGER.error(f"Failed encoding the value for data type {self.register_data.type}")
+                return False
+
+            self._client.write_registers(self.register_address, payload)
+
+            value = (value)
+            #set the value
+            return True
+        except Exception as ex:
+            LOGGER.critical(str(ex))
+            return False 
+
+    def setClient(self, client):
+        self._client = client
 
 class ModbusIoXNode:
+
     def __init__(self, node:NodeDefDetails):
         self.registers = {}
         if node == None:
@@ -162,13 +274,24 @@ class ModbusIoXNode:
                         sitem.ref_address = item.register_address
                         sitem.register_address = None
 
-            pass
-
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
 
-    def queryProperty(self, client, property_id:str):
+    def setClient(self, client):
+        for _, register in self.registers.items():
+            register.setClient(client)
+
+    def getMaster(self, ref:str)->ModbusRegister:
+        for _, register in self.registers.items():
+            if not register.is_master:
+                continue
+            if register.register_address == ref:
+                return register
+
+        return None
+
+    def queryProperty(self, property_id:str):
         if property_id == None:
             LOGGER.error("You need to have a property id ...")
             return None
@@ -176,20 +299,15 @@ class ModbusIoXNode:
         if mregister == None:
             LOGGER.error(f"No registers for {property_id}")
             return None
-        return mregister.getRegisterValue()
-    
-    def read(self, client, unit_id):
- #       if self.type == 'holding':
- #           result = client.read_holding_registers(self.address, 1, unit=unit_id)
- #       elif self.type == 'input':
- #           result = client.read_input_registers(self.address, 1, unit=unit_id)
- #       if result.isError():
- #           print(f"Error reading register {self.name}")
- #       else:
- #           print(f"{self.name}: {result.registers[0]}")
-        pass
+        if not mregister.is_master:
+            mregister = self.getMaster(mregister.ref_address)
+        if mregister == None:
+            LOGGER.error(f"Couldn't find master register for {property_id}")
+            return None
 
-    def setProperty(self, client, property_id:str, value):
+        return mregister.readRegister(None)
+    
+    def setProperty(self, property_id:str, value):
         if property_id == None or value == None:
             LOGGER.error("You need to have a property id and value ...")
             return None
@@ -211,28 +329,31 @@ class ModbusIoX:
                 LOGGER.error("This plugin does not support modbus")
                 raise Exception("This plugin does not support modbus")
 
+            comm = ModbusComm(plugin.protocol.config)
+            if not comm.is_valid():
+                raise Exception ("Invalid protocol. Currently TCP only ...")
+
             nodedefs=plugin.nodedefs.getNodeDefs()
             for n in nodedefs: 
                 node:NodeDefDetails=nodedefs[n]
                 if not node.isController:
                     self.nodes[node.id]=ModbusIoXNode(node)
-            comm = ModbusComm(plugin.protocol.config)
-            if not comm.is_valid():
-                raise Exception ("Invalid protocol. Currently TCP only ...")
         except Exception as ex:
             LOGGER.critical(str(ex))
             raise
 
-    def is_connected(self):
-        return True if (self._client and self._client.is_connected()) else False
+    def isConnected(self):
+        return True if (self._client and self._client.connected) else False
         
     def disconnect(self):
-        if self.is_connected():
+        if self.isConnected():
             self._client.close()
             self._client = None
+            for _, node in self.nodes.items():
+                node.setClient(None)
         
     def connect(self, host, port)->bool:
-        if self.is_connected():
+        if self.isConnected():
             LOGGER.warn("Already connected ... ignoring")
             return True
 
@@ -247,14 +368,17 @@ class ModbusIoX:
             if connection == None:
                 LOGGER.error(f"failed connecting to modbus server @ {client.host}:{client.port}")
                 return False
-            LOGGER.info(f"connected to modbus server @ {client.host}:{client.port}")
+            LOGGER.info(f"connected to modbus server @ {host}:{port}")
+
+            for _,node in self.nodes.items():
+                node.setClient(self._client)
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
             return False
 
-    def queryProperty(node_id:str, property_id:str):
-        if nodeid == None or property_id == None:
+    def queryProperty(self, node_id:str, property_id:str):
+        if node_id == None or property_id == None:
             LOGGER.error("Need node id and property id ...")
             return None
 
@@ -263,9 +387,13 @@ class ModbusIoX:
             LOGGER.error(f"No node for {node_id} ...")
             return None
 
-        return node.queryProperty(self._client, propety_id) 
+        if not self.isConnected():
+            LOGGER.error("Modbus client is not connected ...")
+            return None
 
-    def setProperty(node_id:str, property_id:str, value):
+        return node.queryProperty(property_id) 
+
+    def setProperty(self, node_id:str, property_id:str, value):
         if nodeid == None or property_id == None or value == None:
             LOGGER.error("Need node id, property id, and value ...")
             return None
@@ -275,4 +403,8 @@ class ModbusIoX:
             LOGGER.error(f"No node for {node_id} ...")
             return None
 
-        return node.setProperty(self._client, propety_id, value) 
+        if not self.isConnected():
+            LOGGER.error("Modbus client is not connected ...")
+            return None
+
+        return node.setProperty(propety_id, value) 
