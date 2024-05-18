@@ -5,6 +5,7 @@ LOGGER = udi_interface.LOGGER
 Custom = udi_interface.Custom
 import shutil
 from iox_to_modbus import ModbusIoX
+from udi_interface import LOG_HANDLER
 
 class ModbusProtocolHandler:
     ##
@@ -64,7 +65,7 @@ class ModbusProtocolHandler:
     ####
     def setProperty(self, node, property_id, value):
         try:
-            return True
+            return self.modbus.setProperty(node.address, property_id, value)
         except Exception as ex:
             LOGGER.error(f'setProperty failed .... ')
             return False
@@ -75,7 +76,7 @@ class ModbusProtocolHandler:
     ####
     def queryProperty(self, node, property_id):
         try:
-            return True
+            return self.modbus.queryProperty(node.address, property_id)
         except Exception as ex:
             LOGGER.error(f'queryProperty failed .... ')
             return False
@@ -86,9 +87,23 @@ class ModbusProtocolHandler:
     ####
     def processCommand(self, node, command_name, **kwargs):
         try:
-            for key, value in kwargs.items():
-                print(f"{key}: {value}")
-            return True
+            if command_name == 'Query':
+                return node.queryAll()
+            #for key, value in kwargs.items():
+            #    print(f"{key}: {value}")
+            return False
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            return False
+
+    ####
+    # MANDATORY 
+    # This method is called in order to get a unique address for your newly created node
+    # for the given nodedef_id
+    ####
+    def getNodeAddress(self, nodedef_id):
+        try:
+            return nodedef_id
         except Exception as ex:
             LOGGER.error(str(ex))
             return False
@@ -103,7 +118,8 @@ class ModbusProtocolHandler:
             if not self.isValidConfig:
                 self.setNotices('host','Please provide the host/port in the configuration tab')
                 return False
-            return True
+
+            return self.modbus.connect(self.host, self.port) 
         except Exception as ex:
             LOGGER.error(f'start failed .... ')
             LOGGER.error(str(ex))

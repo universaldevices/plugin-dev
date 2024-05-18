@@ -237,7 +237,12 @@
                 }
             ],
             "commands": {
-                "accepts": [],
+                "accepts": [
+                    {
+                    "id": "query",
+                    "name": "Query" 
+                    }
+                ],
                 "sends": []
             } 
         }

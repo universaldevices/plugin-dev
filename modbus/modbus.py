@@ -9,7 +9,7 @@ import ioxplugin
 from ioxplugin import Plugin
 from ModbusProtocolHandler import ModbusProtocolHandler
 
-PLUGIN_FILE_NAME = 'modbus.iox_plugin.json'
+PLUGIN_FILE_NAME = './modbus.iox_plugin.json'
 from ModbusControllerNode import ModbusControllerNode
 LOGGER = udi_interface.LOGGER
 if __name__ == '__main__':
