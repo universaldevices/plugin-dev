@@ -10,7 +10,6 @@ from ioxplugin import Plugin
 from ModbusProtocolHandler import ModbusProtocolHandler
 
 PLUGIN_FILE_NAME = './modbus.iox_plugin.json'
-from ModbusControllerNode import ModbusControllerNode
 LOGGER = udi_interface.LOGGER
 if __name__ == '__main__':
     try:
@@ -23,6 +22,7 @@ if __name__ == '__main__':
             plugin = Plugin(PLUGIN_FILE_NAME)
             plugin.toIoX()
             plugin.generateCode(path='./')
+        from ModbusControllerNode import ModbusControllerNode
         
         protocolHandler = ModbusProtocolHandler(plugin)
         controller = ModbusControllerNode(polyglot, protocolHandler)

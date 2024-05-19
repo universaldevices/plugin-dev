@@ -63,20 +63,21 @@
             "min": 0,
             "max": 1000,
             "uom": "Ampere (amp) | 1",
-            "precision": 1
+            "precision": 2
         },
         {
             "id": "pressure",
             "min": 0,
             "max": 1000,
             "uom": "Pound per square inch (PSI) | 138",
-            "precision": 1
+            "precision": 2
         },
         {
             "id": "voltage",
             "min": -500,
             "max": 500,
-            "uom": "Volt | 72"
+            "uom": "Volt | 72",
+            "precision": 2
         }
     ],
     "protocol": {
@@ -104,8 +105,9 @@
                     "protocol":{
                         "register_address": "0x1fff",
                         "register_data_type": "uint16",
-                        "register_type": "input",
-                        "eval": "0 if {rval} & 32 == 0"
+                        "register_type": "holding",
+                        "unit": 1,
+                        "eval": "1 if {rval} & 32 == 0 else 0"
                     },
                     "is_settable": false
                 },
@@ -117,9 +119,8 @@
                     } ,
                     "protocol":{
                         "register_address": "0x1fff",
-                        "eval": "0 if {rval} & 1 > 0"
-                    },
-                    "is_settable": false
+                        "eval": "1 if {rval} & 1 > 0 else 0"
+                    }
                 },
                 {
                     "id": "Custom Control 1 | GV1",
@@ -129,9 +130,8 @@
                     } ,
                     "protocol":{
                         "register_address": "0x1fff",
-                        "eval": "0 if {rval} & 2 > 0"
-                    },
-                    "is_settable": false
+                        "eval": "1 if {rval} & 2 > 0 else 0"
+                    }
                 },
                 {
                     "id": "Custom Control 2 | GV2",
@@ -141,9 +141,8 @@
                     } ,
                     "protocol":{
                         "register_address": "0x1fff",
-                        "eval": "0 if {rval} & 64 > 0"
-                    },
-                    "is_settable": false
+                        "eval": "1 if {rval} & 64 > 0 else 0"
+                    }
                 },
                 {
                     "id": "Custom Control 3 | GV3",
@@ -153,9 +152,8 @@
                     } ,
                     "protocol":{
                         "register_address": "0x1fff",
-                        "eval": "0 if {rval} & 128 > 0"
-                    },
-                    "is_settable": false
+                        "eval": "1 if {rval} & 128 > 0 else 0"
+                    }
                 },
                 {
                     "id":"Custom Control 4 | GV4",
@@ -165,8 +163,9 @@
                     },
                     "protocol":{
                         "register_address": "0x2003", 
-                        "register_data_type": "uint32",
-                        "register_type": "input"
+                        "register_data_type": "uint16",
+                        "register_type": "holding",
+                        "unit": 1
                     },
                     "is_settable": false
                 },
@@ -178,8 +177,9 @@
                     },
                     "protocol":{
                         "register_address": "0x2004", 
-                        "register_data_type": "uint32",
-                        "register_type": "input"
+                        "register_data_type": "uint16",
+                        "register_type": "holding",
+                        "unit": 1
                     },
                     "is_settable": false
                 },
@@ -191,47 +191,37 @@
                     },
                     "protocol":{
                         "register_address": "0x2005", 
-                        "register_data_type": "uint32",
-                        "register_type": "input"
+                        "register_data_type": "uint16",
+                        "register_type": "holding",
+                        "unit": 1
                     },
                     "is_settable": false
                 },
                 {
                     "id":"Custom Control 7 | GV7",
-                    "name": "Current",
-                    "editor": {
-                        "idref": "current"
-                    },
-                    "protocol":{
-                        "register_address": "0x2005", 
-                        "register_data_type": "uint32",
-                        "register_type": "input"
-                    },
-                    "is_settable": false
-                },
-                {
-                    "id":"Custom Control 8 | GV8",
                     "name": "Pressure",
                     "editor": {
                         "idref": "pressure"
                     },
                     "protocol":{
                         "register_address": "0x2006", 
-                        "register_data_type": "uint32",
-                        "register_type": "input"
+                        "register_data_type": "uint16",
+                        "register_type": "holding",
+                        "unit": 1
                     },
                     "is_settable": false
                 },
                 {
-                    "id":"Custom Control 9 | GV9",
+                    "id":"Custom Control 8 | GV8",
                     "name": "Voltage",
                     "editor": {
                         "idref": "voltage"
                     },
                     "protocol":{
-                        "register_address": "0x2006", 
-                        "register_data_type": "uint32",
-                        "register_type": "input"
+                        "register_address": "0x2007", 
+                        "register_data_type": "uint16",
+                        "register_type": "holding",
+                        "unit": 1
                     },
                     "is_settable": false
                 }

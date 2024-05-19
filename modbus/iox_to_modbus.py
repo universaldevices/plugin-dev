@@ -17,7 +17,7 @@ from pymodbus.constants import Endian
 
 
 MODBUS_REGISTER_TYPES=('coil', 'discrete-input', 'input', 'holding')
-MODBUS_REGISTER_DATA_TYPES=('int16','uint16','int32','uint32','float32', 'int64', 'uint64', 'float64', 'string')
+MODBUS_REGISTER_DATA_TYPES=('int16','uint16','int32','uint32', 'int64', 'uint64', 'float32','float64', 'string')
 
 
 #MODBUS_COMMUNICATION_MODES=('TCP', 'Serial')
@@ -133,7 +133,7 @@ class ModbusRegister:
                 return None
         try:
             return eval(eeval)
-        except Excpetion as ex:
+        except Exception as ex:
             LOGGER.error(str(ex))
             return None
     
@@ -148,31 +148,32 @@ class ModbusRegister:
             response = None
 
             if self.register_type == 'coil':
-                response = self._client.read_coils(self.register_address, self.num_registers)
+                response = self._client.read_coils(self.register_address, self.num_registers, unit=self.unit)
             elif self.register_type == 'holding':
-                response = self._client.read_holding_registers(self.register_address, self.num_registers)
+                response = self._client.read_holding_registers(self.register_address, self.num_registers, unit=self.unit)
             elif self.register_type == 'input':
-                response = self._client.read_input_registers(self.register_address, self.num_registers)
+                response = self._client.read_input_registers(self.register_address, self.num_registers, unit=self.unit)
             elif self.register_type == 'discrete-input':
-                response = self._client.read_discrete_inputs(self.register_address, self.num_registers)
+                response = self._client.read_discrete_inputs(self.register_address, self.num_registers, unit=self.unit)
             
             if response.isError():
                 LOGGER.error(f"Failed reading {self.register_type} @ {self.register_address}")
+                self._client.disconnect()
                 return None
 
             decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=Endian.AUTO)
         
             if self.register_data_type == 'int16': 
                 self.val = decoder.decode_16bit_int()
-            if self.register_data_type == 'int32':
+            elif self.register_data_type == 'int32':
                 self.val = decoder.decode_32bit_int()
-            if self.register_data_type == 'int64':
+            elif self.register_data_type == 'int64':
                 self.val = decoder.decode_64bit_int()
-            if self.register_data_type == 'uint16': 
+            elif self.register_data_type == 'uint16': 
                 self.val = decoder.decode_16bit_uint()
-            if self.register_data_type == 'uint32':
+            elif self.register_data_type == 'uint32':
                 self.val = decoder.decode_32bit_uint()
-            if self.register_data_type == 'uint64': 
+            elif self.register_data_type == 'uint64': 
                 self.val = decoder.decode_64bit_uint()
             elif self.register_data_type == 'float32':
                 self.val = decoder.decode_32bit_float()
@@ -321,6 +322,8 @@ class ModbusIoX:
     def __init__(self, plugin:Plugin):
         self.nodes = {}
         self._client = None
+        self.host = None
+        self.port = None
         
         if plugin == None or plugin.nodedefs == None:
             raise Exception ("No plugin and/or node definitions provided ...")
@@ -388,8 +391,8 @@ class ModbusIoX:
             return None
 
         if not self.isConnected():
-            LOGGER.error("Modbus client is not connected ...")
-            return None
+            LOGGER.error("Modbus client is not connected ... trying to reconnect")
+            return self.connect(self.host, self.port)
 
         return node.queryProperty(property_id) 
 
@@ -404,7 +407,7 @@ class ModbusIoX:
             return None
 
         if not self.isConnected():
-            LOGGER.error("Modbus client is not connected ...")
-            return None
+            LOGGER.error("Modbus client is not connected ... trying to reconnect")
+            return self.connect(self.host, self.port)
 
         return node.setProperty(propety_id, value) 
