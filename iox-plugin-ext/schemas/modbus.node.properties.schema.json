@@ -93,7 +93,7 @@
           },
           "eval":{
             "type":"string",
-            "description": "A user defined python expression that uses available data in the register ${rval} and/or property ${pval} and returns the value needed by the editor." 
+            "description": "A user defined python expression that uses available data in the register {rval}." 
           },
           "unit":{
             "type":"integer",
