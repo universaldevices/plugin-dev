@@ -60,23 +60,11 @@
                 "description": "Signed 32 bit number"
               },
               {
-                "enum":["int64"],
-                "description": "Signed 32 bit number"
-              },
-              {
                 "enum":["uint32"],
                 "description": "Unsigned 32 bit number"
               },
               {
-                "enum":["uint64"],
-                "description": "Unsigned 32 bit number"
-              },
-              {
                 "enum":["float32"],
-                "description": "Signed 32 bit float"
-              },
-              {
-                "enum":["float64"],
                 "description": "Signed 32 bit float"
               },
               {
@@ -181,7 +169,48 @@
       ]
     },
     "then":{
-      "required": ["is_settable"]
+      "properties": {
+        "is_settable": {
+          "const": true
+        }
+      }
+    },
+    "else":{
+      "if":{
+        "anyOf": [
+          {
+            "properties" : 
+            {
+              "protocol":{
+                "properties":{
+                  "register_type": {
+                    "const": "input"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties" : 
+            {
+              "protocol":{
+                "properties":{
+                  "register_type": {
+                    "const": "discrete-input"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then":{
+        "properties": {
+          "is_settable": {
+            "const": false
+          }
+        }
+      }
     }
   },
   { 
@@ -207,7 +236,7 @@
   }
   ]
 },
-    "required": ["id", "name", "editor"],
+    "required": ["id", "name", "is_settable", "editor"],
     "additionalProperties": false
   }
 }
