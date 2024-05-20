@@ -25,26 +25,34 @@
             "id": "support_voltage",
             "min": 42,
             "max": 70,
-            "uom": "Volt | 72"
+            "uom": "Volt | 72",
+            "precision":3,
+            "step":1
         },
         {
             "id": "dc_voltage",
             "min": 36,
             "max": 70,
-            "uom": "Volt | 72"
+            "uom": "Volt | 72",
+            "precision":3,
+            "step":1
 
         },
         {
             "id": "sell_amps",
             "min": 0,
             "max": 27,
-            "uom": "Ampere (amp) | 1"
+            "uom": "Ampere (amp) | 1",
+            "precision":3,
+            "step":1
         },
         {
             "id": "load_shave_amps",
             "min": 0,
             "max": 48,
-            "uom": "Ampere (amp) | 1"
+            "uom": "Ampere (amp) | 1",
+            "precision":3,
+            "step":1
         },
         {
             "id": "load_shave",
@@ -58,14 +66,7 @@
         }
     ],
     "protocol": {
-        "name": "Modbus",
-        "config": {
-            "transport": {
-                "mode": "TCP",
-                "host": "192.168.1.26",
-                "port": 502
-            }
-        } 
+        "name": "Modbus"
     },
     "nodedefs": [
         {
@@ -95,8 +96,7 @@
                     "protocol":{
                         "register_address": "0x0178", 
                         "register_data_type": "uint32",
-                        "register_type": "holding",
-                        "precision": 3
+                        "register_type": "holding"
                     },
                     "is_settable": true
                 },
@@ -109,8 +109,7 @@
                     "protocol":{
                         "register_address": "0x01b4",
                         "register_data_type": "uint32",
-                        "register_type": "holding",
-                        "precision": 3
+                        "register_type": "holding"
                     },
                     "is_settable": true
                 },
@@ -123,8 +122,7 @@
                     "protocol":{
                         "register_address": "0x01b6",
                         "register_data_type": "uint32",
-                        "register_type": "holding",
-                        "precision": 3
+                        "register_type": "holding"
                     },
                     "is_settable": true
                 },
@@ -137,8 +135,7 @@
                     "protocol":{
                         "register_address": "0x0050",
                         "register_data_type": "uint32",
-                        "register_type": "input",
-                        "precision": 3
+                        "register_type": "holding"
                     },
                     "is_settable": false
                 }
