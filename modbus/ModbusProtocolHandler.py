@@ -23,7 +23,13 @@ class ModbusProtocolHandler:
         self.port = 502
         self.isValidConfig = False
         self.modbus = ModbusIoX(plugin)
-        self.nodes = {} 
+        self.nodes = {}
+        self.precisions = {}
+        if plugin:
+            try:
+                self.precisions = (next(iter(plugin.nodedefs.getNodeDefs().values()))).getPrecisions()
+            except Exception as ex:
+                pass
 
     @staticmethod
     def isValidHost(host:str)->bool:
@@ -66,6 +72,11 @@ class ModbusProtocolHandler:
     ####
     def setProperty(self, node, property_id, value):
         try:
+            precision = self.precisions[propert_id]
+            val = int(value)
+            if precision > 0:
+                mult = pow(10, precision)
+                val = val * mult
             return self.modbus.setProperty(node.address, property_id, value)
         except Exception as ex:
             LOGGER.error(f'setProperty failed .... ')
@@ -77,7 +88,15 @@ class ModbusProtocolHandler:
     ####
     def queryProperty(self, node, property_id):
         try:
-            return self.modbus.queryProperty(node.address, property_id)
+            precision = self.precisions[property_id]
+
+            val = self.modbus.queryProperty(node.address, property_id)
+            if val and precision > 0:
+                div = pow(10, precision)
+                fval = round(float(val/precision), precision)
+                return fval
+
+            return val
         except Exception as ex:
             LOGGER.error(f'queryProperty failed .... ')
             return False
