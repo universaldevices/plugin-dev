@@ -23,6 +23,7 @@ class ModbusProtocolHandler:
         self.port = 502
         self.isValidConfig = False
         self.modbus = ModbusIoX(plugin)
+        self.nodes = {} 
 
     @staticmethod
     def isValidHost(host:str)->bool:
@@ -158,6 +159,9 @@ class ModbusProtocolHandler:
     ####
     def nodeAdded(self, node):
         try:
+            if node == None:
+                return False
+            self.nodes[node.address] = node
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -168,6 +172,9 @@ class ModbusProtocolHandler:
     ####
     def nodeRemoved(self, node)->bool:
         try:
+            if node == None:
+                return False
+            del self.nodes[node.address]
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -223,10 +230,13 @@ class ModbusProtocolHandler:
     def filesUploaded(self, path:str)->bool:
         try:
             for filename in os.listdir(path):
-                file_path = os.path.join(path, filename)
-                if os.path.isfile(file_path):
-                    dest_path = os.path.join('./', filename)
-                    shutil.copy(file_path, dest_path)
+                pass
+                ###copy files, something like this:
+                #file_path = os.path.join(path, filename)
+                #if os.path.isfile(file_path):
+                #    dest_path = os.path.join('./', filename)
+                #    shutil.copy(file_path, dest_path)
+                ###
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -237,6 +247,8 @@ class ModbusProtocolHandler:
     ####
     def shortPoll(self)->bool:
         try:
+            for _, node in self.nodes:
+                node.queryAll()
             return True
         except Exception as ex:
             LOGGER.error(str(ex))

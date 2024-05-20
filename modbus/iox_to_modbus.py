@@ -326,7 +326,8 @@ class ModbusIoX:
         self.port = None
         
         if plugin == None or plugin.nodedefs == None:
-            raise Exception ("No plugin and/or node definitions provided ...")
+            LOGGER.error("No plugin and/or node definitions provided ...")
+            return 
         try:
             if not plugin.protocol.isModbus():
                 LOGGER.error("This plugin does not support modbus")
