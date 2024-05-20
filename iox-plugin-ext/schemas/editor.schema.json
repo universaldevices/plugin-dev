@@ -36,7 +36,7 @@
                     },
                     "step":{
                         "type":"integer",
-                        "description" : "The number of increments with each step"
+                        "description" : "The number of increments with each step. In case you have precision, this is mandatory"
                     },
                     "precision":{
                         "type":"integer",
@@ -354,7 +354,10 @@
                         }
                     }
                 },
-                "required": ["uom", "min","max","id"]
+                "required": ["uom", "min","max","id"],
+                "dependencies": {
+                    "precision": ["step"]
+                }
             },
             {
                 "properties":{
