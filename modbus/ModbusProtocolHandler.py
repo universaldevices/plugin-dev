@@ -248,7 +248,7 @@ class ModbusProtocolHandler:
     ####
     def shortPoll(self)->bool:
         try:
-            for _, node in self.nodes:
+            for _, node in self.nodes.items():
                 node.queryAll()
             return True
         except Exception as ex:
