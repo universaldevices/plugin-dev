@@ -1,0 +1,35 @@
+<nodedefs>
+
+<nodedef id="modbus" nls="modbus">
+<sts>
+<st id="ST" editor="ready" />
+<st id="GV0" editor="yes_no" />
+<st id="GV1" editor="on_off" />
+<st id="GV2" editor="on_off" />
+<st id="GV3" editor="yes_no" />
+<st id="GV4" editor="frequency" />
+<st id="GV5" editor="frequency" />
+<st id="GV6" editor="current" />
+<st id="GV7" editor="pressure" />
+<st id="GV8" editor="voltage" />
+</sts>
+<cmds>
+<sends/>
+<accepts>
+<cmd id="x_query"/>
+</accepts>
+</cmds>
+</nodedef>
+<nodedef id="modbuscontroll" nls="modbuscontroll">
+<sts>
+<st id="ST" editor="CTL_BOOL" />
+</sts>
+<cmds>
+<sends/>
+<accepts>
+<cmd id="discover"/>
+<cmd id="x_query"/>
+</accepts>
+</cmds>
+</nodedef>
+</nodedefs>

@@ -1,0 +1,31 @@
+
+
+ND-modbus-NAME = ModbusDevice
+ND-modbus-ICON = Electricity
+
+ST-modbus-ST-NAME = Status
+ST-modbus-GV0-NAME = Running
+ST-modbus-GV1-NAME = Zero Speed
+ST-modbus-GV2-NAME = Alarm
+ST-modbus-GV3-NAME = Fault
+ST-modbus-GV4-NAME = Frequency Ref
+ST-modbus-GV5-NAME = Frequency Out
+ST-modbus-GV6-NAME = Current
+ST-modbus-GV7-NAME = Pressure
+ST-modbus-GV8-NAME = Voltage
+
+CMD-modbus-x_query-NAME = Query
+
+ND-modbuscontroll-NAME = Modbus Controller
+ND-modbuscontroll-ICON = GenericCtl
+
+ST-modbuscontroll-ST-NAME = Status
+
+CMD-modbuscontroll-discover-NAME = discover
+CMD-modbuscontroll-x_query-NAME = query
+NLSIX_on_off-0 = Off
+NLSIX_on_off-1 = On
+NLSIX_ready-0 = Not Ready
+NLSIX_ready-1 = Ready
+NLSIX_yes_no-0 = No
+NLSIX_yes_no-1 = Yes

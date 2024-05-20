@@ -28,13 +28,13 @@ MODBUS_ADDRESSING_MODES=('0-based', '1-based')
 
 class ModbusComm:
     def __init__(self, comm_data):
-        if comm_data == None:
-            raise Exception ("Need comm data for modbus ...")
-            return
         self.addressing_mode = '1-based'
         self._transport:IoXTransport = None
         self.transport = None 
         self._client = None
+        if comm_data == None:
+            LOGGER.warning("no comm data, using defaults ...")
+            return
         try: 
             if 'transport' in comm_data:
                 self._transport:IoXTransport = IoXTransport(comm_data['transport'])
@@ -44,6 +44,8 @@ class ModbusComm:
             raise
 
     def is_valid(self):
+        if self._transport == None:
+            return True
         if not self._transport.getMode() in MODBUS_COMMUNICATION_MODES:
             LOGGER.error(f"{self._transport.getMode()} is not a valid communication mode for this plugin ..")
             return False
@@ -142,7 +144,7 @@ class ModbusRegister:
             return None
 
         if not self.canRead():
-            return self.getRegisterValue(eval)
+            return self.getRegisterValue(None)
 
         try:
             response = None
@@ -161,7 +163,7 @@ class ModbusRegister:
                 self._client.disconnect()
                 return None
 
-            decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=Endian.AUTO)
+            decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=Endian.BIG)
         
             if self.register_data_type == 'int16': 
                 self.val = decoder.decode_16bit_int()
@@ -200,7 +202,7 @@ class ModbusRegister:
                 LOGGER.error(f"This is a reference register {self.ref_address} ... ignore writing to it ")
                 return False
 
-            builder = BinaryPayloadBuilder(byteorder=Endian.AUTO, wordorder=Endian.AUTO)
+            builder = BinaryPayloadBuilder(byteorder=Endian.BIG, wordorder=Endian.BIG)
             #get the value from modbus sending it the number of registers to be read
             if self.register_data_type == 'string': 
                 if not isinstance(value, str):
@@ -300,13 +302,16 @@ class ModbusIoXNode:
         if mregister == None:
             LOGGER.error(f"No registers for {property_id}")
             return None
+        eval_expression = None
         if not mregister.is_master:
+            eval_expression = mregister.eval
             mregister = self.getMaster(mregister.ref_address)
+
         if mregister == None:
             LOGGER.error(f"Couldn't find master register for {property_id}")
             return None
 
-        return mregister.readRegister(None)
+        return mregister.readRegister(eval_expression)
     
     def setProperty(self, property_id:str, value):
         if property_id == None or value == None:
@@ -365,6 +370,12 @@ class ModbusIoX:
             LOGGER.error("To connect to modbus tcp, both host and port are mandatory ...")
             return False
 
+        if self.host == None or self.host != host:
+            self.host = host
+
+        if self.port == None or self.port != port:
+            self.port = port
+
         try:
             self._client = ModbusTcpClient(host=host, port=port)
         
@@ -376,6 +387,7 @@ class ModbusIoX:
 
             for _,node in self.nodes.items():
                 node.setClient(self._client)
+            
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -392,8 +404,10 @@ class ModbusIoX:
             return None
 
         if not self.isConnected():
-            LOGGER.error("Modbus client is not connected ... trying to reconnect")
-            return self.connect(self.host, self.port)
+            LOGGER.warning("Modbus client is not connected ... trying to reconnect")
+            if not self.connect(self.host, self.port):
+                LOGGER.warning("Failed connecting to modbus client ...")
+                return None
 
         return node.queryProperty(property_id) 
 

@@ -162,6 +162,7 @@ class ModbusProtocolHandler:
             if node == None:
                 return False
             self.nodes[node.address] = node
+            node.queryAll()
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
