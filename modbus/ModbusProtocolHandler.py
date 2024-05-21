@@ -91,9 +91,9 @@ class ModbusProtocolHandler:
             precision = self.precisions[property_id]
 
             val = self.modbus.queryProperty(node.address, property_id)
-            if val and precision > 0:
+            if val != None and precision > 0:
                 div = pow(10, precision)
-                fval = round(float(val/precision), precision)
+                fval = round(float(val/div), precision)
                 return fval
 
             return val
