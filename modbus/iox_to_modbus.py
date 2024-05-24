@@ -160,7 +160,6 @@ class ModbusRegister:
             
             if response.isError():
                 LOGGER.error(f"Failed reading {self.register_type} @ {self.register_address}")
-                self._client.disconnect()
                 return None
 
             decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=Endian.BIG)
