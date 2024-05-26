@@ -7,8 +7,10 @@
     "type": "object",
     "properties":{
       "id": {
-        "$ref": "properties.schema.json",
-        "description": "This is the property's id and how you will be able to reference is in python code."
+        "type":"string",
+        "description": "A unique id that is a) made up of A-Z, _, and 0-9 and b) starts with a capital letter, and c) max lenght is 30",
+        "pattern":"^[A-Z][A-Z0-9_]*$",
+        "maxLength": 30
       },
       "name": {
         "type": "string",

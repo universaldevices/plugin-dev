@@ -41,7 +41,7 @@
             "icon":"GenericRspCtl",
             "properties": [
                 {
-                    "id":"Status | ST", 
+                    "id":"ST", 
                     "name": "Status",
                     "editor": {
                         "idref": "onlevel"
@@ -49,7 +49,7 @@
                     "is_settable": false
                 },
                 {
-                    "id": "Ramp Rate | RR",
+                    "id": "RAMP_RATE",
                     "name": "Ramp Rate",
                     "editor": {
                         "idref": "ramprate"
@@ -57,7 +57,7 @@
                     "is_settable": true
                 },
                 {
-                    "id": "On Level | OL",
+                    "id": "ON_LEVEL",
                     "name": "On Level",
                     "editor": {
                         "idref": "onlevel"

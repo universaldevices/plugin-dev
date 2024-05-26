@@ -13,6 +13,10 @@
             }
           ]
         },
+        "is_rtu":{
+          "type":"boolean",
+          "description": "Whether or not this is a TCP over RTU communication."
+        },
         "addressing_mode":{
           "type":"string",
           "oneOf": [

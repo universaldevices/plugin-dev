@@ -55,7 +55,7 @@
                     "is_settable": false
                 },
                 {
-                    "id": "Current Temperature | CLITEMP",
+                    "id": "CLITEMP",
                     "name": "Temperature",
                     "editor": {
                         "idref": "temp"
@@ -63,7 +63,7 @@
                     "is_settable": false
                 },
                 {
-                    "id": "Luminance | LUMIN",
+                    "id": "LUMIN",
                     "name": "Luminance",
                     "editor": {
                         "idref": "lum"

@@ -66,7 +66,8 @@
         }
     ],
     "protocol": {
-        "name": "Modbus"
+        "name": "Modbus",
+        "is_rtu": false
     },
     "nodedefs": [
         {
@@ -75,7 +76,7 @@
             "icon":"Electricity",
             "properties": [
                 {
-                    "id": "Custom Control 0 | GV0",
+                    "id": "LOAD_SHAVE",
                     "name": "Load Shave",
                     "editor": {
                         "idref": "load_shave"
@@ -88,7 +89,7 @@
                     "is_settable": true
                 },
                 {
-                    "id":"Custom Control 1 | GV1",
+                    "id":"GS_VOLTAGE",
                     "name": "Grid Support Voltage",
                     "editor": {
                         "idref": "support_voltage"
@@ -101,7 +102,7 @@
                     "is_settable": true
                 },
                 {
-                    "id": "Custom Control 2 | GV2",
+                    "id": "SELL_AMPS",
                     "name": "Maximum Sell Amps",
                     "editor": {
                         "idref": "sell_amps"
@@ -114,7 +115,7 @@
                     "is_settable": true
                 },
                 {
-                    "id": "Custom Control 3 | GV3",
+                    "id": "LOAD_SHAVE_AMPS",
                     "name": "Load Shave Amps",
                     "editor": {
                         "idref": "load_shave_amps"
@@ -127,7 +128,7 @@
                     "is_settable": true
                 },
                 {
-                    "id": "Custom Control 4 | GV4",
+                    "id": "DC_VOLTAGE",
                     "name": "DC Voltage ",
                     "editor": {
                         "idref": "dc_voltage"
