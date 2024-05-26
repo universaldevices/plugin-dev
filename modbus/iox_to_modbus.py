@@ -35,11 +35,14 @@ class ModbusComm:
         if comm_data == None:
             LOGGER.warning("no comm data, using defaults ...")
             return
+        comm_data = comm_data.getDetails()
         try: 
             if 'transport' in comm_data:
                 self._transport:IoXTransport = IoXTransport(comm_data['transport'])
             if 'addressing_mode' in comm_data:
                 self.addressing_mode = comm_data['addressing_mode']
+            if 'is_rtu' in comm_data:
+                self.bRtu = bool(comm_data['is_rtu'])
         except Exception as ex:
             raise
 
@@ -328,6 +331,7 @@ class ModbusIoX:
         self._client = None
         self.host = None
         self.port = None
+        self.is_rtu = False
         
         if plugin == None or plugin.nodedefs == None:
             LOGGER.error("No plugin and/or node definitions provided ...")
@@ -337,9 +341,10 @@ class ModbusIoX:
                 LOGGER.error("This plugin does not support modbus")
                 raise Exception("This plugin does not support modbus")
 
-            comm = ModbusComm(plugin.protocol.config)
+            comm = ModbusComm(plugin.protocol)
             if not comm.is_valid():
                 raise Exception ("Invalid protocol. Currently TCP only ...")
+            self.is_rtu=comm.bRtu
 
             nodedefs=plugin.nodedefs.getNodeDefs()
             for n in nodedefs: 
@@ -376,7 +381,11 @@ class ModbusIoX:
             self.port = port
 
         try:
-            self._client = ModbusTcpClient(host=host, port=port)
+            if self.is_rtu:
+                from pymodbus.transaction import ModbusRtuFramer as ModbusFramer
+                self._client = ModbusTcpClient(host=host, port=port, framer=ModbusFramer)
+            else:
+                self._client = ModbusTcpClient(host=host, port=port)
         
             connection = self._client.connect()
             if connection == None:
