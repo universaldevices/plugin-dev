@@ -35,7 +35,18 @@ class ModbusComm:
         self.bRtu = False
         if comm_data == None:
             LOGGER.warning("no comm data, using defaults ...")
+            return
         comm_data = comm_data.getDetails()
+        if comm_data == None:
+            LOGGER.warning("no comm data, using defaults ...")
+            return
+
+        if 'config' in comm_data:
+            comm_data = comm_data['config']
+        else:
+            LOGGER.warning("no config in comm data, using defaults ...")
+            return
+
         try: 
             if 'transport' in comm_data:
                 self._transport:IoXTransport = IoXTransport(comm_data['transport'])
