@@ -32,9 +32,9 @@ class ModbusComm:
         self._transport:IoXTransport = None
         self.transport = None 
         self._client = None
+        self.bRtu = False
         if comm_data == None:
             LOGGER.warning("no comm data, using defaults ...")
-            return
         comm_data = comm_data.getDetails()
         try: 
             if 'transport' in comm_data:
