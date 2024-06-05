@@ -94,6 +94,11 @@ ST-DROPRO-GV5-NAME = Remaining Life (Cart#3)
 CMD-DROPRO-QUERY-NAME = Query
 CMD-DISCOVER-NAME = Discover
 
+ST-DROPALRT-ST-NAME = Input State 
+ST-DROPALRT-BATLVL-NAME = Battery Level 
+ST-DROPALRT-GV1-NAME = Temperature 
+ST-DROPALRT-GV2-NAME = Power Lost
+CMD-DROPALRT-QUERY-NAME = Query 
 
 IX_PMODE-0 = Home
 IX_PMODE-1 = Away
@@ -104,6 +109,12 @@ IX_NOTIF-1 = Pending Notification
 
 IX_LEAK-0 = No Leak Detected 
 IX_LEAK-1 = Leak Detected 
+
+IX_ALERT-0 = Normal 
+IX_ALERT-1 = Abnormal 
+
+IX_PWLOST-0 = No 
+IX_PWLOST-1 = Yes 
 
 IX_SALT-0 = Normal
 IX_SALT-1 = Low

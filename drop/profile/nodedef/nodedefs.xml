@@ -203,5 +203,22 @@
         </accepts>
      </cmds>
   </nodeDef>
+  <nodeDef id="DROPALRT" nls="DROPALRT">
+    <sts>
+      <!--Input State-->
+      <st id="ST" editor="ALERT" />
+      <!-- Battery Level -->
+      <st id="BATLVL" editor="BATTERY" />
+      <!-- Temperature -->
+      <st id="GV1" editor="TEMPF" />
+      <!-- Power Lost-->
+      <st id="GV2" editor="PWLOST" />
+    </sts>
+    <cmds>
+      <sends />
+        <accepts>
+          <cmd id="QUERY" />
+        </accepts>
+     </cmds>
+  </nodeDef>
 </nodeDefs>
-

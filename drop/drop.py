@@ -475,6 +475,8 @@ class DropHub(udi_interface.Node):
                 devNode=DropLeakDetector(self.poly, self.controller, endDeviceAddress, devName)
             elif devType == "ro":
                 devNode=DropRO(self.poly, self.controller, endDeviceAddress, devName)
+            elif devType == "alrt":
+                devNode=DropAlert(self.poly, self.controller, endDeviceAddress, devName)
 
             if devNode == None:
                 LOGGER.error("failed adding node since devType {} is unknown".format(devType))
@@ -989,6 +991,53 @@ class DropRO(udi_interface.Node):
             LOGGER.error("Failed to update leak detector info{}".format(ex))
     
 
+    def query(self, command=None):
+        self.reportDrivers()
+
+    commands = {"QUERY": query}
+
+class DropAlert(udi_interface.Node):
+    id="DROPALRT"
+    drivers = [
+        #Input State
+        {"driver": "ST", "value": 0, "uom": 25},
+        #bat level
+        {"driver": "BATLVL", "value": 0, "uom": 51},
+        #temperature
+        {"driver": "GV1", "value": 0, "uom": 17},
+        #Power Lost
+        {"driver": "GV2", "value": 0, "uom": 25},
+    ]
+
+    #controller = mqtt
+    #primary = hub
+    def __init__(self, poly, controller, address, name):
+        super().__init__(poly, dropCtrlAddress, address, name)
+        self.controller = controller 
+
+    def updateInfo(self, payload, topic: str):
+        try:
+            data = json.loads(payload)
+        except Exception as ex:
+            LOGGER.error(
+                "Failed to parse MQTT Payload as Json: {} {}".format(ex, payload)
+            )
+            return False
+
+        try:
+            if "sens" in data:
+                self.setDriver("ST", data["leak"], 25)
+            if "battery" in data:
+                self.setDriver("BATLVL", data["battery"], 51)
+            if "temp" in data:
+                self.setDriver("GV1", data["temp"], 17)
+            if "pwrOff" in data:
+                self.setDriver("GV2", data["temp"], 25)
+
+
+        except Exception as ex:
+            LOGGER.error("Failed to update leak detector info{}".format(ex))
+    
     def query(self, command=None):
         self.reportDrivers()
 
