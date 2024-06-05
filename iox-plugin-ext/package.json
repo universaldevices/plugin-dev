@@ -4,7 +4,7 @@
   "description": "Define your plugin in JSON and let this extension take care of the rest",
   "publisher": "UniversalDevices",
   "icon": "images/icon.png",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "engines": {
     "vscode": "^1.85.1"
   },
@@ -121,10 +121,14 @@
   },
   "dependencies": {
     "fs": "^0.0.1-security",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "minimist": ">=0.2.4",
+    "minimatch": ">=3.0.5"
   },
   "devDependencies": {
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.7",
+    "minimist": ">=0.2.4",
+    "minimatch": ">=3.0.5"
   },
   "main": "./extensions/compiled/extension.js"
 }
