@@ -12,7 +12,7 @@ ST-DROPHUB-GV3-NAME = Average Water Used (30 Days)
 ST-DROPHUB-WATERP-NAME = System Pressure 
 ST-DROPHUB-GV4-NAME = Low System Pressure Today 
 ST-DROPHUB-GV5-NAME = High System Pressure Today 
-ST-DROPHUB-GV6-NAME = Water  
+ST-DROPHUB-GV6-NAME = Water (All) 
 ST-DROPHUB-GV7-NAME = Bypass 
 ST-DROPHUB-GV8-NAME = Protect Mode Setting 
 ST-DROPHUB-GV9-NAME = Notifications 
@@ -64,7 +64,7 @@ ST-DROPPC-BATLVL-NAME = Battery Level
 ST-DROPPV-WATERP-NAME = System Pressure 
 ST-DROPPV-WATERT-NAME = Temperature
 CMD-DROPPV-QUERY-NAME = Query
-CMD-DROPPV-WATER-NAME = Water
+CMD-DROPPV-WATER-NAME = Water (Valve)
 
 ND-DROPPC-NAME = Pump Control 
 ND-DROPPC-ICON = Switch 

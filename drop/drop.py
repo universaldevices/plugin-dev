@@ -120,8 +120,8 @@ class Controller(udi_interface.Node):
         # self.poly.subscribe(polyglot.POLL, self.poll)
         self.poly.subscribe(polyglot.STOP, self.stop)
 
-        self.poly.ready()
         self.poly.addNode(self)
+        self.poly.ready()
 
     def addAllNodes(self): 
         config = self.poly.getConfig()
