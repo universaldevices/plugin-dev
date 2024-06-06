@@ -18,7 +18,7 @@ ST-DROPHUB-GV8-NAME = Protect Mode Setting
 ST-DROPHUB-GV9-NAME = Notifications 
 
 CMD-DROPHUB-QUERY-NAME = Query
-CMD-DROPHUB-WATER-NAME = Water
+CMD-DROPHUB-WATER-NAME = Water (All)
 CMD-DROPHUB-BYPASS-NAME = Bypass
 CMD-DROPHUB-PMODE-NAME = Protection Mode
 
@@ -59,7 +59,7 @@ ND-DROPPV-NAME = Protection Valve
 ND-DROPPV-ICON = Switch
 ST-DROPPV-ST-NAME = Leak Detected 
 ST-DROPPV-WATERF-NAME = Flow Rate 
-ST-DROPPV-GV6-NAME = Water  
+ST-DROPPV-GV6-NAME = Water (Valve) 
 ST-DROPPC-BATLVL-NAME = Battery Level 
 ST-DROPPV-WATERP-NAME = System Pressure 
 ST-DROPPV-WATERT-NAME = Temperature

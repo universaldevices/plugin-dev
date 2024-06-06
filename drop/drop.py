@@ -186,7 +186,7 @@ class Controller(udi_interface.Node):
         polyglot.updateProfile()
         self.poly.setCustomParamsDoc()
 
-        self.mqttc = mqtt.Client()
+        self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
         self.mqttc.on_connect = self._on_connect
         self.mqttc.on_disconnect = self._on_disconnect
         self.mqttc.on_message = self._on_message
