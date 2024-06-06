@@ -1,0 +1,48 @@
+17:10:21 Node server started with this information:
+17:10:21  User=admin
+17:10:21  Home=/home/admin
+17:10:21  Node server path=/usr/home/admin/workspace/plugin-dev/ud-bluetooth
+17:10:21  PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjo1LCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiIqUUolY08oVUF5cEt6SFRBIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMjMiLCJpc3lWZXJzaW9uIjoiNS44LjMiLCJlZGl0aW9uIjoiRnJlZSJ9
+17:10:21  Error message: Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/__init__.py", line 21, in <module>
+    from .interface import Interface
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/interface.py", line 24, in <module>
+    import paho.mqtt.client as mqtt
+ModuleNotFoundError: No module named 'paho'
+
+17:10:22 Node server started with this information:
+17:10:22  User=admin
+17:10:22  Home=/home/admin
+17:10:22  Node server path=/usr/home/admin/workspace/plugin-dev/ud-bluetooth
+17:10:22  PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjo1LCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiIqUUolY08oVUF5cEt6SFRBIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMjMiLCJpc3lWZXJzaW9uIjoiNS44LjMiLCJlZGl0aW9uIjoiRnJlZSJ9
+17:10:22  Error message: Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/__init__.py", line 21, in <module>
+    from .interface import Interface
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/interface.py", line 24, in <module>
+    import paho.mqtt.client as mqtt
+ModuleNotFoundError: No module named 'paho'
+
+17:10:23 Node server started with this information:
+17:10:23  User=admin
+17:10:23  Home=/home/admin
+17:10:23  Node server path=/usr/home/admin/workspace/plugin-dev/ud-bluetooth
+17:10:23  PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjo1LCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiIqUUolY08oVUF5cEt6SFRBIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMjMiLCJpc3lWZXJzaW9uIjoiNS44LjMiLCJlZGl0aW9uIjoiRnJlZSJ9
+17:10:23  Error message: Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/__init__.py", line 21, in <module>
+    from .interface import Interface
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/interface.py", line 24, in <module>
+    import paho.mqtt.client as mqtt
+ModuleNotFoundError: No module named 'paho'
+
+17:10:24 Node server started with this information:
+17:10:24  User=admin
+17:10:24  Home=/home/admin
+17:10:24  Node server path=/usr/home/admin/workspace/plugin-dev/ud-bluetooth
+17:10:24  PG3INIT=eyJ1dWlkIjoiMDA6MjE6Yjk6MjY6MjY6MjYiLCJwcm9maWxlTnVtIjo1LCJsb2dMZXZlbCI6IkRFQlVHIiwidG9rZW4iOiIqUUolY08oVUF5cEt6SFRBIiwibXF0dEhvc3QiOiJsb2NhbGhvc3QiLCJtcXR0UG9ydCI6ODg4Mywic2VjdXJlIjoxLCJpc1BHM3giOnRydWUsInBnM1ZlcnNpb24iOiIzLjIuMjMiLCJpc3lWZXJzaW9uIjoiNS44LjMiLCJlZGl0aW9uIjoiRnJlZSJ9
+17:10:24  Error message: Traceback (most recent call last):
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/__init__.py", line 21, in <module>
+    from .interface import Interface
+  File "/home/admin/.local/lib/python3.11/site-packages/udi_interface/interface.py", line 24, in <module>
+    import paho.mqtt.client as mqtt
+ModuleNotFoundError: No module named 'paho'
+

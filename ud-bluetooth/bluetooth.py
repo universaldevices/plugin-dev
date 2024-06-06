@@ -75,8 +75,8 @@ class BTSVCController(udi_interface.Node):
         self.poly.subscribe(polyglot.CUSTOMPARAMS, self.parameter_handler)
         # self.poly.subscribe(polyglot.POLL, self.poll)
         self.poly.subscribe(polyglot.STOP, self.stop)
-        self.poly.ready()
         self.poly.addNode(self)   
+        self.poly.ready()
 
     def start(self):
         self.addAllNodes()
@@ -109,7 +109,7 @@ class BTSVCController(udi_interface.Node):
         try:
             rand=secrets.token_hex(6) 
             mqtt_id=f'{self.id}_{rand}'
-            self._mqttc=mqtt.Client(mqtt_id, True)
+            self._mqttc=mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, mqtt_id, True)
             self.sslContext = ssl.create_default_context(ssl.Purpose.SERVER_AUTH, cafile=cafile)
             self.sslContext.load_cert_chain(certs[0], keys[0])
             self._mqttc.tls_set_context(self.sslContext)
