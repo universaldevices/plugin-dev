@@ -932,7 +932,7 @@ class DropLeakDetector(udi_interface.Node):
                 self.setDriver("WATERT", data["temp"], 17)
 
         except Exception as ex:
-            LOGGER.error("Failed to update leak detector info{}".format(ex))
+            LOGGER.error("Failed to update leak detector info {}".format(ex))
     
 
     def query(self, command=None):
@@ -988,7 +988,7 @@ class DropRO(udi_interface.Node):
                 self.setDriver("GV5", data["cart3"], 51)
 
         except Exception as ex:
-            LOGGER.error("Failed to update leak detector info{}".format(ex))
+            LOGGER.error("Failed to update RO info {}".format(ex))
     
 
     def query(self, command=None):
@@ -1026,7 +1026,7 @@ class DropAlert(udi_interface.Node):
 
         try:
             if "sens" in data:
-                self.setDriver("ST", data["leak"], 25)
+                self.setDriver("ST", data["sens"], 25)
             if "battery" in data:
                 self.setDriver("BATLVL", data["battery"], 51)
             if "temp" in data:
@@ -1036,7 +1036,7 @@ class DropAlert(udi_interface.Node):
 
 
         except Exception as ex:
-            LOGGER.error("Failed to update leak detector info{}".format(ex))
+            LOGGER.error("Failed to update Alert info {}".format(ex))
     
     def query(self, command=None):
         self.reportDrivers()
