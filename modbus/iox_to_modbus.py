@@ -78,7 +78,7 @@ class ModbusRegister:
         self.num_registers = 1
         self.eval = None
         self.value = None
-        self.unit = 1
+        self.unit = 0
         self.is_master = True
         self.last_updated_time = datetime.now()
         self._client:ModbusTcpClient = None
@@ -164,13 +164,13 @@ class ModbusRegister:
             response = None
 
             if self.register_type == 'coil':
-                response = self._client.read_coils(self.register_address, self.num_registers, unit=self.unit)
+                response = self._client.read_coils(self.register_address, self.num_registers, slave=self.unit)
             elif self.register_type == 'holding':
-                response = self._client.read_holding_registers(self.register_address, self.num_registers, unit=self.unit)
+                response = self._client.read_holding_registers(self.register_address, self.num_registers, slave=self.unit)
             elif self.register_type == 'input':
-                response = self._client.read_input_registers(self.register_address, self.num_registers, unit=self.unit)
+                response = self._client.read_input_registers(self.register_address, self.num_registers, slave=self.unit)
             elif self.register_type == 'discrete-input':
-                response = self._client.read_discrete_inputs(self.register_address, self.num_registers, unit=self.unit)
+                response = self._client.read_discrete_inputs(self.register_address, self.num_registers, slave=self.unit)
             
             if response.isError():
                 LOGGER.error(f"Failed reading {self.register_type} @ {self.register_address}")
