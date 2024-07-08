@@ -140,6 +140,11 @@
               "type":"string"
             }
           },
+          "nodesAreStatic":{
+            "type":"boolean",
+            "description":"Whehter or not nodes are statically created from the node definitions or the protocol handler dynamically creates them after discovery.",
+            "default":true
+          },
           "version":{
             "type":"string",
             "description": "The version that's displayed to the user and then installed in iox",

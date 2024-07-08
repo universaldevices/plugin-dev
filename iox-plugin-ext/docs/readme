@@ -26,3 +26,13 @@ In FreeBSD, you need to change extensionsGallery to point to visualstudio.com:
                 "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
                 "itemUrl": "https://marketplace.visualstudio.com/items"
         },
+
+For open-vsx:
+        "extensionsGallery": {
+                "serviceUrl": "https://open-vsx.org/vscode/gallery",
+                "itemUrl": "https://open-vsx.org/vscode/item"
+        },
+
+
+tsc
+vsce publish 
