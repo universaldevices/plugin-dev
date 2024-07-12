@@ -25,6 +25,9 @@ MODBUS_REGISTER_DATA_TYPES=('int16','uint16','int32','uint32', 'int64', 'uint64'
 MODBUS_COMMUNICATION_MODES=('TCP')
 MODBUS_ADDRESSING_MODES=('0-based', '1-based')
 
+iox_modbus_byte_order = Endian.BIG
+iox_modbus_word_order = Endian.LITTLE
+
 
 class ModbusComm:
     def __init__(self, comm_data):
@@ -48,12 +51,19 @@ class ModbusComm:
             return
 
         try: 
+            global iox_modbus_byte_order
+            global iox_modbus_word_order
             if 'transport' in comm_data:
                 self._transport:IoXTransport = IoXTransport(comm_data['transport'])
             if 'addressing_mode' in comm_data:
                 self.addressing_mode = comm_data['addressing_mode']
             if 'is_rtu' in comm_data:
                 self.bRtu = bool(comm_data['is_rtu'])
+            if 'byte_order' in comm_data:
+                iox_modbus_byte_order = comm_data['byte_order']
+            if 'word_order' in comm_data:
+                iox_modbus_word_order = comm_data['word_order']
+            
         except Exception as ex:
             raise
 
@@ -176,7 +186,9 @@ class ModbusRegister:
                 LOGGER.error(f"Failed reading {self.register_type} @ {self.register_address}")
                 return None
 
-            decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=Endian.BIG)
+            global iox_modbus_byte_order
+            global iox_modbus_word_order
+            decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=iox_modbus_byte_order, wordorder=iox_modbus_word_order)
         
             if self.register_data_type == 'int16': 
                 self.val = decoder.decode_16bit_int()
@@ -215,7 +227,9 @@ class ModbusRegister:
                 LOGGER.error(f"This is a reference register {self.ref_address} ... ignore writing to it ")
                 return False
 
-            builder = BinaryPayloadBuilder(byteorder=Endian.BIG, wordorder=Endian.BIG)
+            global iox_modbus_byte_order
+            global iox_modbus_word_order
+            builder = BinaryPayloadBuilder(byteorder=iox_modbus_byte_order.BIG, wordorder=iox_modbus_word_order)
             #get the value from modbus sending it the number of registers to be read
             if self.register_data_type == 'string': 
                 if not isinstance(value, str):
