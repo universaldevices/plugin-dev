@@ -30,6 +30,35 @@
             }
           ],
           "default":"1-based"
+        },
+        "byte_order":{
+          "type":"string",
+          "description": "Byte order defines how to interpret bits in a byte: from left to right or right to left.",
+          "oneOf":[
+            {
+              "enum":["Endian.BIG"],
+              "description":"Default: Big Endian. Usually used in network/inter device communications."
+            },
+            {
+              "enum":["Endian.LITTLE"],
+              "description":"Little Endian. Most Arm CPUs and all Intel/AMD based cpus use this."
+            }
+          ],
+          "default": "Endian.BIG"
+        },
+        "word_order":{
+          "type":"string",
+          "description": "Word order defines how two bytes should be interpreted: from left to right or right to left.",
+          "oneOf":[
+            {
+              "enum":["Endian.BIG"] 
+            },
+            {
+              "enum":["Endian.LITTLE"],
+              "description": "Default ... "
+            }
+          ],
+          "default": "Endian.LITTLE"
         }
       }
 }

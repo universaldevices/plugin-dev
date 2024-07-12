@@ -299,6 +299,126 @@ function generatePluginCode(context, fileUri) {
         return true;
     });
 }
+function addStoreEntry(context, fileUri) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let workspaceFolder = vscode.workspace.workspaceFolders == undefined ? "type path here" : vscode.workspace.workspaceFolders[0].uri.fsPath;
+            if (!workspaceFolder) {
+                vscode.window.showErrorMessage('Cannot find project directory');
+                return false;
+            }
+            const scriptPath = path.join(context.extensionPath, 'code', 'local_store.py');
+            if (!fileUri) {
+                const fu = yield getPluginJSONFile(context);
+                fileUri = fu;
+            }
+            if (!fileUri)
+                return false;
+            const pythonPath = context.extensionPath;
+            /*    child_process.execFile(pythonPath, ["-c", "import sys; print(sys.version)"], (error, stdout, stderr) => {
+                        if (error) {
+                            vscode.window.showErrorMessage(`Error: ${stderr}`);
+                            return;
+                        }
+                        vscode.window.showInformationMessage(`Python Version: ${stdout}`);
+                });*/
+            const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
+            pythonProcess.stdout.on('data', (data) => {
+                console.log(`${data}`);
+                vscode.window.showInformationMessage(`${data}`);
+            });
+            pythonProcess.stderr.on('data', (data) => {
+                console.error(`${data}`);
+                vscode.window.showErrorMessage(`${data}`);
+            });
+            pythonProcess.on('close', (code) => {
+                if (code !== 0) {
+                    console.log(`Adding Plugin local store entry exited with code ${code}`);
+                    vscode.window.showErrorMessage(`Adding Plugin local store entry exited with code ${code}`);
+                    return false;
+                }
+                else {
+                    console.log('Plugin added successfully to the local store');
+                    vscode.window.showInformationMessage('Plugin added successfully to the local store');
+                    vscode.commands.executeCommand('workbench.action.focusSideBar');
+                    vscode.commands.executeCommand('workbench.view.explorer');
+                }
+            });
+        }
+        catch (error) {
+            if (typeof error === "object" && error !== null && "message" in error) {
+                const message = error.message;
+                vscode.window.showErrorMessage(`Failed adding Plugin to the local store: ${message}`);
+            }
+            else {
+                vscode.window.showErrorMessage(`Failed adding Plugin to the local store due to unknown error`);
+            }
+            return false;
+        }
+        vscode.window.showInformationMessage('Successfully added Plugin added to local store');
+        return true;
+    });
+}
+function installOnIoX(context, fileUri) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let workspaceFolder = vscode.workspace.workspaceFolders == undefined ? "type path here" : vscode.workspace.workspaceFolders[0].uri.fsPath;
+            if (!workspaceFolder) {
+                vscode.window.showErrorMessage('Cannot find project directory');
+                return false;
+            }
+            const scriptPath = path.join(context.extensionPath, 'code', 'install_on_iox.py');
+            if (!fileUri) {
+                const fu = yield getPluginJSONFile(context);
+                fileUri = fu;
+            }
+            if (!fileUri)
+                return false;
+            const pythonPath = context.extensionPath;
+            /*    child_process.execFile(pythonPath, ["-c", "import sys; print(sys.version)"], (error, stdout, stderr) => {
+                        if (error) {
+                            vscode.window.showErrorMessage(`Error: ${stderr}`);
+                            return;
+                        }
+                        vscode.window.showInformationMessage(`Python Version: ${stdout}`);
+                });*/
+            const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
+            pythonProcess.stdout.on('data', (data) => {
+                console.log(`${data}`);
+                vscode.window.showInformationMessage(`${data}`);
+            });
+            pythonProcess.stderr.on('data', (data) => {
+                console.error(`${data}`);
+                vscode.window.showErrorMessage(`${data}`);
+            });
+            pythonProcess.on('close', (code) => {
+                if (code !== 0) {
+                    console.log(`Installing on IoX exited with code ${code}`);
+                    vscode.window.showErrorMessage(`Installing on IoX exited with code ${code}`);
+                    return false;
+                }
+                else {
+                    console.log('Plugin successfully installed on IoX');
+                    vscode.window.showInformationMessage('Plugin successfully installed on IoX ');
+                    vscode.commands.executeCommand('workbench.action.focusSideBar');
+                    vscode.commands.executeCommand('workbench.view.explorer');
+                }
+            });
+        }
+        catch (error) {
+            if (typeof error === "object" && error !== null && "message" in error) {
+                const message = error.message;
+                vscode.window.showErrorMessage(`Failed installing Plugin on IoX: ${message}`);
+            }
+            else {
+                vscode.window.showErrorMessage(`Failed installing Plugin on IoX due to unknown error`);
+            }
+            return false;
+        }
+        vscode.window.showInformationMessage('Successfully installed Plugin on IoX');
+        return true;
+    });
+}
 function activate(context) {
     let python_dep = vscode.commands.registerCommand('iox-plugin-ext.ensurePythonDependencies', () => __awaiter(this, void 0, void 0, function* () {
         checkAndInstallPythonModules();

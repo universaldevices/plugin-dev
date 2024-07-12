@@ -8,7 +8,7 @@
     "properties":{
       "id": {
         "type":"string",
-        "description": "A unique id that is a) made up of A-Z, _, and 0-9 and b) starts with a capital letter, and c) max lenght is 30",
+        "description": "A unique id that is a) made up of A-Z (all Caps), _, and 0-9 and b) starts with a capital letter, and c) max lenght is 30",
         "pattern":"^[A-Z][A-Z0-9_]*$",
         "maxLength": 30
       },

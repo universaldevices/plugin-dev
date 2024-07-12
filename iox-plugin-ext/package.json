@@ -53,16 +53,25 @@
         "command": "iox-plugin-ext.generatePluginCode",
         "title": "3. Generate IoX Plugin Code",
         "icon": "file-code.svg"
-
+      },
+      {
+        "command": "iox-plugin-ext.addStoreEntry",
+        "title": "4. Add to local plugin store",
+        "icon":"repo-push.svg"
+      },
+      {
+        "command": "iox-plugin-ext.installOnIoX",
+        "title": "5. Install on IoX",
+        "icon":"folder-active.svg"
       },
       {
         "command": "iox-plugin-ext.runInIoX",
-        "title": "4. Run in IoX",
+        "title": "6. Run in IoX",
         "icon":"run-above.svg"
       },
       {
         "command": "iox-plugin-ext.packageAndPublish",
-        "title": "5. Package and Publish",
+        "title": "7. Package and Publish",
         "icon":"package.svg"
       },
       {
