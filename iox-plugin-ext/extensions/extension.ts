@@ -291,7 +291,7 @@ async function generatePluginCode(context: vscode.ExtensionContext, fileUri: vsc
     return true;
 }
 
-async function addStoreEntry(context: vscode.ExtensionContext, fileUri: vscode.Uri|null) 
+async function addPluginToStore(context: vscode.ExtensionContext, fileUri: vscode.Uri|null) 
 {
     try {
         let workspaceFolder = vscode.workspace.workspaceFolders == undefined? "type path here": vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -300,6 +300,25 @@ async function addStoreEntry(context: vscode.ExtensionContext, fileUri: vscode.U
           vscode.window.showErrorMessage('Cannot find project directory');
           return false;
         }
+
+        const email = await vscode.window.showInputBox({
+            prompt: 'Please enter your developer account email address',
+        });
+
+        if (!email) {
+          vscode.window.showErrorMessage('Need your email address for vetting ...');
+          return false;
+        }
+
+        const devUser = await vscode.window.showInputBox({
+            prompt: 'Please enter your local user (account) on this machine (your development machine)',
+        });
+
+        if (!devUser) {
+          vscode.window.showErrorMessage('To setup the store entry, we need to know which account is running the plugin during development ...')
+          return false;
+        }
+
 
         const scriptPath = path.join(context.extensionPath, 'code', 'local_store.py');
 
@@ -322,7 +341,7 @@ async function addStoreEntry(context: vscode.ExtensionContext, fileUri: vscode.U
                 vscode.window.showInformationMessage(`Python Version: ${stdout}`);
         });*/
 
-        const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath]);
+        const pythonProcess = child_process.spawn('python3', [scriptPath, workspaceFolder, fileUri.fsPath, email, devUser]);
 
         pythonProcess.stdout.on('data', (data) => {
               console.log(`${data}`);
@@ -453,6 +472,12 @@ export function activate(context: vscode.ExtensionContext) {
     let prc = await generatePluginCode(context, fileUri);
     if (prc.valueOf())
         context.subscriptions.push(generateCode);
+  });
+
+  let addToStore = vscode.commands.registerCommand('iox-plugin-ext.addToStore', async (fileUri: vscode.Uri)  => {
+    let prc = await addPluginToStore(context, fileUri);
+    if (prc.valueOf())
+        context.subscriptions.push(addToStore);
   });
 
   createCommandPanel(context);

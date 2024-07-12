@@ -14,40 +14,32 @@
             "description":"Give your plugin a nice description!",
             "propertyOrder":2
           },
-          "author":{
+          "publisher":{
             "type":"string",
-            "description": "Provide the email address associated with your developer account",
+            "description": "Provide the company/develper/publisher name as vetted an authorized by UD.",
             "propertyOrder":3
           },
           "language":{
-            "type":"integer",
-            "default":0,
+            "type":"string",
             "oneOf": [
                 {
-                    "enum":[0],
+                    "enum":["python3"],
                     "description": "Python"
-                },
-                {
-                    "enum":[1],
-                    "description": "Node.js"
-                },
-                {
-                    "enum":[2],
-                    "description": "Binary"
                 }
             ],
-            "propertyOrder":4
+            "default":"python3",
+            "propertyOrder":5
           },
           "executableName":{
             "type":"string",
             "description": "The name of your executable such as plugin.py",
-            "propertyOrder":5
+            "propertyOrder":6
           },
           "installScript":{
             "type":"string",
             "default":"install.sh",
             "description": "The installation script. If none, default (install.sh) will be used.",
-            "propertyOrder":6
+            "propertyOrder":7
           },
           "documentationLink":{
             "type":"string",
@@ -81,36 +73,45 @@
             "propertyOrder":9
           },
           "initialLogLevel":{
-            "type": "integer",
+            "type": "string",
             "description": "The log level when the plugin starts",
-            "default": 3,
             "oneOf":[
                 {
-                    "enum":[0],
-                    "description": "Critial"
+                    "enum": ["CRITICAL"]
                 },
                 {
-                    "enum":[1],
-                    "description": "Error"
+                    "enum": ["ERROR"]
                 },
                 {
-                    "enum":[2],
-                    "description": "Warning"
+                    "enum": ["WARNING"]
                 },
                 {
-                    "enum":[3],
-                    "description": "Info"
+                    "enum": ["INFO"]
                 },
                 {
-                    "enum":[4],
-                    "description": "Debug"
+                    "enum": ["DEBUG"]
                 }
-            ]
+            ],
+            "default": "INFO"
           },
-          "enableDiscovery":{
-            "type":"boolean",
-            "default":false,
-            "description": "Enable the plugin to discover other devices on the network using mDNS or UPnP or other mechanims."
+          "status":{
+            "type":"string",
+            "description": "What's should be or is the status of this plugin in the store",
+            "oneOf":[
+              {
+                "enum": ["New"],
+                "description": "Needs vetting"
+              },
+              {
+                "enum": ["Active"],
+                "description": "Needs vetting"
+              },
+              {
+                "enum": ["Inactive"],
+                "description": "Not supported / listed"
+              }
+            ],
+            "default": "Active"
           },
           "enableOAUTH2":{
             "type":"boolean",
@@ -128,6 +129,11 @@
             "description": "Whether or not this plugin works on Polisy"
           },
           "requiresIoXAccess":{
+            "type":"boolean",
+            "default":false,
+            "description": "Whether or not this plugin can directly communiate with IoX. If you choose true, the customer must explicitly accept"
+          },
+          "enableFileUpload":{
             "type":"boolean",
             "default":false,
             "description": "Whether or not this plugin can directly communiate with IoX. If you choose true, the customer must explicitly accept"
@@ -151,6 +157,6 @@
             "pattern": "^\\d+\\.\\d+\\.\\d+$"
           }
     },
-    "required": ["name", "executableName", "description", "author","language","installScript","documentationLink", "licenseLink", "requirements", "version"]
+    "required": ["name", "executableName", "description", "publisher", "language","installScript","documentationLink", "licenseLink", "requirements", "version"]
   }
    

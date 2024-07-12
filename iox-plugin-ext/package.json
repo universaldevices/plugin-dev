@@ -4,7 +4,7 @@
   "description": "Define your plugin in JSON and let this extension take care of the rest",
   "publisher": "UniversalDevices",
   "icon": "images/icon.png",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.85.1"
   },
@@ -55,7 +55,7 @@
         "icon": "file-code.svg"
       },
       {
-        "command": "iox-plugin-ext.addStoreEntry",
+        "command": "iox-plugin-ext.addToStore",
         "title": "4. Add to local plugin store",
         "icon":"repo-push.svg"
       },
