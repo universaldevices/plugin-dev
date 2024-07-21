@@ -178,7 +178,7 @@ class AudioPlayer:
         if videoUrl == None:
             return None
         try:
-            from pytube import YouTube
+            from pytubefix import YouTube
             # Create a YouTube object
             yt = YouTube(videoUrl)
 
