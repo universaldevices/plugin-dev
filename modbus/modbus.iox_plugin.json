@@ -1,0 +1,215 @@
+{
+    "plugin": {
+          "name":"modbus",
+          "description":"Modbus snippet",
+          "author":"UD",
+          "language": 0,
+          "executableName":"modbus.py",
+          "installScript":"install.sh",
+          "documentationLink":"docs",
+          "licenseLink":"lic",
+          "shortPoll":60,
+          "longPoll":600,
+          "profileVersion":"3.0.0",
+          "initialLogLevel":3,
+          "enableDiscovery":false,
+          "enableOAUTH2":false,
+          "worksOnPolisy":true,
+          "worksOnEisy":true,
+          "requiresIoXAccess": false,
+          "requirements": ["pymodbus"],
+          "version": "1.0.6"
+    },
+    "editors": [
+        {
+            "id": "load_shave_amps",
+            "min": 0,
+            "max": 48,
+            "uom": "Ampere (amp) | 1",
+            "precision":3,
+            "step":1
+        },
+        {
+            "id": "dc_amps",
+            "min": -200,
+            "max": 150,
+            "uom": "Ampere (amp) | 1",
+            "precision":3,
+            "step": 1
+        },
+        {
+            "id": "dc_voltage",
+            "min": 36,
+            "max": 70,
+            "uom": "Volt | 72",
+            "precision":3,
+            "step":1
+        },
+        {
+            "id": "batt_temp",
+            "min": 0,
+            "max": 105,
+            "uom": "Celsius (C) | 4",
+            "precision":2,
+            "step":1
+        },       
+        {
+            "id": "load_shave",
+            "min": 0,
+            "max": 1,
+            "uom": "Index | 25",
+            "precision":1,
+            "step": 1,
+            "index_names": [
+                "Enabled | 1",
+                "Disabled | 0"
+            ]
+        },
+        {
+            "id": "force_charge",
+            "min": 1,
+            "max": 3,
+            "uom": "Index | 25",
+            "precision":1,
+            "step": 1,
+            "index_names": [
+                "Bulk | 1",
+                "Float | 2",
+                "No_Float | 3"
+            ]
+        },
+        {
+            "id": "ac1_volt_qual",
+            "min": 0,
+            "max": 5,
+            "uom": "Index | 25",
+            "precision":1,
+            "step": 1,
+            "index_names": [
+                "Not_Qualifying | 0",
+                "Qualifying | 1",
+                "Missing | 2",
+                "Too_Low | 3",
+                "Too_High | 4",
+                "Qualification_Good | 5"
+            ]
+        }
+    ],
+    "protocol": {
+        "name": "Modbus",
+        "ïs_rtu": true
+    },
+    "nodedefs": [
+        {
+            "id":"modbus",
+            "name":"ModbusDevice",
+            "icon":"Electricity",
+            "properties": [
+                {
+                    "id": "Custom Control 0 | GV0",
+                    "name": "Load Shave",
+                    "editor": {
+                        "idref": "load_shave"
+                    },
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x01b2",
+                        "register_data_type": "uint16",
+                        "register_type": "holding"
+                    },
+                    "is_settable": true
+                },
+                {
+                    "id":"Custom Control 1 | GV1",
+                    "name": "Batt DC Current",
+                    "editor": {
+                        "idref": "dc_amps"
+                    },
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x0052", 
+                        "register_data_type": "int32",
+                        "register_type": "holding"
+                    },
+                    "is_settable": false
+                },
+                {
+                    "id": "Custom Control 2 | GV2",
+                    "name": "Battery Temperature",
+                    "editor": {
+                        "idref": "batt_temp"
+                    } ,
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x0056",
+                        "register_data_type": "uint16",
+                        "register_type": "holding",
+			"eval": "{rval} - 27300"
+
+                    },
+                    "is_settable": false
+                },
+                {
+                    "id": "Custom Control 3 | GV3",
+                    "name": "Load Shave Amps",
+                    "editor": {
+                        "idref": "load_shave_amps"
+                    } ,
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x01b6",
+                        "register_data_type": "uint32",
+                        "register_type": "holding"
+                    },
+                    "is_settable": true
+                },
+                {
+                    "id": "Custom Control 4 | GV4",
+                    "name": "Batt DC Voltage",
+                    "editor": {
+                        "idref": "dc_voltage"
+                    } ,
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x0050",
+                        "register_data_type": "uint32",
+                        "register_type": "holding"
+                    },
+                    "is_settable": false
+                },
+                {
+                    "id": "Custom Control 5 | GV5",
+                    "name": "Force Charge",
+                    "editor": {
+                        "idref": "force_charge"
+                    } ,
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x0165",
+                        "register_data_type": "uint16",
+                        "register_type": "holding"
+                    },
+                    "is_settable": true
+                },
+                {
+                    "id": "Custom Control 6 | GV6",
+                    "name": "AC1 Qualification",
+                    "editor": {
+                        "idref": "ac1_volt_qual"
+                    } ,
+                    "protocol":{
+                        "unit":10,
+                        "register_address": "0x0076",
+                        "register_data_type": "uint16",
+                        "register_type": "holding"
+                    },
+                    "is_settable": false
+                }
+            ],
+            "commands": {
+                "accepts": [],
+                "sends": []
+            } 
+        }
+    ]
+}

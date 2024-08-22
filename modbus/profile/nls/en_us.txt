@@ -1,0 +1,38 @@
+
+
+ND-modbus-NAME = ModbusDevice
+ND-modbus-ICON = Electricity
+
+ST-modbus-GV0-NAME = Load Shave
+ST-modbus-GV1-NAME = Batt DC Current
+ST-modbus-GV2-NAME = Battery Temperature
+ST-modbus-GV3-NAME = Load Shave Amps
+ST-modbus-GV4-NAME = Batt DC Voltage
+ST-modbus-GV5-NAME = Force Charge
+ST-modbus-GV6-NAME = AC1 Qualification
+
+CMD-modbus-GV0-NAME = Load Shave
+CMDP-modbus-load_shave-GV0-NAME = LoadShave
+CMD-modbus-GV3-NAME = Load Shave Amps
+CMDP-modbus-load_shave_amps-GV3-NAME = LoadShaveAmps
+CMD-modbus-GV5-NAME = Force Charge
+CMDP-modbus-force_charge-GV5-NAME = ForceCharge
+
+ND-modbuscontroll-NAME = Modbus Controller
+ND-modbuscontroll-ICON = GenericCtl
+
+ST-modbuscontroll-ST-NAME = Status
+
+CMD-modbuscontroll-discover-NAME = discover
+CMD-modbuscontroll-x_query-NAME = query
+NLSIX_load_shave-1 = Enabled
+NLSIX_load_shave-0 = Disabled
+NLSIX_force_charge-1 = Bulk
+NLSIX_force_charge-2 = Float
+NLSIX_force_charge-3 = No_Float
+NLSIX_ac1_volt_qual-0 = Not_Qualifying
+NLSIX_ac1_volt_qual-1 = Qualifying
+NLSIX_ac1_volt_qual-2 = Missing
+NLSIX_ac1_volt_qual-3 = Too_Low
+NLSIX_ac1_volt_qual-4 = Too_High
+NLSIX_ac1_volt_qual-5 = Qualification_Good

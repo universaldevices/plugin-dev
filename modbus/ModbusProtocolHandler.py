@@ -74,7 +74,7 @@ class ModbusProtocolHandler:
         try:
             precision = self.precisions[propert_id]
             val = int(value)
-            if precision > 0:
+            if precision > 1:
                 mult = pow(10, precision)
                 val = val * mult
             return self.modbus.setProperty(node.address, property_id, value)
@@ -91,7 +91,7 @@ class ModbusProtocolHandler:
             precision = self.precisions[property_id]
 
             val = self.modbus.queryProperty(node.address, property_id)
-            if val != None and precision > 0:
+            if val != None and precision > 1:
                 div = pow(10, precision)
                 fval = round(float(val/div), precision)
                 return fval
@@ -347,4 +347,7 @@ class ModbusProtocolHandler:
 
     def hostPortNotice(self):
         self.setNotices('host','Please provide the host/port in the configuration tab')
+
+    def customParamHandler(self, key, data):
+        pass
     

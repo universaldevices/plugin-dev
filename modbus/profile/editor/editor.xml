@@ -1,0 +1,25 @@
+<editors><editor id="load_shave_amps">
+<range uom="1" min="0" max="48" prec="3" step="1"/>
+</editor>
+<editor id="dc_amps">
+<range uom="1" min="-200" max="150" prec="3" step="1"/>
+</editor>
+<editor id="dc_voltage">
+<range uom="72" min="36" max="70" prec="3" step="1"/>
+</editor>
+<editor id="batt_temp">
+<range uom="4" min="0" max="105" prec="2" step="1"/>
+</editor>
+<editor id="load_shave">
+<range uom="25" min="0" max="1" prec="1" step="1" nls="NLSIX_load_shave"/>
+</editor>
+<editor id="force_charge">
+<range uom="25" min="1" max="3" prec="1" step="1" nls="NLSIX_force_charge"/>
+</editor>
+<editor id="ac1_volt_qual">
+<range uom="25" min="0" max="5" prec="1" step="1" nls="NLSIX_ac1_volt_qual"/>
+</editor>
+<editor id="CTL_BOOL">
+<range uom="2" min="0" max="1"/>
+</editor>
+</editors>

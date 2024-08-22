@@ -151,7 +151,7 @@ class ModbusRegister:
         if not eeval:
             return self.val
 
-        eeval = eeval.replace('{rval}', 'self.val')
+        eeval = eeval.replace('{rval}', f'{self.val}')
         unsafe_array = ['return','def','class','import', 'as', 'from', 'os', 'json', 'with', 'file', 'for', 'while', 'url', 'requests']
         for unsafe in unsafe_array:
             if unsafe in eeval:
@@ -411,9 +411,10 @@ class ModbusIoX:
                 self._client = ModbusTcpClient(host=host, port=port, framer=ModbusFramer)
             else:
                 self._client = ModbusTcpClient(host=host, port=port)
-        
+            self._client.comm_params.timeout_connect=20 
+            self._client.comm_params.timeout=20 
             connection = self._client.connect()
-            if connection == None:
+            if not connection:
                 LOGGER.error(f"failed connecting to modbus server @ {client.host}:{client.port}")
                 return False
             LOGGER.info(f"connected to modbus server @ {host}:{port}")

@@ -1,0 +1,40 @@
+<nodedefs>
+
+<nodedef id="modbus" nls="modbus">
+<sts>
+<st id="GV0" editor="load_shave" />
+<st id="GV1" editor="dc_amps" />
+<st id="GV2" editor="batt_temp" />
+<st id="GV3" editor="load_shave_amps" />
+<st id="GV4" editor="dc_voltage" />
+<st id="GV5" editor="force_charge" />
+<st id="GV6" editor="ac1_volt_qual" />
+</sts>
+<cmds>
+<sends/>
+<accepts>
+<cmd id="GV0">
+<p id="GV0" editor="load_shave" init="GV0"/>
+</cmd>
+<cmd id="GV3">
+<p id="GV3" editor="load_shave_amps" init="GV3"/>
+</cmd>
+<cmd id="GV5">
+<p id="GV5" editor="force_charge" init="GV5"/>
+</cmd>
+</accepts>
+</cmds>
+</nodedef>
+<nodedef id="modbuscontroll" nls="modbuscontroll">
+<sts>
+<st id="ST" editor="CTL_BOOL" />
+</sts>
+<cmds>
+<sends/>
+<accepts>
+<cmd id="discover"/>
+<cmd id="x_query"/>
+</accepts>
+</cmds>
+</nodedef>
+</nodedefs>
