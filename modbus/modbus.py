@@ -44,7 +44,8 @@ if __name__ == '__main__':
             protocolHandler = ModbusProtocolHandler(plugin)
             controller = ModbusControllerNode(polyglot, protocolHandler)
             protocolHandler.setController(controller)
-            controller.start()
+#            controller.start()
+            polyglot.ready()
             polyglot.runForever()
     except (KeyboardInterrupt, SystemExit):
         LOGGER.info('exiting ...')

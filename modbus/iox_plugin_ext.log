@@ -1,0 +1,58 @@
+2024-08-25 12:54:48,381 - iox_p_logger - INFO - fastjsonschema does not currently support file references ... ignoring validation request.
+2024-08-25 12:54:48,395 - iox_p_logger - CRITICAL - name 'PLUGIN_LOGGER' is not defined
+2024-08-27 11:03:12,562 - iox_p_logger - INFO - fastjsonschema does not currently support file references ... ignoring validation request.
+2024-08-27 11:03:12,581 - iox_p_logger - CRITICAL - name 'PLUGIN_LOGGER' is not defined
+2024-08-27 12:14:42,336 - iox_p_logger - INFO - fastjsonschema does not currently support file references ... ignoring validation request.
+2024-08-27 12:14:42,370 - iox_p_logger - CRITICAL - name 'PLUGIN_LOGGER' is not defined
+2024-08-27 15:20:41,274 - iox_p_logger - INFO - fastjsonschema does not currently support file references ... ignoring validation request.
+  File "/usr/home/admin/workspace/plugin-dev/modbus/modbus.py", line 40, in <module>
+    plugin = Plugin(PLUGIN_FILE_NAME)
+  File "/home/admin/.local/lib/python3.11/site-packages/ioxplugin/plugin.py", line 54, in __init__
+    self.isValid=self.validate_json(schema, plugin_file)
+  File "/home/admin/.local/lib/python3.11/site-packages/ioxplugin/plugin.py", line 101, in validate_json
+    PLUGIN_LOGGER.info('fastjsonschema does not currently support file references ... ignoring validation request.')
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1489, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1634, in _log
+    self.handle(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1644, in handle
+    self.callHandlers(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1706, in callHandlers
+    hdlr.handle(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 978, in handle
+    self.emit(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1230, in emit
+    StreamHandler.emit(self, record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1110, in emit
+    msg = self.format(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 953, in format
+    return fmt.format(record)
+  File "/home/admin/.local/lib/python3.11/site-packages/ioxplugin/log.py", line 17, in format
+    stack_trace = traceback.format_stack()
+
+2024-08-27 15:20:41,358 - iox_p_logger - INFO - .//ModbusProtocolHandler.py already exists ... ignoring
+  File "/usr/home/admin/workspace/plugin-dev/modbus/modbus.py", line 42, in <module>
+    plugin.generateCode(path='./')
+  File "/home/admin/.local/lib/python3.11/site-packages/ioxplugin/plugin.py", line 182, in generateCode
+    node_impl_gen.create()
+  File "/home/admin/.local/lib/python3.11/site-packages/ioxplugin/iox_node_impl_gen.py", line 392, in create
+    PLUGIN_LOGGER.info(f"{self.file_path} already exists ... ignoring")
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1489, in info
+    self._log(INFO, msg, args, **kwargs)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1634, in _log
+    self.handle(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1644, in handle
+    self.callHandlers(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1706, in callHandlers
+    hdlr.handle(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 978, in handle
+    self.emit(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1230, in emit
+    StreamHandler.emit(self, record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 1110, in emit
+    msg = self.format(record)
+  File "/usr/local/lib/python3.11/logging/__init__.py", line 953, in format
+    return fmt.format(record)
+  File "/home/admin/.local/lib/python3.11/site-packages/ioxplugin/log.py", line 17, in format
+    stack_trace = traceback.format_stack()
+

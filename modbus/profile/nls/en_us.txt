@@ -27,6 +27,7 @@ CMD-modbuscontroll-discover-NAME = discover
 CMD-modbuscontroll-x_query-NAME = query
 NLSIX_load_shave-1 = Enabled
 NLSIX_load_shave-0 = Disabled
+NLSIX_force_charge-0 = None
 NLSIX_force_charge-1 = Bulk
 NLSIX_force_charge-2 = Float
 NLSIX_force_charge-3 = No_Float

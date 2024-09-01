@@ -19,8 +19,9 @@ class ModbusControllerNode(udi_interface.Node):
         super().__init__(polyglot, controller, address, name)
         self.protocolHandler = protocolHandler
         self.Parameters = Custom(polyglot, 'customparams')
+        self.poly.addNode(self)
         self.oauthService = None
-        self.poly.subscribe(polyglot.START, self.start)
+        self.poly.subscribe(polyglot.START, self.start, address)
         self.poly.subscribe(polyglot.CUSTOMPARAMS, self.parameterHandler)
         self.poly.subscribe(polyglot.POLL, self.poll)
         self.poly.subscribe(polyglot.STOP, self.stop)
@@ -28,11 +29,11 @@ class ModbusControllerNode(udi_interface.Node):
         self.poly.subscribe(polyglot.CONFIGDONE, self.configDoneHandler)
         self.poly.subscribe(polyglot.ADDNODEDONE, self.addNodeDoneHandler)
         self.poly.subscribe(polyglot.CUSTOMNS, self.customNSHandler)
-        self.poly.subscribe(polyglot.OAUTH, self.oauthHandler)
         self.poly.subscribe(polyglot.CUSTOMDATA, self.customDataHandler)
         self.poly.subscribe(polyglot.BONJOUR, self.bonjourHandler)
         self.configDone = threading.Condition()
         self.initOAuth()
+        self.configDoneAlready = True
 
 
     def setProtocolHandler(self, protocolHandler):
@@ -41,6 +42,7 @@ class ModbusControllerNode(udi_interface.Node):
     def initOAuth(self):
         if self.protocolHandler and self.protocolHandler.plugin and self.protocolHandler.plugin.meta and self.protocolHandler.plugin.meta.getEnableOAUTH2():
             self.oauthService = OAuthService(self.polyglot)
+            self.poly.subscribe(polyglot.OAUTH, self.oauthHandler)
 
     def parameterHandler(self, params):
         self.Parameters.load(params)
@@ -71,25 +73,24 @@ class ModbusControllerNode(udi_interface.Node):
     def start(self):
         LOGGER.info(f'Starting... ')
         try:
-            self.poly.addNode(self)
             self.poly.setCustomParamsDoc()
-            self.poly.ready()
-            with self.configDone:
-                result = self.configDone.wait(timeout=10)
-                if not result:
-                    #timedout
-                    LOGGER.info("timed out while waiting for configDone")
-                    self.updateStatus(0, True) 
-                    return False
-                if self.protocolHandler.start():
-                    self.addAllNodes()
-                    self.poly.updateProfile()
-                    self.updateStatus(1, True) 
-                    return True
-                else:
-                    LOGGER.info("protocol handler failed processing config ...")
-                    self.updateStatus(0, True) 
-                    return False
+            if not self.configDoneAlready:
+                with self.configDone:
+                    result = self.configDone.wait(timeout=10)
+                    if not result:
+                        #timedout
+                        LOGGER.info("timed out while waiting for configDone")
+                        self.updateStatus(0, True) 
+                        return False
+            if self.protocolHandler.start():
+                self.addAllNodes()
+                self.poly.updateProfile()
+                self.updateStatus(1, True) 
+                return True
+            else:
+                LOGGER.info("protocol handler failed processing config ...")
+                self.updateStatus(0, True) 
+                return False
         except Exception as ex:
             LOGGER.error(str(ex))
             return False
@@ -101,6 +102,8 @@ class ModbusControllerNode(udi_interface.Node):
         return True
 
     def poll(self, polltype):
+        if not self.configDoneAlready:
+            return
         if 'shortPoll' in polltype:
             self.protocolHandler.shortPoll()
         elif 'longPoll' in polltype:
@@ -128,7 +131,7 @@ class ModbusControllerNode(udi_interface.Node):
             if not self.__addNode(node):
                 return
         LOGGER.info(f'Done adding nodes ...')
-
+ 
     def __getNodeClass(self, nodeDefId:str)->str:
         for child in self.children:
             if child['id'] == nodeDefId:
@@ -185,6 +188,7 @@ class ModbusControllerNode(udi_interface.Node):
                 polyglot.Notices['auth'] = 'Please initiate authentication using the Authenticate Buttion'
                 return False
         with self.configDone:
+            self.configDoneAlready = True
             self.configDone.notifyAll()
         return rc
 

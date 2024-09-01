@@ -11,13 +11,13 @@
 <range uom="4" min="0" max="105" prec="2" step="1"/>
 </editor>
 <editor id="load_shave">
-<range uom="25" min="0" max="1" prec="1" step="1" nls="NLSIX_load_shave"/>
+<range uom="25" min="0" max="1" step="1" nls="NLSIX_load_shave"/>
 </editor>
 <editor id="force_charge">
-<range uom="25" min="1" max="3" prec="1" step="1" nls="NLSIX_force_charge"/>
+<range uom="25" min="0" max="3" step="1" nls="NLSIX_force_charge"/>
 </editor>
 <editor id="ac1_volt_qual">
-<range uom="25" min="0" max="5" prec="1" step="1" nls="NLSIX_ac1_volt_qual"/>
+<range uom="25" min="0" max="5" step="1" nls="NLSIX_ac1_volt_qual"/>
 </editor>
 <editor id="CTL_BOOL">
 <range uom="2" min="0" max="1"/>
