@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "shelly",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "shelly.py",
+            "console": "integratedTerminal",
+            "envFile": "/usr/home/admin/plugins/shelly/.iox_env",
+            "justMyCode": false
+        }
+    ]
+}

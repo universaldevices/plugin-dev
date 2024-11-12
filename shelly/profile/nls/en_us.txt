@@ -1,0 +1,32 @@
+
+
+ND-sdimmer-NAME = Shelly Generic Dimmer
+ND-sdimmer-ICON = GenericRspCtl
+
+ST-sdimmer-ST-NAME = Status
+ST-sdimmer-RAMP_RATE-NAME = Ramp Rate
+ST-sdimmer-ON_LEVEL-NAME = On Level
+
+CMD-sdimmer-status-NAME = Status
+CMDP-sdimmer-onlevel-level-NAME = Level
+CMD-sdimmer-on-NAME = On
+CMDP-sdimmer-onlevel-onlevel-NAME = Level
+CMDP-sdimmer-ramprate-ramprate-NAME = Ramp Rate
+CMD-sdimmer-off-NAME = Off
+CMDP-sdimmer-ramprate-ramprate-NAME = Ramp Rate
+CMD-sdimmer-faston-NAME = Fast On
+CMD-sdimmer-fastoff-NAME = Fast Off
+CMD-sdimmer-RAMP_RATE-NAME = Ramp Rate
+CMDP-sdimmer-ramprate-RAMP_RATE-NAME = RampRate
+CMD-sdimmer-ON_LEVEL-NAME = On Level
+CMDP-sdimmer-onlevel-ON_LEVEL-NAME = OnLevel
+
+ND-shellycontroll-NAME = Shelly Controller
+ND-shellycontroll-ICON = GenericCtl
+
+ST-shellycontroll-ST-NAME = Status
+
+CMD-shellycontroll-discover-NAME = Discover
+CMD-shellycontroll-x_query-NAME = Query
+NLSIX_CTL_BOOL-0 = Disconnected
+NLSIX_CTL_BOOL-1 = Connected
