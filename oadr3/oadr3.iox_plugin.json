@@ -1,0 +1,71 @@
+{
+    "plugin": {
+          "name":"oadr3",
+          "description":"OpenADR 3.0 VEN Plugin for IoX",
+          "publisher":"UD",
+          "language": "python3",
+          "executableName":"oadr3.py",
+          "installScript":"install.sh",
+          "documentationLink":"docs",
+          "licenseLink":"lic",
+          "shortPoll":60,
+          "longPoll":600,
+          "profileVersion":"3.0.0",
+          "initialLogLevel":"DEBUG",
+          "enableOAUTH2":false,
+          "worksOnPolisy":true,
+          "worksOnEisy":true,
+          "requiresIoXAccess": false,
+          "enableFileUpload": false,
+          "nodesAreStatic": true,
+          "requirements": ["oadr30_ven_ud","tzlocal", "isodate", "pytz"],
+          "version": "1.0.0"
+    },
+    "editors": [
+        {
+            "id": "ghg",
+            "min": 0,
+            "max": 1,
+            "uom": "Raw 2-Byte unsigned value | 108",
+            "precision": 4,
+            "step": 0.01 
+        },
+        {
+            "id": "price",
+            "min": -10,
+            "max": 10,
+            "uom": "Raw 4-Byte signed value | 114",
+            "precision": 4,
+            "step": 0.001
+        }
+    ],
+    "nodedefs": [
+        {
+            "id":"oadr3ven",
+            "name":"OADR3VEN",
+            "icon":"EnergyMonitor",
+            "properties": [
+                {
+                    "id":"ST",
+                    "name": "Price",
+                    "editor": {
+                        "idref": "price"
+                    },
+                    "is_settable": false
+                },
+                {
+                    "id": "GHG",
+                    "name": "GHG",
+                    "editor": {
+                        "idref": "ghg"
+                    } ,
+                    "is_settable": false
+                }
+            ],
+            "commands": {
+                "accepts": [],
+                "sends": []
+            } 
+        }
+    ]
+}

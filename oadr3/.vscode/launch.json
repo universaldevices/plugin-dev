@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "oadr3",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "oadr3.py",
+            "console": "integratedTerminal",
+            "envFile": "/usr/home/admin/workspace/plugins/oadr3/.iox_env",
+            "justMyCode": false
+        }
+    ]
+}

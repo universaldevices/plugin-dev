@@ -1,0 +1,17 @@
+
+
+ND-oadr3ven-NAME = OADR3VEN
+ND-oadr3ven-ICON = EnergyMonitor
+
+ST-oadr3ven-ST-NAME = Price
+ST-oadr3ven-GHG-NAME = GHG
+
+ND-oadr3controlle-NAME = Oadr3 Controller
+ND-oadr3controlle-ICON = GenericCtl
+
+ST-oadr3controlle-ST-NAME = Status
+
+CMD-oadr3controlle-discover-NAME = Discover
+CMD-oadr3controlle-x_query-NAME = Query
+NLSIX_CTL_BOOL-0 = Disconnected
+NLSIX_CTL_BOOL-1 = Connected

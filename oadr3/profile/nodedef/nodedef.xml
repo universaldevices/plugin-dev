@@ -1,0 +1,25 @@
+<nodedefs>
+
+<nodedef id="oadr3ven" nls="oadr3ven">
+<sts>
+<st id="ST" editor="price" />
+<st id="GHG" editor="ghg" />
+</sts>
+<cmds>
+<sends/>
+<accepts/>
+</cmds>
+</nodedef>
+<nodedef id="oadr3controlle" nls="oadr3controlle">
+<sts>
+<st id="ST" editor="CTL_BOOL" />
+</sts>
+<cmds>
+<sends/>
+<accepts>
+<cmd id="discover"/>
+<cmd id="x_query"/>
+</accepts>
+</cmds>
+</nodedef>
+</nodedefs>
