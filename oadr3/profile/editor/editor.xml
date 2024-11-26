@@ -2,7 +2,7 @@
 <range uom="108" min="0" max="1" prec="4" step="0.01"/>
 </editor>
 <editor id="price">
-<range uom="114" min="-10" max="10" prec="4" step="0.001"/>
+<range uom="103" min="-10" max="10" prec="4" step="0.001"/>
 </editor>
 <editor id="CTL_BOOL">
 <range uom="25" min="0" max="1" nls="NLSIX_CTL_BOOL"/>

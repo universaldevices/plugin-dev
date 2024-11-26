@@ -4,7 +4,7 @@ Custom = udi_interface.Custom
 class OADR3VENNode(udi_interface.Node):
     id = 'oadr3ven'
     """This is a list of properties that were defined in the nodedef"""
-    drivers = [{'driver': 'ST', 'value': 0, 'uom': 114, 'name': 'Price'}, {
+    drivers = [{'driver': 'ST', 'value': 0, 'uom': 103, 'name': 'Price'}, {
         'driver': 'GHG', 'value': 0, 'uom': 108, 'name': 'GHG'}]
 
     def __init__(self, polyglot, protocolHandler, controller=
@@ -25,7 +25,7 @@ class OADR3VENNode(udi_interface.Node):
             return None
 
     def updatePrice(self, value, force: bool):
-        return self.setDriver("ST", value, 114, force)
+        return self.setDriver("ST", value, 103, force)
 
     def getPrice(self):
         return self.getDriver("ST")

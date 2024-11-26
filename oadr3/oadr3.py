@@ -39,7 +39,7 @@ if __name__ == '__main__':
             polyglot.Notices.clear()
             plugin = Plugin(PLUGIN_FILE_NAME)
             plugin.toIoX()
-            #plugin.generateCode(path='./')
+            plugin.generateCode(path='./')
             from Oadr3ControllerNode import Oadr3ControllerNode
             protocolHandler = Oadr3ProtocolHandler(plugin)
             controller = Oadr3ControllerNode(polyglot, protocolHandler)

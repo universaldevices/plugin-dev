@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "oadr3.py",
             "console": "integratedTerminal",
-            "envFile": "/usr/home/admin/workspace/plugins/oadr3/.iox_env",
+            "envFile": "/usr/home/admin/workspace/plugin-dev/oadr3/.iox_env",
             "justMyCode": false
         }
     ]
