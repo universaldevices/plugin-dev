@@ -31,6 +31,22 @@
 </accepts>
 </cmds>
 </nodedef>
+<nodedef id="sswitch" nls="sswitch">
+<sts>
+<st id="ST" editor="onlevel" />
+</sts>
+<cmds>
+<sends>
+<cmd id="status">
+<p id="level" editor="onlevel"/>
+</cmd>
+</sends>
+<accepts>
+<cmd id="on"/>
+<cmd id="off"/>
+</accepts>
+</cmds>
+</nodedef>
 <nodedef id="shellycontroll" nls="shellycontroll">
 <sts>
 <st id="ST" editor="CTL_BOOL" />

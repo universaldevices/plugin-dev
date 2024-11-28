@@ -39,7 +39,7 @@ if __name__ == '__main__':
             polyglot.Notices.clear()
             plugin = Plugin(PLUGIN_FILE_NAME)
             plugin.toIoX()
-            plugin.generateCode(path='./')
+            #plugin.generateCode(path='./')
             from ShellyControllerNode import ShellyControllerNode
             protocolHandler = ShellyProtocolHandler(plugin)
             controller = ShellyControllerNode(polyglot, protocolHandler)

@@ -21,6 +21,16 @@ CMDP-sdimmer-ramprate-RAMP_RATE-NAME = RampRate
 CMD-sdimmer-ON_LEVEL-NAME = On Level
 CMDP-sdimmer-onlevel-ON_LEVEL-NAME = OnLevel
 
+ND-sswitch-NAME = Shelly Generic Switch
+ND-sswitch-ICON = GenericRspCtl
+
+ST-sswitch-ST-NAME = Status
+
+CMD-sswitch-status-NAME = Status
+CMDP-sswitch-onlevel-level-NAME = Level
+CMD-sswitch-on-NAME = On
+CMD-sswitch-off-NAME = Off
+
 ND-shellycontroll-NAME = Shelly Controller
 ND-shellycontroll-ICON = GenericCtl
 

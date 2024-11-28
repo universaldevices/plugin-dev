@@ -7,12 +7,15 @@ from ioxplugin import Plugin, OAuthService
 
 DATA_PATH='./data'
 from ShellyGenericDimmerNode import ShellyGenericDimmerNode
+from ShellyGenericSwitchNode import ShellyGenericSwitchNode
 class ShellyControllerNode(udi_interface.Node):
     id = 'shellycontroll'
     """This is a list of properties that were defined in the nodedef"""
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 25, 'name': 'Status'}]
     children = [{'node_class': 'ShellyGenericDimmerNode', 'id': 'sdimmer',
-        'name': 'Shelly Generic Dimmer', 'parent': 'shellycontroll'}]
+        'name': 'Shelly Generic Dimmer', 'parent': 'shellycontroll'}, {
+        'node_class': 'ShellyGenericSwitchNode', 'id': 'sswitch', 'name':
+        'Shelly Generic Switch', 'parent': 'shellycontroll'}]
 
     def __init__(self, polyglot, protocolHandler, controller=
         'shellycontroll', address='shellycontroll', name='Shelly Controller'):
@@ -34,7 +37,7 @@ class ShellyControllerNode(udi_interface.Node):
         self.poly.subscribe(polyglot.BONJOUR, self.bonjourHandler)
         self.configDone = threading.Condition()
         self.initOAuth()
-        self.configDoneAlready = True
+        self.configDoneAlready = False
 
     def getUOM(self, driver: str):
         try:
@@ -141,6 +144,23 @@ class ShellyControllerNode(udi_interface.Node):
             if not self.__addNode(node):
                 return
         LOGGER.info(f'Done adding nodes ...')
+
+#michel-new
+    def addNode(self, address:str, nodeDefId:str, name:str, parent:str=None):
+        if address == None or nodeDefId == None:
+            LOGGER.error("need address and nodeDefId ...")
+            return False
+
+        if parent == None:
+            parent = address  
+
+        nodeInfo={}
+        nodeInfo['primaryNode']=parent
+        nodeInfo['address']=address
+        nodeInfo['name']=name
+        nodeInfo['nodeDefId']=nodeDefId
+        return self.__addNode(nodeInfo)
+#end Michel
  
     def __getNodeClass(self, nodeDefId:str)->str:
         for child in self.children:
@@ -155,8 +175,10 @@ class ShellyControllerNode(udi_interface.Node):
         try:
             node_class = self.__getNodeClass(node_info['nodeDefId'])
             if node_class == None:
-                return False 
-            node_address=self.protocolHandler.getNodeAddress(node_info['nodeDefId'])
+                return False
+            node_address=node_info['address'] 
+            if not node_address:
+                node_address=self.protocolHandler.getNodeAddress(node_info['nodeDefId'])
             cls = globals()[node_class]
             node = cls(self.poly, self.protocolHandler, node_info['primaryNode'], node_address, node_info['name'])
             if node is None:

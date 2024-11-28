@@ -127,6 +127,50 @@
                     }
                 ]
             } 
+        },
+        {
+            "id":"sswitch",
+            "name":"Shelly Generic Switch",
+            "icon":"GenericRspCtl",
+            "properties": [
+                {
+                    "id":"ST", 
+                    "name": "Status",
+                    "editor": {
+                        "idref": "onlevel"
+                    },
+                    "is_settable": false
+                }
+            ],
+            "commands": {
+                "accepts": [
+                    {
+                        "id": "on",
+                        "name": "On",
+                        "params": []
+                    },
+                    {
+                        "id": "off",
+                        "name": "Off",
+                        "params": []
+                    }
+                ],
+                "sends": [
+                    {
+                        "id": "status",
+                        "name": "Status",
+                        "params": [
+                            {
+                                "id": "level",
+                                "editor": {
+                                    "idref": "onlevel"
+                                },
+                                "name": "Level"
+                            }
+                        ]
+                    }
+                ]
+            } 
         }
     ]
 }

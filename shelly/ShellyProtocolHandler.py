@@ -5,10 +5,11 @@ Custom = udi_interface.Custom
 
 
 ShellyTypeToNodeDef={
-    'asdsf':'sdimmer',
+    'ShellyPlusWDUS':'sdimmer',
+    'shelly1pmminig3':'sswitch'
 }
 
-class ShellyDeviceMap(dict):
+class ShellyDeviceInfo(dict):
     '''
         Holds type/ip/port/host information for a Shelly device
         endpoint
@@ -23,36 +24,72 @@ class ShellyDeviceMap(dict):
 
     '''
 
-    def __init__(self):
-        self.poly = conroller.poly
-        pass
-
-    def add(self, dev_info):
-        try:
-            if self.get(dev_info['dev_address']):    
-                return False #we already have it
-            dev_info['nodedef_id']=ShellyTypeToNodeDef['dev_type']
-            self[dev_info['dev_address']] = dev_info
-            return True
-
-        except Exception as ex:
-            LOGGER.error('adding shelly dev failed .... ')
-            return False
-
-    def get(self, dev_address):
+    def getDeviceAddress(self):
         try:
             return self['dev_address']
         except:
             return None
 
-    def delete(self, dev_address):
+    def setDeviceAddress(self, address:str):
         try:
-            if not self.get(dev_info['dev_address']):    
-                return False #we don't have it
-            del self[dev_info['dev_address']]
-            return True
+            self['dev_address']=address
         except:
-            return False
+            return None
+
+
+    def getDeviceType(self):
+        try:
+            return self['dev_type']
+        except:
+            return None
+
+    def setDeviceType(self, type:str):
+        try:
+            self['dev_type']=type
+        except:
+            return None
+
+    def setNodeDefId(self, nodedef_id):
+        try:
+            self['nodedef_id']=nodedef_id
+        except:
+            return None
+
+    def getIp(self):
+        try:
+            return self['ip']
+        except:
+            return None
+
+    def setIp(self, ip:str):
+        try:
+            self['ip']=ip
+        except:
+            return None
+
+    def getPort(self):
+        try:
+            return self['port']
+        except:
+            return None
+
+    def setPort(self, port:int):
+        try:
+            self['port']=port
+        except:
+            return None
+
+    def getHost(self):
+        try:
+            return self['host']
+        except:
+            return None
+
+    def setHost(self, host):
+        try:
+            self['host']=host
+        except:
+            return None
 
 
 class ShellyProtocolHandler:
@@ -67,7 +104,7 @@ class ShellyProtocolHandler:
 
     def __init__(self, plugin):
         self.plugin = plugin
-        self.deviceMap = ShellyDeviceMap()
+        self.deviceMap = None
         ### In case you want to have a mapping of nodes, you can use something like this
         #self.nodes = {}
         ### See nodeAdded and nodeRemoved
@@ -75,6 +112,7 @@ class ShellyProtocolHandler:
 
     def setController(self, controller):
         self.controller = controller
+        self.deviceMap = self.createCustomParam('dev_map') 
 
     ####
     #  You need to implement these methods!
@@ -112,6 +150,13 @@ class ShellyProtocolHandler:
     ####
     def processCommand(self, node, command_name, **kwargs):
         try:
+            #michel
+            address=node.address
+            dev_info = self.deviceMap[address]
+            if not dev_info:
+                LOGGER.error(f"Couldn't find device info for {address}") 
+                return False
+
             LOGGER.info(f"Processing command {command_name}") 
             if kwargs != None:
                 for key, value in kwargs.items():
@@ -135,8 +180,18 @@ class ShellyProtocolHandler:
             LOGGER.error(str(ex))
             return False
 
+#michel
+    def addNode(self, address:str, nodeDefId:str, name:str ):
+        try:
+            return self.controller.addNode(address, nodeDefId, name, self.controller.id)
+        except Exception as ex:
+            LOGGER.error(str(ex))
+            return False
+
+#end michel see below too; it should not be mandatory
+
     ####
-    # MANDATORY 
+    # MANDATORY #michel, this should not be mandatory 
     # This method is called in order to get a unique address for your newly created node
     # for the given nodedef_id
     ####
@@ -331,8 +386,11 @@ class ShellyProtocolHandler:
     # database is changed. You can use this method to manage custom parameters of your own
     # in the database.
     ####
+    #michel
     def customParamHandler(self, key, value):
         try:
+            if key == 'dev_map':
+                self.deviceMap=value
             return True
         except Exception as ex:
             LOGGER.error(f'process custom param failed .... ')
@@ -368,22 +426,22 @@ class ShellyProtocolHandler:
     # The address is the address of the node.
     ###
     def getNode(self, address:str):
-        return self.controller.poly.getNode()
+        return self.controller.poly.getNode(address)
 
     ###
     # Call this method to update a property for a node.
     # The plugin already creates an implementation for you such that you can 
     # call something like updateHeatSetpoint(). This said, however, for dynamically
-    # generated code/classes, you might not actually know the method naems. In those
+    # generated code/classes, you might not actually know the method names. In those
     # cases, you can use this method instead.
     # You can use the text just as an arbitrary/freeform text that is displayed as is
     # in the clients without any processing.
     ###
-    def updateProperty(node_addr:str, property_id:str, value, force:bool, text:str=None):
+    def updateProperty(self, node_addr:str, property_id:str, value, force:bool, text:str=None):
         try:
             node = self.getNode(node_addr)
             if node == None:
-                LOGGER.error(f"Set property failed for {node_address}")
+                LOGGER.error(f"Update property failed for {node_address}")
                 return False
             return node.setDriver(property_id, value, force=force, text=text)
         except Exception as ex:
@@ -427,7 +485,7 @@ class ShellyProtocolHandler:
                 dev_type:str=None
                 dev_address:str=None
                 fqdn:str = result['fqdn']
-                if "Shelly" in fqdn:
+                if "shelly" in fqdn.lower():
                     addresses = result['addresses']
                     for address in addresses:
                         try:
@@ -441,17 +499,21 @@ class ShellyProtocolHandler:
                         if len(dev_details) < 2:
                             continue
                         dev_type=dev_details[0]
-                        dev_address=dev_details[1].split('.')[0]
+                        dev_address=dev_details[1].split('.')[0].lower()
                     except:
                         continue
-                    dev_info={
-                        'dev_type':dev_type,
-                        'dev_address': dev_address,
-                        'ip':ip,
-                        'port':result['port'],
-                        'host':result['host'],
-                    }
-
+                    dev_info = ShellyDeviceInfo()
+                    dev_info['dev_type']=dev_type
+                    dev_info['dev_address']= dev_address
+                    dev_info['nodedef_id']= ShellyTypeToNodeDef[dev_type]
+                    dev_info['ip']=ip
+                    dev_info['port']=result['port']
+                    dev_info['host']=result['host']
+                    if self.addNode(dev_address, dev_info['nodedef_id'], dev_type):
+                        curr=self.deviceMap[dev_address]
+                        if curr == None:
+                            self.deviceMap[dev_address]=json.dumps(dev_info)
+                        
             # Fill out this method based on the results
             return
         except Exception as ex:

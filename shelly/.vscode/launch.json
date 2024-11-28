@@ -2,12 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "shelly",
+            "name": "udshelly",
             "type": "debugpy",
             "request": "launch",
             "program": "shelly.py",
             "console": "integratedTerminal",
-            "envFile": "/usr/home/admin/plugins/shelly/.iox_env",
+            "envFile": "/usr/home/admin/workspace/plugin-dev/shelly/.iox_env",
             "justMyCode": false
         }
     ]
