@@ -6,7 +6,6 @@
 import udi_interface, os, sys, json, time,shutil
 import version
 from ioxplugin import Plugin
-from Oadr3ProtocolHandler import Oadr3ProtocolHandler
 
 PLUGIN_FILE_NAME = 'oadr3.iox_plugin.json'
 PLUGIN_FILE_NAME_DEST = f"{os.getcwd()}/{PLUGIN_FILE_NAME}"
@@ -41,9 +40,7 @@ if __name__ == '__main__':
             plugin.toIoX()
             plugin.generateCode(path='./')
             from Oadr3ControllerNode import Oadr3ControllerNode
-            protocolHandler = Oadr3ProtocolHandler(plugin)
-            controller = Oadr3ControllerNode(polyglot, protocolHandler)
-            protocolHandler.setController(controller)
+            controller = Oadr3ControllerNode(polyglot, plugin)
             polyglot.ready()
             polyglot.runForever()
     

@@ -7,13 +7,10 @@ class OADR3VENNode(udi_interface.Node):
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 103, 'name': 'Price'}, {
         'driver': 'GHG', 'value': 0, 'uom': 108, 'name': 'GHG'}]
 
-    def __init__(self, polyglot, protocolHandler, controller=
-        'oadr3controlle', address='oadr3ven', name='OADR3VEN'):
+    def __init__(self, polyglot, plugin, controller='oadr3controlle',
+        address='oadr3ven', name='OADR3VEN'):
         super().__init__(polyglot, controller, address, name)
-        self.protocolHandler = protocolHandler
-
-    def setProtocolHandler(self, protocolHandler):
-        self.protocolHandler = protocolHandler
+        self.plugin = plugin
 
     def getUOM(self, driver: str):
         try:
@@ -24,36 +21,35 @@ class OADR3VENNode(udi_interface.Node):
         except Exception as ex:
             return None
 
-    def updatePrice(self, value, force: bool):
-        return self.setDriver("ST", value, 103, force)
+    def updatePrice(self, value, force: bool=None, text: str=None):
+        return self.setDriver("ST", value, 103, force, text)
 
     def getPrice(self):
         return self.getDriver("ST")
 
-    def queryPrice(self):
-        if self.protocolHandler:
-            val = self.protocolHandler.queryProperty(self, 'ST')
-            if val != None:
-                self.updatePrice(val, True)
-                return True
-        return False
-
-    def updateGHG(self, value, force: bool):
-        return self.setDriver("GHG", value, 108, force)
+    def updateGHG(self, value, force: bool=None, text: str=None):
+        return self.setDriver("GHG", value, 108, force, text)
 
     def getGHG(self):
         return self.getDriver("GHG")
-
-    def queryGHG(self):
-        if self.protocolHandler:
-            val = self.protocolHandler.queryProperty(self, 'GHG')
-            if val != None:
-                self.updateGHG(val, True)
-                return True
-        return False
+    """This is a list of commands that were defined in the nodedef"""
+    commands = {}
+    """    """
 
     def queryAll(self):
         self.queryPrice()
         self.queryGHG()
-    """This is a list of commands that were defined in the nodedef"""
-    commands = {}
+
+    """########WARNING: DO NOT MODIFY THIS LINE!!! NOTHING BELOW IS REGENERATED!#########"""
+
+    def queryPrice():
+        try:
+            return True
+        except:
+            return False
+
+    def queryGHG():
+        try:
+            return True
+        except:
+            return False

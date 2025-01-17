@@ -1,5 +1,4 @@
 #!/bin/sh
 version=$(cat version.py | awk -F'=' '{print $2'}| sed 's/\"//g')
 rm -rf sounds
-cp -r orig.sounds sounds
-tar -czvf audio-player-${version}.pro.tar.gz version.py audio-player.py ud_tts.py install.sh nls_gen.py profile requirements.txt sounds
+tar -czvf oadr3-${version}.tar.gz version.py Oadr3ControllerNode.py Oadr3ProtocolHandler.py POLYGLOT_CONFIG.md install.sh oadr3.iox_plugin.json oadr3.py profile requirements.txt 
