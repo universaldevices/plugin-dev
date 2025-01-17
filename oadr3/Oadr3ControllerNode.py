@@ -363,15 +363,16 @@ class Oadr3ControllerNode(udi_interface.Node):
         disconnected. So, make sure you return the correct status.
         """
         try:
+            notices=None
             if not self.vtn_base_url:
-                self.setNotices('VTN Base URL','is mandatory but missing ...')
-                return False
+                notices='VTN Base URL is mandatory but missing ... using defaults'
             if not self.client_id:
-                self.setNotices('Client ID','is mandatory but missing ...')
-                return False
+                notices.join('\nClient ID is mandatory but missing ... using defaults')
             if not self.client_secret:
-                self.setNotices('Client Secret','is mandatory but missing ...')
-                return False
+                notices.join('\nClient Secret is mandatory but missing ... using defaults')
+
+            if notice:
+                self.setNotices(notices)
 
             if self.scale:
                 OADR3Config.duration_scale=self.scale
