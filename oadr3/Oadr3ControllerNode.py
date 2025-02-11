@@ -274,7 +274,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         with the correct node.
         The address is the address of the node.
         """
-        return self.controller.poly.getNode(address)
+        return self.poly.getNode(address)
 
     
     def addNode(self, address:str, nodeDefId:str, name:str, parent:str=None):
@@ -321,7 +321,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         self.updateCustomParam(myKey, "my value" )
         """ 
         try:
-            return Custom(self.controller.poly, key)
+            return Custom(self.poly, key)
         except Exception as ex:
             LOGGER.error(f'create custom param failed ...')
             return None
@@ -344,12 +344,12 @@ class Oadr3ControllerNode(udi_interface.Node):
     ###
     commands = {'discover': __discover, 'x_query': __query}
     """########WARNING: DO NOT MODIFY THIS LINE!!! NOTHING BELOW IS REGENERATED!#########"""
-    from oadr30 import ValuesMap
-    from oadr30.config import OADR3Config, VTNRefImpl
     from oadr30.vtn import VTNOps
-    from oadr30.ven import VEN
-    from oadr30.scheduler import EventScheduler
+    from oadr30.config import OADR3Config, VTNRefImpl
     from oadr30.resource import Resource 
+    from oadr30.scheduler import EventScheduler
+    from oadr30 import ValuesMap
+    from oadr30.ven import VEN
     #############################
     ###### START|STOP ###########
     #############################
@@ -363,31 +363,29 @@ class Oadr3ControllerNode(udi_interface.Node):
         disconnected. So, make sure you return the correct status.
         """
         try:
-            notices=None
             if not self.vtn_base_url:
-                notices='VTN Base URL is mandatory but missing ... using defaults'
+                self.setNotices('VTN Base URL','VTN Base URL is mandatory but missing ... using defaults')
             if not self.client_id:
-                notices.join('\nClient ID is mandatory but missing ... using defaults')
+                self.setNotices('Client ID', 'Client ID is mandatory but missing ... using defaults')
+                self.client_id=self.VTNRefImpl.bl_client_id
             if not self.client_secret:
-                notices.join('\nClient Secret is mandatory but missing ... using defaults')
-
-            if notice:
-                self.setNotices(notices)
+                self.setNotices('Client Secret', 'Client Secret is mandatory but missing ... using defaults')
+                self.client_secret=self.VTNRefImpl.bl_client_secret
 
             if self.scale:
-                OADR3Config.duration_scale=self.scale
-                OADR3Config.events_start_now=True
+                self.OADR3Config.duration_scale=self.scale
+                self.OADR3Config.events_start_now=True
             
-            self.vtn = VTNOps(base_url=self.vtn_base_url, auth_url=VTNRefImpl.auth_url, client_id=self.client_id, client_secret=self.client_secret, auth_token_url_is_json=False )
+            self.vtn = self.VTNOps(base_url=self.vtn_base_url, auth_url=self.VTNRefImpl.auth_url, client_id=self.client_id, client_secret=self.client_secret, auth_token_url_is_json=False )
             if not self.vtn:
                 self.setNotices('VTN', 'Failed connecting to the VTN ...')
                 return False
-            self.ven = self.vtn.create_ven(resources=[Resource()])
+            self.ven = self.vtn.create_ven(resources=[self.Resource()])
             if not self.ven:
-                self.setNotices('VEN', 'Failed registering the VEN ...')
-                return False
+                self.setNotices('VEN', 'Failed registering the VEN ... for now, ignoring ...')
+             #   return False
             self.clearNotices()
-            self.scheduler=EventScheduler()
+            self.scheduler=self.EventScheduler()
             self.scheduler.registerCallback(self.scheduler_callback)
             self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
             self.shortPoll()
@@ -421,6 +419,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         It is a dictionary so you get the parameter name/key and the value. e.g.
         params['path']
         """
+#        self.vtn=None
         try:
             if 'VTN Base URL' in params:
                 self.vtn_base_url=params['VTN Base URL']
@@ -518,10 +517,14 @@ class Oadr3ControllerNode(udi_interface.Node):
         """
         This method is called at every short poll interval. The result is not checked
         """
+    
         try:
             if not self.vtn:
+                return True
+        except Exception as ex:
                 LOGGER.info('Not connected to VTN yet ...')
                 return True
+        try:
             events = self.vtn.get_events()
             if events:
                 timeSeries = events.getTimeSeries()
@@ -632,18 +635,28 @@ class Oadr3ControllerNode(udi_interface.Node):
             LOGGER.error(str(ex))
 
         
-    def scheduler_callback(self, segment:ValuesMap):
+    def scheduler_callback(self, segment):
+        """
+            Segment is ValuesMap
+        """
         payloadType=segment.getPayloadType()
         paylaodType='n/a' if not payloadType else payloadType
         values=segment.getValues()
         values ='n/a' if not values  else values
         LOGGER.info(f"Got event of type {payloadType} with value of {values[0]}" )
 
-        if paylaodType == 'PRICE':
-            self.updateProperty('oadr3ven', 'ST', values[0], True)
-        if paylaodType == 'GHG':
-            self.updateProperty('oadr3ven', 'GHG', values[0], True)
+        try:
+            node = self.getNode('oadr3ven')
+            if paylaodType == 'PRICE':
+                node.updatePrice(values[0], True)
+            elif paylaodType == 'GHG':
+                node.updateGHG(values[0], True)
+        except Exception as ex:
+            LOGGER.error(str(ex))
 
 
-    def scheduler_future_callback(self, segment:ValuesMap):
+    def scheduler_future_callback(self, segment):
+        """
+            Segment is ValuesMap
+        """
         print (segment)
