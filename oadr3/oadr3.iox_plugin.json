@@ -19,7 +19,7 @@
           "enableFileUpload": false,
           "nodesAreStatic": true,
           "requirements": ["oadr30_ven_ud","tzlocal", "isodate", "pytz"],
-          "version": "1.0.0"
+          "version": "1.0.5"
     },
     "editors": [
         {

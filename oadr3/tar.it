@@ -1,4 +1,4 @@
 #!/bin/sh
 version=$(cat version.py | awk -F'=' '{print $2'}| sed 's/\"//g')
 rm -rf sounds
-tar -czvf oadr3-${version}.tar.gz version.py Oadr3ControllerNode.py Oadr3ProtocolHandler.py POLYGLOT_CONFIG.md install.sh oadr3.iox_plugin.json oadr3.py profile requirements.txt 
+tar -czvf oadr3-${version}.tar.gz version.py Oadr3ControllerNode.py OADR3VENNode.py POLYGLOT_CONFIG.md install.sh oadr3.iox_plugin.json oadr3.py profile requirements.txt 
