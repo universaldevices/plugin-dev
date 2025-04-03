@@ -16,7 +16,7 @@
           "worksOnPolisy":true,
           "worksOnEisy":true,
           "requiresIoXAccess": false,
-          "requirements": [],
+          "requirements": ["pyShelly"],
           "status": "Active",
           "nodesAreStatic": false,
           "enableDiscovery": true,
