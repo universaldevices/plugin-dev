@@ -180,7 +180,8 @@ class AudioPlayer:
         try:
             from pytubefix import YouTube
             # Create a YouTube object
-            yt = YouTube(videoUrl, client='WEB')
+            #yt = YouTube(videoUrl, client='WEB')
+            yt = YouTube(videoUrl)
 
             # Get the audio stream with the highest bitrate
             audio_stream = yt.streams.get_audio_only()
