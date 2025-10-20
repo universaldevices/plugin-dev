@@ -570,7 +570,7 @@ class AudioPlayerNode(udi_interface.Node):
         try:
             rand=secrets.token_hex(6) 
             mqtt_id=f'{self.id}_{rand}'
-            self._mqttc=mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, mqtt_id, True)
+            self._mqttc=mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, mqtt_id, True)
             self.sslContext = ssl.create_default_context(ssl.Purpose.SERVER_AUTH, cafile=cafile)
             self.sslContext.load_cert_chain(certs[0], keys[0])
             self._mqttc.tls_set_context(self.sslContext)
@@ -599,18 +599,21 @@ class AudioPlayerNode(udi_interface.Node):
         return True
 
 
-    def on_connect(self, mqttc, userdata, flags, rc):
-        self._mqttc.subscribe('sconfig/bluetooth/#', 0)
-        self._mqttc.publish('config/bluetooth')
-        self._mqttc.publish('config/bluetooth/list')
+    def on_connect(self, mqttc, userdata, flags, rc, properties):
+        if rc == 0:
+            self._mqttc.subscribe('sconfig/bluetooth/#', 0)
+            self._mqttc.publish('config/bluetooth')
+            self._mqttc.publish('config/bluetooth/list')
+        else:
+            LOGGER.error(f"MQTT Connection failed: {rc}")
 
-    def on_disconnect(self, mqttc, userdata, rc):
+    def on_disconnect(self, mqttc, userdata, disconnect_flags, reason_code, properties):
+        LOGGER.info(f"MQTT disconnected: {reason_code}")
+
+    def on_publish(self, mqttc, userdata, mid, reason_code, properties):
         pass
 
-    def on_publish(self, mqttc, userdata, mid):
-        pass
-
-    def on_subscribe(self, mqttc, userdata, mid, granted_qos):
+    def on_subscribe(self, mqttc, userdata, mid, reason_codes, properties):
         pass
 
     def on_message(self, mqttc, userdata, msg):
