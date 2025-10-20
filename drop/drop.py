@@ -186,7 +186,7 @@ class Controller(udi_interface.Node):
         polyglot.updateProfile()
         self.poly.setCustomParamsDoc()
 
-        self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+        self.mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.mqttc.on_connect = self._on_connect
         self.mqttc.on_disconnect = self._on_disconnect
         self.mqttc.on_message = self._on_message
@@ -207,7 +207,7 @@ class Controller(udi_interface.Node):
             self.status_topics.append(status_topic)
             self.status_topics_to_devices[status_topic] = Controller._get_device_address(dev)
 
-    def _on_connect(self, mqttc, userdata, flags, rc):
+    def _on_connect(self, mqttc, userdata, flags, rc, properties):
         if rc == 0:
             LOGGER.info("Poly MQTT Connected, subscribing...")
             self.mqttc.is_connected = True
@@ -231,7 +231,7 @@ class Controller(udi_interface.Node):
         else:
             LOGGER.error("Poly MQTT Connect failed")
 
-    def _on_disconnect(self, mqttc, userdata, rc):
+    def _on_disconnect(self, mqttc, userdata, disconnect_flags, rc, properties):
         self.mqttc.is_connected = False
         if rc != 0:
             LOGGER.warning("Poly MQTT disconnected, trying to re-connect")
@@ -313,7 +313,7 @@ class Controller(udi_interface.Node):
 
         devNode.updateInfo(payload, None)
 
-    def _on_message(self, mqttc, userdata, message):
+    def _on_message(self, mqttc, userdata, msg):
         if not self.valid_configuration:
             return
         payload = message.payload.decode("utf-8")
