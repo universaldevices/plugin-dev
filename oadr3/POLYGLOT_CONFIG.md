@@ -1,32 +1,36 @@
-OpenADR 3.0 VEN Plugin for IoX
+Very simple audio player for eisy. It can:
+- Play the default sounds
+- Play through the speaker jack on the back
 
+## Professional Version
 
-## Common Parameters:
-1. Short Poll
-    How often the VTN should be polled.
+- You can upload your music in a zip file (size limit is 20M)
+- It can play online stations 
+- It can automatically convert your text to speech and play it
+- Play through Paired Bluetooth speakers - you will also need the Bluetooth plugin (free)
+- Remove entries
+- Volume control
 
-2. Long Poll
-    Not used.
+## Parameters:
 
-## Custom Parameters
+1. path
+    This is the path for storing your files. This can be any path but, if you change it, you will need to make sure you have ssh access to it in order to make give it the right permissions/ownership. If you're not a geek, leave it as is
 
-1. VTN Base URL
-    The base URL for the VTN
+2. stations 
+    The value for this parameter is in the form of:
+    name===url, name1===url1, name2===url2, ... 
 
-2. Client ID
-    The client id used for OAUTH
+3. For text to speech, create custom parameters 
 
-3. Client Secret
-    The client secret used for OAUTH
-
-4. Duration Scale 
-     Used to scale up/down the durations. i.e. 
-     Scale=1/5, changes the duration to duration /= 5
-     scale=5, changes the duration to duration *= 5. e.g.
-     1/360 will convert each hour to 10 seconds.
-     Mostly used for test purposes
-
+    - key 
+        tts_<source lang>_<dest_lang>_name-of-your-file
+        e.g. tts_en_en_Hello-World
+        This key converts the value (see below) from your English text (en) to voice in English (en).
+    - value 
+        The text of what you want spoken.
+        e.g. Hello World!
 
 ## Important Note:
-    You are part of the very elite team that gets to play with this plugin!
+If your originally crated tts files do not work, rename them by adding a _t at the end of the file name. For instance
+hello_world.mp3 -> hello_world_t.mp3
 

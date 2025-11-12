@@ -362,9 +362,15 @@ class Oadr3ControllerNode(udi_interface.Node):
         you need. If you return false, the status of the controller node shows 
         disconnected. So, make sure you return the correct status.
         """
+        self.vtn_base_url=None
+        self.client_id=None
+        self.client_secret=None
+        self.scale=None 
+
         try:
             if not self.vtn_base_url:
                 self.setNotices('VTN Base URL','VTN Base URL is mandatory but missing ... using defaults')
+                self.vtn_base_url=self.VTNRefImpl.base_url
             if not self.client_id:
                 self.setNotices('Client ID', 'Client ID is mandatory but missing ... using defaults')
                 self.client_id=self.VTNRefImpl.bl_client_id

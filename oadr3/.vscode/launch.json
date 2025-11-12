@@ -7,8 +7,9 @@
             "request": "launch",
             "program": "oadr3.py",
             "console": "integratedTerminal",
-            "envFile": "/usr/home/admin/workspace/plugin-dev/oadr3/.iox_env",
-            "justMyCode": false
+            "envFile": "/home/admin/workspace/plugin-dev/oadr3/.iox_env",
+            "justMyCode": false,
+            "debugAdapterPath": "/usr/home/admin/workspace/plugin-dev/oadr3/.venv/lib/python3.11/site-packages/debugpy/adapter"
         }
     ]
 }

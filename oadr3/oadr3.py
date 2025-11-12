@@ -3,6 +3,12 @@
 # Main routine for IoX Plugin. 
 # Do NOT Modify 
 
+# Fix SSL library path for VSCode Remote on FreeBSD
+# Force use of native FreeBSD OpenSSL instead of Linux compat
+import os
+import sys
+os.environ['LD_LIBRARY_PATH'] = '/usr/local/lib:/usr/lib'
+
 import udi_interface, os, sys, json, time,shutil
 import version
 from ioxplugin import Plugin
