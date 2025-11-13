@@ -1,0 +1,3 @@
+#!/bin/sh
+version=$(cat version.py | awk -F'=' '{print $2'}| sed 's/\"//g')
+tar -czvf audio-player-${version}.pro.tar.gz version.py audio-player.py ud_tts.py install.sh nls_gen.py profile requirements.txt sounds

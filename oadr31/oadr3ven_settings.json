@@ -1,0 +1,15 @@
+{
+    "CL": 1,
+    "ST": 0,
+    "GHG": 0,
+    "CGS": 0,
+    "CSP_F": 73,
+    "HSP_F": 77,
+    "OL": 100,
+    "MIN_OFF_DEG": 1,
+    "MAX_OFF_DEG": 4,
+    "MIN_LAO": 10,
+    "MAX_LAO": 50,
+    "MIN_DCO": 0,
+    "MAX_DCO": 50
+}
