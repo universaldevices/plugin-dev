@@ -2,7 +2,7 @@ udi_interface>=3.3.4
 python-vlc
 google_auth_oauthlib
 google-api-python-client
-pytubefix
+pytubefix==9.1.2
 pydub
 
 
