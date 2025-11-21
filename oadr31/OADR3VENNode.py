@@ -9,17 +9,19 @@ class OADR3VENNode(udi_interface.Node):
         'CL', 'value': 0, 'uom': 25, 'name': 'Comfort Level'}, {'driver':
         'CGS', 'value': 0, 'uom': 25, 'name': 'Current Grid Status'}, {
         'driver': 'CSP_F', 'value': 0, 'uom': 17, 'name':
-        'Desired Cooling Setpoint'}, {'driver': 'HSP_F', 'value': 0, 'uom':
-        17, 'name': 'Desired Heating Setpoint'}, {'driver': 'OL', 'value': 
-        0, 'uom': 51, 'name': 'Desired Light Level'}, {'driver':
-        'MIN_OFF_DEG', 'value': 0, 'uom': 17, 'name': 'Min Setpoint Offset'
-        }, {'driver': 'MAX_OFF_DEG', 'value': 0, 'uom': 17, 'name':
-        'Max Setpoint Offset'}, {'driver': 'MIN_LAO', 'value': 0, 'uom': 51,
-        'name': 'Min Light Adjustment Offset'}, {'driver': 'MAX_LAO',
-        'value': 0, 'uom': 51, 'name': 'Max Light Adjustment Offset'}, {
-        'driver': 'MIN_DCO', 'value': 0, 'uom': 51, 'name':
-        'Min Duty Cycle Offset'}, {'driver': 'MAX_DCO', 'value': 0, 'uom': 
-        51, 'name': 'Max Duty Cycle Offset'}]
+        'Comfort Cooling Setpoint'}, {'driver': 'HSP_F', 'value': 0, 'uom':
+        17, 'name': 'Comfort Heating Setpoint'}, {'driver': 'OL', 'value': 
+        0, 'uom': 51, 'name': 'Comfort Light Level'}, {'driver':
+        'MIN_OFF_DEG', 'value': 0, 'uom': 17, 'name':
+        'Min Comfort Setpoint Offset'}, {'driver': 'MAX_OFF_DEG', 'value': 
+        0, 'uom': 17, 'name': 'Max Comfort Setpoint Offset'}, {'driver':
+        'MIN_LAO', 'value': 0, 'uom': 51, 'name':
+        'Min Comfort Light Adjustment Offset'}, {'driver': 'MAX_LAO',
+        'value': 0, 'uom': 51, 'name':
+        'Max Comfort Light Adjustment Offset'}, {'driver': 'MIN_DCO',
+        'value': 0, 'uom': 51, 'name': 'Min Comfort Duty Cycle Offset'}, {
+        'driver': 'MAX_DCO', 'value': 0, 'uom': 51, 'name':
+        'Max Comfort Duty Cycle Offset'}]
 
     def __init__(self, polyglot, plugin, controller='oadr3controlle',
         address='oadr3ven', name='OADR3VEN'):
@@ -59,183 +61,217 @@ class OADR3VENNode(udi_interface.Node):
     def getCurrentGridStatus(self):
         return self.getDriver("CGS")
 
-    def updateDesiredCoolingSetpoint(self, value, force: bool=None, text:
+    def updateComfortCoolingSetpoint(self, value, force: bool=None, text:
         str=None):
         return self.setDriver("CSP_F", value, 17, force, text)
 
-    def getDesiredCoolingSetpoint(self):
+    def getComfortCoolingSetpoint(self):
         return self.getDriver("CSP_F")
 
-    def updateDesiredHeatingSetpoint(self, value, force: bool=None, text:
+    def updateComfortHeatingSetpoint(self, value, force: bool=None, text:
         str=None):
         return self.setDriver("HSP_F", value, 17, force, text)
 
-    def getDesiredHeatingSetpoint(self):
+    def getComfortHeatingSetpoint(self):
         return self.getDriver("HSP_F")
 
-    def updateDesiredLightLevel(self, value, force: bool=None, text: str=None):
+    def updateComfortLightLevel(self, value, force: bool=None, text: str=None):
         return self.setDriver("OL", value, 51, force, text)
 
-    def getDesiredLightLevel(self):
+    def getComfortLightLevel(self):
         return self.getDriver("OL")
 
-    def updateMinSetpointOffset(self, value, force: bool=None, text: str=None):
+    def updateMinComfortSetpointOffset(self, value, force: bool=None, text:
+        str=None):
         return self.setDriver("MIN_OFF_DEG", value, 17, force, text)
 
-    def getMinSetpointOffset(self):
+    def getMinComfortSetpointOffset(self):
         return self.getDriver("MIN_OFF_DEG")
 
-    def updateMaxSetpointOffset(self, value, force: bool=None, text: str=None):
+    def updateMaxComfortSetpointOffset(self, value, force: bool=None, text:
+        str=None):
         return self.setDriver("MAX_OFF_DEG", value, 17, force, text)
 
-    def getMaxSetpointOffset(self):
+    def getMaxComfortSetpointOffset(self):
         return self.getDriver("MAX_OFF_DEG")
 
-    def updateMinLightAdjustmentOffset(self, value, force: bool=None, text:
-        str=None):
+    def updateMinComfortLightAdjustmentOffset(self, value, force: bool=None,
+        text: str=None):
         return self.setDriver("MIN_LAO", value, 51, force, text)
 
-    def getMinLightAdjustmentOffset(self):
+    def getMinComfortLightAdjustmentOffset(self):
         return self.getDriver("MIN_LAO")
 
-    def updateMaxLightAdjustmentOffset(self, value, force: bool=None, text:
-        str=None):
+    def updateMaxComfortLightAdjustmentOffset(self, value, force: bool=None,
+        text: str=None):
         return self.setDriver("MAX_LAO", value, 51, force, text)
 
-    def getMaxLightAdjustmentOffset(self):
+    def getMaxComfortLightAdjustmentOffset(self):
         return self.getDriver("MAX_LAO")
 
-    def updateMinDutyCycleOffset(self, value, force: bool=None, text: str=None
-        ):
+    def updateMinComfortDutyCycleOffset(self, value, force: bool=None, text:
+        str=None):
         return self.setDriver("MIN_DCO", value, 51, force, text)
 
-    def getMinDutyCycleOffset(self):
+    def getMinComfortDutyCycleOffset(self):
         return self.getDriver("MIN_DCO")
 
-    def updateMaxDutyCycleOffset(self, value, force: bool=None, text: str=None
-        ):
+    def updateMaxComfortDutyCycleOffset(self, value, force: bool=None, text:
+        str=None):
         return self.setDriver("MAX_DCO", value, 51, force, text)
 
-    def getMaxDutyCycleOffset(self):
+    def getMaxComfortDutyCycleOffset(self):
         return self.getDriver("MAX_DCO")
 
     def __setComfortLevel(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'CL.uom25' in jparam:
                 CL = int(jparam['CL.uom25'])
+            elif value:
+                CL = int(value)
             return self.setComfortLevel(CL)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setDesiredCoolingSetpoint(self, command):
+    def __setComfortCoolingSetpoint(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'CSP_F.uom17' in jparam:
                 CSP_F = int(jparam['CSP_F.uom17'])
-            return self.setDesiredCoolingSetpoint(CSP_F)
+            elif value:
+                CSP_F = int(value)
+            return self.setComfortCoolingSetpoint(CSP_F)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setDesiredHeatingSetpoint(self, command):
+    def __setComfortHeatingSetpoint(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'HSP_F.uom17' in jparam:
                 HSP_F = int(jparam['HSP_F.uom17'])
-            return self.setDesiredHeatingSetpoint(HSP_F)
+            elif value:
+                HSP_F = int(value)
+            return self.setComfortHeatingSetpoint(HSP_F)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setDesiredLightLevel(self, command):
+    def __setComfortLightLevel(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'OL.uom51' in jparam:
                 OL = int(jparam['OL.uom51'])
-            return self.setDesiredLightLevel(OL)
+            elif value:
+                OL = int(value)
+            return self.setComfortLightLevel(OL)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setMinSetpointOffset(self, command):
+    def __setMinComfortSetpointOffset(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'MIN_OFF_DEG.uom17' in jparam:
                 MIN_OFF_DEG = int(jparam['MIN_OFF_DEG.uom17'])
-            return self.setMinSetpointOffset(MIN_OFF_DEG)
+            elif value:
+                MIN_OFF_DEG = int(value)
+            return self.setMinComfortSetpointOffset(MIN_OFF_DEG)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setMaxSetpointOffset(self, command):
+    def __setMaxComfortSetpointOffset(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'MAX_OFF_DEG.uom17' in jparam:
                 MAX_OFF_DEG = int(jparam['MAX_OFF_DEG.uom17'])
-            return self.setMaxSetpointOffset(MAX_OFF_DEG)
+            elif value:
+                MAX_OFF_DEG = int(value)
+            return self.setMaxComfortSetpointOffset(MAX_OFF_DEG)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setMinLightAdjustmentOffset(self, command):
+    def __setMinComfortLightAdjustmentOffset(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'MIN_LAO.uom51' in jparam:
                 MIN_LAO = int(jparam['MIN_LAO.uom51'])
-            return self.setMinLightAdjustmentOffset(MIN_LAO)
+            elif value:
+                MIN_LAO = int(value)
+            return self.setMinComfortLightAdjustmentOffset(MIN_LAO)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setMaxLightAdjustmentOffset(self, command):
+    def __setMaxComfortLightAdjustmentOffset(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'MAX_LAO.uom51' in jparam:
                 MAX_LAO = int(jparam['MAX_LAO.uom51'])
-            return self.setMaxLightAdjustmentOffset(MAX_LAO)
+            elif value:
+                MAX_LAO = int(value)
+            return self.setMaxComfortLightAdjustmentOffset(MAX_LAO)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setMinDutyCycleOffset(self, command):
+    def __setMinComfortDutyCycleOffset(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'MIN_DCO.uom51' in jparam:
                 MIN_DCO = int(jparam['MIN_DCO.uom51'])
-            return self.setMinDutyCycleOffset(MIN_DCO)
+            elif value:
+                MIN_DCO = int(value)
+            return self.setMinComfortDutyCycleOffset(MIN_DCO)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
 
-    def __setMaxDutyCycleOffset(self, command):
+    def __setMaxComfortDutyCycleOffset(self, command):
         try:
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
+            value = command.get('value', None)
             if 'MAX_DCO.uom51' in jparam:
                 MAX_DCO = int(jparam['MAX_DCO.uom51'])
-            return self.setMaxDutyCycleOffset(MAX_DCO)
+            elif value:
+                MAX_DCO = int(value)
+            return self.setMaxComfortDutyCycleOffset(MAX_DCO)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
     """This is a list of commands that were defined in the nodedef"""
     commands = {'CL': __setComfortLevel, 'CSP_F':
-        __setDesiredCoolingSetpoint, 'HSP_F': __setDesiredHeatingSetpoint,
-        'OL': __setDesiredLightLevel, 'MIN_OFF_DEG': __setMinSetpointOffset,
-        'MAX_OFF_DEG': __setMaxSetpointOffset, 'MIN_LAO':
-        __setMinLightAdjustmentOffset, 'MAX_LAO':
-        __setMaxLightAdjustmentOffset, 'MIN_DCO': __setMinDutyCycleOffset,
-        'MAX_DCO': __setMaxDutyCycleOffset}
+        __setComfortCoolingSetpoint, 'HSP_F': __setComfortHeatingSetpoint,
+        'OL': __setComfortLightLevel, 'MIN_OFF_DEG':
+        __setMinComfortSetpointOffset, 'MAX_OFF_DEG':
+        __setMaxComfortSetpointOffset, 'MIN_LAO':
+        __setMinComfortLightAdjustmentOffset, 'MAX_LAO':
+        __setMaxComfortLightAdjustmentOffset, 'MIN_DCO':
+        __setMinComfortDutyCycleOffset, 'MAX_DCO':
+        __setMaxComfortDutyCycleOffset}
     """    """
 
     def queryAll(self):
@@ -243,15 +279,15 @@ class OADR3VENNode(udi_interface.Node):
         self.queryGHG()
         self.queryComfortLevel()
         self.queryCurrentGridStatus()
-        self.queryDesiredCoolingSetpoint()
-        self.queryDesiredHeatingSetpoint()
-        self.queryDesiredLightLevel()
-        self.queryMinSetpointOffset()
-        self.queryMaxSetpointOffset()
-        self.queryMinLightAdjustmentOffset()
-        self.queryMaxLightAdjustmentOffset()
-        self.queryMinDutyCycleOffset()
-        self.queryMaxDutyCycleOffset()
+        self.queryComfortCoolingSetpoint()
+        self.queryComfortHeatingSetpoint()
+        self.queryComfortLightLevel()
+        self.queryMinComfortSetpointOffset()
+        self.queryMaxComfortSetpointOffset()
+        self.queryMinComfortLightAdjustmentOffset()
+        self.queryMaxComfortLightAdjustmentOffset()
+        self.queryMinComfortDutyCycleOffset()
+        self.queryMaxComfortDutyCycleOffset()
 
     """########WARNING: DO NOT MODIFY THIS LINE!!! NOTHING BELOW IS REGENERATED!#########"""
 
@@ -282,57 +318,57 @@ class OADR3VENNode(udi_interface.Node):
         except:
             return False
 
-    def queryDesiredCoolingSetpoint(self):
+    def queryComfortCoolingSetpoint(self):
         try:
-            return self.updateDesiredCoolingSetpoint(self.settings.get('CSP_F', 74))
+            return self.updateComfortCoolingSetpoint(self.settings.get('CSP_F', 74))
         except:
             return False
 
-    def queryDesiredHeatingSetpoint(self):
+    def queryComfortHeatingSetpoint(self):
         try:
-            return self.updateDesiredHeatingSetpoint(self.settings.get('HSP_F', 77))
+            return self.updateComfortHeatingSetpoint(self.settings.get('HSP_F', 77))
         except:
             return False
 
-    def queryDesiredLightLevel(self):
+    def queryComfortLightLevel(self):
         try:
-            return self.updateDesiredLightLevel(self.settings.get('OL', 100))
+            return self.updateComfortLightLevel(self.settings.get('OL', 100))
         except:
             return False
 
-    def queryMinSetpointOffset(self):
+    def queryMinComfortSetpointOffset(self):
         try:
-            return self.updateMinSetpointOffset(self.settings.get('MIN_OFF_DEG', 1))
+            return self.updateMinComfortSetpointOffset(self.settings.get('MIN_OFF_DEG', 1))
         except:
             return False
 
-    def queryMaxSetpointOffset(self):
+    def queryMaxComfortSetpointOffset(self):
         try:
-            return self.updateMaxSetpointOffset(self.settings.get('MAX_OFF_DEG', 4))
+            return self.updateMaxComfortSetpointOffset(self.settings.get('MAX_OFF_DEG', 4))
         except:
             return False
 
-    def queryMinLightAdjustmentOffset(self):
+    def queryMinComfortLightAdjustmentOffset(self):
         try:
-            return self.updateMinLightAdjustmentOffset(self.settings.get('MIN_LAO', 10))
+            return self.updateMinComfortLightAdjustmentOffset(self.settings.get('MIN_LAO', 10))
         except:
             return False
 
-    def queryMaxLightAdjustmentOffset(self):
+    def queryMaxComfortLightAdjustmentOffset(self):
         try:
-            return self.updateMaxLightAdjustmentOffset(self.settings.get('MAX_LAO', 50))
+            return self.updateMaxComfortLightAdjustmentOffset(self.settings.get('MAX_LAO', 50))
         except:
             return False
 
-    def queryMinDutyCycleOffset(self):
+    def queryMinComfortDutyCycleOffset(self):
         try:
-            return self.updateMinDutyCycleOffset(self.settings.get('MIN_DCO', 0))
+            return self.updateMinComfortDutyCycleOffset(self.settings.get('MIN_DCO', 0))
         except:
             return False
 
-    def queryMaxDutyCycleOffset(self):
+    def queryMaxComfortDutyCycleOffset(self):
         try:
-            return self.updateMaxDutyCycleOffset(self.settings.get('MAX_DCO', 50))
+            return self.updateMaxComfortDutyCycleOffset(self.settings.get('MAX_DCO', 50))
         except:
             return False
 
@@ -344,74 +380,74 @@ class OADR3VENNode(udi_interface.Node):
         except:
             return False
 
-    def setDesiredCoolingSetpoint(self, cspf):
+    def setComfortCoolingSetpoint(self, cspf):
         try:
             if self.settings.set('CSP_F', cspf):
-                return self.updateDesiredCoolingSetpoint(cspf)
+                return self.updateComfortCoolingSetpoint(cspf)
             return False
         except:
             return False
 
-    def setDesiredHeatingSetpoint(self, hspf):
+    def setComfortHeatingSetpoint(self, hspf):
         try:
             if self.settings.set('HSP_F', hspf):
-                return self.updateDesiredHeatingSetpoint(hspf)
+                return self.updateComfortHeatingSetpoint(hspf)
             return False
         except:
             return False
 
-    def setDesiredLightLevel(self, ol):
+    def setComfortLightLevel(self, ol):
         try:
             if self.settings.set('OL', ol):
-                return self.updateDesiredLightLevel(ol)
+                return self.updateComfortLightLevel(ol)
             return False
         except:
             return False
 
-    def setMinSetpointOffset(self, minoffdeg):
+    def setComfortMinSetpointOffset(self, minoffdeg):
         try:
             if self.settings.set('MIN_OFF_DEG', minoffdeg):
-                return self.updateMinSetpointOffset(minoffdeg)
+                return self.updateMinComfortSetpointOffset(minoffdeg)
             return False
         except:
             return False
 
-    def setMaxSetpointOffset(self, maxoffdeg):
+    def setMaxComfortSetpointOffset(self, maxoffdeg):
         try:
             if self.settings.set('MAX_OFF_DEG', maxoffdeg):
-                return self.updateMaxSetpointOffset(maxoffdeg)
+                return self.updateMaxComfortSetpointOffset(maxoffdeg)
             return False
         except:
             return False
 
-    def setMinLightAdjustmentOffset(self, minlao):
+    def setMinComfortLightAdjustmentOffset(self, minlao):
         try:
             if self.settings.set('MIN_LAO', minlao):
-                return self.updateMinLightAdjustmentOffset(minlao)
+                return self.updateMinComfortLightAdjustmentOffset(minlao)
             return False
         except:
             return False
 
-    def setMaxLightAdjustmentOffset(self, maxlao):
+    def setMaxComfortLightAdjustmentOffset(self, maxlao):
         try:
             if self.settings.set('MAX_LAO', maxlao):
-                return self.updateMaxLightAdjustmentOffset(maxlao)
+                return self.updateMaxComfortLightAdjustmentOffset(maxlao)
             return False
         except:
             return False
 
-    def setMinDutyCycleOffset(self, mindco):
+    def setMinComfortDutyCycleOffset(self, mindco):
         try:
             if self.settings.set('MIN_DCO', mindco):
-                return self.updateMinDutyCycleOffset(mindco)
+                return self.updateMinComfortDutyCycleOffset(mindco)
             return False
         except:
             return False
 
-    def setMaxDutyCycleOffset(self, maxdco):
+    def setMaxComfortDutyCycleOffset(self, maxdco):
         try:
             if self.settings.set('MAX_DCO', maxdco):
-                return self.updateMaxDutyCycleOffset(maxdco)
+                return self.updateMaxComfortDutyCycleOffset(maxdco)
             return False    
         except:
             return False

@@ -150,7 +150,7 @@
                 },
                 {
                    "id": "CSP_F",
-                   "name": "Desired Cooling Setpoint",
+                   "name": "Comfort Cooling Setpoint",
                    "editor": {
                        "idref": "cool_setpoint_f"
                    },
@@ -158,7 +158,7 @@
                 },
                 {
                    "id": "HSP_F",
-                   "name": "Desired Heating Setpoint",
+                   "name": "Comfort Heating Setpoint",
                    "editor": {
                        "idref": "heat_setpoint_f"
                    },
@@ -166,7 +166,7 @@
                 },
                 {
                    "id": "OL",
-                   "name": "Desired Light Level",
+                   "name": "Comfort Light Level",
                    "editor": {
                        "idref": "on_level"
                    },
@@ -174,7 +174,7 @@
                 },
                 {
                    "id": "MIN_OFF_DEG",
-                   "name": "Min Setpoint Offset",
+                   "name": "Min Comfort Setpoint Offset",
                    "editor": {
                        "idref": "offset_degree"
                    },
@@ -182,7 +182,7 @@
                 },
                 {
                    "id": "MAX_OFF_DEG",
-                   "name": "Max Setpoint Offset",
+                   "name": "Max Comfort Setpoint Offset",
                    "editor": {
                        "idref": "offset_degree"
                    },
@@ -190,7 +190,7 @@
                 },
                 {
                    "id": "MIN_LAO",
-                   "name": "Min Light Adjustment Offset",
+                   "name": "Min Comfort Light Adjustment Offset",
                    "editor": {
                        "idref": "light_adj_offset"
                    },
@@ -198,7 +198,7 @@
                 },
                 {
                    "id": "MAX_LAO",
-                   "name": "Max Light Adjustment Offset",
+                   "name": "Max Comfort Light Adjustment Offset",
                    "editor": {
                        "idref": "light_adj_offset"
                    },
@@ -206,7 +206,7 @@
                 },
                 {
                    "id": "MIN_DCO",
-                   "name": "Min Duty Cycle Offset",
+                   "name": "Min Comfort Duty Cycle Offset",
                    "editor": {
                        "idref": "duty_cycle_offset"
                    },
@@ -214,7 +214,7 @@
                 },
                 {
                    "id": "MAX_DCO",
-                   "name": "Max Duty Cycle Offset",
+                   "name": "Max Comfort Duty Cycle Offset",
                    "editor": {
                        "idref": "duty_cycle_offset"
                    },
