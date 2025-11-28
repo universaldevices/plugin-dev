@@ -6,13 +6,13 @@ Custom = udi_interface.Custom
 from ioxplugin import Plugin, OAuthService
 
 DATA_PATH='./data'
-from OADR3VENNode import OADR3VENNode
+from Oadr3EnergyOptimizerNode import Oadr3EnergyOptimizerNode
 class Oadr3ControllerNode(udi_interface.Node):
     id = 'oadr3controlle'
     """This is a list of properties that were defined in the nodedef"""
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 25, 'name': 'Status'}]
-    children = [{'node_class': 'OADR3VENNode', 'id': 'oadr3ven', 'name':
-        'OADR3VEN', 'parent': 'oadr3controlle'}]
+    children = [{'node_class': 'Oadr3EnergyOptimizerNode', 'id': 'oadr3ven',
+        'name': 'Oadr3 Energy Optimizer', 'parent': 'oadr3controlle'}]
 
     def __init__(self, polyglot, plugin, controller='oadr3controlle',
         address='oadr3controlle', name='Oadr3 Controller'):
@@ -360,6 +360,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         node = self.getNode('oadr3ven')
         if node:
             node.queryAll()
+            self.device_manager.update_profiles()
 
     def start(self)->bool:
         self.use_scheduler = False
@@ -399,7 +400,9 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.scheduler.registerCallback(self.scheduler_callback)
                 self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
 
-            import time, threading
+            import threading
+            from device_manager import DeviceManager
+            self.device_manager = DeviceManager(self.poly)
             thread = threading.Thread(target=self.query_all)
             thread.start()
 
@@ -560,6 +563,9 @@ class Oadr3ControllerNode(udi_interface.Node):
                         self.timeseries_index += 1
                     if self.timeseries_index >= length:
                         self.timeseries_index = 0
+
+            #load profile for any changes/nodes/updates
+            self.device_manager.update_profiles()
 
             return True
         except Exception as ex:

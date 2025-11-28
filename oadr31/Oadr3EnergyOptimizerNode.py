@@ -1,7 +1,7 @@
 import udi_interface, os, sys, json, time
 LOGGER = udi_interface.LOGGER
 Custom = udi_interface.Custom
-class OADR3VENNode(udi_interface.Node):
+class Oadr3EnergyOptimizerNode(udi_interface.Node):
     id = 'oadr3ven'
     """This is a list of properties that were defined in the nodedef"""
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 103, 'name': 'Price'}, {
@@ -10,7 +10,7 @@ class OADR3VENNode(udi_interface.Node):
         'CGS', 'value': 0, 'uom': 25, 'name': 'Current Grid Status'}, {
         'driver': 'CSP_F', 'value': 0, 'uom': 17, 'name':
         'Comfort Cooling Setpoint'}, {'driver': 'HSP_F', 'value': 0, 'uom':
-        17, 'name': 'Comfort Heating Setpoint'}, {'driver': 'OL', 'value': 
+        17, 'name': 'Comfort Heating Setpoint'}, {'driver': 'CLL', 'value':
         0, 'uom': 51, 'name': 'Comfort Light Level'}, {'driver':
         'MIN_OFF_DEG', 'value': 0, 'uom': 17, 'name':
         'Min Comfort Setpoint Offset'}, {'driver': 'MAX_OFF_DEG', 'value': 
@@ -24,7 +24,7 @@ class OADR3VENNode(udi_interface.Node):
         'Max Comfort Duty Cycle Offset'}]
 
     def __init__(self, polyglot, plugin, controller='oadr3controlle',
-        address='oadr3ven', name='OADR3VEN'):
+        address='oadr3ven', name='Oadr3 Energy Optimizer'):
         super().__init__(polyglot, controller, address, name)
         self.plugin = plugin
 
@@ -76,10 +76,10 @@ class OADR3VENNode(udi_interface.Node):
         return self.getDriver("HSP_F")
 
     def updateComfortLightLevel(self, value, force: bool=None, text: str=None):
-        return self.setDriver("OL", value, 51, force, text)
+        return self.setDriver("CLL", value, 51, force, text)
 
     def getComfortLightLevel(self):
-        return self.getDriver("OL")
+        return self.getDriver("CLL")
 
     def updateMinComfortSetpointOffset(self, value, force: bool=None, text:
         str=None):
@@ -170,11 +170,11 @@ class OADR3VENNode(udi_interface.Node):
             query = str(command['query']).replace("'", '"')
             jparam = json.loads(query)
             value = command.get('value', None)
-            if 'OL.uom51' in jparam:
-                OL = int(jparam['OL.uom51'])
+            if 'CLL.uom51' in jparam:
+                CLL = int(jparam['CLL.uom51'])
             elif value:
-                OL = int(value)
-            return self.setComfortLightLevel(OL)
+                CLL = int(value)
+            return self.setComfortLightLevel(CLL)
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
@@ -265,7 +265,7 @@ class OADR3VENNode(udi_interface.Node):
     """This is a list of commands that were defined in the nodedef"""
     commands = {'CL': __setComfortLevel, 'CSP_F':
         __setComfortCoolingSetpoint, 'HSP_F': __setComfortHeatingSetpoint,
-        'OL': __setComfortLightLevel, 'MIN_OFF_DEG':
+        'CLL': __setComfortLightLevel, 'MIN_OFF_DEG':
         __setMinComfortSetpointOffset, 'MAX_OFF_DEG':
         __setMaxComfortSetpointOffset, 'MIN_LAO':
         __setMinComfortLightAdjustmentOffset, 'MAX_LAO':
@@ -332,7 +332,7 @@ class OADR3VENNode(udi_interface.Node):
 
     def queryComfortLightLevel(self):
         try:
-            return self.updateComfortLightLevel(self.settings.get('OL', 100))
+            return self.updateComfortLightLevel(self.settings.get('CLL', 100))
         except:
             return False
 
@@ -396,10 +396,10 @@ class OADR3VENNode(udi_interface.Node):
         except:
             return False
 
-    def setComfortLightLevel(self, ol):
+    def setComfortLightLevel(self, cll ):
         try:
-            if self.settings.set('OL', ol):
-                return self.updateComfortLightLevel(ol)
+            if self.settings.set('CLL', cll ):
+                return self.updateComfortLightLevel(cll)
             return False
         except:
             return False

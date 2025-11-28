@@ -1,6 +1,6 @@
 
 
-ND-oadr3ven-NAME = OADR3VEN
+ND-oadr3ven-NAME = Oadr3 Energy Optimizer
 ND-oadr3ven-ICON = EnergyMonitor
 
 ST-oadr3ven-ST-NAME = Price
@@ -9,7 +9,7 @@ ST-oadr3ven-CL-NAME = Comfort Level
 ST-oadr3ven-CGS-NAME = Current Grid Status
 ST-oadr3ven-CSP_F-NAME = Comfort Cooling Setpoint
 ST-oadr3ven-HSP_F-NAME = Comfort Heating Setpoint
-ST-oadr3ven-OL-NAME = Comfort Light Level
+ST-oadr3ven-CLL-NAME = Comfort Light Level
 ST-oadr3ven-MIN_OFF_DEG-NAME = Min Comfort Setpoint Offset
 ST-oadr3ven-MAX_OFF_DEG-NAME = Max Comfort Setpoint Offset
 ST-oadr3ven-MIN_LAO-NAME = Min Comfort Light Adjustment Offset
@@ -23,8 +23,8 @@ CMD-oadr3ven-CSP_F-NAME = Comfort Cooling Setpoint
 CMDP-oadr3ven-cool_setpoint_f-CSP_F-NAME = ComfortCoolingSetpoint
 CMD-oadr3ven-HSP_F-NAME = Comfort Heating Setpoint
 CMDP-oadr3ven-heat_setpoint_f-HSP_F-NAME = ComfortHeatingSetpoint
-CMD-oadr3ven-OL-NAME = Comfort Light Level
-CMDP-oadr3ven-on_level-OL-NAME = ComfortLightLevel
+CMD-oadr3ven-CLL-NAME = Comfort Light Level
+CMDP-oadr3ven-on_level-CLL-NAME = ComfortLightLevel
 CMD-oadr3ven-MIN_OFF_DEG-NAME = Min Comfort Setpoint Offset
 CMDP-oadr3ven-offset_degree-MIN_OFF_DEG-NAME = MinComfortSetpointOffset
 CMD-oadr3ven-MAX_OFF_DEG-NAME = Max Comfort Setpoint Offset

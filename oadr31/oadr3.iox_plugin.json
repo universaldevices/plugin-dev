@@ -8,8 +8,8 @@
           "installScript":"install.sh",
           "documentationLink":"docs",
           "licenseLink":"lic",
-          "shortPoll":60,
-          "longPoll":600,
+          "shortPoll":5,
+          "longPoll":30,
           "profileVersion":"3.0.0",
           "initialLogLevel":"DEBUG",
           "enableOAUTH2":false,
@@ -113,7 +113,7 @@
     "nodedefs": [
         {
             "id":"oadr3ven",
-            "name":"OADR3VEN",
+            "name":"Oadr3 Energy Optimizer",
             "icon":"EnergyMonitor",
             "properties": [
                 {
@@ -165,7 +165,7 @@
                    "is_settable": true 
                 },
                 {
-                   "id": "OL",
+                   "id": "CLL",
                    "name": "Comfort Light Level",
                    "editor": {
                        "idref": "on_level"
