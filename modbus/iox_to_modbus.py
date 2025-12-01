@@ -11,9 +11,6 @@ import os
 from datetime import datetime
 from ioxplugin import NodePropertyDetails, NodeProperties, NodeDefs, NodeDefDetails, Plugin, IoXTransport, IoXTCPTransport
 from pymodbus.client import ModbusTcpClient
-from pymodbus.payload import BinaryPayloadDecoder
-from pymodbus.payload import BinaryPayloadBuilder
-from pymodbus.constants import Endian
 
 
 MODBUS_REGISTER_TYPES=('coil', 'discrete-input', 'input', 'holding')
@@ -25,8 +22,8 @@ MODBUS_REGISTER_DATA_TYPES=('int16','uint16','int32','uint32', 'int64', 'uint64'
 MODBUS_COMMUNICATION_MODES=('TCP')
 MODBUS_ADDRESSING_MODES=('0-based', '1-based')
 
-iox_modbus_byte_order = Endian.BIG
-iox_modbus_word_order = Endian.LITTLE
+iox_modbus_byte_order = "big" 
+iox_modbus_word_order = "big"
 
 
 class ModbusComm:
@@ -60,9 +57,9 @@ class ModbusComm:
             if 'is_rtu' in comm_data:
                 self.bRtu = bool(comm_data['is_rtu'])
             if 'byte_order' in comm_data:
-                iox_modbus_byte_order = comm_data['byte_order']
+                iox_modbus_byte_order = comm_data['byte_order'].lower()
             if 'word_order' in comm_data:
-                iox_modbus_word_order = comm_data['word_order']
+                iox_modbus_word_order = comm_data['word_order'].lower()
             
         except Exception as ex:
             raise
@@ -188,8 +185,10 @@ class ModbusRegister:
 
             global iox_modbus_byte_order
             global iox_modbus_word_order
-            decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=iox_modbus_byte_order, wordorder=iox_modbus_word_order)
-        
+            #decoder = BinaryPayloadDecoder.fromRegisters(response.registers, byteorder=iox_modbus_byte_order, wordorder=iox_modbus_word_order)
+            self.val = self._client.convert_from_registers(response.registers, data_type=self.register_data_type,  wordorder=iox_modbus_word_order) 
+
+            """old style
             if self.register_data_type == 'int16': 
                 self.val = decoder.decode_16bit_int()
             elif self.register_data_type == 'int32':
@@ -212,8 +211,7 @@ class ModbusRegister:
             else:
                 LOGGER.error(f"Invalid register data type : {self.register_data_type}")
                 return None
-
-            return self.getRegisterValue(eval_expression) 
+            """ 
 
         except Exception as ex:
             LOGGER.critical(str(ex))
@@ -229,12 +227,15 @@ class ModbusRegister:
 
             global iox_modbus_byte_order
             global iox_modbus_word_order
-            builder = BinaryPayloadBuilder(byteorder=iox_modbus_byte_order.BIG, wordorder=iox_modbus_word_order)
+            #builder = BinaryPayloadBuilder(byteorder=iox_modbus_byte_order.BIG, wordorder=iox_modbus_word_order)
             #get the value from modbus sending it the number of registers to be read
             if self.register_data_type == 'string': 
                 if not isinstance(value, str):
                     LOGGER.error(f"{value} is not a string ")
                     return False
+            payload = self._client.convert_to_registers(value, data_type=self.register_data_type, wordorder=iox_modbus_word_order)
+            """old style
+            if self.register_data_type == 'string': 
                 builder.add_string(value)
             elif self.register_data_type == 'int16':
                 builder.add_16bit_int(value) 
@@ -255,11 +256,11 @@ class ModbusRegister:
             else:
                 LOGGER.error(f"Invalid data type {self.register_data.type}")
                 return False
-
             payload = builder.to_registers()
             if not payload:
                 LOGGER.error(f"Failed encoding the value for data type {self.register_data.type}")
                 return False
+            """
 
             self._client.write_registers(self.register_address, payload)
 
