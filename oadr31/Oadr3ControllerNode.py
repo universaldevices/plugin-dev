@@ -355,17 +355,19 @@ class Oadr3ControllerNode(udi_interface.Node):
     #############################
     ####
 
-    async def query_all_thread(self):
+    async def query_all(self):
         time.sleep(2)
         node = self.getNode('oadr3ven')
         if node:
-            node.queryAll()
+            node.set_settings()
+            self.device_manager.update_settings(node.get_settings())
             await self.device_manager.update_profiles(True)
-    
-    def query_all(self):
-        import asyncio
-        asyncio.run(self.query_all_thread())
+            node.queryAll()
 
+    def query_all_thread(self):
+        import asyncio
+        asyncio.run(self.query_all())
+    
     def start(self)->bool:
         self.use_scheduler = False
         self.timeseries_index = 0
@@ -407,7 +409,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             import threading
             from oadr3_device_manager import DeviceManager
             self.device_manager = DeviceManager(self.poly)
-            thread = threading.Thread(target=self.query_all)
+            thread = threading.Thread(target=self.query_all_thread)
             thread.start()
 
             return True
@@ -569,7 +571,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                         self.timeseries_index = 0
 
             #load profile for any changes/nodes/updates
-            self.device_manager.update_profiles(False)
+            #self.device_manager.update_profiles(False)
 
             return True
         except Exception as ex:

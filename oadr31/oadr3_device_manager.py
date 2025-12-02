@@ -9,9 +9,13 @@ from nucore import Profile
 from iox import IoXWrapper
 from udi_interface import LOGGER
 import xml.etree.ElementTree as ET
+from ven_settings import VENSettings
+from thermostat_optimizer import ThermostatOptimizer
+from dimmer_optimizer import DimmerOptimizer
+from switch_optimizer import SwitchOptimizer
 
 class DeviceManager:
-    def __init__(self, poly):
+    def __init__(self, poly ):
         self.poly = poly
         self.iox = IoXWrapper(poly=self.poly)
         self.profile = Profile("", [])
@@ -20,6 +24,26 @@ class DeviceManager:
         self.switches={}
         self.ven=None
         self.is_subscribed=False
+
+    def update_settings(self, ven_settings:VENSettings):
+        """
+        Updates the VEN settings for all optimizers
+        """
+        self.ven_settings = ven_settings
+        for optimizer in self.thermostats.values():
+            optimizer.update_settings(ven_settings)
+        for optimizer in self.dimmers.values():
+            optimizer.update_settings(ven_settings)
+        for optimizer in self.switches.values():
+            optimizer.update_settings(ven_settings)
+    
+    async def optimize(self, grid_state):
+        for optimizer in self.thermostats.values():
+            await optimizer.optimize(grid_state)
+        for optimizer in self.dimmers.values():
+            await optimizer.optimize(grid_state)
+        for optimizer in self.switches.values():
+            await optimizer.optimize(grid_state) 
 
     async def update_profiles(self, resubscribe=False):
         """
@@ -39,14 +63,21 @@ class DeviceManager:
                 return False
             self.__process_devices__()
             if not self.is_subscribed or resubscribe:
-                await self.iox.subscribe_events(
-                    on_message_callback=self.__on_message__,
-                    on_connect_callback=self.__on_connect__,
-                    on_disconnect_callback=self.__on_disconnect__)
+                self.__subscription_thread()
                 self.is_subscribed = True
         except Exception as ex:
             LOGGER.error(f"Failed to update profiles: {str(ex)}")
             return False
+
+    def __subscription_thread(self):
+        """
+        Thread to handle event subscription
+        """
+        import asyncio
+        asyncio.run(self.iox.subscribe_events(
+            on_message_callback=self.__on_message__,
+            on_connect_callback=self.__on_connect__,
+            on_disconnect_callback=self.__on_disconnect__))
         
     def __process_devices__(self):
         """
@@ -63,10 +94,10 @@ class DeviceManager:
                 continue
             for prop in node_def.properties:
                 if prop.id == "CLISPC" or prop.id == "CLISPH":
-                    self.thermostats[node.address] = node
+                    self.thermostats[node.address] = ThermostatOptimizer(self.ven_settings, node, self.iox)
                     break
                 elif prop.id == "OL" or prop.id == "RR":
-                    self.dimmers[node.address] = node
+                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node, self.iox)
                     break 
                 else:
                     for cmd in node_def.cmds.accepts:
@@ -74,10 +105,10 @@ class DeviceManager:
                             #make sure we don't also have OL and RR
                             for cmd in node_def.cmds.accepts:
                                 if cmd.id == "OL" or cmd.id == "RR":
-                                    self.dimmers[node.address] = node 
+                                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node, self.iox)
                                     break
                             if node.address not in self.dimmers.keys():    
-                                self.switches[node.address] = node
+                                self.switches[node.address] = SwitchOptimizer(self.ven_settings, node, self.iox)
                                 break
 
     def __get_node_definitions__(self, node):           
@@ -127,7 +158,20 @@ class DeviceManager:
         Processes VEN-specific messages
         @param message: The incoming message from the event stream in JSON
         """
-        print(f"VEN message: {message}")
+        if not 'control' in message:
+            LOGGER.warning(f"Received VEN message without control: {message}")
+            return
+        control = message['control']
+        if control == "CGS":  # Current Grid Status update
+            grid_state = message.get('action', None)['value']
+            #create a thread to optimize all devices based on new grid status
+            await self.optimize(grid_state)
+        elif control == "ST" or control == "GHG":
+            #ignore
+            pass
+        else:
+            #one of the settings changed
+            self.update_settings(self.ven_settings)
 
     async def __process_node_update__(self, node_address, message):
         """

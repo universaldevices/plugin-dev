@@ -3,19 +3,19 @@ from nucore import Node
 from base_optimizer import BaseOptimizer
 from ven_settings import VENSettings
     
-class ThermostatOptimizer(BaseOptimizer):
+class DimmerOptimizer(BaseOptimizer):
     """
-    Thermostat optimization algorithm for demand response across four grid states:
+    Dimmer optimization algorithm for demand response across four grid states:
     Normal, Moderate, High, and Emergency (Special).
     
-    The algorithm adjusts thermostat setpoints based on grid conditions while respecting
+    The algorithm adjusts dimmer settings based on grid conditions while respecting
     user comfort preferences. If a customer manually changes setpoints during an active
     optimization state, the system opts out until the next day.
     """
 
     def __init__(self, ven_settings: VENSettings, node:Node, iox:IoXWrapper ):
         """
-        Initialize the thermostat optimizer.
+        Initialize the dimmer optimizer.
         
         Args:
             ven_settings: VENSettings instance containing configuration
@@ -23,21 +23,19 @@ class ThermostatOptimizer(BaseOptimizer):
             iox: IoXWrapper instance for interacting with IoX
         """
         super().__init__(ven_settings, node, iox)
-        # Track last applied setpoints to detect user changes
-        self.last_applied_cool_sp = None
-        self.last_applied_heat_sp = None
+        # Track last applied dimmer settings to detect user changes
+        self.last_applied_dimmer_level = None
 
     def _get_min_offset(self):
-        return self.ven_settings.min_setpoint_offset
-
+        return self.ven_settings.min_light_adjustment_offset
+    
     def _get_max_offset(self):
-        return self.ven_settings.max_setpoint_offset
+        return self.ven_settings.max_light_adjustment_offset
 
     def _update_settings(self):
-        self.cool_baseline = self.ven_settings.cooling_setpoint
-        self.heat_baseline = self.ven_settings.heating_setpoint
+        self.light_level_baseline = self.ven_settings.light_level
 
-    def _check_user_override(self):
+    def _check_user_override (self):
         pass
 
     def _test_check_user_override(self, current_cool_sp, current_heat_sp, grid_state):
@@ -73,11 +71,10 @@ class ThermostatOptimizer(BaseOptimizer):
         
         return False
     
-    
-    async def _optimize(self, current_cool_sp, current_heat_sp, grid_state):
+    async def _optimize(self, grid_state):
         """
         Optimize thermostat setpoints based on current grid state and comfort baselines.
-       
+        
         Algorithm:
         - Normal state: No changes
         - Other states: 
@@ -96,57 +93,7 @@ class ThermostatOptimizer(BaseOptimizer):
             - adjustment_made: True if any adjustment was made
             - message: Description of what was done
         """
-        
-        # Normal state: no changes
-        if grid_state == self.STATE_NORMAL:
-            self.last_applied_cool_sp = current_cool_sp
-            self.last_applied_heat_sp = current_heat_sp
-            return (current_cool_sp, current_heat_sp, False, "Normal state - no optimization")
-        
-        
-        # Get offset for current state
-        offset = self.get_offset_for_state(grid_state)
-        
-        # Calculate target setpoints
-        target_cool_sp = self.cool_baseline + offset
-        target_heat_sp = self.heat_baseline - offset
-        
-        # Initialize new setpoints
-        new_cool_sp = current_cool_sp
-        new_heat_sp = current_heat_sp
-        adjustments = []
-        
-        # Cooling optimization
-        # If current cooling setpoint is LOWER than baseline + offset, raise it
-        if current_cool_sp < target_cool_sp:
-            new_cool_sp = target_cool_sp
-            adjustments.append(f"Cool SP: {current_cool_sp}°F → {new_cool_sp}°F")
-        
-        # Heating optimization
-        # If current heating setpoint is HIGHER than baseline - offset, lower it
-        if current_heat_sp > target_heat_sp:
-            new_heat_sp = target_heat_sp
-            adjustments.append(f"Heat SP: {current_heat_sp}°F → {new_heat_sp}°F")
-        
-        # Track what we applied
-        self.last_applied_cool_sp = new_cool_sp
-        self.last_applied_heat_sp = new_heat_sp
-        
-        # Build message
-        state_names = {
-            self.STATE_NORMAL: "Normal",
-            self.STATE_MODERATE: "Moderate",
-            self.STATE_HIGH: "High",
-            self.STATE_EMERGENCY: "Emergency"
-        }
-        state_name = state_names.get(grid_state, "Unknown")
-        
-        if adjustments:
-            message = f"{state_name} state (offset={offset}°F): " + ", ".join(adjustments)
-            return (new_cool_sp, new_heat_sp, True, message)
-        else:
-            message = f"{state_name} state (offset={offset}°F): No adjustment needed"
-            return (new_cool_sp, new_heat_sp, False, message)
+        pass     
     
     def _reset_opt_out(self):
         """

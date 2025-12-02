@@ -18,7 +18,7 @@
           "requiresIoXAccess": true,
           "enableFileUpload": false,
           "nodesAreStatic": true,
-          "requirements": ["oadr30_ven_ud","tzlocal", "isodate", "pytz"],
+          "requirements": ["oadr30_ven_ud","tzlocal", "isodate", "pytz", "nucore-ai"],
           "version": "1.0.5"
     },
     "editors": [

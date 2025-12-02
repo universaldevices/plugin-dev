@@ -291,8 +291,13 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
 
     """########WARNING: DO NOT MODIFY THIS LINE!!! NOTHING BELOW IS REGENERATED!#########"""
 
-    from ven_settings import VENSettings
-    settings = VENSettings()
+
+    def set_settings(self):
+        from ven_settings import VENSettings
+        self.settings = VENSettings()
+
+    def get_settings(self):
+        return self.settings
 
     def queryPrice(self):
         try:
