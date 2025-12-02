@@ -355,12 +355,16 @@ class Oadr3ControllerNode(udi_interface.Node):
     #############################
     ####
 
-    def query_all(self):
+    async def query_all_thread(self):
         time.sleep(2)
         node = self.getNode('oadr3ven')
         if node:
             node.queryAll()
-            self.device_manager.update_profiles()
+            await self.device_manager.update_profiles(True)
+    
+    def query_all(self):
+        import asyncio
+        asyncio.run(self.query_all_thread())
 
     def start(self)->bool:
         self.use_scheduler = False
@@ -401,7 +405,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
 
             import threading
-            from device_manager import DeviceManager
+            from oadr3_device_manager import DeviceManager
             self.device_manager = DeviceManager(self.poly)
             thread = threading.Thread(target=self.query_all)
             thread.start()
@@ -565,7 +569,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                         self.timeseries_index = 0
 
             #load profile for any changes/nodes/updates
-            self.device_manager.update_profiles()
+            self.device_manager.update_profiles(False)
 
             return True
         except Exception as ex:
