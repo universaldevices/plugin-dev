@@ -4,6 +4,7 @@ and periodically updates device profiles based on the latest data from the iox c
 """
 
 
+import asyncio
 from nucore import Node
 from nucore import Profile
 from iox import IoXWrapper
@@ -13,6 +14,7 @@ from ven_settings import VENSettings
 from thermostat_optimizer import ThermostatOptimizer
 from dimmer_optimizer import DimmerOptimizer
 from switch_optimizer import SwitchOptimizer
+import threading
 
 class DeviceManager:
     def __init__(self, poly ):
@@ -45,7 +47,19 @@ class DeviceManager:
         for optimizer in self.switches.values():
             await optimizer.optimize(grid_state) 
 
-    async def update_profiles(self, resubscribe=False):
+    def subscribe_events(self):
+        if self.is_subscribed:
+            return
+        try:
+            threading.Thread(target=asyncio.run, args=(self.iox.subscribe_events(
+                on_message_callback=self.__on_message__,
+                on_connect_callback=self.__on_connect__,
+                on_disconnect_callback=self.__on_disconnect__),)).start()
+        except Exception as ex:
+            LOGGER.error(f"Failed to subscribe to events: {str(ex)}")   
+
+
+    def update_profiles(self):
         """
         Updates the device profiles by fetching the latest data from the iox controller
         """
@@ -62,23 +76,11 @@ class DeviceManager:
                 LOGGER.error("Failed to map nodes from XML data")
                 return False
             self.__process_devices__()
-            if not self.is_subscribed or resubscribe:
-                self.__subscription_thread()
-                self.is_subscribed = True
+            return True
         except Exception as ex:
             LOGGER.error(f"Failed to update profiles: {str(ex)}")
             return False
 
-    def __subscription_thread(self):
-        """
-        Thread to handle event subscription
-        """
-        import asyncio
-        asyncio.run(self.iox.subscribe_events(
-            on_message_callback=self.__on_message__,
-            on_connect_callback=self.__on_connect__,
-            on_disconnect_callback=self.__on_disconnect__))
-        
     def __process_devices__(self):
         """
         Processes devices and categorizes them into thermostats, dimmers, and switches
@@ -253,10 +255,12 @@ class DeviceManager:
         """
         Callback function to handle connection established event
         """
+        self.is_subscribed = True
         print("Connected to event stream") 
     
     async def __on_disconnect__(self):
         """
         Callback function to handle disconnection event
         """
+        self.is_subscribed = False
         print("Disconnected from event stream")

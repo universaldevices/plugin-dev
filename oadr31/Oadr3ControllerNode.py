@@ -355,18 +355,23 @@ class Oadr3ControllerNode(udi_interface.Node):
     #############################
     ####
 
-    async def query_all(self):
+    def query_all(self):
         time.sleep(2)
         node = self.getNode('oadr3ven')
         if node:
             node.set_settings()
             self.device_manager.update_settings(node.get_settings())
-            await self.device_manager.update_profiles(True)
+            self.device_manager.update_profiles()
             node.queryAll()
 
-    def query_all_thread(self):
-        import asyncio
-        asyncio.run(self.query_all())
+    def short_poll_thread(self):
+        while True:
+            try:
+                time.sleep(5)
+                self.shortPoll()
+            except Exception as ex:
+                LOGGER.error(str(ex))
+
     
     def start(self)->bool:
         self.use_scheduler = False
@@ -409,7 +414,10 @@ class Oadr3ControllerNode(udi_interface.Node):
             import threading
             from oadr3_device_manager import DeviceManager
             self.device_manager = DeviceManager(self.poly)
-            thread = threading.Thread(target=self.query_all_thread)
+            thread = threading.Thread(target=self.query_all)
+            thread.start()
+
+            thread = threading.Thread(target=self.short_poll_thread)
             thread.start()
 
             return True
@@ -547,6 +555,8 @@ class Oadr3ControllerNode(udi_interface.Node):
                 LOGGER.info('Not connected to VTN yet ...')
                 return True
         try:
+            self.device_manager.subscribe_events()
+
             events = self.vtn.get_events('0')
             if events:
                 timeSeries = events.getTimeSeries()
@@ -569,9 +579,6 @@ class Oadr3ControllerNode(udi_interface.Node):
                         self.timeseries_index += 1
                     if self.timeseries_index >= length:
                         self.timeseries_index = 0
-
-            #load profile for any changes/nodes/updates
-            #self.device_manager.update_profiles(False)
 
             return True
         except Exception as ex:
