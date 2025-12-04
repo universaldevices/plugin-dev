@@ -26,6 +26,7 @@ class DeviceManager:
         self.switches={}
         self.ven=None
         self.is_subscribed=False
+        self.is_profiles_updated=False
 
     def update_settings(self, ven_settings:VENSettings):
         """
@@ -48,7 +49,7 @@ class DeviceManager:
             await optimizer.optimize(grid_state) 
 
     def subscribe_events(self):
-        if self.is_subscribed:
+        if not self.is_profiles_updated or self.is_subscribed:
             return
         try:
             threading.Thread(target=asyncio.run, args=(self.iox.subscribe_events(
@@ -76,6 +77,7 @@ class DeviceManager:
                 LOGGER.error("Failed to map nodes from XML data")
                 return False
             self.__process_devices__()
+            self.is_profiles_updated = True
             return True
         except Exception as ex:
             LOGGER.error(f"Failed to update profiles: {str(ex)}")
@@ -99,7 +101,7 @@ class DeviceManager:
                     self.thermostats[node.address] = ThermostatOptimizer(self.ven_settings, node, self.iox)
                     break
                 elif prop.id == "OL" or prop.id == "RR":
-                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node, self.iox)
+                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node,  self.iox)
                     break 
                 else:
                     for cmd in node_def.cmds.accepts:
@@ -107,10 +109,10 @@ class DeviceManager:
                             #make sure we don't also have OL and RR
                             for cmd in node_def.cmds.accepts:
                                 if cmd.id == "OL" or cmd.id == "RR":
-                                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node, self.iox)
+                                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node,  self.iox)
                                     break
                             if node.address not in self.dimmers.keys():    
-                                self.switches[node.address] = SwitchOptimizer(self.ven_settings, node, self.iox)
+                                self.switches[node.address] = SwitchOptimizer(self.ven_settings, node,  self.iox)
                                 break
 
     def __get_node_definitions__(self, node):           

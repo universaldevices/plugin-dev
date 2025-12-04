@@ -1,7 +1,7 @@
 from iox import IoXWrapper
 from nucore import Node
 from base_optimizer import BaseOptimizer
-from ven_settings import VENSettings
+from ven_settings import GridState, VENSettings
     
 class ThermostatOptimizer(BaseOptimizer):
     """
@@ -30,20 +30,10 @@ class ThermostatOptimizer(BaseOptimizer):
         self.current_mode = None
         self.last_applied_cool_sp = None
         self.last_applied_heat_sp = None
-        try:
-            properties = node.properties
-            if properties:
-                for prop_id, prop in properties.items(): 
-                    if prop_id == 'CLISPC':
-                        self.current_cool_sp = self.value_to_float(prop.value, prop.prec)
-                    elif prop_id == 'CLISPH':
-                        self.current_heat_sp = self.value_to_float(prop.value, prop.prec)
-                    elif prop_id == 'ST':
-                        self.current_temp = self.value_to_float(prop.value, prop.prec)
-                    elif prop_id == 'CLIMD':
-                        self.current_mode = str(prop.value)
-        except Exception as ex:
-            print(f"ThermostatOptimizer init error: {ex}")
+        self.cool_prec=None
+        self.heat_prec=None
+        self.cool_uom=None
+        self.heat_uom=None
         
     def _get_min_offset(self):
         return self.ven_settings.min_setpoint_offset
@@ -55,10 +45,7 @@ class ThermostatOptimizer(BaseOptimizer):
         self.cool_baseline = self.ven_settings.cooling_setpoint
         self.heat_baseline = self.ven_settings.heating_setpoint
 
-    def _check_user_override(self):
-        pass
-
-    def _test_check_user_override(self, current_cool_sp, current_heat_sp, grid_state):
+    def _check_user_override(self, grid_state):
         """
         Check if the user has manually changed setpoints during an active optimization state.
         If detected, opt out of optimization until the next day.
@@ -72,7 +59,7 @@ class ThermostatOptimizer(BaseOptimizer):
             True if user override detected and opted out, False otherwise
         """
         # Only check for overrides during non-normal states
-        if grid_state == self.STATE_NORMAL:
+        if grid_state == GridState.NORMAL: 
             return False
         
         # If we haven't applied any setpoints yet, no override possible
@@ -81,8 +68,8 @@ class ThermostatOptimizer(BaseOptimizer):
         
         # Check if current setpoints differ from what we last applied
         # Allow for small floating point differences
-        cool_changed = abs(current_cool_sp - self.last_applied_cool_sp) > 0.5
-        heat_changed = abs(current_heat_sp - self.last_applied_heat_sp) > 0.5
+        cool_changed = abs(self.current_cool_sp - self.last_applied_cool_sp) > 0.5
+        heat_changed = abs(self.current_heat_sp - self.last_applied_heat_sp) > 0.5
         
         if cool_changed or heat_changed:
             # User has overridden - opt out until next day
@@ -91,81 +78,112 @@ class ThermostatOptimizer(BaseOptimizer):
         
         return False
     
-    
-    async def _optimize(self, current_cool_sp, current_heat_sp, grid_state):
+    def _adjust_setpoints(self, cool_value:float, heat_value:float): 
+        """
+        Generate command to set thermostat setpoints.
+        
+        Args:
+            command: 'set_cool_setpoint' or 'set_heat_setpoint'
+            value: New setpoint value
+            
+        Returns:
+            Command dictionary to send to IoX
+        """
+        commands = []
+        if cool_value is not None: 
+            commands.append({
+            'device_id': self.node.address,
+            'command_id': 'CLISPC', 
+            'command_params': [
+                {'id': 'n/a', 'value': cool_value, 'uom': self.cool_uom, 'prec': self.cool_prec}
+            ]
+            })
+        if heat_value is not None: 
+            commands.append({
+            'device_id': self.node.address,
+            'command_id': 'CLISPH', 
+            'command_params': [
+                {'id': 'n/a', 'value': heat_value, 'uom': self.heat_uom, 'prec': self.heat_prec}
+            ]
+            })
+
+        if len(commands) > 0:
+            response = self.iox.send_commands(commands)
+            if response is None or len(response) == 0:
+                print ('ThermostatOptimizer: Failed to send setpoint adjustment commands to IoX.')
+                return None, None
+            if len(response) == 2:
+                if response[0] is None or response[0].status_code != 200:
+                    cool_value = None
+                if response[1] is None or response[1].status_code != 200:
+                    heat_value = None
+            elif len(response) == 1:
+                if response[0] is None or response[0].status_code != 200:
+                    if commands[0]['command_id'] == 'CLISPC':
+                        cool_value = None
+                    elif commands[0]['command_id'] == 'CLISPH':
+                        heat_value = None
+            return cool_value, heat_value
+        return None, None
+
+    async def _optimize(self, grid_state):
         """
         Optimize thermostat setpoints based on current grid state and comfort baselines.
+        We assume that the grid_state has changed.
        
         Algorithm:
-        - Normal state: No changes
+        - Normal state: goes back to baseline setpoints 
         - Other states: 
           * Cooling: If current < cool_baseline + offset, adjust to cool_baseline + offset
           * Heating: If current > heat_baseline - offset, adjust to heat_baseline - offset
         
         Args:
-            current_cool_sp: Current cooling setpoint (°F)
-            current_heat_sp: Current heating setpoint (°F)
             grid_state: Current grid state (0=Normal, 1=Moderate, 2=High, 3=Emergency)
             
-        Returns:
+        Performs:
             Tuple of (new_cool_sp, new_heat_sp, adjustment_made, message)
             - new_cool_sp: Optimized cooling setpoint
             - new_heat_sp: Optimized heating setpoint
             - adjustment_made: True if any adjustment was made
             - message: Description of what was done
         """
-        
-        # Normal state: no changes
-        if grid_state == self.STATE_NORMAL:
-            self.last_applied_cool_sp = current_cool_sp
-            self.last_applied_heat_sp = current_heat_sp
-            return (current_cool_sp, current_heat_sp, False, "Normal state - no optimization")
-        
-        
         # Get offset for current state
         offset = self.get_offset_for_state(grid_state)
-        
         # Calculate target setpoints
         target_cool_sp = self.cool_baseline + offset
         target_heat_sp = self.heat_baseline - offset
+
+        if self.last_applied_cool_sp is not None and self.last_applied_cool_sp == target_cool_sp:
+            target_cool_sp = None
+            print ('ThermostatOptimizer: target cooling setpoint unchanged from last applied value. Skipping optimization.')
         
-        # Initialize new setpoints
-        new_cool_sp = current_cool_sp
-        new_heat_sp = current_heat_sp
-        adjustments = []
-        
-        # Cooling optimization
-        # If current cooling setpoint is LOWER than baseline + offset, raise it
-        if current_cool_sp < target_cool_sp:
-            new_cool_sp = target_cool_sp
-            adjustments.append(f"Cool SP: {current_cool_sp}°F → {new_cool_sp}°F")
-        
+        if self.last_applied_heat_sp is not None and self.last_applied_heat_sp == target_heat_sp:
+            print ('ThermostatOptimizer: target heating setpoint unchanged from last applied value. Skipping optimization.')
+            target_heat_sp = None
+
+        #optimization but only if current grid state is greater than the last othewrwise 
+        #set points never change which is an error
         # Heating optimization
-        # If current heating setpoint is HIGHER than baseline - offset, lower it
-        if current_heat_sp > target_heat_sp:
-            new_heat_sp = target_heat_sp
-            adjustments.append(f"Heat SP: {current_heat_sp}°F → {new_heat_sp}°F")
+        if grid_state >= self.last_grid_state:
+            # If current heating setpoint is HIGHER than baseline - offset, lower it
+            if self.current_heat_sp is not None and self.current_heat_sp < target_heat_sp:
+                target_heat_sp = None
+                print ('ThermostatOptimizer: current heating setpoint is already below target. No adjustment needed.')
+            
+            # Cooling optimization
+            # If current cooling setpoint is LOWER than baseline + offset, raise it
+            if self.current_cool_sp is not None and self.current_cool_sp > target_cool_sp:
+                target_cool_sp = None
+                print ('ThermostatOptimizer: current cooling setpoint is already above target. No adjustment needed.')
+
+        # now adjust the thermostats
+        new_cool_sp, new_heat_sp = self._adjust_setpoints(target_cool_sp, target_heat_sp)
+        if new_cool_sp is not None:
+            self.last_applied_cool_sp = new_cool_sp
+        if new_heat_sp is not None:
+            self.last_applied_heat_sp = new_heat_sp
         
-        # Track what we applied
-        self.last_applied_cool_sp = new_cool_sp
-        self.last_applied_heat_sp = new_heat_sp
         
-        # Build message
-        state_names = {
-            self.STATE_NORMAL: "Normal",
-            self.STATE_MODERATE: "Moderate",
-            self.STATE_HIGH: "High",
-            self.STATE_EMERGENCY: "Emergency"
-        }
-        state_name = state_names.get(grid_state, "Unknown")
-        
-        if adjustments:
-            message = f"{state_name} state (offset={offset}°F): " + ", ".join(adjustments)
-            return (new_cool_sp, new_heat_sp, True, message)
-        else:
-            message = f"{state_name} state (offset={offset}°F): No adjustment needed"
-            return (new_cool_sp, new_heat_sp, False, message)
-    
     def _reset_opt_out(self):
         """
         Manually reset the opt-out status (e.g., for testing or user request).
@@ -186,9 +204,13 @@ class ThermostatOptimizer(BaseOptimizer):
         """
 
         if property == 'CLISPC':
-            self.current_cool_sp = self.value_to_float(value['value'], value['prec'])
+            self.cool_prec = value['prec']
+            self.cool_uom = value['uom']
+            self.current_cool_sp = self.value_to_float(value['value'], self.cool_prec)
         elif property == 'CLISPH':
-            self.current_heat_sp = self.value_to_float(value['value'], value['prec'])    
+            self.heat_prec = value['prec']
+            self.heat_uom = value['uom']
+            self.current_heat_sp = self.value_to_float(value['value'], self.heat_prec)    
         elif property == 'ST':
             self.current_temp = self.value_to_float(value['value'], value['prec'])
         elif property == 'CLIMD':

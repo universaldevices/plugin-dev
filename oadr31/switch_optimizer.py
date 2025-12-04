@@ -1,7 +1,7 @@
 from iox import IoXWrapper
 from nucore import Node
 from base_optimizer import BaseOptimizer
-from ven_settings import VENSettings
+from ven_settings import GridState, VENSettings
     
 class SwitchOptimizer(BaseOptimizer):
     """
@@ -35,7 +35,7 @@ class SwitchOptimizer(BaseOptimizer):
     def _update_settings(self):
         self.switch_baseline = 0 
 
-    def _check_user_override(self):
+    def _check_user_override(self, grid_state):
         pass
 
     def _test_check_user_override(self, current_cool_sp, current_heat_sp, grid_state):
@@ -52,7 +52,7 @@ class SwitchOptimizer(BaseOptimizer):
             True if user override detected and opted out, False otherwise
         """
         # Only check for overrides during non-normal states
-        if grid_state == self.STATE_NORMAL:
+        if grid_state == GridState.NORMAL: 
             return False
         
         # If we haven't applied any setpoints yet, no override possible

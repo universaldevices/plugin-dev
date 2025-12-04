@@ -2,12 +2,24 @@ import json
 import os
 from typing import Dict, Any, Optional
 
+from enum import IntEnum
+
+class ComfortLevel(IntEnum):
+    MAX_COMFORT = 0
+    BALANCED = 1
+    MAX_SAVINGS = 2
+
+class GridState(IntEnum):
+    NORMAL = 0
+    MODERATE = 1
+    HIGH = 2
+    EMERGENCY = 3
+
 class VENSettings:
     """
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    
     def __init__(self, storage_file: str = 'oadr3ven_settings.json'):
         """
         Initialize the VENSettings storage handler.

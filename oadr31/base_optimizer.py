@@ -1,4 +1,4 @@
-from ven_settings import VENSettings
+from ven_settings import VENSettings, ComfortLevel, GridState
 from abc import ABC, abstractmethod
 from nucore import Node
 from nucore import Profile
@@ -9,13 +9,6 @@ class BaseOptimizer(ABC):
     Base optimizer class for demand response optimization.
     All optimizers should inherit from this class.
     """
-    
-    # Grid states
-    NUM_STATES = 4
-    STATE_NORMAL = 0
-    STATE_MODERATE = 1
-    STATE_HIGH = 2
-    STATE_EMERGENCY = 3  # Special/Emergency
     
     def __init__(self, ven_settings: VENSettings, node:Node, iox:IoXWrapper):
         """
@@ -31,10 +24,10 @@ class BaseOptimizer(ABC):
         self.update_settings(ven_settings)
         self.reset_opt_out()
         
-        self.last_grid_state = None
-        self.callibrate()
+        self.last_grid_state = GridState.NORMAL
+        self.calibrate()
     
-    def callibrate(self):
+    def calibrate(self):
         """
         Calibrate the optimizer. Default is simple linear offsets based on min/max and number of states. 
         Override in subclasses if different calibration is required.
@@ -42,13 +35,24 @@ class BaseOptimizer(ABC):
         min_offset = self._get_min_offset()
         max_offset = self._get_max_offset()
 
+        #adjust min and max based on comfort level
+        comfort_level = self.ven_settings.comfort_level
+        if comfort_level == ComfortLevel.MAX_COMFORT:
+            pass # No change
+        elif comfort_level == ComfortLevel.BALANCED:
+            min_offset = abs(min_offset + 1.0)
+            max_offset = abs(max_offset + 1.0)
+        elif comfort_level == ComfortLevel.MAX_SAVINGS:
+            min_offset = abs(min_offset + 2.0)
+            max_offset = abs(max_offset + 2.0)
+
         # Define offsets for each state within min/max bounds
         # Simple linear distribution of offsets based on NUM_STATES
         range_offset = max_offset - min_offset
-        step = range_offset / (self.NUM_STATES - 1) if self.NUM_STATES > 1 else 0   
-        self.normal_offset = min_offset
-        self.moderate_offset = min_offset + step
-        self.high_offset = min_offset + 2 * step
+        step = range_offset / 2   
+        self.normal_offset = 0 # No offset for normal state
+        self.moderate_offset = min_offset   
+        self.high_offset = min_offset + step 
         self.emergency_offset = max_offset
 
 
@@ -59,6 +63,7 @@ class BaseOptimizer(ABC):
         Args:
             state: Current grid state (0-3)
         """
+        grid_state = int(grid_state) 
         if self.last_grid_state is None or grid_state == self.last_grid_state:
             print(f"grid state has not changed from {self.last_grid_state} to {grid_state}, skipping optimization")
             return
@@ -69,11 +74,12 @@ class BaseOptimizer(ABC):
             return 
 
         # Check for user override
-        if self._check_user_override():
+        if self._check_user_override(grid_state):
             print(f"{self.node.name} is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
             return
         
-        return await self._optimize(grid_state)
+        await self._optimize(grid_state)
+        self.last_grid_state = grid_state
     
     
     def get_offset_for_state(self, state):
@@ -81,18 +87,19 @@ class BaseOptimizer(ABC):
         Get the offset value for a given grid state.
         
         Args:
-            state: Grid state (STATE_NORMAL, STATE_MODERATE, STATE_HIGH, STATE_EMERGENCY)
+            state: Grid state (NORMAL, MODERATE, HIGH, EMERGENCY)
             
         Returns:
             Offset value for the state
         """
-        if state == self.STATE_NORMAL:
+        state = int(state)
+        if state == GridState.NORMAL: 
             return self.normal_offset
-        elif state == self.STATE_MODERATE:
+        elif state == GridState.MODERATE: 
             return self.moderate_offset
-        elif state == self.STATE_HIGH:
+        elif state == GridState.HIGH:
             return self.high_offset
-        elif state == self.STATE_EMERGENCY:
+        elif state == GridState.EMERGENCY:
             return self.emergency_offset
         else:
             return 0
@@ -120,7 +127,7 @@ class BaseOptimizer(ABC):
         pass
 
     @abstractmethod 
-    def _check_user_override(self):
+    def _check_user_override(self, grid_state):
         """
         Override this method in subclasses to check if the user has manually changed
         device settings during an active optimization state.
