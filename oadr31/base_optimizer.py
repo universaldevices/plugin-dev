@@ -166,9 +166,73 @@ class BaseOptimizer(ABC):
         self.opt_out_until = None
         self._reset_opt_out()
 
+
+    def value_to_float(self, value, precision):
+        """Format a float value to the specified precision.
+        
+        Args:
+            value: Float value to format
+            precision: Number of decimal places
+            
+        Returns:
+            Formatted float as string
+        """
+        if precision is None or precision == '0':
+            return float(value)
+        div = 10 ** int(precision)
+        return float(int(value)/div)
+
     @abstractmethod 
     def _reset_opt_out(self):
         """Reset the opt-out states held by children """
+        pass
+
+    async def update_internal_state(self, event):
+        """
+        Update internal state based on event changes.
+        
+        Args:
+            event: Event data that may affect internal state
+            {
+                'seqnum': str or None,
+                'sid': str or None,
+                'timestamp': str or None,
+                'control': str,
+                'action': {
+                    'value': str,
+                    'uom': str or None,
+                    'prec': str or None
+                },
+                'node': str,
+                'fmtAct': str,
+                'fmtName': str
+            }
+        """
+        if event is None or 'control' not in event or 'action' not in event:
+            print("Invalid event data, cannot update internal state")
+            return
+        
+        control = event['control']
+        action = event['action']
+        if control is None or action is None:
+            print("Invalid control or action in event data")
+            return
+        await self._update_internal_state(control, action)
+
+    @abstractmethod 
+    async def _update_internal_state(self, property, value):
+        """
+        Override this method in subclasses to update internal state based on control and action.
+        
+        Args:
+            control: Control string from event
+            action: Action dictionary from event
+                'action': {
+                    'value': str,
+                    'uom': str or None,
+                    'prec': str or None
+                }
+        """
         pass
     
     def opt_out(self):

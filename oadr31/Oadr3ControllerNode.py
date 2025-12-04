@@ -367,7 +367,7 @@ class Oadr3ControllerNode(udi_interface.Node):
     def short_poll_thread(self):
         while True:
             try:
-                time.sleep(5)
+                time.sleep(10)
                 self.shortPoll()
             except Exception as ex:
                 LOGGER.error(str(ex))

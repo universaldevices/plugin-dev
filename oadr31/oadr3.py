@@ -32,7 +32,6 @@ def configurePluginFile():
                 return False
    return True
 
-
 if __name__ == '__main__':
     try:
         polyglot = udi_interface.Interface([])
@@ -44,7 +43,7 @@ if __name__ == '__main__':
             polyglot.Notices.clear()
             plugin = Plugin(PLUGIN_FILE_NAME)
             plugin.toIoX()
-            plugin.generateCode(path='./')
+        #    plugin.generateCode(path='./')
             from Oadr3ControllerNode import Oadr3ControllerNode
             controller = Oadr3ControllerNode(polyglot, plugin)
             polyglot.ready()

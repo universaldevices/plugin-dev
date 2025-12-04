@@ -101,3 +101,18 @@ class SwitchOptimizer(BaseOptimizer):
         """
         self.last_applied_cool_sp = None
         self.last_applied_heat_sp = None
+
+    
+    async def _update_internal_state(self, property, value):
+        """
+        Args:
+            property: property name from the event 
+            value: the value for the property 
+                'action': {
+                    'value': str,
+                    'uom': str or None,
+                    'prec': str or None
+                }
+        """
+        print (property, value)
+        pass

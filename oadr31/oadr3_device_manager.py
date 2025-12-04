@@ -134,27 +134,6 @@ class DeviceManager:
             LOGGER.warning(f"Failed to get node definitions for {node.address}: {str(ex)}")
             return None
 
-    async def __process_thermostat__(self, node, message):
-        """
-        Processes thermostat-specific messages
-        @param message: The incoming message from the event stream in JSON
-        """
-        print(f"Thermostat message: {message}")
-
-    async def __process_dimmer__(self, node, message):
-        """
-        Processes dimmer-specific messages
-        @param message: The incoming message from the event stream in JSON
-        """
-        print(f"Dimmer message: {message}")
-
-    async def __process_switch__(self, node, message):
-        """
-        Processes switch-specific messages
-        @param message: The incoming message from the event stream in JSON
-        """
-        print(f"Switch message: {message}")
-
     async def __process_ven__(self, message):
         """
         Processes VEN-specific messages
@@ -239,12 +218,12 @@ class DeviceManager:
         control = message['control']
         if control == "_3": #node updated event
             await self.__process_node_update__(node_address, message)
-        elif node_address in self.thermostats:
-            await self.__process_thermostat__(self.thermostats[node_address], message)
-        elif node_address in self.dimmers:
-            await self.__process_dimmer__(self.dimmers[node_address], message)
-        elif node_address in self.switches:
-            await self.__process_switch__(self.switches[node_address], message)
+        elif node_address in self.thermostats.keys():
+            await self.thermostats[node_address].update_internal_state(message)
+        elif node_address in self.dimmers.keys():
+            await self.dimmers[node_address].update_internal_state(message)
+        elif node_address in self.switches.keys():
+            await self.switches[node_address].update_internal_state(message)
         elif self.ven and node_address == self.ven.address:
             await self.__process_ven__(message)
         else:

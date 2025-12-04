@@ -24,9 +24,27 @@ class ThermostatOptimizer(BaseOptimizer):
         """
         super().__init__(ven_settings, node, iox)
         # Track last applied setpoints to detect user changes
+        self.current_cool_sp = None
+        self.current_heat_sp = None
+        self.current_temp = None
+        self.current_mode = None
         self.last_applied_cool_sp = None
         self.last_applied_heat_sp = None
-
+        try:
+            properties = node.properties
+            if properties:
+                for prop_id, prop in properties.items(): 
+                    if prop_id == 'CLISPC':
+                        self.current_cool_sp = self.value_to_float(prop.value, prop.prec)
+                    elif prop_id == 'CLISPH':
+                        self.current_heat_sp = self.value_to_float(prop.value, prop.prec)
+                    elif prop_id == 'ST':
+                        self.current_temp = self.value_to_float(prop.value, prop.prec)
+                    elif prop_id == 'CLIMD':
+                        self.current_mode = str(prop.value)
+        except Exception as ex:
+            print(f"ThermostatOptimizer init error: {ex}")
+        
     def _get_min_offset(self):
         return self.ven_settings.min_setpoint_offset
 
@@ -154,3 +172,24 @@ class ThermostatOptimizer(BaseOptimizer):
         """
         self.last_applied_cool_sp = None
         self.last_applied_heat_sp = None
+
+    async def _update_internal_state(self, property, value):
+        """
+        Args:
+            property: property name from the event 
+            value: the value for the property 
+                'action': {
+                    'value': str,
+                    'uom': str or None,
+                    'prec': str or None
+                }
+        """
+
+        if property == 'CLISPC':
+            self.current_cool_sp = self.value_to_float(value['value'], value['prec'])
+        elif property == 'CLISPH':
+            self.current_heat_sp = self.value_to_float(value['value'], value['prec'])    
+        elif property == 'ST':
+            self.current_temp = self.value_to_float(value['value'], value['prec'])
+        elif property == 'CLIMD':
+            self.current_mode = str(value['value'])
