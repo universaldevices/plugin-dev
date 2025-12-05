@@ -355,7 +355,7 @@ class Oadr3ControllerNode(udi_interface.Node):
     #############################
     ####
 
-    def query_all(self):
+    def query_all_thread(self):
         time.sleep(2)
         node = self.getNode('oadr3ven')
         if node:
@@ -364,15 +364,6 @@ class Oadr3ControllerNode(udi_interface.Node):
             self.device_manager.update_profiles()
             node.queryAll()
 
-    def short_poll_thread(self):
-        while True:
-            try:
-                time.sleep(10)
-                self.shortPoll()
-            except Exception as ex:
-                LOGGER.error(str(ex))
-
-    
     def start(self)->bool:
         self.use_scheduler = False
         self.timeseries_index = 0
@@ -414,10 +405,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             import threading
             from oadr3_device_manager import DeviceManager
             self.device_manager = DeviceManager(self.poly)
-            thread = threading.Thread(target=self.query_all)
-            thread.start()
-
-            thread = threading.Thread(target=self.short_poll_thread)
+            thread = threading.Thread(target=self.query_all_thread)
             thread.start()
 
             return True
