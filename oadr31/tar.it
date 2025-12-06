@@ -1,3 +1,3 @@
 #!/bin/sh
 version=$(cat version.py | awk -F'=' '{print $2'}| sed 's/\"//g')
-tar -czvf oadr31-${version}.pro.tar.gz *.py *.md profile requirements.txt install.sh oadr3.iox_plugin.json
+tar -czvf oadr31-${version}.pro.tar.gz *.py *.md profile optimizers requirements.txt install.sh oadr3.iox_plugin.json

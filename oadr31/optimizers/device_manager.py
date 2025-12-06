@@ -11,9 +11,9 @@ from iox import IoXWrapper
 from udi_interface import LOGGER
 import xml.etree.ElementTree as ET
 from ven_settings import VENSettings
-from thermostat_optimizer import ThermostatOptimizer
-from dimmer_optimizer import DimmerOptimizer
-from switch_optimizer import SwitchOptimizer
+from .thermostat_optimizer import ThermostatOptimizer
+from .dimmer_optimizer import DimmerOptimizer
+from .switch_optimizer import SwitchOptimizer
 import threading
 
 class DeviceManager:

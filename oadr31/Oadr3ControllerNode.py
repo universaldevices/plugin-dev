@@ -403,7 +403,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
 
             import threading
-            from oadr3_device_manager import DeviceManager
+            from optimizers.device_manager import DeviceManager
             self.device_manager = DeviceManager(self.poly)
             thread = threading.Thread(target=self.query_all_thread)
             thread.start()

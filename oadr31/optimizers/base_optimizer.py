@@ -3,13 +3,19 @@ from abc import ABC, abstractmethod
 from nucore import Node
 from nucore import Profile
 from iox import IoXWrapper
+from datetime import datetime, timedelta
 
+# change this when no longer testing
+TESTING_MODE = True
+NEXT_USER_OVERRIDE_CHECK_INTERVAL = timedelta(seconds=3)
+OPT_OUT_DURATION = timedelta(seconds=10) if TESTING_MODE else timedelta(days=1)
+    
 class BaseOptimizer(ABC):
     """
     Base optimizer class for demand response optimization.
     All optimizers should inherit from this class.
     """
-    
+
     def __init__(self, ven_settings: VENSettings, node:Node, iox:IoXWrapper):
         """
         Initialize the optimizer with VEN settings.
@@ -25,6 +31,7 @@ class BaseOptimizer(ABC):
         self.reset_opt_out()
         
         self.last_grid_state = GridState.NORMAL
+        self.next_user_override_check = datetime.now() + self.NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         self.calibrate()
     
     def calibrate(self):
@@ -48,13 +55,12 @@ class BaseOptimizer(ABC):
 
         # Define offsets for each state within min/max bounds
         # Simple linear distribution of offsets based on NUM_STATES
-        range_offset = max_offset - min_offset
-        step = range_offset / 2   
+        range_offset = int(max_offset - min_offset)
+        step = int(range_offset / 2)
         self.normal_offset = 0 # No offset for normal state
-        self.moderate_offset = min_offset   
-        self.high_offset = min_offset + step 
-        self.emergency_offset = max_offset
-
+        self.moderate_offset = int(min_offset)
+        self.high_offset = int (min_offset + step)
+        self.emergency_offset = int(max_offset)
 
     async def optimize(self, grid_state: int):
         """
@@ -74,7 +80,9 @@ class BaseOptimizer(ABC):
             return 
 
         # Check for user override
-        if self._check_user_override(grid_state):
+        if self.check_user_override(grid_state):
+            # User has overridden - opt out until next day
+            self.opt_out()
             print(f"{self.node.name} is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
             return
         
@@ -126,6 +134,23 @@ class BaseOptimizer(ABC):
         """
         pass
 
+    def check_user_override(self, grid_state):
+        """
+        Check if the user has manually changed device settings during an active optimization state.
+        If detected, opt out of optimization until the next day.
+        
+        Args:
+            grid_state: Current grid state
+        Returns: 
+            True if user override detected and opted out, False otherwise
+        """
+        if datetime.now() < self.next_user_override_check:
+            return False
+
+        rc = self._check_user_override(grid_state)
+        self.next_user_override_check = datetime.now() + self.NEXT_USER_OVERRIDE_CHECK_INTERVAL 
+        return rc
+        
     @abstractmethod 
     def _check_user_override(self, grid_state):
         """
@@ -246,12 +271,11 @@ class BaseOptimizer(ABC):
         """
         Opt out of optimization until the next day (midnight).
         """
-        from datetime import datetime, timedelta
         
         self.opted_out = True
         # Set opt-out until midnight of the next day
         now = datetime.now()
-        next_day = now.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        next_day = now + OPT_OUT_DURATION if TESTING_MODE else (now.replace(hour=0, minute=0, second=0, microsecond=0) + OPT_OUT_DURATION)
         self.opt_out_until = next_day
     
     def check_opt_out_status(self):
@@ -263,8 +287,6 @@ class BaseOptimizer(ABC):
         """
         if not self.opted_out:
             return False
-        
-        from datetime import datetime
         
         if self.opt_out_until and datetime.now() >= self.opt_out_until:
             # Opt-out period has expired

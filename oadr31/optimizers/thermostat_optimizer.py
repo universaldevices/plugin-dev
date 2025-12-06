@@ -1,6 +1,6 @@
 from iox import IoXWrapper
 from nucore import Node
-from base_optimizer import BaseOptimizer
+from .base_optimizer import BaseOptimizer
 from ven_settings import GridState, VENSettings
     
 class ThermostatOptimizer(BaseOptimizer):
@@ -63,17 +63,20 @@ class ThermostatOptimizer(BaseOptimizer):
             return False
         
         # If we haven't applied any setpoints yet, no override possible
-        if self.last_applied_cool_sp is None or self.last_applied_heat_sp is None:
+        if self.last_applied_cool_sp is None and self.last_applied_heat_sp is None:
             return False
         
         # Check if current setpoints differ from what we last applied
         # Allow for small floating point differences
-        cool_changed = abs(self.current_cool_sp - self.last_applied_cool_sp) > 0.5
-        heat_changed = abs(self.current_heat_sp - self.last_applied_heat_sp) > 0.5
+        cool_changed = False
+        heat_changed = False
+        if self.current_cool_sp is not None and self.last_applied_cool_sp is not None:
+            cool_changed = abs(self.current_cool_sp - self.last_applied_cool_sp) != 0
         
+        if self.current_heat_sp is not None and self.last_applied_heat_sp is not None:
+            heat_changed = abs(self.current_heat_sp - self.last_applied_heat_sp) != 0 
+
         if cool_changed or heat_changed:
-            # User has overridden - opt out until next day
-            self.opt_out()
             return True
         
         return False
@@ -206,11 +209,13 @@ class ThermostatOptimizer(BaseOptimizer):
         if property == 'CLISPC':
             self.cool_prec = value['prec']
             self.cool_uom = value['uom']
-            self.current_cool_sp = self.value_to_float(value['value'], self.cool_prec)
+            value = self.value_to_float(value['value'], self.cool_prec)
+            self.current_cool_sp = value
         elif property == 'CLISPH':
             self.heat_prec = value['prec']
             self.heat_uom = value['uom']
-            self.current_heat_sp = self.value_to_float(value['value'], self.heat_prec)    
+            value = self.value_to_float(value['value'], self.heat_prec)
+            self.current_heat_sp = value    
         elif property == 'ST':
             self.current_temp = self.value_to_float(value['value'], value['prec'])
         elif property == 'CLIMD':

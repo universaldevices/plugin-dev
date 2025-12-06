@@ -1,6 +1,6 @@
 from iox import IoXWrapper
 from nucore import Node
-from base_optimizer import BaseOptimizer
+from .base_optimizer import BaseOptimizer
 from ven_settings import GridState, VENSettings
     
 class SwitchOptimizer(BaseOptimizer):
