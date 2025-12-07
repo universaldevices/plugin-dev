@@ -4,4 +4,6 @@ logs/*.*
 *.cert
 *.key
 __pycache__/
+data/
+history/
 

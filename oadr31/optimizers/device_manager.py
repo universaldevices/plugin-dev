@@ -5,15 +5,18 @@ and periodically updates device profiles based on the latest data from the iox c
 
 
 import asyncio
+import os
 from nucore import Node
 from nucore import Profile
 from iox import IoXWrapper
 from udi_interface import LOGGER
 import xml.etree.ElementTree as ET
-from ven_settings import VENSettings
+from opt_config.ven_settings import VENSettings
 from .thermostat_optimizer import ThermostatOptimizer
 from .dimmer_optimizer import DimmerOptimizer
 from .switch_optimizer import SwitchOptimizer
+from history.device_history import DeviceHistory
+from .base_optimizer import BaseOptimizer
 import threading
 
 class DeviceManager:

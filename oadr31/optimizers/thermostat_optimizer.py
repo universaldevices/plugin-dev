@@ -1,7 +1,7 @@
 from iox import IoXWrapper
 from nucore import Node
 from .base_optimizer import BaseOptimizer
-from ven_settings import GridState, VENSettings
+from opt_config.ven_settings import GridState, VENSettings
     
 class ThermostatOptimizer(BaseOptimizer):
     """
@@ -77,6 +77,14 @@ class ThermostatOptimizer(BaseOptimizer):
             heat_changed = abs(self.current_heat_sp - self.last_applied_heat_sp) != 0 
 
         if cool_changed or heat_changed:
+            if heat_changed:
+                self.history.insert_device_history(
+                self.history.insert(self.node.adress, "Heat Setpoint", grid_state=grid_state, requested_value=self.last_applied_heat_sp,
+                                   current_value=self.current_heat_sp, opt_status="User Override"), opt_expires_at=self._get_opt_out_expiry().isoformat()) 
+            if cool_changed:
+                self.history.insert_device_history(
+                self.history.insert(self.node.adress, "Cool Setpoint", grid_state=grid_state, requested_value=self.last_applied_cool_sp,
+                                   current_value=self.current_cool_sp, opt_status="User Override"), opt_expires_at=self._get_opt_out_expiry().isoformat()) 
             return True
         
         return False
@@ -171,19 +179,27 @@ class ThermostatOptimizer(BaseOptimizer):
             # If current heating setpoint is HIGHER than baseline - offset, lower it
             if self.current_heat_sp is not None and self.current_heat_sp < target_heat_sp:
                 target_heat_sp = None
+                self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=target_heat_sp,
+                                   current_value=self.current_heat_sp, opt_status="No Adjustment Needed")
                 print ('ThermostatOptimizer: current heating setpoint is already below target. No adjustment needed.')
             
             # Cooling optimization
             # If current cooling setpoint is LOWER than baseline + offset, raise it
             if self.current_cool_sp is not None and self.current_cool_sp > target_cool_sp:
                 target_cool_sp = None
+                self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=target_cool_sp,
+                                   current_value=self.current_cool_sp, opt_status="No Adjustment Needed")
                 print ('ThermostatOptimizer: current cooling setpoint is already above target. No adjustment needed.')
 
         # now adjust the thermostats
         new_cool_sp, new_heat_sp = self._adjust_setpoints(target_cool_sp, target_heat_sp)
         if new_cool_sp is not None:
+            self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=new_cool_sp,
+                                   current_value=self.current_cool_sp, opt_status="Optimized")
             self.last_applied_cool_sp = new_cool_sp
         if new_heat_sp is not None:
+            self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=new_heat_sp,
+                                   current_value=self.current_heat_sp, opt_status="Optimized")
             self.last_applied_heat_sp = new_heat_sp
         
         

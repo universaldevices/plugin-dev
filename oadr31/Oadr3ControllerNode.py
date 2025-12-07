@@ -350,6 +350,7 @@ class Oadr3ControllerNode(udi_interface.Node):
     from oadr30.scheduler import EventScheduler
     from oadr30 import ValuesMap
     from oadr30.ven import VEN
+    sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     #############################
     ###### START|STOP ###########
     #############################
@@ -405,6 +406,8 @@ class Oadr3ControllerNode(udi_interface.Node):
             import threading
             from optimizers.device_manager import DeviceManager
             self.device_manager = DeviceManager(self.poly)
+            from history.device_history import DeviceHistory
+            self.history = DeviceHistory()
             thread = threading.Thread(target=self.query_all_thread)
             thread.start()
 
@@ -578,6 +581,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         This method is called at every long poll interval. The result is not checked
         """
         try:
+            self.history.clear_old_records()
             return True
         except Exception as ex:
             LOGGER.error(str(ex))

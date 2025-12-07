@@ -293,7 +293,7 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
 
 
     def set_settings(self):
-        from ven_settings import VENSettings
+        from opt_config.ven_settings import VENSettings
         self.settings = VENSettings()
 
     def get_settings(self):

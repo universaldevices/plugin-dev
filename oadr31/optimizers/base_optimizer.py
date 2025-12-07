@@ -1,9 +1,10 @@
-from ven_settings import VENSettings, ComfortLevel, GridState
+from opt_config.ven_settings import VENSettings, ComfortLevel, GridState
 from abc import ABC, abstractmethod
 from nucore import Node
 from nucore import Profile
 from iox import IoXWrapper
 from datetime import datetime, timedelta
+from history.device_history import DeviceHistory
 
 # change this when no longer testing
 TESTING_MODE = True
@@ -16,6 +17,8 @@ class BaseOptimizer(ABC):
     All optimizers should inherit from this class.
     """
 
+    history = DeviceHistory()
+
     def __init__(self, ven_settings: VENSettings, node:Node, iox:IoXWrapper):
         """
         Initialize the optimizer with VEN settings.
@@ -25,13 +28,14 @@ class BaseOptimizer(ABC):
             node: Node instance associated with this optimizer
             iox: IoXWrapper instance for interacting with IoX
         """
+        global NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         self.node = node
         self.iox = iox
         self.update_settings(ven_settings)
         self.reset_opt_out()
         
         self.last_grid_state = GridState.NORMAL
-        self.next_user_override_check = datetime.now() + self.NEXT_USER_OVERRIDE_CHECK_INTERVAL 
+        self.next_user_override_check = datetime.now() + NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         self.calibrate()
     
     def calibrate(self):
@@ -112,6 +116,15 @@ class BaseOptimizer(ABC):
         else:
             return 0
 
+    def _get_device_name(self):
+        """
+        Get the device name from the node for history logging
+        
+        Returns:
+            Device name
+        """
+        return f"{self.node.name}[{self.node.address}]"
+
     @abstractmethod    
     def _get_min_offset(self):
         """
@@ -147,8 +160,9 @@ class BaseOptimizer(ABC):
         if datetime.now() < self.next_user_override_check:
             return False
 
+        global NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         rc = self._check_user_override(grid_state)
-        self.next_user_override_check = datetime.now() + self.NEXT_USER_OVERRIDE_CHECK_INTERVAL 
+        self.next_user_override_check = datetime.now() + NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         return rc
         
     @abstractmethod 
@@ -266,17 +280,20 @@ class BaseOptimizer(ABC):
                 }
         """
         pass
-    
+
+    def _get_opt_out_expiry(self):
+        global OPT_OUT_DURATION
+        global TESTING_MODE
+        now = datetime.now()
+        self.opt_out_until = now + OPT_OUT_DURATION if TESTING_MODE else (now.replace(hour=0, minute=0, second=0, microsecond=0) + OPT_OUT_DURATION)
+        return self.opt_out_until
+
     def opt_out(self):
         """
         Opt out of optimization until the next day (midnight).
         """
-        
         self.opted_out = True
-        # Set opt-out until midnight of the next day
-        now = datetime.now()
-        next_day = now + OPT_OUT_DURATION if TESTING_MODE else (now.replace(hour=0, minute=0, second=0, microsecond=0) + OPT_OUT_DURATION)
-        self.opt_out_until = next_day
+        self._get_opt_out_expiry()
     
     def check_opt_out_status(self):
         """
