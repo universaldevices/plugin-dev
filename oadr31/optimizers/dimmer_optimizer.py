@@ -134,7 +134,7 @@ class DimmerOptimizer(BaseOptimizer):
         new_level = self._adjust_level(target_level)
         if new_level is not None:
             self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=new_level,
-                                   current_value=self.current_dimmer_level, opt_status="Optimized")
+                                   current_value=self.current_dimmer_level, opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Baseline")
             self.last_applied_dimmer_level = new_level
     
     def _reset_opt_out(self):

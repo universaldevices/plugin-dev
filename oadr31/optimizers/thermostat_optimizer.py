@@ -187,11 +187,11 @@ class ThermostatOptimizer(BaseOptimizer):
         new_cool_sp, new_heat_sp = self._adjust_setpoints(target_cool_sp, target_heat_sp)
         if new_cool_sp is not None:
             self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=new_cool_sp,
-                                   current_value=self.current_cool_sp, opt_status="Optimized")
+                                   current_value=self.current_cool_sp, opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Baseline")
             self.last_applied_cool_sp = new_cool_sp
         if new_heat_sp is not None:
             self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=new_heat_sp,
-                                   current_value=self.current_heat_sp, opt_status="Optimized")
+                                   current_value=self.current_heat_sp, opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Baseline")
             self.last_applied_heat_sp = new_heat_sp
         
         
