@@ -157,10 +157,6 @@ class BaseOptimizer(ABC):
         Returns: 
             True if user override detected and opted out, False otherwise
         """
-        # Only check for overrides during non-normal states
-        if grid_state == GridState.NORMAL: 
-            return False
-        
         if datetime.now() < self.next_user_override_check:
             return False
 
