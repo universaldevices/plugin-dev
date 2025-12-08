@@ -58,9 +58,6 @@ class ThermostatOptimizer(BaseOptimizer):
         Returns:
             True if user override detected and opted out, False otherwise
         """
-        # Only check for overrides during non-normal states
-        if grid_state == GridState.NORMAL: 
-            return False
         
         # If we haven't applied any setpoints yet, no override possible
         if self.last_applied_cool_sp is None and self.last_applied_heat_sp is None:
@@ -78,13 +75,11 @@ class ThermostatOptimizer(BaseOptimizer):
 
         if cool_changed or heat_changed:
             if heat_changed:
-                self.history.insert_device_history(
-                self.history.insert(self.node.adress, "Heat Setpoint", grid_state=grid_state, requested_value=self.last_applied_heat_sp,
-                                   current_value=self.current_heat_sp, opt_status="User Override"), opt_expires_at=self._get_opt_out_expiry().isoformat()) 
+                self.history.insert(self.node.address, "Heat Setpoint", grid_state=grid_state, requested_value=self.last_applied_heat_sp,
+                                   current_value=self.current_heat_sp, opt_status="User Override", opt_expires_at=self._get_opt_out_expiry().isoformat())
             if cool_changed:
-                self.history.insert_device_history(
-                self.history.insert(self.node.adress, "Cool Setpoint", grid_state=grid_state, requested_value=self.last_applied_cool_sp,
-                                   current_value=self.current_cool_sp, opt_status="User Override"), opt_expires_at=self._get_opt_out_expiry().isoformat()) 
+                self.history.insert(self.node.address, "Cool Setpoint", grid_state=grid_state, requested_value=self.last_applied_cool_sp,
+                                   current_value=self.current_cool_sp, opt_status="User Override", opt_expires_at=self._get_opt_out_expiry().isoformat()) 
             return True
         
         return False
@@ -152,11 +147,8 @@ class ThermostatOptimizer(BaseOptimizer):
             grid_state: Current grid state (0=Normal, 1=Moderate, 2=High, 3=Emergency)
             
         Performs:
-            Tuple of (new_cool_sp, new_heat_sp, adjustment_made, message)
             - new_cool_sp: Optimized cooling setpoint
             - new_heat_sp: Optimized heating setpoint
-            - adjustment_made: True if any adjustment was made
-            - message: Description of what was done
         """
         # Get offset for current state
         offset = self.get_offset_for_state(grid_state)

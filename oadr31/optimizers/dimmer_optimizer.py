@@ -25,6 +25,9 @@ class DimmerOptimizer(BaseOptimizer):
         super().__init__(ven_settings, node, iox)
         # Track last applied dimmer settings to detect user changes
         self.last_applied_dimmer_level = None
+        self.current_dimmer_level = None
+        self.dimmer_prec = None
+        self.dimmer_uom = None
 
     def _get_min_offset(self):
         return self.ven_settings.min_light_adjustment_offset
@@ -36,71 +39,109 @@ class DimmerOptimizer(BaseOptimizer):
         self.light_level_baseline = self.ven_settings.light_level
 
     def _check_user_override (self, grid_state):
-        pass
-
-    def _test_check_user_override(self, current_cool_sp, current_heat_sp, grid_state):
         """
-        Check if the user has manually changed setpoints during an active optimization state.
+        Check if the user has manually changed the dimmer level during an active optimization state.
         If detected, opt out of optimization until the next day.
         
         Args:
-            current_cool_sp: Current cooling setpoint from thermostat
-            current_heat_sp: Current heating setpoint from thermostat
             grid_state: Current grid state
             
         Returns:
             True if user override detected and opted out, False otherwise
         """
-        # Only check for overrides during non-normal states
-        if grid_state == GridState.NORMAL: 
-            return False
-        
         # If we haven't applied any setpoints yet, no override possible
-        if self.last_applied_cool_sp is None or self.last_applied_heat_sp is None:
+        if self.last_applied_dimmer_level is None or self.current_dimmer_level is None: 
             return False
         
         # Check if current setpoints differ from what we last applied
         # Allow for small floating point differences
-        cool_changed = abs(current_cool_sp - self.last_applied_cool_sp) > 0.5
-        heat_changed = abs(current_heat_sp - self.last_applied_heat_sp) > 0.5
+        level_changed = abs(self.current_dimmer_level - self.last_applied_dimmer_level) > 1
         
-        if cool_changed or heat_changed:
-            # User has overridden - opt out until next day
-            self.opt_out()
+        if level_changed: 
+            self.history.insert(self.node.address, "Dimmer Level", grid_state=grid_state, 
+                                requested_value=self.last_applied_dimmer_level, current_value=self.current_dimmer_level, 
+                                opt_status="User Override", opt_expires_at=self._get_opt_out_expiry().isoformat()) 
             return True
         
         return False
     
+    def _adjust_level(self, level:float): 
+        """
+        Generate command to set the dimmer level 
+        
+        Args:
+            command: 'set_dimmer_level'
+            value: New Level value
+            
+        Returns:
+            new_level if successful, None otherwise
+        """
+        commands = []
+        if level is not None: 
+            commands.append({
+            'device_id': self.node.address,
+            'command_id': 'DON', 
+            'command_params': [
+                {'id': 'n/a', 'value': int(level), 'uom': self.dimmer_uom, 'prec': self.dimmer_prec}
+            ]
+            })
+
+        if len(commands) > 0: 
+            response = self.iox.send_commands(commands)
+            if response is None or len(response) == 0:
+                print ('DimmerOptimizer: Failed to send setpoint adjustment commands to IoX.')
+                return None
+            if response[0] is None or response[0].status_code != 200:
+                return None
+        return level
+                
     async def _optimize(self, grid_state):
         """
-        Optimize thermostat setpoints based on current grid state and comfort baselines.
+        Optimize dimmer level based on current grid state and comfort baselines.
         
         Algorithm:
         - Normal state: No changes
-        - Other states: 
-          * Cooling: If current < cool_baseline + offset, adjust to cool_baseline + offset
-          * Heating: If current > heat_baseline - offset, adjust to heat_baseline - offset
+        - Other states: Adjust dimmer level away from baseline by offset    
         
         Args:
-            current_cool_sp: Current cooling setpoint (°F)
-            current_heat_sp: Current heating setpoint (°F)
             grid_state: Current grid state (0=Normal, 1=Moderate, 2=High, 3=Emergency)
             
-        Returns:
-            Tuple of (new_cool_sp, new_heat_sp, adjustment_made, message)
-            - new_cool_sp: Optimized cooling setpoint
-            - new_heat_sp: Optimized heating setpoint
-            - adjustment_made: True if any adjustment was made
-            - message: Description of what was done
         """
-        pass     
+        if self.current_dimmer_level == 0:
+            return
+
+        # Get offset for current state
+        offset = self.get_offset_for_state(grid_state)
+        # Calculate target setpoints
+        target_level = self.light_level_baseline - offset
+
+        if self.last_applied_dimmer_level is not None and self.last_applied_dimmer_level == target_level:
+            target_level = None
+            print ('DimmerOptimizer: target dimmer level unchanged from last applied value. Skipping optimization.')
+        
+        #optimization but only if current grid state is greater than the last othewrwise 
+        #set points never change which is an error
+        # Heating optimization
+        if grid_state >= self.last_grid_state:
+            # If current heating setpoint is HIGHER than baseline - offset, lower it
+            if self.current_dimmer_level is not None and self.current_dimmer_level < target_level:
+                target_level = None
+                self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=target_level,
+                                   current_value=self.current_dimmer_level, opt_status="No Adjustment Needed")
+                print ('DimmerOptimizer: current dimmer level is already below target. No adjustment needed.')
+            
+        # now adjust the dimmer level
+        new_level = self._adjust_level(target_level)
+        if new_level is not None:
+            self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=new_level,
+                                   current_value=self.current_dimmer_level, opt_status="Optimized")
+            self.last_applied_dimmer_level = new_level
     
     def _reset_opt_out(self):
         """
         Manually reset the opt-out status (e.g., for testing or user request).
         """
-        self.last_applied_cool_sp = None
-        self.last_applied_heat_sp = None
+        self.last_applied_dimmer_level = None
 
     async def _update_internal_state(self, property, value):
         """
@@ -113,5 +154,11 @@ class DimmerOptimizer(BaseOptimizer):
                     'prec': str or None
                 }
         """
-        print (property, value)
-        pass
+
+        if property == 'ST':
+            try:
+                self.dimmer_prec = value['prec']
+                self.dimmer_uom = value['uom']
+                self.current_dimmer_level = float(value['value'])
+            except Exception as e:
+                print(f"DimmerOptimizer: Error updating internal state for property {property}: {e}")

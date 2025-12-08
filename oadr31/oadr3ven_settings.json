@@ -5,11 +5,12 @@
     "CGS": 0,
     "CSP_F": 73,
     "HSP_F": 75,
-    "OL": 90,
+    "OL": 100,
     "MIN_OFF_DEG": 1,
     "MAX_OFF_DEG": 4,
     "MIN_LAO": 28,
     "MAX_LAO": 73,
     "MIN_DCO": 20,
-    "MAX_DCO": 71
+    "MAX_DCO": 71,
+    "CLL": 100
 }
