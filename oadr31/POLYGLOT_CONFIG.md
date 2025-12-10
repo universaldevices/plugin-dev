@@ -17,6 +17,10 @@ This version includes optimization parameters for thermostats, lighting, and swi
         Scale=1/5, changes the duration to duration /= 5
         scale=5, changes the duration to duration *= 5
 
+5. Test Mode
+    True, Yes, 1 (case insensitive) put the module in test mode causing shorter opt expiry duration, and 
+    faster intervals.
+
 ## Runtime 
 At runtime, the following parameters are configurable.
 

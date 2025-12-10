@@ -1,6 +1,7 @@
 
 import udi_interface, os, shutil, sys, json, time, threading
 from udi_interface import OAuth
+
 LOGGER = udi_interface.LOGGER
 Custom = udi_interface.Custom
 from ioxplugin import Plugin, OAuthService
@@ -366,7 +367,6 @@ class Oadr3ControllerNode(udi_interface.Node):
             node.queryAll()
 
     def start(self)->bool:
-        self.use_scheduler = False
         self.timeseries_index = 0
         """
         MANDATORY if and only if you have commands
@@ -398,13 +398,19 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.setNotices('VEN', 'Failed registering the VEN ... for now, ignoring ...')
              #   return False
             self.clearNotices()
-            if self.use_scheduler:
+            if not self.test_mode:
                 self.scheduler=self.EventScheduler()
                 self.scheduler.registerCallback(self.scheduler_callback)
                 self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
 
             import threading
+            from datetime import timedelta
             from optimizers.device_manager import DeviceManager
+            from optimizers import base_optimizer, switch_optimizer
+            base_optimizer.TESTING_MODE=self.test_mode
+            base_optimizer.NEXT_USER_OVERRIDE_CHECK_INTERVAL = timedelta(seconds=3)
+            base_optimizer.OPT_OUT_DURATION = timedelta(seconds=10) if base_optimizer.TESTING_MODE else timedelta(days=1)
+            switch_optimizer.DUTY_CYCLE_PERIOD_SECONDS = (base_optimizer.OPT_OUT_DURATION.total_seconds()/2) if base_optimizer.TESTING_MODE else (60 * 60)  # 1 hour
             self.device_manager = DeviceManager(self.poly)
             from history.device_history import DeviceHistory
             self.history = DeviceHistory()
@@ -452,6 +458,12 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.scale=params['Duration Scale']
                 if self.scale:
                     self.scale=eval(self.scale)
+            if 'Test Mode' in params:
+                self.test_mode=params['Test Mode']
+                if self.test_mode and (self.test_mode.lower() == 'true' or self.test_mode == '1' or self.test_mode.lower() == 'yes'):
+                    self.test_mode=True
+                else:
+                    self.test_mode=False
             return True
         except Exception as ex:
             LOGGER.error(f'process param failed .... ')
@@ -555,7 +567,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                     LOGGER.error("falied getting the time series for the event")
                     return False
 
-                if self.use_scheduler:
+                if not self.test_mode:
                     self.scheduler.setTimeSeries(timeSeries)
                     self.scheduler.setTimeSeries(timeSeries)
                     if not self.scheduler.is_alive():

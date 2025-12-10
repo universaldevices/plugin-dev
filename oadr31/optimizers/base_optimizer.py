@@ -5,13 +5,13 @@ from abc import ABC, abstractmethod
 from nucore import Node
 from nucore import Profile
 from iox import IoXWrapper
-from datetime import datetime, timedelta
+from datetime import datetime
 from history.device_history import DeviceHistory
 
 # change this when no longer testing
-TESTING_MODE = True
-NEXT_USER_OVERRIDE_CHECK_INTERVAL = timedelta(seconds=3)
-OPT_OUT_DURATION = timedelta(seconds=10) if TESTING_MODE else timedelta(days=1)
+TESTING_MODE =  None
+NEXT_USER_OVERRIDE_CHECK_INTERVAL = None 
+OPT_OUT_DURATION = None 
     
 class BaseOptimizer(ABC):
     """

@@ -4,7 +4,7 @@ from .base_optimizer import BaseOptimizer, TESTING_MODE, OPT_OUT_DURATION
 from opt_config.ven_settings import GridState, VENSettings, ComfortLevel
 import asyncio
 
-DUTY_CYCLE_PERIOD_SECONDS = (OPT_OUT_DURATION/2) if TESTING_MODE else (60 * 60)  # 1 hour
+DUTY_CYCLE_PERIOD_SECONDS = None 
     
 class SwitchOptimizer(BaseOptimizer):
     """
@@ -142,8 +142,8 @@ class SwitchOptimizer(BaseOptimizer):
         Args:
             duty_cycle_percent: Duty cycle percentage (0-100)
         """
-        on_seconds = ((self.cycle_period_seconds * duty_cycle_percent) / 100).total_seconds()
-        off_seconds = (self.cycle_period_seconds).total_seconds() - on_seconds
+        on_seconds = ((self.cycle_period_seconds * duty_cycle_percent) / 100)
+        off_seconds = (self.cycle_period_seconds) - on_seconds
         
         self.print(f"starting duty cycle for {self.node.name}: "
               f"{duty_cycle_percent}% ({on_seconds}s ON, {off_seconds}s OFF)")
