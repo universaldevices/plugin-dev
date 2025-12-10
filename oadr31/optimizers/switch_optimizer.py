@@ -205,6 +205,16 @@ class SwitchOptimizer(BaseOptimizer):
                 pass
         if self.initial_state is not None: 
             self._adjust_level(1 if self.initial_state>0 else 0)  # Ensure off
+            self.last_applied_state = self.initial_state
+            self.history.insert(
+                self._get_device_name(), 
+                "Duty Cycle", 
+                grid_state=GridState.NORMAL,
+                requested_value=self.initial_state,
+                current_value=self.current_state,
+                opt_status="Reset to Initial"
+            )
+        self.current_duty_cycle = None
                 
     async def _optimize(self, grid_state):
         """
@@ -263,12 +273,18 @@ class SwitchOptimizer(BaseOptimizer):
             grid_state=grid_state, 
             requested_value=target_duty_cycle,
             current_value=self.current_duty_cycle, 
-            opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Normal"
+            opt_status="Optimized"
         )
         
         # Start or update duty cycling
         await self._start_duty_cycle(target_duty_cycle)
-
+    
+    async def _revert_to_initial_settings(self):
+        """
+        Revert switches to initial settings. 
+        """
+        await self._stop_duty_cycle()
+        
     def _opt_out(self):
         self._stop_duty_cycle
     
@@ -298,7 +314,7 @@ class SwitchOptimizer(BaseOptimizer):
                 self.switch_prec = value['prec']
                 self.switch_uom = value['uom']
                 self.current_state = 0 if float(value['value']) == 0 else 1
-                if self.initial_state is None:
+                if self.initial_state is None or self.last_grid_state == GridState.NORMAL:
                     self.initial_state = self.current_state
             except Exception as e:
                 self.print(f"error updating internal state for property {property}: {e}")

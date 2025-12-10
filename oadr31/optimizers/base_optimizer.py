@@ -61,8 +61,14 @@ class BaseOptimizer(ABC):
             self.opt_out()
             self.print(f"is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
             return
-        
-        await self._optimize(grid_state)
+
+        if grid_state == GridState.NORMAL:
+            # Reset to initial settings
+            self.print("Resetting to initial settings for NORMAL grid state")
+            await self._revert_to_initial_settings()
+        else:
+            await self._optimize(grid_state)
+        #do not move this line. It has to be done after optimization.
         self.last_grid_state = grid_state
     
     
@@ -268,6 +274,13 @@ class BaseOptimizer(ABC):
             self.print("Invalid control or action in event data")
             return
         await self._update_internal_state(control, action)
+    
+    @abstractmethod
+    async def _revert_to_initial_settings(self):
+        """
+        Override this method in subclasses to revert device settings to initial values.
+        """
+        pass
 
     @abstractmethod 
     async def _update_internal_state(self, property, value):

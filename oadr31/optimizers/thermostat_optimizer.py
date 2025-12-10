@@ -30,6 +30,8 @@ class ThermostatOptimizer(BaseOptimizer):
         self.current_mode = None
         self.last_applied_cool_sp = None
         self.last_applied_heat_sp = None
+        self.initial_cool_sp = None
+        self.initial_heat_sp = None
         self.cool_prec=None
         self.heat_prec=None
         self.cool_uom=None
@@ -187,13 +189,32 @@ class ThermostatOptimizer(BaseOptimizer):
         new_cool_sp, new_heat_sp = self._adjust_setpoints(target_cool_sp, target_heat_sp)
         if new_cool_sp is not None:
             self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=new_cool_sp,
-                                   current_value=self.current_cool_sp, opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Baseline")
+                                   current_value=self.current_cool_sp, opt_status="Optimized")
             self.last_applied_cool_sp = new_cool_sp
         if new_heat_sp is not None:
             self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=new_heat_sp,
-                                   current_value=self.current_heat_sp, opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Baseline")
+                                   current_value=self.current_heat_sp, opt_status="Optimized")
             self.last_applied_heat_sp = new_heat_sp
-        
+
+
+    async def _revert_to_initial_settings(self):
+        """
+        Revert thermostat setpoints to initial values recorded before any optimizations.
+        """
+        offset = self.get_offset_for_state(GridState.NORMAL)
+        # Calculate target setpoints
+        target_cool_sp = self.initial_cool_sp if self.initial_cool_sp is not None else self.cool_baseline + offset
+        target_heat_sp = self.initial_heat_sp if self.initial_heat_sp is not None else self.heat_baseline - offset
+
+        new_cool_sp, new_heat_sp = self._adjust_setpoints(target_cool_sp, target_heat_sp)
+        if new_cool_sp is not None:
+            self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=GridState.NORMAL, requested_value=new_cool_sp,
+                                   current_value=self.current_cool_sp, opt_status="Reset to Initial")
+            self.last_applied_cool_sp = new_cool_sp
+        if new_heat_sp is not None:
+            self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=GridState.NORMAL, requested_value=new_heat_sp,
+                                   current_value=self.current_heat_sp, opt_status="Reset to Initial")
+            self.last_applied_heat_sp = new_heat_sp
         
     def _reset_opt_out(self):
         """
@@ -219,11 +240,15 @@ class ThermostatOptimizer(BaseOptimizer):
             self.cool_uom = value['uom']
             value = self.value_to_float(value['value'], self.cool_prec)
             self.current_cool_sp = value
+            if self.initial_cool_sp is None or self.last_grid_state == GridState.NORMAL:
+                self.initial_cool_sp = value
         elif property == 'CLISPH':
             self.heat_prec = value['prec']
             self.heat_uom = value['uom']
             value = self.value_to_float(value['value'], self.heat_prec)
-            self.current_heat_sp = value    
+            self.current_heat_sp = value   
+            if self.initial_heat_sp is None or self.last_grid_state == GridState.NORMAL:
+                self.initial_heat_sp = value 
         elif property == 'ST':
             self.current_temp = self.value_to_float(value['value'], value['prec'])
         elif property == 'CLIMD':

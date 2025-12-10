@@ -26,6 +26,7 @@ class DimmerOptimizer(BaseOptimizer):
         # Track last applied dimmer settings to detect user changes
         self.last_applied_dimmer_level = None
         self.current_dimmer_level = None
+        self.initial_dimmer_level = None
         self.dimmer_prec = None
         self.dimmer_uom = None
 
@@ -134,9 +135,23 @@ class DimmerOptimizer(BaseOptimizer):
         new_level = self._adjust_level(target_level)
         if new_level is not None:
             self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=new_level,
-                                   current_value=self.current_dimmer_level, opt_status="Optimized" if grid_state != GridState.NORMAL else "Reset to Baseline")
+                                   current_value=self.current_dimmer_level, opt_status="Optimized")
             self.last_applied_dimmer_level = new_level
     
+    async def _revert_to_initial_settings(self):
+        """
+        Revert switches to initial settings. 
+        """
+        offset = self.get_offset_for_state(GridState.NORMAL)
+        # Calculate target setpoints
+        target_level = self.initial_dimmer_level if self.initial_dimmer_level is not None else self.light_level_baseline - offset
+        new_level = self._adjust_level(target_level)
+        if new_level is not None:
+            self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=GridState.NORMAL, requested_value=new_level,
+                                   current_value=self.current_dimmer_level, opt_status="Reset to Baseline")
+            self.last_applied_dimmer_level = new_level
+
+
     def _reset_opt_out(self):
         """
         Manually reset the opt-out status (e.g., for testing or user request).
@@ -160,5 +175,7 @@ class DimmerOptimizer(BaseOptimizer):
                 self.dimmer_prec = value['prec']
                 self.dimmer_uom = value['uom']
                 self.current_dimmer_level = float(value['value'])
+                if self.initial_dimmer_level is None or self.last_grid_state == GridState.NORMAL:
+                    self.initial_dimmer_level = self.current_dimmer_level 
             except Exception as e:
                 self.print(f"error updating internal state for property {property}: {e}")
