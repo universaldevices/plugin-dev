@@ -15,6 +15,11 @@ class GridState(IntEnum):
     HIGH = 2
     EMERGENCY = 3
 
+class EventMode(IntEnum):
+    PRICE = 0
+    SIMPLE = 1
+    BOTH = 2
+
 class VENSettings:
     """
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.

@@ -388,8 +388,9 @@ class Oadr3ControllerNode(udi_interface.Node):
             if self.scale:
                 self.OADR3Config.duration_scale=self.scale
                 self.OADR3Config.events_start_now=True
-            
-            self.vtn = self.VTNOps(base_url=self.vtn_base_url, auth_url=self.VTNRefImpl.auth_url, client_id=self.client_id, client_secret=self.client_secret, auth_token_url_is_json=False )
+
+            auth_url=self.auth_server_url if self.auth_server_url else self.VTNRefImpl.auth_url 
+            self.vtn = self.VTNOps(base_url=self.vtn_base_url, auth_url=auth_url, client_id=self.client_id, client_secret=self.client_secret, auth_token_url_is_json=False )
             if not self.vtn:
                 self.setNotices('VTN', 'Failed connecting to the VTN ...')
                 return False
@@ -446,10 +447,17 @@ class Oadr3ControllerNode(udi_interface.Node):
         It is a dictionary so you get the parameter name/key and the value. e.g.
         params['path']
         """
-#        self.vtn=None
+        from opt_config.ven_settings import EventMode
+
+        self.auth_server_url=None
+        self.test_mode=False
+        self.event_mode=EventMode.PRICE
+        self.program_id=None
         try:
             if 'VTN Base URL' in params:
                 self.vtn_base_url=params['VTN Base URL']
+            if 'Auth Server URL' in params:
+                self.auth_server_url=params['Auth Server URL']
             if 'Client ID' in params:
                 self.client_id=params['Client ID']
             if 'Client Secret' in params:
@@ -464,6 +472,18 @@ class Oadr3ControllerNode(udi_interface.Node):
                     self.test_mode=True
                 else:
                     self.test_mode=False
+            if 'Event Mode' in params:
+                mode=params['Event Mode']
+                if mode.lower() == 'price':
+                    self.event_mode=EventMode.PRICE
+                elif mode.lower() == 'simple':
+                    self.event_mode=EventMode.SIMPLE
+                elif mode.lower() == 'both':
+                    self.event_mode=EventMode.BOTH
+            
+            if 'Program ID' in params:
+                self.program_id=params['Program ID']
+
             return True
         except Exception as ex:
             LOGGER.error(f'process param failed .... ')
@@ -560,7 +580,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         try:
             self.device_manager.subscribe_events()
 
-            events = self.vtn.get_events('0')
+            events = self.vtn.get_events(self.program_id)
             if events:
                 timeSeries = events.getTimeSeries()
                 if not timeSeries:
@@ -692,17 +712,23 @@ class Oadr3ControllerNode(udi_interface.Node):
         values=segment.getValues()
         values ='n/a' if not values  else values
         LOGGER.info(f"Got event of type {payloadType} with value of {values[0]}" )
+        from opt_config.ven_settings import EventMode
 
         try:
             node = self.getNode('oadr3ven')
             if not node:
                 LOGGER.error('VEN node not found ...')
                 return
-            if paylaodType == 'PRICE':
-                node.updatePrice(values[0], True)
-                node.calculateGridStatus(values[0])
-            elif paylaodType == 'GHG':
-                node.updateGHG(values[0], True)
+            if self.event_mode is None or self.event_mode == EventMode.PRICE or self.event_mode == EventMode.BOTH:
+                if paylaodType == 'PRICE':
+                    node.updatePrice(values[0], True)
+                    node.calculateGridStatus(values[0])
+                elif paylaodType == 'GHG':
+                    node.updateGHG(values[0], True)
+        
+            if self.event_mode == EventMode.SIMPLE or self.event_mode == EventMode.BOTH:
+                if paylaodType == 'SIMPLE':
+                    node.updateSimple(values[0], True)
         except Exception as ex:
             LOGGER.error(str(ex))
 

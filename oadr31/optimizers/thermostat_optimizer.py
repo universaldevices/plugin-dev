@@ -171,7 +171,7 @@ class ThermostatOptimizer(BaseOptimizer):
         # Heating optimization
         if grid_state >= self.last_grid_state:
             # If current heating setpoint is HIGHER than baseline - offset, lower it
-            if self.current_heat_sp is not None and self.current_heat_sp < target_heat_sp:
+            if self.current_heat_sp is not None and target_heat_sp is not None and self.current_heat_sp < target_heat_sp:
                 target_heat_sp = None
                 self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=target_heat_sp,
                                    current_value=self.current_heat_sp, opt_status="No Adjustment Needed")
@@ -179,7 +179,7 @@ class ThermostatOptimizer(BaseOptimizer):
             
             # Cooling optimization
             # If current cooling setpoint is LOWER than baseline + offset, raise it
-            if self.current_cool_sp is not None and self.current_cool_sp > target_cool_sp:
+            if self.current_cool_sp is not None and target_cool_sp is not None and self.current_cool_sp > target_cool_sp:
                 target_cool_sp = None
                 self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=target_cool_sp,
                                    current_value=self.current_cool_sp, opt_status="No Adjustment Needed")

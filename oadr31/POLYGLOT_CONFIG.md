@@ -6,18 +6,33 @@ This version includes optimization parameters for thermostats, lighting, and swi
 1. VTN Base URL
     This is the base URL for your OpenADR VTN. If none given, the plugin will not start.
 
-2. Client ID
+2. Auth Server URL
+    This is the URL to the auth server. If it starts with http or https, then the whole URL is used. If not, it's appended to '''VTN Base URL'''. If blank, 
+    default path is appended to '''VTN Base URL'''
+
+3. Client ID
     This is the Client ID part of the OAuth credentials provided to you by your utility. If none given, the plugin will not start.
 
-3. Client Secret 
+4. Client Secret 
     This is the Client Secret part of the OAuth credentials provided to you by your utility. If none given, the plugin will not start.
 
-4. Duration Scale
+5. Duration Scale
     Use mostly for testing to scale up/down the event durations. i.e. 
         Scale=1/5, changes the duration to duration /= 5
         scale=5, changes the duration to duration *= 5
 
-5. Test Mode
+6. Event Mode
+    Case insenitive '''Price''' or '''Simple''' or '''Both'''
+    '''Price''' - The VEN will only process Price and GHG events 
+    '''Simple''' - The VEN will only process Simple/Level events for DR
+    '''Both''' - The VEN will process both Price and Simple events
+    Default: Price 
+
+7. Program ID
+    Some utilities may provide a Program ID that's used to get information from the VTN. Supply it here.
+    If blank, none will be used.
+
+8. Test Mode
     True, Yes, 1 (case insensitive) put the module in test mode causing shorter opt expiry duration, and 
     faster intervals.
 
@@ -59,9 +74,9 @@ Default: 50%
 
 ### Min Duty Cycle Offset (%)
 This is the duty cycle offset used for Max Comfort.
-Default: 0%
+Default: 100%
 
 ### Max Duty Cycle Offset (%)
 This is the duty cycle offset used for Max Savings.
-Default: 75%
+Default: 30%
 
