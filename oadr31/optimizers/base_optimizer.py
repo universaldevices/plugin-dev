@@ -1,3 +1,5 @@
+import asyncio, threading, time
+from typing import Any
 from opt_config.ven_settings import VENSettings, ComfortLevel, GridState
 from abc import ABC, abstractmethod
 from nucore import Node
@@ -31,40 +33,10 @@ class BaseOptimizer(ABC):
         global NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         self.node = node
         self.iox = iox
-        self.update_settings(ven_settings)
-        self.reset_opt_out()
-        
         self.last_grid_state = GridState.NORMAL
         self.next_user_override_check = datetime.now() + NEXT_USER_OVERRIDE_CHECK_INTERVAL 
-        self.calibrate()
-    
-    def calibrate(self):
-        """
-        Calibrate the optimizer. Default is simple linear offsets based on min/max and number of states. 
-        Override in subclasses if different calibration is required.
-        """
-        min_offset = self._get_min_offset()
-        max_offset = self._get_max_offset()
-
-        #adjust min and max based on comfort level
-        comfort_level = self.ven_settings.comfort_level
-        if comfort_level == ComfortLevel.MAX_COMFORT:
-            pass # No change
-        elif comfort_level == ComfortLevel.BALANCED:
-            min_offset = abs(min_offset + 1.0)
-            max_offset = abs(max_offset + 1.0)
-        elif comfort_level == ComfortLevel.MAX_SAVINGS:
-            min_offset = abs(min_offset + 2.0)
-            max_offset = abs(max_offset + 2.0)
-
-        # Define offsets for each state within min/max bounds
-        # Simple linear distribution of offsets based on NUM_STATES
-        range_offset = int(max_offset - min_offset)
-        step = int(range_offset / 2)
-        self.normal_offset = 0 # No offset for normal state
-        self.moderate_offset = int(min_offset)
-        self.high_offset = int (min_offset + step)
-        self.emergency_offset = int(max_offset)
+        self.update_settings(ven_settings)
+        self.reset_opt_out()
 
     async def optimize(self, grid_state: int):
         """
@@ -75,19 +47,19 @@ class BaseOptimizer(ABC):
         """
         grid_state = int(grid_state) 
         if self.last_grid_state is None or grid_state == self.last_grid_state:
-            print(f"grid state has not changed from {self.last_grid_state} to {grid_state}, skipping optimization")
+            self.print(f"grid state has not changed from {self.last_grid_state} to {grid_state}, skipping optimization")
             return
 
         # Check if we're opted out
         if self.check_opt_out_status():
-            print(f"{self.node.name} is Opted out until {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
+            self.print(f"is Opted out until {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
             return 
 
         # Check for user override
         if self.check_user_override(grid_state):
             # User has overridden - opt out until next day
             self.opt_out()
-            print(f"{self.node.name} is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
+            self.print(f"is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
             return
         
         await self._optimize(grid_state)
@@ -190,14 +162,46 @@ class BaseOptimizer(ABC):
         """
         pass
 
+    def _calibrate(self):
+        """
+        Calibrate the optimizer. Default is simple linear offsets based on min/max and number of states. 
+        Override in subclasses if different calibration is required.
+        
+        Subclasses can override this method to implement custom calibration logic.
+        """
+        min_offset = self._get_min_offset()
+        max_offset = self._get_max_offset()
+
+        #adjust min and max based on comfort level
+        comfort_level = self.ven_settings.comfort_level
+        if comfort_level == ComfortLevel.MAX_COMFORT:
+            pass # No change
+        elif comfort_level == ComfortLevel.BALANCED:
+            min_offset = abs(min_offset + 1.0)
+            max_offset = abs(max_offset + 1.0)
+        elif comfort_level == ComfortLevel.MAX_SAVINGS:
+            min_offset = abs(min_offset + 2.0)
+            max_offset = abs(max_offset + 2.0)
+
+        # Define offsets for each state within min/max bounds
+        # Simple linear distribution of offsets based on NUM_STATES
+        range_offset = int(abs(max_offset - min_offset))
+        step = int(range_offset / 2)
+        self.normal_offset = 0 # No offset for normal state
+        self.moderate_offset = int(min_offset)
+        self.high_offset = int (min_offset + step)
+        self.emergency_offset = int(max_offset)
+
     def update_settings(self, ven_settings: VENSettings):
         """
         Args:
             ven_settings: Updated VENSettings instance
         """
-        self.ven_settings = ven_settings
+        if ven_settings is not None:
+            self.ven_settings = ven_settings
+        self._calibrate()
         self._update_settings()
-
+    
     @abstractmethod 
     def _update_settings(self):
         """
@@ -255,13 +259,13 @@ class BaseOptimizer(ABC):
             }
         """
         if event is None or 'control' not in event or 'action' not in event:
-            print("Invalid event data, cannot update internal state")
+            self.print("Invalid event data, cannot update internal state")
             return
         
         control = event['control']
         action = event['action']
         if control is None or action is None:
-            print("Invalid control or action in event data")
+            self.print("Invalid control or action in event data")
             return
         await self._update_internal_state(control, action)
 
@@ -294,6 +298,14 @@ class BaseOptimizer(ABC):
         """
         self.opted_out = True
         self._get_opt_out_expiry()
+        self._opt_out()
+
+
+    def _opt_out(self):
+        """
+        Override in subclasses to handle any additional opt-out logic.
+        """
+        pass
     
     def check_opt_out_status(self):
         """
@@ -307,8 +319,7 @@ class BaseOptimizer(ABC):
         
         if self.opt_out_until and datetime.now() >= self.opt_out_until:
             # Opt-out period has expired
-            self.opted_out = False
-            self.opt_out_until = None
+            self.reset_opt_out()
             return False
         return True
     
@@ -316,3 +327,7 @@ class BaseOptimizer(ABC):
     def is_opted_out(self):
         """Check if currently opted out"""
         return self.opted_out
+    
+    def print(self, msg:str):
+        """Print a message with the subclass name and optimizer's device name as prefix"""
+        print(f"{self.__class__.__name__} | {self._get_device_name()}: {msg}")

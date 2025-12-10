@@ -58,7 +58,7 @@ class DimmerOptimizer(BaseOptimizer):
         level_changed = abs(self.current_dimmer_level - self.last_applied_dimmer_level) > 1
         
         if level_changed: 
-            self.history.insert(self.node.address, "Dimmer Level", grid_state=grid_state, 
+            self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, 
                                 requested_value=self.last_applied_dimmer_level, current_value=self.current_dimmer_level, 
                                 opt_status="User Override", opt_expires_at=self._get_opt_out_expiry().isoformat()) 
             return True
@@ -89,7 +89,7 @@ class DimmerOptimizer(BaseOptimizer):
         if len(commands) > 0: 
             response = self.iox.send_commands(commands)
             if response is None or len(response) == 0:
-                print ('DimmerOptimizer: Failed to send setpoint adjustment commands to IoX.')
+                self.print ('failed to send setpoint adjustment commands to IoX.')
                 return None
             if response[0] is None or response[0].status_code != 200:
                 return None
@@ -117,7 +117,7 @@ class DimmerOptimizer(BaseOptimizer):
 
         if self.last_applied_dimmer_level is not None and self.last_applied_dimmer_level == target_level:
             target_level = None
-            print ('DimmerOptimizer: target dimmer level unchanged from last applied value. Skipping optimization.')
+            self.print ('target dimmer level unchanged from last applied value. Skipping optimization.')
         
         #optimization but only if current grid state is greater than the last othewrwise 
         #set points never change which is an error
@@ -128,7 +128,7 @@ class DimmerOptimizer(BaseOptimizer):
                 target_level = None
                 self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=target_level,
                                    current_value=self.current_dimmer_level, opt_status="No Adjustment Needed")
-                print ('DimmerOptimizer: current dimmer level is already below target. No adjustment needed.')
+                self.print ('current dimmer level is already below target. No adjustment needed.')
             
         # now adjust the dimmer level
         new_level = self._adjust_level(target_level)
@@ -161,4 +161,4 @@ class DimmerOptimizer(BaseOptimizer):
                 self.dimmer_uom = value['uom']
                 self.current_dimmer_level = float(value['value'])
             except Exception as e:
-                print(f"DimmerOptimizer: Error updating internal state for property {property}: {e}")
+                self.print(f"error updating internal state for property {property}: {e}")

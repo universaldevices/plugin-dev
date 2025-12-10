@@ -63,13 +63,13 @@ class VENSettings:
             'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and Emergency)
             'CSP_F': 74,          # Desired Cooling Setpoint (°F)
             'HSP_F': 77,          # Desired Heating Setpoint (°F)
-            'OL': 100,            # Desired Light Level (%)
+            'CLL': 100,            # Desired Light Level (%)
             'MIN_OFF_DEG': 1,     # Min Setpoint Offset (°F)
             'MAX_OFF_DEG': 4,     # Max Setpoint Offset (°F)
-            'MIN_LAO': 10,         # Min Light Adjustment Offset (%)
+            'MIN_LAO': 10,        # Min Light Adjustment Offset (%)
             'MAX_LAO': 50,        # Max Light Adjustment Offset (%)
-            'MIN_DCO': 0,         # Min Duty Cycle Offset (%)
-            'MAX_DCO': 50        # Max Duty Cycle Offset (%)
+            'MIN_DCO': 100,       # Min Duty Cycle Offset (%)
+            'MAX_DCO': 30         # Max Duty Cycle Offset (%)
         }
     
     def get(self, key: str, default: Any = None) -> Any:
@@ -84,8 +84,26 @@ class VENSettings:
             The setting value or default
         """
         return self.settings.get(key, default)
+
+    def is_changed(self, key: str, value: Any) -> bool:
+        """
+        Check if a setting value has changed. 
+        
+        Args:
+            key: The setting key (e.g., 'CL', 'CSP_F')
+            value: The value to compare
+            
+        Returns:
+            True if value changed, False otherwise
+        """
+        try:
+            prev_value = self.settings.get(key)
+            return float(prev_value) != float(value)
+        except Exception as ex:
+            return False
+
     
-    def set(self, key: str, value: Any) -> bool:
+    def set(self, key: str, value: Any) -> list[bool]: 
         """
         Set a setting value and save to file.
         
@@ -193,12 +211,12 @@ class VENSettings:
     @property
     def light_level(self) -> int:
         """Get Desired Light Level (%)"""
-        return self.get('OL', 100)
+        return self.get('CLL', 100)
     
     @light_level.setter
     def light_level(self, value: int):
         """Set Desired Light Level (%)"""
-        self.set('OL', value)
+        self.set('CLL', value)
     
     @property
     def min_setpoint_offset(self) -> float:

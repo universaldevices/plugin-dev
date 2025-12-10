@@ -6,6 +6,7 @@ and periodically updates device profiles based on the latest data from the iox c
 
 import asyncio
 import os
+from typing import Any
 from nucore import Node
 from nucore import Profile
 from iox import IoXWrapper
@@ -31,17 +32,26 @@ class DeviceManager:
         self.is_subscribed=False
         self.is_profiles_updated=False
 
-    def update_settings(self, ven_settings:VENSettings):
+    def update_settings(self, settings: VENSettings): 
         """
         Updates the VEN settings for all optimizers
         """
-        self.ven_settings = ven_settings
+        self.ven_settings = settings
         for optimizer in self.thermostats.values():
-            optimizer.update_settings(ven_settings)
+            optimizer.update_settings(settings)
         for optimizer in self.dimmers.values():
-            optimizer.update_settings(ven_settings)
+            optimizer.update_settings(settings)
         for optimizer in self.switches.values():
-            optimizer.update_settings(ven_settings)
+            optimizer.update_settings(settings)
+
+    def update_ven_setting(self, control:str, value: Any): 
+        """
+        Updates the VEN settings for all optimizers
+        """
+        if not self.ven_settings.is_changed(control, value):
+            return
+        self.ven_settings._reload()
+        self.update_settings(self.ven_settings)
     
     async def optimize(self, grid_state):
         for optimizer in self.thermostats.values():
@@ -148,8 +158,10 @@ class DeviceManager:
             LOGGER.warning(f"Received VEN message without control: {message}")
             return
         control = message['control']
+        value = message.get('action', None)['value']
+
         if control == "CGS":  # Current Grid Status update
-            grid_state = message.get('action', None)['value']
+            grid_state = value 
             #create a thread to optimize all devices based on new grid status
             await self.optimize(grid_state)
         elif control == "ST" or control == "GHG":
@@ -157,7 +169,7 @@ class DeviceManager:
             pass
         else:
             #one of the settings changed
-            self.update_settings(self.ven_settings)
+            self.update_ven_setting(control, value)
 
     async def __process_node_update__(self, node_address, message):
         """

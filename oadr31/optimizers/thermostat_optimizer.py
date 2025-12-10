@@ -75,10 +75,10 @@ class ThermostatOptimizer(BaseOptimizer):
 
         if cool_changed or heat_changed:
             if heat_changed:
-                self.history.insert(self.node.address, "Heat Setpoint", grid_state=grid_state, requested_value=self.last_applied_heat_sp,
+                self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=self.last_applied_heat_sp,
                                    current_value=self.current_heat_sp, opt_status="User Override", opt_expires_at=self._get_opt_out_expiry().isoformat())
             if cool_changed:
-                self.history.insert(self.node.address, "Cool Setpoint", grid_state=grid_state, requested_value=self.last_applied_cool_sp,
+                self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=self.last_applied_cool_sp,
                                    current_value=self.current_cool_sp, opt_status="User Override", opt_expires_at=self._get_opt_out_expiry().isoformat()) 
             return True
         
@@ -116,7 +116,7 @@ class ThermostatOptimizer(BaseOptimizer):
         if len(commands) > 0:
             response = self.iox.send_commands(commands)
             if response is None or len(response) == 0:
-                print ('ThermostatOptimizer: Failed to send setpoint adjustment commands to IoX.')
+                self.print ('failed to send setpoint adjustment commands to IoX.')
                 return None, None
             if len(response) == 2:
                 if response[0] is None or response[0].status_code != 200:
@@ -158,10 +158,10 @@ class ThermostatOptimizer(BaseOptimizer):
 
         if self.last_applied_cool_sp is not None and self.last_applied_cool_sp == target_cool_sp:
             target_cool_sp = None
-            print ('ThermostatOptimizer: target cooling setpoint unchanged from last applied value. Skipping optimization.')
+            self.print ('target cooling setpoint unchanged from last applied value. Skipping optimization.')
         
         if self.last_applied_heat_sp is not None and self.last_applied_heat_sp == target_heat_sp:
-            print ('ThermostatOptimizer: target heating setpoint unchanged from last applied value. Skipping optimization.')
+            self.print ('target heating setpoint unchanged from last applied value. Skipping optimization.')
             target_heat_sp = None
 
         #optimization but only if current grid state is greater than the last othewrwise 
@@ -173,7 +173,7 @@ class ThermostatOptimizer(BaseOptimizer):
                 target_heat_sp = None
                 self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=grid_state, requested_value=target_heat_sp,
                                    current_value=self.current_heat_sp, opt_status="No Adjustment Needed")
-                print ('ThermostatOptimizer: current heating setpoint is already below target. No adjustment needed.')
+                self.print ('current heating setpoint is already below target. No adjustment needed.')
             
             # Cooling optimization
             # If current cooling setpoint is LOWER than baseline + offset, raise it
@@ -181,7 +181,7 @@ class ThermostatOptimizer(BaseOptimizer):
                 target_cool_sp = None
                 self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=grid_state, requested_value=target_cool_sp,
                                    current_value=self.current_cool_sp, opt_status="No Adjustment Needed")
-                print ('ThermostatOptimizer: current cooling setpoint is already above target. No adjustment needed.')
+                self.print ('current cooling setpoint is already above target. No adjustment needed.')
 
         # now adjust the thermostats
         new_cool_sp, new_heat_sp = self._adjust_setpoints(target_cool_sp, target_heat_sp)
