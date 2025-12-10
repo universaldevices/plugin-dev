@@ -56,10 +56,7 @@ class SwitchOptimizer(BaseOptimizer):
 
     def _calibrate(self):
         """
-        Calibrate the optimizer. Default is simple linear offsets based on min/max and number of states. 
-        Override in subclasses if different calibration is required.
-        
-        Subclasses can override this method to implement custom calibration logic.
+            Simple calibration based on comfort level settings.
         """
         min_offset = self._get_min_offset()
         max_offset = self._get_max_offset()
