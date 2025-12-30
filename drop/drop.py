@@ -26,7 +26,7 @@ class DeviceAddressMap:
         self.map:Dict[str,str]={}
         self.load()
 
-    def load(self)->bool():
+    def load(self)->bool:
         if not os.path.exists(mapFile):
             return False
         try:
@@ -37,7 +37,7 @@ class DeviceAddressMap:
             LOGGER.error("failed loading the dev map file {}".format (ex))
             return False
 
-    def save(self)->bool():
+    def save(self)->bool:
         try:
             with open(mapFile, 'w') as json_file:
                 json.dump(self.map, json_file)
@@ -316,9 +316,9 @@ class Controller(udi_interface.Node):
     def _on_message(self, mqttc, userdata, msg):
         if not self.valid_configuration:
             return
-        payload = message.payload.decode("utf-8")
-        LOGGER.info("Received {} from {}".format(payload, message.topic))
-        topic_list = message.topic.split("/")
+        payload = msg.payload.decode("utf-8")
+        LOGGER.info("Received {} from {}".format(payload, msg.topic))
+        topic_list = msg.topic.split("/")
         try:
             if topic_list[1] == "discovery":
                 self._processDiscovery(topic_list[2],topic_list[3], payload)
@@ -663,7 +663,7 @@ class DropFilter(udi_interface.Node):
     #controller = mqtt
     #primary = hub
     def __init__(self, poly, controller, dropCtrlAddress, address, name):
-        super().__init__(poly, primary, address, name)
+        super().__init__(poly, dropCtrlAddress, address, name)
         self.controller = controller 
 
     def updateInfo(self, payload, topic: str):
