@@ -24,7 +24,7 @@ class VENSettings:
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings.json'):
+    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v1.json'):
         """
         Initialize the VENSettings storage handler.
         
@@ -33,7 +33,6 @@ class VENSettings:
         """
         self.storage_file = storage_file
         self.settings: Dict[str, Any] = {}
-        self.prev_value = None
         self._load()
     
     def _load(self) -> None:
@@ -67,7 +66,7 @@ class VENSettings:
             'GHG': 0,             # Greenhouse Gas Emissions
             'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and DR)
             'cooling_baseline_f'    : 74,       # Baseline Cooling Setpoint in Fahrenheit
-            'heating_baseline_f'    : 77,       # Baseline Heating Setpoint
+            'heating_baseline_f'    : 72,       # Baseline Heating Setpoint
             'light_baseline_percent': 100,      # Baseline Light Level (%)
             'duty_cycle_percent'    : 100,      # Baseline Light Level (%)
             'Comfort': {
@@ -136,14 +135,9 @@ class VENSettings:
         Returns:
             True if value changed, False otherwise
         """
-        if key != "CL":
-            return False
-
         try:
-            curr_value = self.settings.get(key)
-            rc = float(curr_value) != float(self.prev_value)
-            self.prev_value = curr_value
-            return rc
+            prev_value = self.settings.get(key)
+            return float(prev_value) != float(value)
         except Exception as ex:
             return False
 
