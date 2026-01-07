@@ -44,4 +44,39 @@ Allows you to let the platform know what your comfort level is.
 (0=Max Comfort, 1=Balanced, 2=Max Savings)
 Default: Max Comfort
 
+### Desired Cooling Setpoint (°F)
+This is your desired cool set point when no optimizations are running.
+Default: 74°F
+
+### Desired Heating Setpoint (°F)
+This is your desired heat set point when no optimizations are running.
+Default: 77°F
+
+### Min Setpoint Offset (°F)
+This is the set point offset used for Max Comfort.
+Default: 1°F
+
+### Max Setpoint Offset (°F)
+This is the set point offset used for Max Savings.
+Default: 4°F
+
+### Desired Light Level (%)
+This is your desired light level (dimmable) when no optimizations are running.
+Default: 100%
+
+### Min Light Adjustment Offset (%)
+This is the light adjustment offset used for Max Comfort.
+Default: 0%
+
+### Max Light Adjustment Offset (%)
+This is the light adjustment offset used for Max Savings.
+Default: 50%
+
+### Min Duty Cycle Offset (%)
+This is the duty cycle offset used for Max Comfort.
+Default: 100%
+
+### Max Duty Cycle Offset (%)
+This is the duty cycle offset used for Max Savings.
+Default: 30%
 

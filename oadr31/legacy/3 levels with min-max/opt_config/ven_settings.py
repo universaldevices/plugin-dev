@@ -6,13 +6,14 @@ from enum import IntEnum
 
 class ComfortLevel(IntEnum):
     MAX_COMFORT = 0
-    MAX_SAVINGS = 1
+    BALANCED = 1
+    MAX_SAVINGS = 2
 
 class GridState(IntEnum):
     NORMAL = 0
     MODERATE = 1
     HIGH = 2
-    DR = 3
+    EMERGENCY = 3
 
 class EventMode(IntEnum):
     PRICE = 0
@@ -24,7 +25,7 @@ class VENSettings:
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings.json'):
+    def __init__(self, storage_file: str = 'oadr3ven_settings.json'):
         """
         Initialize the VENSettings storage handler.
         
@@ -33,7 +34,6 @@ class VENSettings:
         """
         self.storage_file = storage_file
         self.settings: Dict[str, Any] = {}
-        self.prev_value = None
         self._load()
     
     def _load(self) -> None:
@@ -65,51 +65,16 @@ class VENSettings:
             'CL': 0,              # Comfort Level (0=Max Comfort, 1=Balanced, 2=Max Savings)
             'ST': 0,              # Price  
             'GHG': 0,             # Greenhouse Gas Emissions
-            'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and DR)
-            'cooling_baseline_f'    : 74,       # Baseline Cooling Setpoint in Fahrenheit
-            'heating_baseline_f'    : 77,       # Baseline Heating Setpoint
-            'light_baseline_percent': 100,      # Baseline Light Level (%)
-            'duty_cycle_percent'    : 100,      # Baseline Light Level (%)
-            'Comfort': {
-                'setpoint_offsets_f': {
-                    '0': 0,     # State - Normal
-                    '1': 1,     # State - Moderate
-                    '2': 2,     # State - High
-                    '3': 4,     # State - DR 
-                },
-                'light_level_offsets': {
-                    '0': 100,   # State - Normal
-                    '1': 90,    # State - Moderate
-                    '2': 80,    # State - High
-                    '3': 70,    # State - DR 
-                },
-                'duty_cycle_offsets': {
-                    '0': 100,   # State - Normal
-                    '1': 90,    # State - Moderate
-                    '2': 80,    # State - High
-                    '3': 70,    # State - DR 
-                },
-            },
-            'Savings': {
-                'setpoint_offsets_f': {
-                    '0': 0,     # State - Normal
-                    '1': 2,     # State - Moderate
-                    '2': 3,     # State - High
-                    '3': 4,     # State - DR 
-                },
-                'light_level_offsets': {
-                    '0': 100,   # State - Normal
-                    '1': 85,    # State - Moderate
-                    '2': 75,    # State - High
-                    '3': 70,    # State - DR 
-                },
-                'duty_cycle_offsets': {
-                    '0': 100,   # State - Normal
-                    '1': 85,    # State - Moderate
-                    '2': 75,    # State - High
-                    '3': 70,    # State - DR 
-                },
-            }
+            'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and Emergency)
+            'CSP_F': 74,          # Desired Cooling Setpoint (°F)
+            'HSP_F': 77,          # Desired Heating Setpoint (°F)
+            'CLL': 100,           # Desired Light Level (%)
+            'MIN_OFF_DEG': 1,     # Min Setpoint Offset (°F)
+            'MAX_OFF_DEG': 4,     # Max Setpoint Offset (°F)
+            'MIN_LAO': 10,        # Min Light Adjustment Offset (%)
+            'MAX_LAO': 50,        # Max Light Adjustment Offset (%)
+            'MIN_DCO': 90,        # Min Duty Cycle Offset (%)
+            'MAX_DCO': 50,        # Max Duty Cycle Offset (%)
         }
     
     def get(self, key: str, default: Any = None) -> Any:
@@ -136,14 +101,9 @@ class VENSettings:
         Returns:
             True if value changed, False otherwise
         """
-        if key != "CL":
-            return False
-
         try:
-            curr_value = self.settings.get(key)
-            rc = float(curr_value) != float(self.prev_value)
-            self.prev_value = curr_value
-            return rc
+            prev_value = self.settings.get(key)
+            return float(prev_value) != float(value)
         except Exception as ex:
             return False
 
@@ -222,24 +182,6 @@ class VENSettings:
         return key in self.settings
     
     # Convenience property accessors for all VEN settings
-
-    @property
-    def light_level_baseline(self) -> int:
-        """Get Light Level Baseline (%)"""
-        return self.get('light_baseline_percent', 100)
-    @property 
-    def cooling_baseline_f(self) -> int:
-        """Get Cooling Setpoint Baseline (F)"""
-        return self.get('cooling_baseline_f', 74)
-    
-    @property
-    def heating_baseline_f(self) -> int:
-        """Get Heating Setpoint Baseline (F)"""
-        return self.get('heating_baseline_f', 77)
-    @property 
-    def duty_cycle_baseline(self) -> int:
-        """Get Duty Cycle Baseline (%)"""
-        return self.get('duty_cycle_percent', 100)
     
     @property
     def comfort_level(self) -> int:
@@ -251,6 +193,96 @@ class VENSettings:
         """Set Comfort Level (0-2)"""
         self.set('CL', value)
     
+    @property
+    def cooling_setpoint(self) -> float:
+        """Get Desired Cooling Setpoint (°F)"""
+        return self.get('CSP_F', 72)
+    
+    @cooling_setpoint.setter
+    def cooling_setpoint(self, value: float):
+        """Set Desired Cooling Setpoint (°F)"""
+        self.set('CSP_F', value)
+    
+    @property
+    def heating_setpoint(self) -> float:
+        """Get Desired Heating Setpoint (°F)"""
+        return self.get('HSP_F', 68)
+    
+    @heating_setpoint.setter
+    def heating_setpoint(self, value: float):
+        """Set Desired Heating Setpoint (°F)"""
+        self.set('HSP_F', value)
+    
+    @property
+    def light_level(self) -> int:
+        """Get Desired Light Level (%)"""
+        return self.get('CLL', 100)
+    
+    @light_level.setter
+    def light_level(self, value: int):
+        """Set Desired Light Level (%)"""
+        self.set('CLL', value)
+    
+    @property
+    def min_setpoint_offset(self) -> float:
+        """Get Min Setpoint Offset (°F)"""
+        return self.get('MIN_OFF_DEG', 0)
+    
+    @min_setpoint_offset.setter
+    def min_setpoint_offset(self, value: float):
+        """Set Min Setpoint Offset (°F)"""
+        self.set('MIN_OFF_DEG', value)
+    
+    @property
+    def max_setpoint_offset(self) -> float:
+        """Get Max Setpoint Offset (°F)"""
+        return self.get('MAX_OFF_DEG', 5)
+    
+    @max_setpoint_offset.setter
+    def max_setpoint_offset(self, value: float):
+        """Set Max Setpoint Offset (°F)"""
+        self.set('MAX_OFF_DEG', value)
+    
+    @property
+    def min_light_adjustment_offset(self) -> int:
+        """Get Min Light Adjustment Offset (%)"""
+        return self.get('MIN_LAO', 0)
+    
+    @min_light_adjustment_offset.setter
+    def min_light_adjustment_offset(self, value: int):
+        """Set Min Light Adjustment Offset (%)"""
+        self.set('MIN_LAO', value)
+    
+    @property
+    def max_light_adjustment_offset(self) -> int:
+        """Get Max Light Adjustment Offset (%)"""
+        return self.get('MAX_LAO', 50)
+    
+    @max_light_adjustment_offset.setter
+    def max_light_adjustment_offset(self, value: int):
+        """Set Max Light Adjustment Offset (%)"""
+        self.set('MAX_LAO', value)
+    
+    @property
+    def min_duty_cycle_offset(self) -> int:
+        """Get Min Duty Cycle Offset (%)"""
+        return self.get('MIN_DCO', 0)
+    
+    @min_duty_cycle_offset.setter
+    def min_duty_cycle_offset(self, value: int):
+        """Set Min Duty Cycle Offset (%)"""
+        self.set('MIN_DCO', value)
+    
+    @property
+    def max_duty_cycle_offset(self) -> int:
+        """Get Max Duty Cycle Offset (%)"""
+        return self.get('MAX_DCO', 50)
+    
+    @max_duty_cycle_offset.setter
+    def max_duty_cycle_offset(self, value: int):
+        """Set Max Duty Cycle Offset (%)"""
+        self.set('MAX_DCO', value)
+
     @property
     def price(self) -> float:
         """Get Price"""
@@ -273,16 +305,10 @@ class VENSettings:
     
     @property
     def current_grid_status(self) -> int:
+        """Get Current Grid Status (0=Normal, 1=Alert, 2=Emergency)"""
         return self.get('CGS', 0)
 
     @current_grid_status.setter
     def current_grid_status(self, value: int):
+        """Set Current Grid Status (0=Normal, 1=Alert, 2=Emergency)"""
         self.set('CGS', value)  
-
-    def getComfortSettings(self) -> Dict[str, Any]:
-        """Get Comfort Settings Dictionary"""
-        return self.get('Comfort', {})
-    
-    def getSavingsSettings(self) -> Dict[str, Any]:
-        """Get Savings Settings Dictionary"""
-        return self.get('Savings', {})

@@ -1,7 +1,7 @@
 from iox import IoXWrapper
 from nucore import Node
 from .base_optimizer import BaseOptimizer
-from opt_config.ven_settings import GridState, VENSettings, ComfortLevel
+from opt_config.ven_settings import GridState, VENSettings
     
 class DimmerOptimizer(BaseOptimizer):
     """
@@ -30,9 +30,14 @@ class DimmerOptimizer(BaseOptimizer):
         self.dimmer_prec = None
         self.dimmer_uom = None
 
+    def _get_min_offset(self):
+        return self.ven_settings.min_light_adjustment_offset
+    
+    def _get_max_offset(self):
+        return self.ven_settings.max_light_adjustment_offset
 
     def _update_settings(self):
-        self.light_level_baseline = self.ven_settings.light_level_baseline 
+        self.light_level_baseline = self.ven_settings.light_level
 
     def _check_user_override (self, grid_state):
         """
@@ -146,10 +151,6 @@ class DimmerOptimizer(BaseOptimizer):
                                    current_value=self.current_dimmer_level, opt_status="Reset to Baseline")
             self.last_applied_dimmer_level = new_level
 
-    def _get_calibration_key(self):
-        """
-        """
-        return 'light_level_offsets'
 
     def _reset_opt_out(self):
         """

@@ -39,30 +39,13 @@
             "step": 0.001
         },
         {
-            "id": "cool_setpoint_f",
-            "min": 30,
-            "max": 120,
-            "uom": "Fahrenheit | 17",
-            "precision": 1,
-            "step": 0.5
-        },
-        {
-            "id": "heat_setpoint_f",
-            "min": 30,
-            "max": 120,
-            "uom": "Fahrenheit | 17",
-            "precision": 1,
-            "step": 0.5
-        },
-        {
             "id": "comfort_level",
             "min": 0,
-            "max": 2,
+            "max": 1,
             "uom": "Index | 25",
             "index_names": [
                 "Max Comfort (Least Savings) | 0",
-                "Balanced Comfort/Savings | 1",
-                "Max Savings (Least Comfort) | 2"
+                "Max Savings (Least Comfort) | 1"
             ]
         },
         {
@@ -74,40 +57,8 @@
                 "Normal | 0",
                 "Moderate | 1",
                 "High | 2",
-                "Special Emergency | 3"
+                "DR | 3"
             ]
-        }, 
-        {
-            "id": "on_level",
-            "min": 0,
-            "max": 100,
-            "uom": "Percent | 51",
-            "precision": 1,
-            "step": 1
-        },
-        {
-            "id": "offset_degree",
-            "uom": "Fahrenheit | 17",
-            "min": 0,
-            "max": 25,
-            "precision": 1,
-            "step": 1
-        },
-        {
-            "id": "light_adj_offset",
-            "min": 0,
-            "max": 100,
-            "uom": "Percent | 51",
-            "precision": 1,
-            "step": 1
-        },
-        {
-            "id": "duty_cycle_offset",
-            "min": 0,
-            "max": 100,
-            "uom": "Percent | 51",
-            "precision": 1,
-            "step": 1
         }
     ],
     "nodedefs": [
@@ -147,78 +98,6 @@
                        "idref": "current_grid_status"
                    },
                    "is_settable": false 
-                },
-                {
-                   "id": "CSP_F",
-                   "name": "Comfort Cooling Setpoint",
-                   "editor": {
-                       "idref": "cool_setpoint_f"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "HSP_F",
-                   "name": "Comfort Heating Setpoint",
-                   "editor": {
-                       "idref": "heat_setpoint_f"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "CLL",
-                   "name": "Comfort Light Level",
-                   "editor": {
-                       "idref": "on_level"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "MIN_OFF_DEG",
-                   "name": "Min Comfort Setpoint Offset",
-                   "editor": {
-                       "idref": "offset_degree"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "MAX_OFF_DEG",
-                   "name": "Max Comfort Setpoint Offset",
-                   "editor": {
-                       "idref": "offset_degree"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "MIN_LAO",
-                   "name": "Min Comfort Light Adjustment Offset",
-                   "editor": {
-                       "idref": "light_adj_offset"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "MAX_LAO",
-                   "name": "Max Comfort Light Adjustment Offset",
-                   "editor": {
-                       "idref": "light_adj_offset"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "MIN_DCO",
-                   "name": "Min Comfort Duty Cycle Offset",
-                   "editor": {
-                       "idref": "duty_cycle_offset"
-                   },
-                   "is_settable": true 
-                },
-                {
-                   "id": "MAX_DCO",
-                   "name": "Max Comfort Duty Cycle Offset",
-                   "editor": {
-                       "idref": "duty_cycle_offset"
-                   },
-                   "is_settable": true
                 }
             ],
             "commands": {

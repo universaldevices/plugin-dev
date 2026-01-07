@@ -1,7 +1,7 @@
 from iox import IoXWrapper
 from nucore import Node
 from .base_optimizer import BaseOptimizer
-from opt_config.ven_settings import GridState, VENSettings, ComfortLevel
+from opt_config.ven_settings import GridState, VENSettings
     
 class ThermostatOptimizer(BaseOptimizer):
     """
@@ -37,12 +37,15 @@ class ThermostatOptimizer(BaseOptimizer):
         self.cool_uom=None
         self.heat_uom=None
         
-    def _update_settings(self):
-        self.cool_baseline = self.ven_settings.cooling_baseline_f
-        self.heat_baseline = self.ven_settings.heating_baseline_f
+    def _get_min_offset(self):
+        return self.ven_settings.min_setpoint_offset
 
-    def _get_calibration_key(self):
-        return 'setpoint_offsets_f'
+    def _get_max_offset(self):
+        return self.ven_settings.max_setpoint_offset
+
+    def _update_settings(self):
+        self.cool_baseline = self.ven_settings.cooling_setpoint
+        self.heat_baseline = self.ven_settings.heating_setpoint
 
     def _check_user_override(self, grid_state):
         """

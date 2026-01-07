@@ -77,7 +77,7 @@ class BaseOptimizer(ABC):
         Get the offset value for a given grid state.
         
         Args:
-            state: Grid state (NORMAL, MODERATE, HIGH, DR)
+            state: Grid state (NORMAL, MODERATE, HIGH, EMERGENCY)
             
         Returns:
             Offset value for the state
@@ -89,7 +89,7 @@ class BaseOptimizer(ABC):
             return self.moderate_offset
         elif state == GridState.HIGH:
             return self.high_offset
-        elif state == GridState.DR:
+        elif state == GridState.EMERGENCY:
             return self.emergency_offset
         else:
             return 0
@@ -102,6 +102,28 @@ class BaseOptimizer(ABC):
             Device name
         """
         return f"{self.node.name}[{self.node.address}]"
+
+    @abstractmethod    
+    def _get_min_offset(self):
+        """
+        Override this method in subclasses to get the minimum offset value
+        from VEN settings.
+        
+        Returns:
+            Minimum offset value
+        """
+        pass
+
+    @abstractmethod
+    def _get_max_offset(self):
+        """
+        Override this method in subclasses to get the minimum offset value
+        from VEN settings.
+        
+        Returns:
+            Minimum offset value
+        """
+        pass
 
     def check_user_override(self, grid_state):
         """
@@ -146,31 +168,35 @@ class BaseOptimizer(ABC):
         """
         pass
 
-    def _calibrate(self): 
+    def _calibrate(self):
         """
         Calibrate the optimizer. Default is simple linear offsets based on min/max and number of states. 
         Override in subclasses if different calibration is required.
+        
+        Subclasses can override this method to implement custom calibration logic.
         """
-        key=self._get_calibration_key()
-        if key is None:
-            self.print("No calibration key available, skipping calibration.")
-            return
+        min_offset = self._get_min_offset()
+        max_offset = self._get_max_offset()
+
         #adjust min and max based on comfort level
         comfort_level = self.ven_settings.comfort_level
-        settings = self.ven_settings.getComfortSettings() if comfort_level == ComfortLevel.MAX_COMFORT \
-            else self.ven_settings.getSavingsSettings()
+        if comfort_level == ComfortLevel.MAX_COMFORT:
+            pass # No change
+        elif comfort_level == ComfortLevel.BALANCED:
+            min_offset = abs(min_offset + 1.0)
+            max_offset = abs(max_offset + 1.0)
+        elif comfort_level == ComfortLevel.MAX_SAVINGS:
+            min_offset = abs(min_offset + 2.0)
+            max_offset = abs(max_offset + 2.0)
 
-        self.normal_offset = int(settings[key]['0'] )
-        self.moderate_offset = int(settings[key]['1'] )
-        self.high_offset = int(settings[key]['2'] )
-        self.emergency_offset = int(settings[key]['3'] )
-
-    @abstractmethod
-    def _get_calibration_key(self):
-        """
-        Get a unique device type key representing the current calibration settings.
-        """
-        pass
+        # Define offsets for each state within min/max bounds
+        # Simple linear distribution of offsets based on NUM_STATES
+        range_offset = int(abs(max_offset - min_offset))
+        step = int(range_offset / 2)
+        self.normal_offset = 0 # No offset for normal state
+        self.moderate_offset = int(min_offset)
+        self.high_offset = int (min_offset + step)
+        self.emergency_offset = int(max_offset)
 
     def update_settings(self, ven_settings: VENSettings):
         """

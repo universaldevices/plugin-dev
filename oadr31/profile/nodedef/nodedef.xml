@@ -6,48 +6,12 @@
 <st id="GHG" editor="ghg" />
 <st id="CL" editor="comfort_level" />
 <st id="CGS" editor="current_grid_status" />
-<st id="CSP_F" editor="cool_setpoint_f" />
-<st id="HSP_F" editor="heat_setpoint_f" />
-<st id="CLL" editor="on_level" />
-<st id="MIN_OFF_DEG" editor="offset_degree" />
-<st id="MAX_OFF_DEG" editor="offset_degree" />
-<st id="MIN_LAO" editor="light_adj_offset" />
-<st id="MAX_LAO" editor="light_adj_offset" />
-<st id="MIN_DCO" editor="duty_cycle_offset" />
-<st id="MAX_DCO" editor="duty_cycle_offset" />
 </sts>
 <cmds>
 <sends/>
 <accepts>
 <cmd id="CL">
 <p id="CL" editor="comfort_level" init="CL"/>
-</cmd>
-<cmd id="CSP_F">
-<p id="CSP_F" editor="cool_setpoint_f" init="CSP_F"/>
-</cmd>
-<cmd id="HSP_F">
-<p id="HSP_F" editor="heat_setpoint_f" init="HSP_F"/>
-</cmd>
-<cmd id="CLL">
-<p id="CLL" editor="on_level" init="CLL"/>
-</cmd>
-<cmd id="MIN_OFF_DEG">
-<p id="MIN_OFF_DEG" editor="offset_degree" init="MIN_OFF_DEG"/>
-</cmd>
-<cmd id="MAX_OFF_DEG">
-<p id="MAX_OFF_DEG" editor="offset_degree" init="MAX_OFF_DEG"/>
-</cmd>
-<cmd id="MIN_LAO">
-<p id="MIN_LAO" editor="light_adj_offset" init="MIN_LAO"/>
-</cmd>
-<cmd id="MAX_LAO">
-<p id="MAX_LAO" editor="light_adj_offset" init="MAX_LAO"/>
-</cmd>
-<cmd id="MIN_DCO">
-<p id="MIN_DCO" editor="duty_cycle_offset" init="MIN_DCO"/>
-</cmd>
-<cmd id="MAX_DCO">
-<p id="MAX_DCO" editor="duty_cycle_offset" init="MAX_DCO"/>
 </cmd>
 </accepts>
 </cmds>

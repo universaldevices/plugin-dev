@@ -50,6 +50,7 @@ class DeviceManager:
         """
         if not self.ven_settings.is_changed(control, value):
             return
+        self.ven_settings._reload()
         self.update_settings(self.ven_settings)
     
     async def optimize(self, grid_state):

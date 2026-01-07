@@ -40,11 +40,45 @@ class SwitchOptimizer(BaseOptimizer):
         self.current_duty_cycle = None 
         self.cycle_period_seconds = DUTY_CYCLE_PERIOD_SECONDS 
 
+    def _get_min_offset(self):
+        return self.ven_settings.min_duty_cycle_offset
+    
+    def _get_max_offset(self):
+        return self.ven_settings.max_duty_cycle_offset
+
     def _update_settings(self):
         self._stop_duty_cycle()
 
-    def _get_calibration_key(self):
-        return 'duty_cycle_offsets'
+    def _get_offset(self, value: float) -> float:
+        max_offset = self._get_max_offset()
+
+        return value if value > max_offset else max_offset
+
+    def _calibrate(self):
+        """
+            Simple calibration based on comfort level settings.
+        """
+        min_offset = self._get_min_offset()
+        max_offset = self._get_max_offset()
+
+        #adjust min and max based on comfort level
+        comfort_level = self.ven_settings.comfort_level
+        if comfort_level == ComfortLevel.MAX_COMFORT:
+            self.normal_offset = min_offset 
+            self.moderate_offset  = self._get_offset(min_offset - 5.0)
+            self.high_offset = self._get_offset(min_offset - 10.0)
+            self.emergency_offset = max_offset 
+        elif comfort_level == ComfortLevel.BALANCED:
+            self.normal_offset = self._get_offset(min_offset - 10.0)  
+            self.moderate_offset  = self._get_offset(min_offset - 20.0) 
+            self.high_offset = self._get_offset(min_offset - 30.0)     
+            self.emergency_offset = max_offset 
+        elif comfort_level == ComfortLevel.MAX_SAVINGS:
+            self.normal_offset = self._get_offset(min_offset - 20.0) 
+            self.moderate_offset  = self._get_offset(min_offset - 30.0) 
+            self.high_offset = self._get_offset(min_offset - 40.0)     
+            self.emergency_offset = max_offset 
+
 
     def _check_user_override (self, grid_state):
         """

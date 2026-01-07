@@ -42,8 +42,8 @@ if __name__ == '__main__':
         else:
             polyglot.Notices.clear()
             plugin = Plugin(PLUGIN_FILE_NAME)
-#            plugin.toIoX()
-#            plugin.generateCode(path='./')
+        #    plugin.toIoX()
+        #    plugin.generateCode(path='./')
             from Oadr3ControllerNode import Oadr3ControllerNode
             controller = Oadr3ControllerNode(polyglot, plugin)
             polyglot.ready()
