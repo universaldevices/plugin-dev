@@ -463,7 +463,7 @@ class DropHub(udi_interface.Node):
 
             if devType == "soft":
                 devNode=DropSoftener(self.poly, self.controller, endDeviceAddress, devName)
-            elif devType == "filter":
+            elif devType == "filt":
                 devNode=DropSoftener(self.poly, self.controller, endDeviceAddress, devName)
             elif devType == "salt":
                 devNode=DropSalt(self.poly, self.controller, endDeviceAddress, devName)
