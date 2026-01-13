@@ -31,6 +31,7 @@ class DeviceManager:
         self.ven=None
         self.is_subscribed=False
         self.is_profiles_updated=False
+        self.disable_optimization=False
 
     def update_settings(self, settings: VENSettings): 
         """
@@ -53,6 +54,8 @@ class DeviceManager:
         self.update_settings(self.ven_settings)
     
     async def optimize(self, grid_state):
+        if self.disable_optimization:
+            return
         for optimizer in self.thermostats.values():
             await optimizer.optimize(grid_state)
         for optimizer in self.dimmers.values():
@@ -71,6 +74,11 @@ class DeviceManager:
         except Exception as ex:
             LOGGER.error(f"Failed to subscribe to events: {str(ex)}")   
 
+    def disable_opt(self, disable: bool):
+        """
+        Enables or disables optimization for all devices
+        """
+        self.disable_optimization = disable
 
     def update_profiles(self):
         """

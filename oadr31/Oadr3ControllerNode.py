@@ -412,6 +412,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             base_optimizer.OPT_OUT_DURATION = timedelta(seconds=10) if base_optimizer.TESTING_MODE else timedelta(days=1)
             switch_optimizer.DUTY_CYCLE_PERIOD_SECONDS = (base_optimizer.OPT_OUT_DURATION.total_seconds()/2) if base_optimizer.TESTING_MODE else (60 * 60)  # 1 hour
             self.device_manager = DeviceManager(self.poly)
+            self.device_manager.disable_opt(self.disable_opt)
             from history.device_history import DeviceHistory
             self.history = DeviceHistory()
             thread = threading.Thread(target=self.query_all_thread)
@@ -452,6 +453,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         self.test_mode=False
         self.event_mode=EventMode.PRICE
         self.program_id=None
+        self.disable_opt=False
         try:
             if 'VTN Base URL' in params:
                 self.vtn_base_url=params['VTN Base URL']
@@ -479,6 +481,13 @@ class Oadr3ControllerNode(udi_interface.Node):
                     self.event_mode=EventMode.SIMPLE
                 elif mode.lower() == 'both':
                     self.event_mode=EventMode.BOTH
+            
+            if 'Disable Opt' in params:
+                disable_opt=params['Disable Opt']
+                if disable_opt and (disable_opt.lower() == 'true' or disable_opt == '1' or disable_opt.lower() == 'yes'):
+                    self.disable_opt=True
+                else:
+                    self.disable_opt=False
             
             if 'Program ID' in params:
                 self.program_id=params['Program ID']
