@@ -1,6 +1,6 @@
 udi_interface>=3.0.57
 ioxplugin
-oadr30_ven_ud
+oadr30_ven_ud>=1.0.8
 tzlocal
 isodate
 pytz

@@ -130,4 +130,7 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         self.updateCurrentGridStatus(status)
 
     def updateSimple(self, value, force: bool=None, text: str=None):
+        if not value:
+            return 
+        value = int(value)+1
         self.updateCurrentGridStatus(value, force)

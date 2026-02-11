@@ -109,7 +109,7 @@ class DimmerOptimizer(BaseOptimizer):
         # Get offset for current state
         offset = self.get_offset_for_state(grid_state)
         # Calculate target setpoints
-        target_level = self.light_level_baseline - offset
+        target_level = self.light_level_baseline - (100 - offset)
 
         if self.last_applied_dimmer_level is not None and self.last_applied_dimmer_level == target_level:
             target_level = None
