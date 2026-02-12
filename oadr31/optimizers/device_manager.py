@@ -23,8 +23,8 @@ import threading
 class DeviceManager:
     def __init__(self, poly ):
         self.poly = poly
-        self.iox = IoXWrapper(poly=self.poly)
-        self.profile = Profile("", [])
+        self.iox = IoXWrapper(json_output=True, poly=self.poly)
+        self.profile = Profile(timestamp="", families=[])
         self.thermostats={}
         self.dimmers={}
         self.switches={}
@@ -88,10 +88,11 @@ class DeviceManager:
             if not self.profile.load_from_json(self.iox.get_profiles()):
                 LOGGER.error("Failed to load profiles from JSON data")
                 return False
+            
             response = self.iox.get_nodes()
             if response is None:
-                LOGGER.error("Failed to fetch nodes from URL.")
-                return False
+               LOGGER.error("Failed to fetch nodes from URL") 
+               return False 
             root = Node.load_from_xml(response)
             if not self.profile.map_nodes(root):
                 LOGGER.error("Failed to map nodes from XML data")
@@ -150,7 +151,7 @@ class DeviceManager:
             LOGGER.error("Node is None, cannot get node definitions")
             return None
         try:
-            key= f"{node.nodeDefId}.{node.family}.{node.instance}"
+            key= f"{node.node_def_id}.{node.family}.{node.instance}"
             return self.profile.lookup[key]
         except Exception as ex:
             LOGGER.warning(f"Failed to get node definitions for {node.address}: {str(ex)}")

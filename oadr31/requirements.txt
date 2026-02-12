@@ -4,4 +4,4 @@ oadr30_ven_ud>=1.0.8
 tzlocal
 isodate
 pytz
-nucore-ai
+nucore-ai>=1.2.0

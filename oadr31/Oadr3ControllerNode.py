@@ -740,7 +740,9 @@ class Oadr3ControllerNode(udi_interface.Node):
             paylaodType='n/a' if not payloadType else payloadType
             values=segment.getValues()
             values ='n/a' if not values  else values
-            LOGGER.info(f"Got event of type {payloadType} with value of {values[0]}" )
+            LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
+            if segment.isEnded():
+                return
             from opt_config.ven_settings import EventMode
 
             if paylaodType == 'GHG':
