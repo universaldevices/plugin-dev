@@ -31,8 +31,6 @@ class SwitchOptimizer(BaseOptimizer):
         self.last_applied_state = None
         self.current_state = None
         self.initial_state = None
-        self.switch_prec = None
-        self.switch_uom = None
         
         # Duty cycle control
         self.duty_cycle_task = None
@@ -195,22 +193,6 @@ class SwitchOptimizer(BaseOptimizer):
             
         """
 
-        if grid_state == GridState.NORMAL:
-            if self.duty_cycle_running:
-                # Reset to normal operation
-                await self._stop_duty_cycle()
-                self.print(f'grid state is NORMAL. Stopping duty cycle optimization.')
-                self.history.insert(
-                    self._get_device_name(), 
-                    "Duty Cycle", 
-                    grid_state=grid_state, 
-                    requested_value=100,
-                    current_value=self.current_duty_cycle, 
-                    opt_status="Reset to Normal"
-                )
-                self.current_duty_cycle = None
-            return
-        
         if self.current_state == 0: 
             # Device is already off, no optimization needed
             return
@@ -250,6 +232,7 @@ class SwitchOptimizer(BaseOptimizer):
         Revert switches to initial settings. 
         """
         await self._stop_duty_cycle()
+        self.last_applied_state = None 
         
     def _opt_out(self):
         asyncio.create_task(self._stop_duty_cycle())
@@ -277,8 +260,6 @@ class SwitchOptimizer(BaseOptimizer):
 
         if property == 'ST':
             try:
-                self.switch_prec = value['prec']
-                self.switch_uom = value['uom']
                 self.current_state = 0 if float(value['value']) == 0 else 1
                 if self.initial_state is None or self.last_grid_state == GridState.NORMAL:
                     self.initial_state = self.current_state

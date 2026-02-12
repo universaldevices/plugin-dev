@@ -360,11 +360,14 @@ class Oadr3ControllerNode(udi_interface.Node):
         time.sleep(2)
         node = self.getNode('oadr3ven')
         if node:
-            self.shortPoll()
             node.set_settings()
             self.device_manager.update_settings(node.get_settings())
             self.device_manager.update_profiles()
             node.queryAll()
+            while self.device_manager.should_subscribe():
+                self.device_manager.subscribe_events()
+                time.sleep(5)
+            self.shortPoll()
 
     def start(self)->bool:
         self.timeseries_index = 0

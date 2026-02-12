@@ -3,7 +3,6 @@ from typing import Any
 from opt_config.ven_settings import VENSettings, ComfortLevel, GridState
 from abc import ABC, abstractmethod
 from nucore import Node
-from nucore import Profile
 from iox import IoXWrapper
 from datetime import datetime
 from history.device_history import DeviceHistory
@@ -93,6 +92,18 @@ class BaseOptimizer(ABC):
             return self.emergency_offset
         else:
             return 0
+        
+    def get_property(self, property_id:str):
+        """
+        Get the NodeProperty definition for a given property ID.
+        
+        Args:
+            property_id: The ID of the property to retrieve
+
+        Returns:
+            NodeProperty definition if found, None otherwise
+        """
+        return self.node.properties.get(property_id, None) if self.node and self.node.properties else None
 
     def _get_device_name(self):
         """
@@ -242,8 +253,8 @@ class BaseOptimizer(ABC):
             self.print("Invalid event data, cannot update internal state")
             return
         
-        control = event['control']
-        action = event['action']
+        control = event.get('control', None)
+        action = event.get('action', None)
         if control is None or action is None:
             self.print("Invalid control or action in event data")
             return

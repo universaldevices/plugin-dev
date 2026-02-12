@@ -32,10 +32,6 @@ class ThermostatOptimizer(BaseOptimizer):
         self.last_applied_heat_sp = None
         self.initial_cool_sp = None
         self.initial_heat_sp = None
-        self.cool_prec=None
-        self.heat_prec=None
-        self.cool_uom=None
-        self.heat_uom=None
         
     def _update_settings(self):
         self.cool_baseline = self.ven_settings.cooling_baseline_f
@@ -94,21 +90,35 @@ class ThermostatOptimizer(BaseOptimizer):
         Returns:
             Command dictionary to send to IoX
         """
+        if 'Meros' in self.node.name:
+            self.print ('Meros thermostat detected. Skipping setpoint adjustment as Meros thermostats do not support setpoint adjustments via IoX commands.')
+        
         commands = []
+        uom = None
+        prec = 0
         if cool_value is not None: 
+            property = self.get_property('CLISPC')
+            if property:
+                uom = property.uom
+                prec = property.prec
+
             commands.append({
             'device_id': self.node.address,
             'command_id': 'CLISPC', 
             'command_params': [
-                {'id': 'n/a', 'value': cool_value, 'uom': self.cool_uom, 'prec': self.cool_prec}
+                {'id': 'n/a', 'value': cool_value, 'uom': uom, 'prec': prec}
             ]
             })
         if heat_value is not None: 
+            property = self.get_property('CLISPH')
+            if property:
+                uom = property.uom
+                prec = property.prec
             commands.append({
             'device_id': self.node.address,
             'command_id': 'CLISPH', 
             'command_params': [
-                {'id': 'n/a', 'value': heat_value, 'uom': self.heat_uom, 'prec': self.heat_prec}
+                {'id': 'n/a', 'value': heat_value, 'uom': uom, 'prec': prec}
             ]
             })
 
@@ -207,11 +217,11 @@ class ThermostatOptimizer(BaseOptimizer):
         if new_cool_sp is not None:
             self.history.insert(self._get_device_name(), "Cool Setpoint", grid_state=GridState.NORMAL, requested_value=new_cool_sp,
                                    current_value=self.current_cool_sp, opt_status="Reset to Initial")
-            self.last_applied_cool_sp = new_cool_sp
+            self.last_applied_cool_sp = None 
         if new_heat_sp is not None:
             self.history.insert(self._get_device_name(), "Heat Setpoint", grid_state=GridState.NORMAL, requested_value=new_heat_sp,
                                    current_value=self.current_heat_sp, opt_status="Reset to Initial")
-            self.last_applied_heat_sp = new_heat_sp
+            self.last_applied_heat_sp = None
         
     def _reset_opt_out(self):
         """
@@ -231,22 +241,17 @@ class ThermostatOptimizer(BaseOptimizer):
                     'prec': str or None
                 }
         """
+        prec = value.get('prec', 0)
 
         if property == 'CLISPC':
-            self.cool_prec = value['prec']
-            self.cool_uom = value['uom']
-            value = self.value_to_float(value['value'], self.cool_prec)
-            self.current_cool_sp = value
+            self.current_cool_sp = self.value_to_float(value['value'], prec)
             if self.initial_cool_sp is None or self.last_grid_state == GridState.NORMAL:
-                self.initial_cool_sp = value
+                self.initial_cool_sp = self.current_cool_sp
         elif property == 'CLISPH':
-            self.heat_prec = value['prec']
-            self.heat_uom = value['uom']
-            value = self.value_to_float(value['value'], self.heat_prec)
-            self.current_heat_sp = value   
+            self.current_heat_sp = self.value_to_float(value['value'], prec)
             if self.initial_heat_sp is None or self.last_grid_state == GridState.NORMAL:
-                self.initial_heat_sp = value 
+                self.initial_heat_sp = self.current_heat_sp
         elif property == 'ST':
-            self.current_temp = self.value_to_float(value['value'], value['prec'])
+            self.current_temp = self.value_to_float(value['value'], prec)
         elif property == 'CLIMD':
             self.current_mode = str(value['value'])

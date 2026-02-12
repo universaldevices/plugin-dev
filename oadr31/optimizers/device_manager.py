@@ -63,8 +63,14 @@ class DeviceManager:
         for optimizer in self.switches.values():
             await optimizer.optimize(grid_state) 
 
+    def should_subscribe(self):
+        """
+        Determines whether the device manager should subscribe to events based on the current state of profiles and subscription
+        """
+        return not self.is_profiles_updated or not self.is_subscribed
+    
     def subscribe_events(self):
-        if not self.is_profiles_updated or self.is_subscribed:
+        if not self.should_subscribe():
             return
         try:
             threading.Thread(target=asyncio.run, args=(self.iox.subscribe_events(
@@ -229,6 +235,26 @@ class DeviceManager:
 
         except Exception as ex:
             LOGGER.error(f"Error processing node update for {node_address}: {str(ex)}")
+    
+    async def __process_busy__(self, message):
+        """
+        Processes system busy 
+        #define DEVINTIX_SYSTEM_IS_NOT_BUSY_ACTION "0"
+        #define DEVINTIX_SYSTEM_IS_BUSY_ACTION "1"
+        #define DEVINTIX_SYSTEM_IS_IDLE_ACTION "2"
+        #define DEVINTIX_SYSTEM_IN_SAFE_MODE_ACTION "3"
+        """
+        LOGGER.debug(f"Received busy message: {message}")
+        return
+
+    async def __process_progress__(self, message):
+        """
+        Processes progress for long running operations. The action value indicates the progress status. 
+        Can be ignored for now 
+        """
+        LOGGER.debug(f"Received progress message: {message}")
+        return
+    
             
     async def __on_message__(self, message):
         """
@@ -238,11 +264,18 @@ class DeviceManager:
         if message is None or 'node' not in message or 'control' not in message:
             LOGGER.warning(f"Received invalid message format {message}")
             return
+        
 
-        node_address = message['node']
-        control = message['control']
+        node_address = message.get('node', None)
+        control = message.get('control', None)
         if control == "_3": #node updated event
             await self.__process_node_update__(node_address, message)
+        elif control == "_5": #system busy event
+            await self.__process_busy__(message)
+        elif control == "_7": #system busy event
+            await self.__process_progress__(message)
+        elif control.startswith("_"): #ven message
+            pass #ignore other control events
         elif node_address in self.thermostats.keys():
             await self.thermostats[node_address].update_internal_state(message)
         elif node_address in self.dimmers.keys():

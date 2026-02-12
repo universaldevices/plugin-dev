@@ -27,8 +27,6 @@ class DimmerOptimizer(BaseOptimizer):
         self.last_applied_dimmer_level = None
         self.current_dimmer_level = None
         self.initial_dimmer_level = None
-        self.dimmer_prec = None
-        self.dimmer_uom = None
 
 
     def _update_settings(self):
@@ -73,12 +71,19 @@ class DimmerOptimizer(BaseOptimizer):
             new_level if successful, None otherwise
         """
         commands = []
+        uom = None
+        prec = 0
+        property = self.get_property('ST')
+        if property is not None:
+            uom = property.uom
+            prec = property.prec 
+
         if level is not None: 
             commands.append({
             'device_id': self.node.address,
             'command_id': 'DON', 
             'command_params': [
-                {'id': 'n/a', 'value': int(level), 'uom': self.dimmer_uom, 'prec': self.dimmer_prec}
+                {'id': 'n/a', 'value': int(level), 'uom': uom, 'prec': prec}
             ]
             })
 
@@ -144,7 +149,7 @@ class DimmerOptimizer(BaseOptimizer):
         if new_level is not None:
             self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=GridState.NORMAL, requested_value=new_level,
                                    current_value=self.current_dimmer_level, opt_status="Reset to Baseline")
-            self.last_applied_dimmer_level = new_level
+            self.last_applied_dimmer_level = None
 
     def _get_calibration_key(self):
         """
@@ -171,8 +176,6 @@ class DimmerOptimizer(BaseOptimizer):
 
         if property == 'ST':
             try:
-                self.dimmer_prec = value['prec']
-                self.dimmer_uom = value['uom']
                 self.current_dimmer_level = float(value['value'])
                 if self.initial_dimmer_level is None or self.last_grid_state == GridState.NORMAL:
                     self.initial_dimmer_level = self.current_dimmer_level 
