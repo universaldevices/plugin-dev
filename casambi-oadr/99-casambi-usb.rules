@@ -1,0 +1,21 @@
+# udev rules for Casambi USB dongle
+# This automatically sets permissions when the device is plugged in
+#
+# Installation on EIsy:
+# 1. Copy this file to: /etc/udev/rules.d/99-casambi-usb.rules
+# 2. Run: sudo udevadm control --reload-rules
+# 3. Run: sudo udevadm trigger
+# 4. Unplug and replug the Casambi USB dongle
+
+# For FreeBSD-style device names (cuaU*, ttyU*)
+# Adjust ATTRS based on your specific USB device (use 'udevadm info' to find)
+KERNEL=="cuaU[0-9]*", MODE="0660", GROUP="pg3ns"
+KERNEL=="ttyU[0-9]*", MODE="0660", GROUP="pg3ns"
+
+# Alternative: Match by USB vendor/product ID (more specific)
+# Replace idVendor and idProduct with your Casambi dongle's actual IDs
+# Find them with: lsusb
+# Example: ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0660", GROUP="pg3ns", SYMLINK+="pg3.casambi"
+
+# If you know the vendor/product ID, uncomment and customize this line:
+# SUBSYSTEM=="tty", ATTRS{idVendor}=="XXXX", ATTRS{idProduct}=="YYYY", MODE="0660", GROUP="pg3ns", SYMLINK+="pg3.casambi"
