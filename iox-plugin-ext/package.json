@@ -132,12 +132,12 @@
     "fs": "^0.0.1-security",
     "path": "^0.12.7",
     "minimist": ">=0.2.4",
-    "minimatch": ">=3.0.5"
+    "minimatch": ">=10.2.1"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
     "minimist": ">=0.2.4",
-    "minimatch": ">=3.0.5"
+    "minimatch": ">=10.2.1"
   },
   "main": "./extensions/compiled/extension.js"
 }

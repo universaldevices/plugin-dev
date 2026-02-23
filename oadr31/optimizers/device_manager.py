@@ -23,14 +23,15 @@ import threading
 class DeviceManager:
     def __init__(self, poly ):
         self.poly = poly
-        self.iox = IoXWrapper(poly=self.poly)
-        self.profile = Profile("", [])
+        self.iox = IoXWrapper(json_output=True, poly=self.poly)
+        self.profile = Profile(timestamp="", families=[])
         self.thermostats={}
         self.dimmers={}
         self.switches={}
         self.ven=None
         self.is_subscribed=False
         self.is_profiles_updated=False
+        self.disable_optimization=False
 
     def update_settings(self, settings: VENSettings): 
         """
@@ -53,6 +54,8 @@ class DeviceManager:
         self.update_settings(self.ven_settings)
     
     async def optimize(self, grid_state):
+        if self.disable_optimization:
+            return
         for optimizer in self.thermostats.values():
             await optimizer.optimize(grid_state)
         for optimizer in self.dimmers.values():
@@ -60,8 +63,14 @@ class DeviceManager:
         for optimizer in self.switches.values():
             await optimizer.optimize(grid_state) 
 
+    def should_subscribe(self):
+        """
+        Determines whether the device manager should subscribe to events based on the current state of profiles and subscription
+        """
+        return not self.is_profiles_updated or not self.is_subscribed
+    
     def subscribe_events(self):
-        if not self.is_profiles_updated or self.is_subscribed:
+        if not self.should_subscribe():
             return
         try:
             threading.Thread(target=asyncio.run, args=(self.iox.subscribe_events(
@@ -71,6 +80,11 @@ class DeviceManager:
         except Exception as ex:
             LOGGER.error(f"Failed to subscribe to events: {str(ex)}")   
 
+    def disable_opt(self, disable: bool):
+        """
+        Enables or disables optimization for all devices
+        """
+        self.disable_optimization = disable
 
     def update_profiles(self):
         """
@@ -80,10 +94,11 @@ class DeviceManager:
             if not self.profile.load_from_json(self.iox.get_profiles()):
                 LOGGER.error("Failed to load profiles from JSON data")
                 return False
+            
             response = self.iox.get_nodes()
             if response is None:
-                LOGGER.error("Failed to fetch nodes from URL.")
-                return False
+               LOGGER.error("Failed to fetch nodes from URL") 
+               return False 
             root = Node.load_from_xml(response)
             if not self.profile.map_nodes(root):
                 LOGGER.error("Failed to map nodes from XML data")
@@ -142,7 +157,7 @@ class DeviceManager:
             LOGGER.error("Node is None, cannot get node definitions")
             return None
         try:
-            key= f"{node.nodeDefId}.{node.family}.{node.instance}"
+            key= f"{node.node_def_id}.{node.family}.{node.instance}"
             return self.profile.lookup[key]
         except Exception as ex:
             LOGGER.warning(f"Failed to get node definitions for {node.address}: {str(ex)}")
@@ -220,6 +235,26 @@ class DeviceManager:
 
         except Exception as ex:
             LOGGER.error(f"Error processing node update for {node_address}: {str(ex)}")
+    
+    async def __process_busy__(self, message):
+        """
+        Processes system busy 
+        #define DEVINTIX_SYSTEM_IS_NOT_BUSY_ACTION "0"
+        #define DEVINTIX_SYSTEM_IS_BUSY_ACTION "1"
+        #define DEVINTIX_SYSTEM_IS_IDLE_ACTION "2"
+        #define DEVINTIX_SYSTEM_IN_SAFE_MODE_ACTION "3"
+        """
+        LOGGER.debug(f"Received busy message: {message}")
+        return
+
+    async def __process_progress__(self, message):
+        """
+        Processes progress for long running operations. The action value indicates the progress status. 
+        Can be ignored for now 
+        """
+        LOGGER.debug(f"Received progress message: {message}")
+        return
+    
             
     async def __on_message__(self, message):
         """
@@ -229,11 +264,18 @@ class DeviceManager:
         if message is None or 'node' not in message or 'control' not in message:
             LOGGER.warning(f"Received invalid message format {message}")
             return
+        
 
-        node_address = message['node']
-        control = message['control']
+        node_address = message.get('node', None)
+        control = message.get('control', None)
         if control == "_3": #node updated event
             await self.__process_node_update__(node_address, message)
+        elif control == "_5": #system busy event
+            await self.__process_busy__(message)
+        elif control == "_7": #system busy event
+            await self.__process_progress__(message)
+        elif control.startswith("_"): #ven message
+            pass #ignore other control events
         elif node_address in self.thermostats.keys():
             await self.thermostats[node_address].update_internal_state(message)
         elif node_address in self.dimmers.keys():

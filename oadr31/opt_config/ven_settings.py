@@ -24,7 +24,7 @@ class VENSettings:
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v1.json'):
+    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v2.json'):
         """
         Initialize the VENSettings storage handler.
         
@@ -65,8 +65,8 @@ class VENSettings:
             'ST': 0,              # Price  
             'GHG': 0,             # Greenhouse Gas Emissions
             'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and DR)
-            'cooling_baseline_f'    : 74,       # Baseline Cooling Setpoint in Fahrenheit
-            'heating_baseline_f'    : 72,       # Baseline Heating Setpoint
+            'cooling_baseline_f'    : 72,       # Baseline Cooling Setpoint in Fahrenheit
+            'heating_baseline_f'    : 70,       # Baseline Heating Setpoint
             'light_baseline_percent': 100,      # Baseline Light Level (%)
             'duty_cycle_percent'    : 100,      # Baseline Light Level (%)
             'Comfort': {
@@ -78,15 +78,15 @@ class VENSettings:
                 },
                 'light_level_offsets': {
                     '0': 100,   # State - Normal
-                    '1': 90,    # State - Moderate
-                    '2': 80,    # State - High
-                    '3': 70,    # State - DR 
+                    '1': 95,    # State - Moderate
+                    '2': 90,    # State - High
+                    '3': 80,    # State - DR 
                 },
                 'duty_cycle_offsets': {
                     '0': 100,   # State - Normal
-                    '1': 90,    # State - Moderate
-                    '2': 80,    # State - High
-                    '3': 70,    # State - DR 
+                    '1': 95,    # State - Moderate
+                    '2': 90,    # State - High
+                    '3': 80,    # State - DR 
                 },
             },
             'Savings': {
@@ -98,14 +98,14 @@ class VENSettings:
                 },
                 'light_level_offsets': {
                     '0': 100,   # State - Normal
-                    '1': 85,    # State - Moderate
-                    '2': 75,    # State - High
+                    '1': 90,    # State - Moderate
+                    '2': 85,    # State - High
                     '3': 70,    # State - DR 
                 },
                 'duty_cycle_offsets': {
                     '0': 100,   # State - Normal
-                    '1': 85,    # State - Moderate
-                    '2': 75,    # State - High
+                    '1': 90,    # State - Moderate
+                    '2': 85,    # State - High
                     '3': 70,    # State - DR 
                 },
             }

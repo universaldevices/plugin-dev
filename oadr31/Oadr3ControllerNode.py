@@ -364,6 +364,10 @@ class Oadr3ControllerNode(udi_interface.Node):
             self.device_manager.update_settings(node.get_settings())
             self.device_manager.update_profiles()
             node.queryAll()
+            while self.device_manager.should_subscribe():
+                self.device_manager.subscribe_events()
+                time.sleep(5)
+            self.shortPoll()
 
     def start(self)->bool:
         self.timeseries_index = 0
@@ -393,10 +397,13 @@ class Oadr3ControllerNode(udi_interface.Node):
             if not self.vtn:
                 self.setNotices('VTN', 'Failed connecting to the VTN ...')
                 return False
-            self.ven = self.vtn.create_ven(resources=[self.Resource()])
-            if not self.ven:
-                self.setNotices('VEN', 'Failed registering the VEN ... for now, ignoring ...')
-             #   return False
+            try:
+                self.ven = self.vtn.create_ven(resources=[self.Resource()])
+                if not self.ven:
+                    self.setNotices('VEN', 'Failed registering the VEN ... for now, ignoring ...')
+            except:
+                pass
+                #   return False
             self.clearNotices()
             if not self.test_mode:
                 self.scheduler=self.EventScheduler()
@@ -412,6 +419,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             base_optimizer.OPT_OUT_DURATION = timedelta(seconds=10) if base_optimizer.TESTING_MODE else timedelta(days=1)
             switch_optimizer.DUTY_CYCLE_PERIOD_SECONDS = (base_optimizer.OPT_OUT_DURATION.total_seconds()/2) if base_optimizer.TESTING_MODE else (60 * 60)  # 1 hour
             self.device_manager = DeviceManager(self.poly)
+            self.device_manager.disable_opt(self.disable_opt)
             from history.device_history import DeviceHistory
             self.history = DeviceHistory()
             thread = threading.Thread(target=self.query_all_thread)
@@ -447,11 +455,14 @@ class Oadr3ControllerNode(udi_interface.Node):
         params['path']
         """
         from opt_config.ven_settings import EventMode
-
+        self.vtn_base_url=None
         self.auth_server_url=None
         self.test_mode=False
         self.event_mode=EventMode.PRICE
         self.program_id=None
+        self.disable_opt=False
+        self.last_event_type=None
+        self.last_price=0.0
         try:
             if 'VTN Base URL' in params:
                 self.vtn_base_url=params['VTN Base URL']
@@ -479,6 +490,13 @@ class Oadr3ControllerNode(udi_interface.Node):
                     self.event_mode=EventMode.SIMPLE
                 elif mode.lower() == 'both':
                     self.event_mode=EventMode.BOTH
+            
+            if 'Disable Opt' in params:
+                disable_opt=params['Disable Opt']
+                if disable_opt and (disable_opt.lower() == 'true' or disable_opt == '1' or disable_opt.lower() == 'yes'):
+                    self.disable_opt=True
+                else:
+                    self.disable_opt=False
             
             if 'Program ID' in params:
                 self.program_id=params['Program ID']
@@ -539,7 +557,6 @@ class Oadr3ControllerNode(udi_interface.Node):
             #self.nodes[node.address] = node
             ###
             return True
-            return True
         except Exception as ex:
             LOGGER.error(str(ex))
             return False
@@ -583,14 +600,11 @@ class Oadr3ControllerNode(udi_interface.Node):
             if events:
                 timeSeries = events.getTimeSeries()
                 if not timeSeries:
-                    LOGGER.error("falied getting the time series for the event")
+                    LOGGER.error("failed getting the time series for the event")
                     return False
 
                 if not self.test_mode:
                     self.scheduler.setTimeSeries(timeSeries)
-                    self.scheduler.setTimeSeries(timeSeries)
-                    if not self.scheduler.is_alive():
-                        self.scheduler.start()
                 else:
                     length = len(timeSeries)
                     if self.timeseries_index < length:
@@ -601,6 +615,8 @@ class Oadr3ControllerNode(udi_interface.Node):
                         self.timeseries_index += 1
                     if self.timeseries_index >= length:
                         self.timeseries_index = 0
+            else: #@MICHEL HERE
+                self.scheduler.stop() # stop the scheduler if there are no events to avoid processing stale events
 
             return True
         except Exception as ex:
@@ -706,27 +722,47 @@ class Oadr3ControllerNode(udi_interface.Node):
         """
             Segment is ValuesMap
         """
-        payloadType=segment.getPayloadType()
-        paylaodType='n/a' if not payloadType else payloadType
-        values=segment.getValues()
-        values ='n/a' if not values  else values
-        LOGGER.info(f"Got event of type {payloadType} with value of {values[0]}" )
-        from opt_config.ven_settings import EventMode
-
         try:
             node = self.getNode('oadr3ven')
             if not node:
                 LOGGER.error('VEN node not found ...')
                 return
+            #we need to ignore segment.isEnded() because we are also processing continuos prices
+            if not segment or (segment.isEnded() and self.last_event_type == 'SIMPLE'):
+                if not segment:
+                    LOGGER.debug("No events to process ...")
+                else:
+                    LOGGER.debug(f"**ended** {segment}")
+                self.last_event_type=None
+                node.updatePrice(self.last_price, True)
+                node.calculateGridStatus(self.last_price)
+                return
+            LOGGER.debug(segment)
+
+            payloadType=segment.getPayloadType()
+            paylaodType='n/a' if not payloadType else payloadType
+            values=segment.getValues()
+            values ='n/a' if not values  else values
+            LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
+            if segment.isEnded():
+                return
+            from opt_config.ven_settings import EventMode
+
+            if paylaodType == 'GHG':
+                node.updateGHG(values[0], True)
+                return
+
             if self.event_mode is None or self.event_mode == EventMode.PRICE or self.event_mode == EventMode.BOTH:
+                if self.last_event_type == 'SIMPLE' and paylaodType == 'PRICE':
+                    return # we are in DR mode, ignore price events until we get another simple event``
                 if paylaodType == 'PRICE':
+                    self.last_event_type = paylaodType
+                    self.last_price = values[0]
                     node.updatePrice(values[0], True)
                     node.calculateGridStatus(values[0])
-                elif paylaodType == 'GHG':
-                    node.updateGHG(values[0], True)
-        
             if self.event_mode == EventMode.SIMPLE or self.event_mode == EventMode.BOTH:
                 if paylaodType == 'SIMPLE':
+                    self.last_event_type = paylaodType
                     node.updateSimple(values[0], True)
         except Exception as ex:
             LOGGER.error(str(ex))
