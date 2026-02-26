@@ -7,9 +7,13 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 103, 'name': 'Price'}, {
         'driver': 'GHG', 'value': 0, 'uom': 108, 'name': 'GHG'}, {'driver':
         'CL', 'value': 0, 'uom': 25, 'name': 'Comfort Level'}, {'driver':
-        'CGS', 'value': 0, 'uom': 25, 'name': 'Current Grid Status'}]
+        'CGS', 'value': 0, 'uom': 25, 'name': 'Current Grid Status'}, {
+        'driver': 'PRPUSH', 'value': 0, 'uom': 25, 'name':
+        'Notify Price Changes'}, {'driver': 'DRPUSH', 'value': 0, 'uom': 25,
+        'name': 'Notify DR Events'}, {'driver': 'DEVOPT', 'value': 0, 'uom':
+        25, 'name': 'Notify Device States'}]
 
-    def __init__(self, polyglot, plugin, controller='oadr3controlle',
+    def __init__(self, polyglot, plugin, controller='oadr31controll',
         address='oadr3ven', name='Oadr3 Energy Optimizer'):
         super().__init__(polyglot, controller, address, name)
         self.plugin = plugin
@@ -47,6 +51,26 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
     def getCurrentGridStatus(self):
         return self.getDriver("CGS")
 
+    def updateNotifyPriceChanges(self, value, force: bool=None, text: str=None
+        ):
+        return self.setDriver("PRPUSH", value, 25, force, text)
+
+    def getNotifyPriceChanges(self):
+        return self.getDriver("PRPUSH")
+
+    def updateNotifyDREvents(self, value, force: bool=None, text: str=None):
+        return self.setDriver("DRPUSH", value, 25, force, text)
+
+    def getNotifyDREvents(self):
+        return self.getDriver("DRPUSH")
+
+    def updateNotifyDeviceStates(self, value, force: bool=None, text: str=None
+        ):
+        return self.setDriver("DEVOPT", value, 25, force, text)
+
+    def getNotifyDeviceStates(self):
+        return self.getDriver("DEVOPT")
+
     def __setComfortLevel(self, command):
         try:
             query = str(command['query']).replace("'", '"')
@@ -60,8 +84,51 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         except Exception as ex:
             LOGGER.error(f'failed parsing parameters ... ')
             return False
+
+    def __setNotifyPriceChanges(self, command):
+        try:
+            query = str(command['query']).replace("'", '"')
+            jparam = json.loads(query)
+            value = command.get('value', None)
+            if 'PRPUSH.uom25' in jparam:
+                PRPUSH = int(jparam['PRPUSH.uom25'])
+            elif value:
+                PRPUSH = int(value)
+            return self.setNotifyPriceChanges(PRPUSH)
+        except Exception as ex:
+            LOGGER.error(f'failed parsing parameters ... ')
+            return False
+
+    def __setNotifyDREvents(self, command):
+        try:
+            query = str(command['query']).replace("'", '"')
+            jparam = json.loads(query)
+            value = command.get('value', None)
+            if 'DRPUSH.uom25' in jparam:
+                DRPUSH = int(jparam['DRPUSH.uom25'])
+            elif value:
+                DRPUSH = int(value)
+            return self.setNotifyDREvents(DRPUSH)
+        except Exception as ex:
+            LOGGER.error(f'failed parsing parameters ... ')
+            return False
+
+    def __setNotifyDeviceStates(self, command):
+        try:
+            query = str(command['query']).replace("'", '"')
+            jparam = json.loads(query)
+            value = command.get('value', None)
+            if 'DEVOPT.uom25' in jparam:
+                DEVOPT = int(jparam['DEVOPT.uom25'])
+            elif value:
+                DEVOPT = int(value)
+            return self.setNotifyDeviceStates(DEVOPT)
+        except Exception as ex:
+            LOGGER.error(f'failed parsing parameters ... ')
+            return False
     """This is a list of commands that were defined in the nodedef"""
-    commands = {'CL': __setComfortLevel}
+    commands = {'CL': __setComfortLevel, 'PRPUSH': __setNotifyPriceChanges,
+        'DRPUSH': __setNotifyDREvents, 'DEVOPT': __setNotifyDeviceStates}
     """    """
 
     def queryAll(self):
@@ -69,6 +136,9 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         self.queryGHG()
         self.queryComfortLevel()
         self.queryCurrentGridStatus()
+        self.queryNotifyPriceChanges()
+        self.queryNotifyDREvents()
+        self.queryNotifyDeviceStates()
 
     """########WARNING: DO NOT MODIFY THIS LINE!!! NOTHING BELOW IS REGENERATED!#########"""
 
@@ -103,6 +173,25 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         except:
             return False
 
+    def queryNotifyPriceChanges(self):
+        try:
+            return self.updateNotifyPriceChanges(self.settings.get('PRPUSH', 0))
+        except:
+            return False
+
+    def queryNotifyDREvents(self):
+        try:
+            return self.updateNotifyDREvents(self.settings.get('DRPUSH', 0))
+        except:
+            return False
+
+    def queryNotifyDeviceStates(self):
+        try:
+            return self.updateNotifyDeviceStates(self.settings.get('DEVOPT', 0))
+        except:
+            return False
+
+
     def setComfortLevel(self, cl):
         try:
             if self.settings.set('CL', cl):
@@ -111,17 +200,18 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         except:
             return False
 
+
     def calculateGridStatus(self, price):
         from opt_config.ven_settings import GridState
         # Determine Current Grid Status based on GHG and Price
         # if price is < 0.35, grid status is normal (0)
-        if price < 0.35:
+        if price < self.settings.moderate_price_threshold: 
             status = GridState.NORMAL
         # if price is between 0.35 and 0.50, grid status is moderate (1)
-        elif 0.35 <= price < 0.50:
+        elif self.settings.moderate_price_threshold <= price < self.settings.high_price_threshold: 
             status = GridState.MODERATE
         # if price is between 0.50 and 1.00, grid status is high (2)
-        elif 0.50 <= price < 1.00:
+        elif self.settings.high_price_threshold <= price < self.settings.dr_thold:
             status = GridState.HIGH
         # if price is >= 1.00, grid status is emergency (3)
         else:

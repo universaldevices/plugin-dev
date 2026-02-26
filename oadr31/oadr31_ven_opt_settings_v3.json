@@ -1,0 +1,56 @@
+{
+    "CL": 0,
+    "ST": 0,
+    "GHG": 0,
+    "CGS": 0,
+    "PRPUSH": 1,
+    "DRPUSH": 0,
+    "DEVOPT": 1,
+    "mod_price_thold": 0.39,
+    "high_price_thold": 0.69,
+    "dr_thold": 2.0,
+    "cooling_baseline_f": 72,
+    "heating_baseline_f": 70,
+    "light_baseline_percent": 100,
+    "duty_cycle_percent": 100,
+    "Comfort": {
+        "setpoint_offsets_f": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 4
+        },
+        "light_level_offsets": {
+            "0": 100,
+            "1": 95,
+            "2": 90,
+            "3": 80
+        },
+        "duty_cycle_offsets": {
+            "0": 100,
+            "1": 95,
+            "2": 90,
+            "3": 80
+        }
+    },
+    "Savings": {
+        "setpoint_offsets_f": {
+            "0": 0,
+            "1": 2,
+            "2": 3,
+            "3": 4
+        },
+        "light_level_offsets": {
+            "0": 100,
+            "1": 90,
+            "2": 85,
+            "3": 70
+        },
+        "duty_cycle_offsets": {
+            "0": 100,
+            "1": 90,
+            "2": 85,
+            "3": 70
+        }
+    }
+}

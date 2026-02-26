@@ -19,12 +19,35 @@ class EventMode(IntEnum):
     SIMPLE = 1
     BOTH = 2
 
+class PricePush(IntEnum):
+    """
+    Whether to send push notifications in case of DR Events 
+    """
+    NONE      = 0
+    MOD_ABOVE = 1
+    HIGH      = 2
+    All       = 3
+
+class DRPush(IntEnum):
+    """
+    Whether to send push notifications in case of DR Events 
+    """
+    YES = 0
+    NO  = 1
+
+class DeviceOpt(IntEnum):
+    """
+    Whether to include device opt-in/out and states in push notifications
+    """
+    YES = 0
+    NO  = 1
+
 class VENSettings:
     """
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v2.json'):
+    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v3.json'):
         """
         Initialize the VENSettings storage handler.
         
@@ -65,10 +88,16 @@ class VENSettings:
             'ST': 0,              # Price  
             'GHG': 0,             # Greenhouse Gas Emissions
             'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and DR)
+            'PRPUSH'                : PricePush.MOD_ABOVE,
+            'DRPUSH'                : DRPush.YES,
+            'DEVOPT'                : DeviceOpt.NO,
+            'mod_price_thold'       : 0.39,     # The price after which price is considered moderate
+            'high_price_thold'      : 0.69,     # The price after which price is considered high
+            'dr_thold'              : 2.00,     # The signal that indicates we are in DR 
             'cooling_baseline_f'    : 72,       # Baseline Cooling Setpoint in Fahrenheit
             'heating_baseline_f'    : 70,       # Baseline Heating Setpoint
             'light_baseline_percent': 100,      # Baseline Light Level (%)
-            'duty_cycle_percent'    : 100,      # Baseline Light Level (%)
+            'duty_cycle_percent'    : 100,      # Baseline Duty Cycle (%)
             'Comfort': {
                 'setpoint_offsets_f': {
                     '0': 0,     # State - Normal
@@ -268,6 +297,33 @@ class VENSettings:
     @property
     def current_grid_status(self) -> int:
         return self.get('CGS', 0)
+
+    @property
+    def price_push(self) -> int:
+        return self.get('PRPUSH', 0)
+
+    @property
+    def dr_push(self) -> bool:
+        try:
+            return int(self.get('DRPUSH', 0)) == DRPush.YES
+        except Exception as ex:
+            return DRPush.YES
+
+    @property
+    def dev_opt(self) -> bool:
+        return int(self.get('DEVOPT', 0)) == DeviceOpt.YES
+
+    @property
+    def moderate_price_threshold(self) -> float:
+        return self.get('mod_price_thold', 0)
+    
+    @property
+    def high_price_threshold(self) -> float:
+        return self.get('high_price_thold', 0)
+
+    @property
+    def dr_thold(self) -> float:
+        return self.get('dr_thold', 0)
 
     @current_grid_status.setter
     def current_grid_status(self, value: int):

@@ -7,22 +7,39 @@ ST-oadr3ven-ST-NAME = Price
 ST-oadr3ven-GHG-NAME = GHG
 ST-oadr3ven-CL-NAME = Comfort Level
 ST-oadr3ven-CGS-NAME = Current Grid Status
+ST-oadr3ven-PRPUSH-NAME = Notify Price Changes
+ST-oadr3ven-DRPUSH-NAME = Notify DR Events
+ST-oadr3ven-DEVOPT-NAME = Notify Device States
 
 CMD-oadr3ven-CL-NAME = Comfort Level
 CMDP-oadr3ven-comfort_level-CL-NAME = ComfortLevel
+CMD-oadr3ven-PRPUSH-NAME = Notify Price Changes
+CMDP-oadr3ven-price_push-PRPUSH-NAME = NotifyPriceChanges
+CMD-oadr3ven-DRPUSH-NAME = Notify D R Events
+CMDP-oadr3ven-dr_push-DRPUSH-NAME = NotifyDREvents
+CMD-oadr3ven-DEVOPT-NAME = Notify Device States
+CMDP-oadr3ven-device_opt_push-DEVOPT-NAME = NotifyDeviceStates
 
-ND-oadr3controlle-NAME = Oadr3 Controller
-ND-oadr3controlle-ICON = GenericCtl
+ND-oadr31controll-NAME = Oadr31 Controller
+ND-oadr31controll-ICON = GenericCtl
 
-ST-oadr3controlle-ST-NAME = Status
+ST-oadr31controll-ST-NAME = Status
 
-CMD-oadr3controlle-discover-NAME = Discover
-CMD-oadr3controlle-x_query-NAME = Query
+CMD-oadr31controll-discover-NAME = Discover
+CMD-oadr31controll-x_query-NAME = Query
 NLSIX_comfort_level-0 = Max Comfort (Least Savings)
 NLSIX_comfort_level-1 = Max Savings (Least Comfort)
 NLSIX_current_grid_status-0 = Normal
 NLSIX_current_grid_status-1 = Moderate
 NLSIX_current_grid_status-2 = High
 NLSIX_current_grid_status-3 = DR
+NLSIX_price_push-0 = None
+NLSIX_price_push-1 = Moderate & Above
+NLSIX_price_push-2 = High
+NLSIX_price_push-3 = All
+NLSIX_dr_push-0 = Yes
+NLSIX_dr_push-1 = No
+NLSIX_device_opt_push-0 = Yes
+NLSIX_device_opt_push-1 = No
 NLSIX_CTL_BOOL-0 = Disconnected
 NLSIX_CTL_BOOL-1 = Connected

@@ -6,6 +6,9 @@
 <st id="GHG" editor="ghg" />
 <st id="CL" editor="comfort_level" />
 <st id="CGS" editor="current_grid_status" />
+<st id="PRPUSH" editor="price_push" />
+<st id="DRPUSH" editor="dr_push" />
+<st id="DEVOPT" editor="device_opt_push" />
 </sts>
 <cmds>
 <sends/>
@@ -13,10 +16,19 @@
 <cmd id="CL">
 <p id="CL" editor="comfort_level" init="CL"/>
 </cmd>
+<cmd id="PRPUSH">
+<p id="PRPUSH" editor="price_push" init="PRPUSH"/>
+</cmd>
+<cmd id="DRPUSH">
+<p id="DRPUSH" editor="dr_push" init="DRPUSH"/>
+</cmd>
+<cmd id="DEVOPT">
+<p id="DEVOPT" editor="device_opt_push" init="DEVOPT"/>
+</cmd>
 </accepts>
 </cmds>
 </nodedef>
-<nodedef id="oadr3controlle" nls="oadr3controlle">
+<nodedef id="oadr31controll" nls="oadr31controll">
 <sts>
 <st id="ST" editor="CTL_BOOL" />
 </sts>

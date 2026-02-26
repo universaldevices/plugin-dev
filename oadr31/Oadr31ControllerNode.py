@@ -7,15 +7,15 @@ from ioxplugin import Plugin, OAuthService
 
 DATA_PATH='./data'
 from Oadr3EnergyOptimizerNode import Oadr3EnergyOptimizerNode
-class Oadr3ControllerNode(udi_interface.Node):
-    id = 'oadr3controlle'
+class Oadr31ControllerNode(udi_interface.Node):
+    id = 'oadr31controll'
     """This is a list of properties that were defined in the nodedef"""
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 25, 'name': 'Status'}]
     children = [{'node_class': 'Oadr3EnergyOptimizerNode', 'id': 'oadr3ven',
-        'name': 'Oadr3 Energy Optimizer', 'parent': 'oadr3controlle'}]
+        'name': 'Oadr3 Energy Optimizer', 'parent': 'oadr31controll'}]
 
-    def __init__(self, polyglot, plugin, controller='oadr3controlle',
-        address='oadr3controlle', name='Oadr3 Controller'):
+    def __init__(self, polyglot, plugin, controller='oadr31controll',
+        address='oadr31controll', name='Oadr31 Controller'):
         super().__init__(polyglot, controller, address, name)
         self.plugin = plugin
         self.Parameters = Custom(polyglot, 'customparams')
@@ -355,33 +355,13 @@ class Oadr3ControllerNode(udi_interface.Node):
     ###
     commands = {'discover': __discover, 'x_query': __query}
     """########WARNING: DO NOT MODIFY THIS LINE!!! NOTHING BELOW IS REGENERATED!#########"""
-    from oadr30.vtn import VTNOps
-    from oadr30.config import OADR3Config, VTNRefImpl
-    from oadr30.resource import Resource 
-    from oadr30.scheduler import EventScheduler
-    from oadr30 import ValuesMap
-    from oadr30.ven import VEN
-    sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+    
     #############################
     ###### START|STOP ###########
     #############################
     ####
 
-    def query_all_thread(self):
-        time.sleep(2)
-        node = self.getNode('oadr3ven')
-        if node:
-            node.set_settings()
-            self.device_manager.update_settings(node.get_settings())
-            self.device_manager.update_profiles()
-            node.queryAll()
-            while self.device_manager.should_subscribe():
-                self.device_manager.subscribe_events()
-                time.sleep(5)
-            self.shortPoll()
-
     def start(self)->bool:
-        self.timeseries_index = 0
         """
         MANDATORY if and only if you have commands
         This method is called at start so that you can do whatever initialization
@@ -389,53 +369,6 @@ class Oadr3ControllerNode(udi_interface.Node):
         disconnected. So, make sure you return the correct status.
         """
         try:
-            if not self.vtn_base_url:
-                self.setNotices('VTN Base URL','VTN Base URL is mandatory but missing ... using defaults')
-                self.vtn_base_url=self.VTNRefImpl.base_url
-            if not self.client_id:
-                self.setNotices('Client ID', 'Client ID is mandatory but missing ... using defaults')
-                self.client_id=self.VTNRefImpl.bl_client_id
-            if not self.client_secret:
-                self.setNotices('Client Secret', 'Client Secret is mandatory but missing ... using defaults')
-                self.client_secret=self.VTNRefImpl.bl_client_secret
-
-            if self.scale:
-                self.OADR3Config.duration_scale=self.scale
-                self.OADR3Config.events_start_now=True
-
-            auth_url=self.auth_server_url if self.auth_server_url else self.VTNRefImpl.auth_url 
-            self.vtn = self.VTNOps(base_url=self.vtn_base_url, auth_url=auth_url, client_id=self.client_id, client_secret=self.client_secret, auth_token_url_is_json=False )
-            if not self.vtn:
-                self.setNotices('VTN', 'Failed connecting to the VTN ...')
-                return False
-            try:
-                self.ven = self.vtn.create_ven(resources=[self.Resource()])
-                if not self.ven:
-                    self.setNotices('VEN', 'Failed registering the VEN ... for now, ignoring ...')
-            except:
-                pass
-                #   return False
-            self.clearNotices()
-            if not self.test_mode:
-                self.scheduler=self.EventScheduler()
-                self.scheduler.registerCallback(self.scheduler_callback)
-                self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
-
-            import threading
-            from datetime import timedelta
-            from optimizers.device_manager import DeviceManager
-            from optimizers import base_optimizer, switch_optimizer
-            base_optimizer.TESTING_MODE=self.test_mode
-            base_optimizer.NEXT_USER_OVERRIDE_CHECK_INTERVAL = timedelta(seconds=3)
-            base_optimizer.OPT_OUT_DURATION = timedelta(seconds=10) if base_optimizer.TESTING_MODE else timedelta(days=1)
-            switch_optimizer.DUTY_CYCLE_PERIOD_SECONDS = (base_optimizer.OPT_OUT_DURATION.total_seconds()/2) if base_optimizer.TESTING_MODE else (60 * 60)  # 1 hour
-            self.device_manager = DeviceManager(self.poly)
-            self.device_manager.disable_opt(self.disable_opt)
-            from history.device_history import DeviceHistory
-            self.history = DeviceHistory()
-            thread = threading.Thread(target=self.query_all_thread)
-            thread.start()
-
             return True
         except Exception as ex:
             LOGGER.error(f'start failed .... ')
@@ -465,58 +398,11 @@ class Oadr3ControllerNode(udi_interface.Node):
         It is a dictionary so you get the parameter name/key and the value. e.g.
         params['path']
         """
-        from opt_config.ven_settings import EventMode
-        self.vtn_base_url=None
-        self.auth_server_url=None
-        self.test_mode=False
-        self.event_mode=EventMode.PRICE
-        self.program_id=None
-        self.disable_opt=False
-        self.last_event_type=None
-        self.last_price=0.0
         try:
-            if 'VTN Base URL' in params:
-                self.vtn_base_url=params['VTN Base URL']
-            if 'Auth Server URL' in params:
-                self.auth_server_url=params['Auth Server URL']
-            if 'Client ID' in params:
-                self.client_id=params['Client ID']
-            if 'Client Secret' in params:
-                self.client_secret=params['Client Secret']
-            if 'Duration Scale' in params:
-                self.scale=params['Duration Scale']
-                if self.scale:
-                    self.scale=eval(self.scale)
-            if 'Test Mode' in params:
-                self.test_mode=params['Test Mode']
-                if self.test_mode and (self.test_mode.lower() == 'true' or self.test_mode == '1' or self.test_mode.lower() == 'yes'):
-                    self.test_mode=True
-                else:
-                    self.test_mode=False
-            if 'Event Mode' in params:
-                mode=params['Event Mode']
-                if mode.lower() == 'price':
-                    self.event_mode=EventMode.PRICE
-                elif mode.lower() == 'simple':
-                    self.event_mode=EventMode.SIMPLE
-                elif mode.lower() == 'both':
-                    self.event_mode=EventMode.BOTH
-            
-            if 'Disable Opt' in params:
-                disable_opt=params['Disable Opt']
-                if disable_opt and (disable_opt.lower() == 'true' or disable_opt == '1' or disable_opt.lower() == 'yes'):
-                    self.disable_opt=True
-                else:
-                    self.disable_opt=False
-            
-            if 'Program ID' in params:
-                self.program_id=params['Program ID']
-
             return True
         except Exception as ex:
             LOGGER.error(f'process param failed .... ')
             return False
-
 
     def customParamHandler(self, key, value):
         """
@@ -597,27 +483,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         """
         This method is called at every short poll interval. The result is not checked
         """
-    
         try:
-            if not self.vtn:
-                return True
-        except Exception as ex:
-                LOGGER.info('Not connected to VTN yet ...')
-                return True
-        try:
-            self.device_manager.subscribe_events()
-
-            events = self.vtn.get_events(self.program_id)
-            if events:
-                timeSeries = events.getTimeSeries()
-                if not timeSeries:
-                    LOGGER.error("failed getting the time series for the event")
-                    return False
-
-                self.scheduler.setTimeSeries(timeSeries)
-            else: #@MICHEL HERE
-                self.scheduler.stop() # stop the scheduler if there are no events to avoid processing stale events
-
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -628,7 +494,6 @@ class Oadr3ControllerNode(udi_interface.Node):
         This method is called at every long poll interval. The result is not checked
         """
         try:
-            self.history.clear_old_records()
             return True
         except Exception as ex:
             LOGGER.error(str(ex))
@@ -716,60 +581,3 @@ class Oadr3ControllerNode(udi_interface.Node):
             return
         except Exception as ex:
             LOGGER.error(str(ex))
-
-        
-    def scheduler_callback(self, segment):
-        """
-            Segment is ValuesMap
-        """
-        try:
-            node = self.getNode('oadr3ven')
-            if not node:
-                LOGGER.error('VEN node not found ...')
-                return
-            #we need to ignore segment.isEnded() because we are also processing continuos prices
-            if not segment or (segment.isEnded() and self.last_event_type == 'SIMPLE'):
-                if not segment:
-                    LOGGER.debug("No events to process ...")
-                else:
-                    LOGGER.debug(f"**ended** {segment}")
-                self.last_event_type=None
-                node.updatePrice(self.last_price, True)
-                node.calculateGridStatus(self.last_price)
-                return
-            LOGGER.debug(segment)
-
-            payloadType=segment.getPayloadType()
-            paylaodType='n/a' if not payloadType else payloadType
-            values=segment.getValues()
-            values ='n/a' if not values  else values
-            LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
-            if segment.isEnded():
-                return
-            from opt_config.ven_settings import EventMode
-
-            if paylaodType == 'GHG':
-                node.updateGHG(values[0], True)
-                return
-
-            if self.event_mode is None or self.event_mode == EventMode.PRICE or self.event_mode == EventMode.BOTH:
-                if self.last_event_type == 'SIMPLE' and paylaodType == 'PRICE':
-                    return # we are in DR mode, ignore price events until we get another simple event``
-                if paylaodType == 'PRICE':
-                    self.last_event_type = paylaodType
-                    self.last_price = values[0]
-                    node.updatePrice(values[0], True)
-                    node.calculateGridStatus(values[0])
-            if self.event_mode == EventMode.SIMPLE or self.event_mode == EventMode.BOTH:
-                if paylaodType == 'SIMPLE':
-                    self.last_event_type = paylaodType
-                    node.updateSimple(values[0], True)
-        except Exception as ex:
-            LOGGER.error(str(ex))
-
-
-    def scheduler_future_callback(self, segment):
-        """
-            Segment is ValuesMap
-        """
-        print (segment)

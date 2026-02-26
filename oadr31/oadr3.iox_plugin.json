@@ -1,15 +1,15 @@
 {
     "plugin": {
-          "name":"oadr3",
-          "description":"OpenADR 3.1 VEN Plugin for IoX",
+          "name":"oadr31",
+          "description":"OpenADR 3.1 VEN and Optimization Plugin for IoX",
           "publisher":"UD",
           "language": "python3",
           "executableName":"oadr3.py",
           "installScript":"install.sh",
           "documentationLink":"docs",
           "licenseLink":"lic",
-          "shortPoll":5,
-          "longPoll":30,
+          "shortPoll":3600,
+          "longPoll":86400,
           "profileVersion":"3.0.0",
           "initialLogLevel":"DEBUG",
           "enableOAUTH2":false,
@@ -18,8 +18,19 @@
           "requiresIoXAccess": true,
           "enableFileUpload": false,
           "nodesAreStatic": true,
-          "requirements": ["oadr30_ven_ud","tzlocal", "isodate", "pytz", "nucore-ai"],
-          "version": "1.0.5"
+          "requirements": ["oadr30_ven_ud>=1.0.8","tzlocal", "isodate", "pytz", "nucore-ai>=1.2.0"],
+          "version": "1.0.5",
+          "custom_params":{
+                "VTN Base URL":"",
+                "Auth Server URL":"",
+                "Client ID":"",
+                "Client Secret":"",
+                "Duration Scale":"",
+                "Event Mode":"",
+                "Program ID":"",
+                "Test Mode":"",
+                "Disable Opt":""
+          }
     },
     "editors": [
         {
@@ -58,6 +69,38 @@
                 "Moderate | 1",
                 "High | 2",
                 "DR | 3"
+            ]
+        },
+        {
+            "id": "price_push",
+            "min": 0,
+            "max": 2,
+            "uom": "Index | 25",
+            "index_names": [
+                "None | 0",
+                "Moderate & Above | 1",
+                "High | 2",
+                "All | 3"
+            ]
+        },
+        {
+            "id": "dr_push",
+            "min": 0,
+            "max": 1,
+            "uom": "Index | 25",
+            "index_names": [
+                "Yes | 0",
+                "No | 1"
+            ]
+        },
+        {
+            "id": "device_opt_push",
+            "min": 0,
+            "max": 1,
+            "uom": "Index | 25",
+            "index_names": [
+                "Yes | 0",
+                "No | 1"
             ]
         }
     ],
@@ -98,6 +141,30 @@
                        "idref": "current_grid_status"
                    },
                    "is_settable": false 
+                },
+                {
+                   "id": "PRPUSH",
+                   "name": "Notify Price Changes",
+                   "editor": {
+                       "idref": "price_push"
+                   },
+                   "is_settable": true 
+                },
+                {
+                   "id": "DRPUSH",
+                   "name": "Notify DR Events",
+                   "editor": {
+                       "idref": "dr_push"
+                   },
+                   "is_settable": true 
+                },
+                {
+                   "id": "DEVOPT",
+                   "name": "Notify Device States",
+                   "editor": {
+                       "idref": "device_opt_push"
+                   },
+                   "is_settable": true 
                 }
             ],
             "commands": {
