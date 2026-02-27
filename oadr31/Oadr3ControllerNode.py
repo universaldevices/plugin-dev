@@ -474,6 +474,7 @@ class Oadr3ControllerNode(udi_interface.Node):
         self.disable_opt=False
         self.last_event_type=None
         self.last_price=0.0
+        self.price_scale=1.0
         try:
             if 'VTN Base URL' in params:
                 self.vtn_base_url=params['VTN Base URL']
@@ -487,6 +488,10 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.scale=params['Duration Scale']
                 if self.scale:
                     self.scale=eval(self.scale)
+            if 'Price Scale' in params:
+                self.price_scale=params['Price Scale']
+                if self.price_scale:
+                    self.price_scale=eval(self.scale)
             if 'Test Mode' in params:
                 self.test_mode=params['Test Mode']
                 if self.test_mode and (self.test_mode.lower() == 'true' or self.test_mode == '1' or self.test_mode.lower() == 'yes'):
@@ -717,6 +722,14 @@ class Oadr3ControllerNode(udi_interface.Node):
         except Exception as ex:
             LOGGER.error(str(ex))
 
+    def update_price(self, node, value, force):
+        try:
+            if self.price_scale:
+                value = float(value) * float(self.price_scale)
+        except Exception as ex:
+            pass
+        node.updatePrice(value, force)
+        return value
         
     def scheduler_callback(self, segment):
         """
@@ -734,15 +747,15 @@ class Oadr3ControllerNode(udi_interface.Node):
                 else:
                     LOGGER.debug(f"**ended** {segment}")
                 self.last_event_type=None
-                node.updatePrice(self.last_price, True)
-                node.calculateGridStatus(self.last_price)
+                price=self.update_price(node, self.last_price, True)
+                node.calculateGridStatus(price)
                 return
             LOGGER.debug(segment)
 
             payloadType=segment.getPayloadType()
             paylaodType='n/a' if not payloadType else payloadType
             values=segment.getValues()
-            values ='n/a' if not values  else values
+            values =[0.0] if not values  else values
             LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
             if segment.isEnded():
                 return
@@ -758,8 +771,8 @@ class Oadr3ControllerNode(udi_interface.Node):
                 if paylaodType == 'PRICE':
                     self.last_event_type = paylaodType
                     self.last_price = values[0]
-                    node.updatePrice(values[0], True)
-                    node.calculateGridStatus(values[0])
+                    price=self.update_price(node, values[0], True)
+                    node.calculateGridStatus(price)
             if self.event_mode == EventMode.SIMPLE or self.event_mode == EventMode.BOTH:
                 if paylaodType == 'SIMPLE':
                     self.last_event_type = paylaodType

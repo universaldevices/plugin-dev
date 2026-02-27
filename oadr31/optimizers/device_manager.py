@@ -53,15 +53,19 @@ class DeviceManager:
             return
         self.update_settings(self.ven_settings)
     
-    async def optimize(self, grid_state):
+    async def optimize(self, grid_state:int):
         if self.disable_optimization:
             return
+        notification = self.ven_settings.get_notification(grid_state)
+
         for optimizer in self.thermostats.values():
-            await optimizer.optimize(grid_state)
+            await optimizer.optimize(grid_state, notification)
         for optimizer in self.dimmers.values():
-            await optimizer.optimize(grid_state)
+            await optimizer.optimize(grid_state, notification)
         for optimizer in self.switches.values():
-            await optimizer.optimize(grid_state) 
+            await optimizer.optimize(grid_state, notification) 
+        if notification:
+            notification.push(self.poly)
 
     def should_subscribe(self):
         """

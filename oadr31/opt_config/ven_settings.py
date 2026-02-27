@@ -42,6 +42,46 @@ class DeviceOpt(IntEnum):
     YES = 0
     NO  = 1
 
+class PushNotification:
+    def __init__(self, grid_state:GridState, show_device_ops:bool):
+        self.title:str = None
+        self.body:list(str) = []
+        self.show_device_ops=show_device_ops
+        self._set_state(grid_state)
+
+    def _set_state(self, grid_state:GridState):
+        self.title=""
+        if grid_state == GridState.NORMAL:
+            self.title="Utility price is going back to Normal"
+            self.body.append("Reverting device states back to your original settings.")
+        elif grid_state == GridState.MODERATE:
+            self.title="Utility price is now Moderate."
+        elif grid_state == GridState.HIGH:
+            self.title="Utility price is now High"
+        elif grid_state == GridState.DR:
+            self.title="PG&E has issued a Demand Response Event (DR)" 
+
+    def add_body(self, line:str):
+        if not str:
+            return
+        self.body.append(line) 
+
+    def add_device_op(self, device_op:str):
+        if device_op and self.show_device_ops:
+            self.body.append(device_op)
+
+    def get_body(self):
+        if len(self.body) > 1:
+            return "\n".join(self.body)
+        return self.title
+
+    def push(self, poly):
+        if self.title:
+            poly.udm_alert(self.title, self.get_body())
+        print(f"Title:{self.title if self.title else 'n/a'}")
+        print(f"Body:\n{self.get_body()}")
+        
+
 class VENSettings:
     """
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
@@ -56,6 +96,7 @@ class VENSettings:
         """
         self.storage_file = storage_file
         self.settings: Dict[str, Any] = {}
+        self.last_push_state:GridState=GridState.NORMAL
         self._load()
     
     def _load(self) -> None:
@@ -243,6 +284,22 @@ class VENSettings:
             True if the key exists, False otherwise
         """
         return key in self.settings
+
+    def get_notification(self, grid_state:int)->PushNotification:
+        grid_state=int(grid_state)
+        if self.last_push_state == grid_state: 
+            return None
+        self.last_push_state = grid_state
+
+        if self.price_push != PricePush.All: 
+            if grid_state == GridState.DR and not self.dr_push:
+                return None
+            if self.price_push == PricePush.NONE:
+                return None
+            if grid_state != GridState.HIGH and self.price_push == PricePush.HIGH:
+                return None
+
+        return PushNotification(grid_state, self.dev_opt)
     
     # Convenience property accessors for all VEN settings
 

@@ -18,7 +18,7 @@
           "requiresIoXAccess": true,
           "enableFileUpload": false,
           "nodesAreStatic": true,
-          "requirements": ["oadr30_ven_ud>=1.0.8","tzlocal", "isodate", "pytz", "nucore-ai>=1.2.0"],
+          "requirements": ["oadr30_ven_ud>=1.1.0","tzlocal", "isodate", "pytz", "nucore-ai>=1.2.0"],
           "version": "1.0.5",
           "custom_params":{
                 "VTN Base URL":"",
@@ -29,7 +29,8 @@
                 "Event Mode":"",
                 "Program ID":"",
                 "Test Mode":"",
-                "Disable Opt":""
+                "Disable Opt":"",
+                "Price Scale":""
           }
     },
     "editors": [

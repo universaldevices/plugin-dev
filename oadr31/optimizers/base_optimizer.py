@@ -1,6 +1,6 @@
 import asyncio, threading, time
 from typing import Any
-from opt_config.ven_settings import VENSettings, ComfortLevel, GridState
+from opt_config.ven_settings import VENSettings, ComfortLevel, GridState, PushNotification
 from abc import ABC, abstractmethod
 from nucore import Node
 from iox import IoXWrapper
@@ -36,14 +36,27 @@ class BaseOptimizer(ABC):
         self.next_user_override_check = datetime.now() + NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         self.update_settings(ven_settings)
         self.reset_opt_out()
+        self.notification:PushNotification=None
 
-    async def optimize(self, grid_state: int):
+    def _notify_device_ops(self, device_op:str):
+        """
+        Adds device operations to the notifiation object
+        """
+        if device_op:
+            print(device_op)
+            if self.notification :
+                self.notification.add_device_op(device_op)
+
+    async def optimize(self, grid_state, notification:PushNotification):
         """
         Optimize device settings based on current grid state and comfort baselines.
         
         Args:
             state: Current grid state (0-3)
         """
+
+        self.notification=notification
+
         grid_state = int(grid_state) 
         if self.last_grid_state is None or grid_state == self.last_grid_state:
             self.print(f"grid state has not changed from {self.last_grid_state} to {grid_state}, skipping optimization")
@@ -51,14 +64,16 @@ class BaseOptimizer(ABC):
 
         # Check if we're opted out
         if self.check_opt_out_status():
-            self.print(f"is Opted out until {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
+            msg=f"{self.get_device_name_only()} is Opted out until {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}"
+            self._notify_device_ops(msg)
             return 
 
         # Check for user override
         if self.check_user_override(grid_state):
             # User has overridden - opt out until next day
             self.opt_out()
-            self.print(f"is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}")
+            msg=f"{self.get_device_name_only()} is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}"
+            self._notify_device_ops(msg)
             return
 
         if grid_state == GridState.NORMAL:
@@ -113,6 +128,15 @@ class BaseOptimizer(ABC):
             Device name
         """
         return f"{self.node.name}[{self.node.address}]"
+
+    def _get_device_name_only(self):
+        """
+        Get the device name from the node for history logging
+        
+        Returns:
+            Device name
+        """
+        return f"{self.node.name}"
 
     def check_user_override(self, grid_state):
         """

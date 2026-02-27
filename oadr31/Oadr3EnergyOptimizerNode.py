@@ -200,6 +200,28 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         except:
             return False
 
+    def setNotifyPriceChanges(self, pc):
+        try:
+            if self.settings.set('PRPUSH', pc):
+                return self.updateNotifyPriceChanges(pc)
+        except:
+            return False
+
+    def setNotifyDREvents(self, dr):
+        try:
+            if self.settings.set('DRPUSH', dr):
+                return self.updateNotifyDREvents(dr)
+        except:
+            return False
+
+    def setNotifyDeviceStates(self, ds):
+        try:
+            if self.settings.set('DEVOPT', ds):
+                return self.updateNotifyDeviceStates(ds)
+            return False 
+        except:
+            return False
+
 
     def calculateGridStatus(self, price):
         from opt_config.ven_settings import GridState
@@ -218,6 +240,7 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
             status = GridState.DR
 
         self.updateCurrentGridStatus(status)
+        return status
 
     def updateSimple(self, value, force: bool=None, text: str=None):
         if not value:

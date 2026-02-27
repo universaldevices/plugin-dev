@@ -5,7 +5,7 @@
     "CGS": 0,
     "PRPUSH": 1,
     "DRPUSH": 0,
-    "DEVOPT": 1,
+    "DEVOPT": 0,
     "mod_price_thold": 0.39,
     "high_price_thold": 0.69,
     "dr_thold": 2.0,

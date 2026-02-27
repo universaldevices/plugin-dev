@@ -129,13 +129,16 @@ class DimmerOptimizer(BaseOptimizer):
                 target_level = None
                 self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=target_level,
                                    current_value=self.current_dimmer_level, opt_status="No Adjustment Needed")
-                self.print ('current dimmer level is already below target. No adjustment needed.')
+                msg=f'{self._get_device_name_only()}: current dimmer level is already below target. No adjustment needed.'
+                self._notify_device_ops(msg)
             
         # now adjust the dimmer level
         new_level = self._adjust_level(target_level)
         if new_level is not None:
             self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=grid_state, requested_value=new_level,
                                    current_value=self.current_dimmer_level, opt_status="Optimized")
+            msg=f'{self._get_device_name_only()}: adjusting from {self.last_applied_dimmer_level} to {new_level}.'
+            self._notify_device_ops(msg)
             self.last_applied_dimmer_level = new_level
     
     async def _revert_to_initial_settings(self):
@@ -149,6 +152,8 @@ class DimmerOptimizer(BaseOptimizer):
         if new_level is not None:
             self.history.insert(self._get_device_name(), "Dimmer Level", grid_state=GridState.NORMAL, requested_value=new_level,
                                    current_value=self.current_dimmer_level, opt_status="Reset to Baseline")
+            msg=f'{self._get_device_name_only()}: resetting to initial settings {new_level}.'
+            self._notify_device_ops(msg)
             self.last_applied_dimmer_level = None
 
     def _get_calibration_key(self):

@@ -212,7 +212,8 @@ class SwitchOptimizer(BaseOptimizer):
                 self.print(f"stopping duty cycle run since the value has changed") 
                 await self._stop_duty_cycle()
         
-        self.print(f'optimizing with duty cycle {target_duty_cycle}% for grid state {grid_state}')
+        msg=f'{self._get_device_name_only()}: optimizing with duty cycle {target_duty_cycle}%.'
+        self._notify_device_ops(msg)
         
         # Record optimization
         self.history.insert(
@@ -232,6 +233,8 @@ class SwitchOptimizer(BaseOptimizer):
         Revert switches to initial settings. 
         """
         await self._stop_duty_cycle()
+        msg=f'{self._get_device_name_only()}: resetting to initial settings {self.last_applied_state}.'
+        self._notify_device_ops(msg)
         self.last_applied_state = None 
         
     def _opt_out(self):
