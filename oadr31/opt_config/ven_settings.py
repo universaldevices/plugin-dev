@@ -132,11 +132,11 @@ class VENSettings:
             'PRPUSH'                : PricePush.MOD_ABOVE,
             'DRPUSH'                : DRPush.YES,
             'DEVOPT'                : DeviceOpt.NO,
-            'mod_price_thold'       : 0.39,     # The price after which price is considered moderate
-            'high_price_thold'      : 0.69,     # The price after which price is considered high
+            'mod_price_thold'       : 0.044,    # The price after which price is considered moderate
+            'high_price_thold'      : 0.064,    # The price after which price is considered high
             'dr_thold'              : 2.00,     # The signal that indicates we are in DR 
             'cooling_baseline_f'    : 72,       # Baseline Cooling Setpoint in Fahrenheit
-            'heating_baseline_f'    : 70,       # Baseline Heating Setpoint
+            'heating_baseline_f'    : 68,       # Baseline Heating Setpoint
             'light_baseline_percent': 100,      # Baseline Light Level (%)
             'duty_cycle_percent'    : 100,      # Baseline Duty Cycle (%)
             'Comfort': {
