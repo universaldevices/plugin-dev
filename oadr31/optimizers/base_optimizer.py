@@ -64,7 +64,7 @@ class BaseOptimizer(ABC):
 
         # Check if we're opted out
         if self.check_opt_out_status():
-            msg=f"{self.get_device_name_only()} is Opted out until {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}"
+            msg=f"{self._get_device_name_only()} is Opted out until {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}"
             self._notify_device_ops(msg)
             return 
 
@@ -72,7 +72,7 @@ class BaseOptimizer(ABC):
         if self.check_user_override(grid_state):
             # User has overridden - opt out until next day
             self.opt_out()
-            msg=f"{self.get_device_name_only()} is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}"
+            msg=f"{self._get_device_name_only()} is in user override mode till {self.opt_out_until.strftime('%Y-%m-%d %H:%M:%S')}"
             self._notify_device_ops(msg)
             return
 

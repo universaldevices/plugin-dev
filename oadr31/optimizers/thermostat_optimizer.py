@@ -90,9 +90,6 @@ class ThermostatOptimizer(BaseOptimizer):
         Returns:
             Command dictionary to send to IoX
         """
-        if 'Meros' in self.node.name:
-            self.print ('Meros thermostat detected. Skipping setpoint adjustment as Meros thermostats do not support setpoint adjustments via IoX commands.')
-        
         commands = []
         uom = None
         prec = 0
