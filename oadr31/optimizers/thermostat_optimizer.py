@@ -123,18 +123,23 @@ class ThermostatOptimizer(BaseOptimizer):
             response = self.iox.send_commands(commands)
             if response is None or len(response) == 0:
                 self.print ('failed to send setpoint adjustment commands to IoX.')
-                return None, None
+                #return None, None
+                return cool_value, heat_value
             if len(response) == 2:
                 if response[0] is None or response[0].status_code != 200:
-                    cool_value = None
+                    self.print ('failed adjusting cool setpoint.')
+                    #cool_value = None
                 if response[1] is None or response[1].status_code != 200:
-                    heat_value = None
+                    self.print ('failed adjusting heat setpoint.')
+                    #heat_value = None
             elif len(response) == 1:
                 if response[0] is None or response[0].status_code != 200:
                     if commands[0]['command_id'] == 'CLISPC':
-                        cool_value = None
+                        self.print ('failed adjusting cool setpoint.')
+                    #    cool_value = None
                     elif commands[0]['command_id'] == 'CLISPH':
-                        heat_value = None
+                        self.print ('failed adjusting heat setpoint.')
+                    #    heat_value = None
             return cool_value, heat_value
         return None, None
 

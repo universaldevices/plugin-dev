@@ -18,8 +18,64 @@ from .dimmer_optimizer import DimmerOptimizer
 from .switch_optimizer import SwitchOptimizer
 from history.device_history import DeviceHistory
 from .base_optimizer import BaseOptimizer
+import datetime,time
+from datetime import timedelta
 import threading
+from oadr30.datetime_util import get_current_utc_time
 
+SUBSCRIPTION_COMPLETE_TIMEOUT = 3
+
+class DeviceManagerState(threading.Event):
+    def __init__(self):
+        try:
+            super().__init__()
+            self._is_subscribed=False
+            self._is_profiles_updated=False
+            self._last_received_ts:datetime=None
+        except Exception as ex:
+            LOGGER.error(str(ex))
+
+    def _is_ready(self):
+        return self._is_subscribed and self._is_profiles_updated
+
+    def set_subscribed(self, val:bool):
+        self._is_subscribed = val
+        if self._is_ready():
+            self.set()
+
+    def set_profiles_updated(self):
+        self._is_profiles_updated=True 
+        if self._is_ready():
+            self.set()
+    
+    def should_subscribe(self):
+        """
+        Determines whether the device manager should subscribe to events based on the current state of profiles and subscription
+        """
+        return not self._is_profiles_updated or not self._is_subscribed
+
+    def wait_ready(self):
+        if not self._is_ready():
+            self.wait()
+    
+    def _is_sub_complete(self):
+        if not self._last_received_ts:
+            return False
+        now = get_current_utc_time()
+        diff = (now - self._last_received_ts).total_seconds()
+        return diff > SUBSCRIPTION_COMPLETE_TIMEOUT #5 seconds between events = we are done
+
+    def set_last_received(self):
+        self._last_received_ts=get_current_utc_time()
+
+    def wait_sub_complete(self):
+        try:
+            while not self._is_sub_complete():
+                time.sleep(1)
+            print("crap")
+        except Exception as ex:
+            print(str(ex))
+    
 class DeviceManager:
     def __init__(self, poly ):
         self.poly = poly
@@ -29,8 +85,7 @@ class DeviceManager:
         self.dimmers={}
         self.switches={}
         self.ven=None
-        self.is_subscribed=False
-        self.is_profiles_updated=False
+        self._state=DeviceManagerState()
         self.disable_optimization=False
 
     def update_settings(self, settings: VENSettings): 
@@ -44,6 +99,12 @@ class DeviceManager:
             optimizer.update_settings(settings)
         for optimizer in self.switches.values():
             optimizer.update_settings(settings)
+
+    def wait_ready(self):
+        self._state.wait_ready()
+
+    def wait_sub_complete(self):
+        self._state.wait_sub_complete()
 
     def update_ven_setting(self, control:str, value: Any): 
         """
@@ -71,7 +132,8 @@ class DeviceManager:
         """
         Determines whether the device manager should subscribe to events based on the current state of profiles and subscription
         """
-        return not self.is_profiles_updated or not self.is_subscribed
+        return self._state.should_subscribe() 
+
     
     def subscribe_events(self):
         if not self.should_subscribe():
@@ -108,7 +170,7 @@ class DeviceManager:
                 LOGGER.error("Failed to map nodes from XML data")
                 return False
             self.__process_devices__()
-            self.is_profiles_updated = True
+            self._state.set_profiles_updated()
             return True
         except Exception as ex:
             LOGGER.error(f"Failed to update profiles: {str(ex)}")
@@ -118,33 +180,38 @@ class DeviceManager:
         """
         Processes devices and categorizes them into thermostats, dimmers, and switches
         """
-        for node in self.profile.nodes.values():
-            if (not node.enabled) or node.address in self.thermostats.keys() or node.address in self.dimmers.keys() or node.address in self.switches.keys():
-                continue
-            if self.ven is None and node.address.endswith("oadr3ven"):
-                self.ven=node
-                continue
-            node_def = self.__get_node_definitions__(node)
-            if not node_def:
-                continue
-            for prop in node_def.properties:
-                if prop.id == "CLISPC" or prop.id == "CLISPH":
-                    self.thermostats[node.address] = ThermostatOptimizer(self.ven_settings, node, self.iox)
-                    break
-                elif prop.id == "OL" or prop.id == "RR":
-                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node,  self.iox)
-                    break 
-                else:
-                    for cmd in node_def.cmds.accepts:
-                        if cmd.id == "DON" or cmd.id == "DFON":
-                            #make sure we don't also have OL and RR
-                            for cmd in node_def.cmds.accepts:
-                                if cmd.id == "OL" or cmd.id == "RR":
-                                    self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node,  self.iox)
+        try:
+            for node in self.profile.nodes.values():
+                if (not node.enabled) or node.address in self.thermostats.keys() or node.address in self.dimmers.keys() or node.address in self.switches.keys():
+                    continue
+                if self.ven is None and node.address.endswith("oadr3ven"):
+                    self.ven=node
+                    continue
+                node_def = self.__get_node_definitions__(node)
+                if not node_def:
+                    continue
+                for prop in node_def.properties:
+                    if prop.id == "CLISPC" or prop.id == "CLISPH":
+                        self.thermostats[node.address] = ThermostatOptimizer(self.ven_settings, node, self.iox)
+                        break
+                    elif prop.id == "OL" or prop.id == "RR":
+                        self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node,  self.iox)
+                        break 
+                    else:
+                        for cmd in node_def.cmds.accepts:
+                            if cmd.id == "DON" or cmd.id == "DFON":
+                                #make sure we don't also have OL and RR
+                                for cmd in node_def.cmds.accepts:
+                                    if cmd.id == "OL" or cmd.id == "RR":
+                                        self.dimmers[node.address] = DimmerOptimizer(self.ven_settings, node,  self.iox)
+                                        break
+                                if node.address not in self.dimmers.keys():    
+                                    self.switches[node.address] = SwitchOptimizer(self.ven_settings, node,  self.iox)
                                     break
-                            if node.address not in self.dimmers.keys():    
-                                self.switches[node.address] = SwitchOptimizer(self.ven_settings, node,  self.iox)
-                                break
+        except Exception as ex:
+            import traceback
+            tb = traceback.format_exc()
+            LOGGER.error(tb)
 
     def __get_node_definitions__(self, node):           
         """ returns a node definition in this format 
@@ -235,8 +302,6 @@ class DeviceManager:
                     #reprocess devices
                     self.update_profiles(False) 
 
-
-
         except Exception as ex:
             LOGGER.error(f"Error processing node update for {node_address}: {str(ex)}")
     
@@ -265,43 +330,46 @@ class DeviceManager:
         Callback function to handle incoming messages from subscribed events
         @param message: The incoming message from the event stream in JSON
         """
+        self._state.set_last_received()
         if message is None or 'node' not in message or 'control' not in message:
             LOGGER.warning(f"Received invalid message format {message}")
             return
         
-
-        node_address = message.get('node', None)
-        control = message.get('control', None)
-        if control == "_3": #node updated event
-            await self.__process_node_update__(node_address, message)
-        elif control == "_5": #system busy event
-            await self.__process_busy__(message)
-        elif control == "_7": #system busy event
-            await self.__process_progress__(message)
-        elif control.startswith("_"): #ven message
-            pass #ignore other control events
-        elif node_address in self.thermostats.keys():
-            await self.thermostats[node_address].update_internal_state(message)
-        elif node_address in self.dimmers.keys():
-            await self.dimmers[node_address].update_internal_state(message)
-        elif node_address in self.switches.keys():
-            await self.switches[node_address].update_internal_state(message)
-        elif self.ven and node_address == self.ven.address:
-            await self.__process_ven__(message)
-        else:
-            # not important
-            pass
+        try:
+            node_address = message.get('node', None)
+            control = message.get('control', None)
+            if control == "_3": #node updated event
+                await self.__process_node_update__(node_address, message)
+            elif control == "_5": #system busy event
+                await self.__process_busy__(message)
+            elif control == "_7": #system busy event
+                await self.__process_progress__(message)
+            elif control.startswith("_"): #ven message
+                pass #ignore other control events
+            elif node_address in self.thermostats.keys():
+                await self.thermostats[node_address].update_internal_state(message)
+            elif node_address in self.dimmers.keys():
+                await self.dimmers[node_address].update_internal_state(message)
+            elif node_address in self.switches.keys():
+                await self.switches[node_address].update_internal_state(message)
+            elif self.ven and node_address == self.ven.address:
+                await self.__process_ven__(message)
+            else:
+                # not important
+                pass
+        except Exception as ex:
+            LOGGER.error(str(ex))
     
     async def __on_connect__(self):
         """
         Callback function to handle connection established event
         """
-        self.is_subscribed = True
+        self._state.set_subscribed(True)
         print("Connected to event stream") 
     
     async def __on_disconnect__(self):
         """
         Callback function to handle disconnection event
         """
-        self.is_subscribed = False
+        self._state.set_subscribed(False)
         print("Disconnected from event stream")

@@ -377,7 +377,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             node.queryAll()
             while self.device_manager.should_subscribe():
                 self.device_manager.subscribe_events()
-                time.sleep(5)
+                self.device_manager.wait_ready()
             self.shortPoll()
 
     def start(self)->bool:
@@ -491,7 +491,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             if 'Price Scale' in params:
                 self.price_scale=params['Price Scale']
                 if self.price_scale:
-                    self.price_scale=eval(self.scale)
+                    self.price_scale=eval(self.price_scale)
             if 'Test Mode' in params:
                 self.test_mode=params['Test Mode']
                 if self.test_mode and (self.test_mode.lower() == 'true' or self.test_mode == '1' or self.test_mode.lower() == 'yes'):
@@ -611,6 +611,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                 return True
         try:
             self.device_manager.subscribe_events()
+            self.device_manager.wait_sub_complete()
 
             events = self.vtn.get_events(self.program_id)
             if events:

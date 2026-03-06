@@ -91,9 +91,10 @@ class SwitchOptimizer(BaseOptimizer):
             response = self.iox.send_commands(commands)
             if response is None or len(response) == 0:
                 self.print ('failed to send switch command to IoX.')
-                return None
+            #    return None
             if response[0] is None or response[0].status_code != 200:
-                return None
+                self.print ('failed to send switch command to IoX.')
+            #    return None
         return level
     
     async def _run_duty_cycle(self, duty_cycle_percent: int):

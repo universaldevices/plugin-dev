@@ -6,6 +6,7 @@ from nucore import Node
 from iox import IoXWrapper
 from datetime import datetime
 from history.device_history import DeviceHistory
+from udi_interface import LOGGER
 
 # change this when no longer testing
 TESTING_MODE =  None
@@ -43,7 +44,6 @@ class BaseOptimizer(ABC):
         Adds device operations to the notifiation object
         """
         if device_op:
-            print(device_op)
             if self.notification :
                 self.notification.add_device_op(device_op)
 
@@ -155,7 +155,7 @@ class BaseOptimizer(ABC):
         rc = self._check_user_override(grid_state)
         self.next_user_override_check = datetime.now() + NEXT_USER_OVERRIDE_CHECK_INTERVAL 
         return rc
-        
+
     @abstractmethod 
     def _check_user_override(self, grid_state):
         """
@@ -352,4 +352,4 @@ class BaseOptimizer(ABC):
     
     def print(self, msg:str):
         """Print a message with the subclass name and optimizer's device name as prefix"""
-        print(f"{self.__class__.__name__} | {self._get_device_name()}: {msg}")
+        LOGGER.debug(f"{self.__class__.__name__} | {self._get_device_name()}: {msg}")

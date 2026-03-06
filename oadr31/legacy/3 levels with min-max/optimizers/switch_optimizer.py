@@ -286,7 +286,7 @@ class SwitchOptimizer(BaseOptimizer):
         await self._stop_duty_cycle()
         
     def _opt_out(self):
-        self._stop_duty_cycle
+        asyncio.create_task(self._stop_duty_cycle())
     
     def _reset_opt_out(self):
         """
