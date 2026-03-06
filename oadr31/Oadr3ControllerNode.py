@@ -416,10 +416,9 @@ class Oadr3ControllerNode(udi_interface.Node):
                 pass
                 #   return False
             self.clearNotices()
-            if not self.test_mode:
-                self.scheduler=self.EventScheduler()
-                self.scheduler.registerCallback(self.scheduler_callback)
-                self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
+            self.scheduler=self.EventScheduler()
+            self.scheduler.registerCallback(self.scheduler_callback)
+            self.scheduler.registerFutureCallback(self.scheduler_future_callback, 3600)
 
             import threading
             from datetime import timedelta

@@ -33,8 +33,7 @@ This version includes optimization parameters for thermostats, lighting, and swi
     If blank, none will be used.
 
 8. `Test Mode`
-    True, Yes, 1 (case insensitive) put the module in test mode causing shorter opt expiry duration, and 
-    faster intervals.
+    True, Yes, 1 (case insensitive) put the module in test mode causing shorter opt expiry duration.
 
 9. `Disable Opt`
     True, Yes, 1 (case insensitive) disables optimizations
