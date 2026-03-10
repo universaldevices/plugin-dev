@@ -758,6 +758,11 @@ class Oadr3ControllerNode(udi_interface.Node):
             values =[0.0] if not values  else values
             LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
             if segment.isEnded():
+                if self.last_event_type == 'SIMPLE':
+                    if self.last_price:
+                        self.last_event_type = 'PRICE'
+                        price=self.update_price(node, self.last_price, True)
+                        node.calculateGridStatus(price)
                 return
             from opt_config.ven_settings import EventMode
 
@@ -767,6 +772,7 @@ class Oadr3ControllerNode(udi_interface.Node):
 
             if self.event_mode is None or self.event_mode == EventMode.PRICE or self.event_mode == EventMode.BOTH:
                 if self.last_event_type == 'SIMPLE' and paylaodType == 'PRICE':
+                    self.last_price = values[0]
                     return # we are in DR mode, ignore price events until we get another simple event``
                 if paylaodType == 'PRICE':
                     self.last_event_type = paylaodType

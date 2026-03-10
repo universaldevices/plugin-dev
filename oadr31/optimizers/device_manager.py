@@ -72,7 +72,6 @@ class DeviceManagerState(threading.Event):
         try:
             while not self._is_sub_complete():
                 time.sleep(1)
-            print("crap")
         except Exception as ex:
             print(str(ex))
     
