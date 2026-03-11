@@ -3,6 +3,7 @@ logs/*.*
 *.lock
 *.cert
 *.key
+*.core
 __pycache__/
 data/
 history/

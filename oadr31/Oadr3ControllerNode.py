@@ -623,7 +623,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                     return False
 
                 for ts in timeSeries:
-                    print(ts)
+                    LOGGER.debug(ts)
 
                 self.scheduler.setTimeSeries(timeSeries)
             else: #@MICHEL HERE
@@ -780,7 +780,7 @@ class Oadr3ControllerNode(udi_interface.Node):
                 if self.last_event_type == 'SIMPLE': 
                     if paylaodType == 'PRICE':
                         self.last_price = values[0]
-                        return
+                        return 
                 if paylaodType == 'PRICE':
                     self.last_event_type = paylaodType
                     self.last_price = values[0]
