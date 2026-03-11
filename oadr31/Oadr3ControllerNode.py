@@ -399,9 +399,12 @@ class Oadr3ControllerNode(udi_interface.Node):
                 self.setNotices('Client Secret', 'Client Secret is mandatory but missing ... using defaults')
                 self.client_secret=self.VTNRefImpl.bl_client_secret
 
-            if self.scale:
-                self.OADR3Config.duration_scale=self.scale
-                self.OADR3Config.events_start_now=True
+            try:
+                if self.scale and int(self.scale) != 1:
+                    self.OADR3Config.duration_scale=self.scale
+                    self.OADR3Config.events_start_now=True
+            except Exception as ex:
+                pass
 
             auth_url=self.auth_server_url if self.auth_server_url else self.VTNRefImpl.auth_url 
             self.vtn = self.VTNOps(base_url=self.vtn_base_url, auth_url=auth_url, client_id=self.client_id, client_secret=self.client_secret, auth_token_url_is_json=False )
@@ -619,6 +622,9 @@ class Oadr3ControllerNode(udi_interface.Node):
                     LOGGER.error("failed getting the time series for the event")
                     return False
 
+                for ts in timeSeries:
+                    print(ts)
+
                 self.scheduler.setTimeSeries(timeSeries)
             else: #@MICHEL HERE
                 self.scheduler.stop() # stop the scheduler if there are no events to avoid processing stale events
@@ -771,14 +777,16 @@ class Oadr3ControllerNode(udi_interface.Node):
                 return
 
             if self.event_mode is None or self.event_mode == EventMode.PRICE or self.event_mode == EventMode.BOTH:
-                if self.last_event_type == 'SIMPLE' and paylaodType == 'PRICE':
-                    self.last_price = values[0]
-                    return # we are in DR mode, ignore price events until we get another simple event``
+                if self.last_event_type == 'SIMPLE': 
+                    if paylaodType == 'PRICE':
+                        self.last_price = values[0]
+                        return
                 if paylaodType == 'PRICE':
                     self.last_event_type = paylaodType
                     self.last_price = values[0]
                     price=self.update_price(node, values[0], True)
                     node.calculateGridStatus(price)
+                    return 
             if self.event_mode == EventMode.SIMPLE or self.event_mode == EventMode.BOTH:
                 if paylaodType == 'SIMPLE':
                     self.last_event_type = paylaodType
