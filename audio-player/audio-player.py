@@ -28,6 +28,7 @@ if not isAudioPlayerChild:
 import version
 import secrets
 import random
+import yt_dlp
 
 MUSIC_TEMP_DIR="tmp_sounds"
 
@@ -174,23 +175,62 @@ class AudioPlayer:
     def getVolumeInDB(self):
         return max(-60, -60 + (self.volume / 100) * 60)
 
-    def getYouTubeAudioURL(self, videoUrl):
-        if videoUrl == None:
-            return None
-        try:
-            from pytubefix import YouTube
-            # Create a YouTube object
-            #yt = YouTube(videoUrl, client='WEB')
-            yt = YouTube(videoUrl)
+    def getYouTubeAudioURL(self, video_url):
+        """
+        Retrieves the direct audio URL for a given YouTube video URL.
+        """
+        ydl_opts = {
+            'format': 'bestaudio[ext=webm]/bestaudio', # Prioritize webm (opus) then fallback to any best audio
+            'noplaylist': True,  # Ensures only single video is processed if a playlist URL is given
+            'quiet': True,       # Suppresses console output
+            'simulate': True,    # Simulates download, extracting info without saving file
+            'forcejson': True,   # Forces output to JSON format
+            'js_runtimes': {
+                'node': {
+                    'path': '/usr/local/bin/node'  # Explicit path to Node.js executable
+                }
+            }
+        }
 
-            # Get the audio stream with the highest bitrate
-            audio_stream = yt.streams.get_audio_only()
-            if audio_stream == None:
-                return None
-            # Return the URL of the audio stream
-            return audio_stream.url
-        except Exception as ex:
-            LOGGER.error(str(ex))
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                # Extract information
+                info_dict = ydl.extract_info(video_url, download=False)
+                
+                # The 'url' field in the info_dict.get('url') is the direct URL for single formats
+                audio_url = info_dict.get('url', None)
+
+                if audio_url:
+                    return audio_url
+                else:
+                    # If the above method doesn't work, we can look into the 'requested_formats' list
+                    # which contains the formats selected by the format selector
+                    requested_formats = info_dict.get('requested_formats', [])
+                    if requested_formats:
+                        return requested_formats[0]['url'] # Return the URL of the first (best) one
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
+
+#    def getYouTubeAudioURL_old(self, videoUrl):
+##        if videoUrl == None:
+#            return None
+#        try:
+#            from pytubefix import YouTube
+#            # Create a YouTube object
+#            yt = YouTube(videoUrl, client='WEB')
+#            #yt = YouTube(videoUrl)
+#
+#            # Get the audio stream with the highest bitrate
+#            audio_stream = yt.streams.get_audio_only()
+#            if audio_stream == None:
+#                return None
+#            # Return the URL of the audio stream
+#            return audio_stream.url
+#        except Exception as ex:
+#            LOGGER.error(str(ex))
 
     def __setMedia(self, url:str):
         if url == None:
