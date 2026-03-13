@@ -28,7 +28,6 @@ if not isAudioPlayerChild:
 import version
 import secrets
 import random
-import yt_dlp
 
 MUSIC_TEMP_DIR="tmp_sounds"
 
@@ -179,6 +178,7 @@ class AudioPlayer:
         """
         Retrieves the direct audio URL for a given YouTube video URL.
         """
+        import yt_dlp
         ydl_opts = {
             'format': 'bestaudio[ext=webm]/bestaudio', # Prioritize webm (opus) then fallback to any best audio
             'noplaylist': True,  # Ensures only single video is processed if a playlist URL is given
