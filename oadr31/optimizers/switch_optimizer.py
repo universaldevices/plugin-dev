@@ -27,19 +27,19 @@ class SwitchOptimizer(BaseOptimizer):
             iox: IoXWrapper instance for interacting with IoX
         """
         # Track last applied switch settings to detect user changes
-        super().__init__(ven_settings, node, iox)
+        self.duty_cycle_task = None
         self.last_applied_state = None
         self.current_state = None
         self.initial_state = None
         
         # Duty cycle control
-        self.duty_cycle_task = None
         self.duty_cycle_running = False
         self.current_duty_cycle = None 
         self.cycle_period_seconds = DUTY_CYCLE_PERIOD_SECONDS 
+        super().__init__(ven_settings, node, iox)
 
     def _update_settings(self):
-        self._stop_duty_cycle()
+        asyncio.run(self._stop_duty_cycle())
 
     def _get_calibration_key(self):
         return 'duty_cycle_offsets'

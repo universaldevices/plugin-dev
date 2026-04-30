@@ -79,6 +79,26 @@ class ThermostatOptimizer(BaseOptimizer):
         
         return False
     
+    def _supports_cool_heat(self):
+        """
+        Check if the thermostat supports both cooling and heating setpoints.
+        
+        Returns:
+            True if both CLISPC and CLISPH properties are available, False otherwise
+        """
+        if self.node is None or self.node.node_def is None or self.node.node_def.properties is None:
+            return False, False
+
+        has_cool = False
+        has_heat = False
+        for prop in self.node.node_def.properties:
+            if prop.id == "CLISPC":
+                has_cool = True
+            elif prop.id == "CLISPH":
+                has_heat = True
+
+        return has_cool, has_heat
+    
     def _adjust_setpoints(self, cool_value:float, heat_value:float): 
         """
         Generate command to set thermostat setpoints.
@@ -93,7 +113,8 @@ class ThermostatOptimizer(BaseOptimizer):
         commands = []
         uom = None
         prec = 0
-        if cool_value is not None: 
+        has_cool, has_heat = self._supports_cool_heat()
+        if cool_value is not None and has_cool: 
             property = self.get_property('CLISPC')
             if property:
                 uom = property.uom
@@ -106,7 +127,7 @@ class ThermostatOptimizer(BaseOptimizer):
                 {'id': 'n/a', 'value': cool_value, 'uom': uom, 'prec': prec}
             ]
             })
-        if heat_value is not None: 
+        if heat_value is not None and has_heat: 
             property = self.get_property('CLISPH')
             if property:
                 uom = property.uom

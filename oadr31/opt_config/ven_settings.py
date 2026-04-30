@@ -87,7 +87,7 @@ class VENSettings:
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v3.json'):
+    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v4.json'):
         """
         Initialize the VENSettings storage handler.
         
@@ -132,8 +132,8 @@ class VENSettings:
             'PRPUSH'                : PricePush.MOD_ABOVE,
             'DRPUSH'                : DRPush.YES,
             'DEVOPT'                : DeviceOpt.NO,
-            'mod_price_thold'       : 0.044,    # The price after which price is considered moderate
-            'high_price_thold'      : 0.064,    # The price after which price is considered high
+            'mod_price_thold'       : 0.12,    # The price after which price is considered moderate
+            'high_price_thold'      : 0.16,    # The price after which price is considered high
             'dr_thold'              : 2.00,     # The signal that indicates we are in DR 
             'cooling_baseline_f'    : 72,       # Baseline Cooling Setpoint in Fahrenheit
             'heating_baseline_f'    : 68,       # Baseline Heating Setpoint

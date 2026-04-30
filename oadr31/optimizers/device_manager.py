@@ -186,6 +186,9 @@ class DeviceManager:
                 if self.ven is None and node.address.endswith("oadr3ven"):
                     self.ven=node
                     continue
+                if node.pnode is not None and node.address != node.pnode:
+                    pass
+
                 node_def = self.__get_node_definitions__(node)
                 if not node_def:
                     continue
