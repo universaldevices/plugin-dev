@@ -281,6 +281,7 @@ class BaseOptimizer(ABC):
         
         control = event.get('control', None)
         action = event.get('action', None)
+        self.print(f"Updating internal state: control={control}, action={action}")
         if control is None or action is None:
             self.print("Invalid control or action in event data")
             return

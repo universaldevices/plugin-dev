@@ -187,7 +187,7 @@ class DeviceManager:
                     self.ven=node
                     continue
                 if node.pnode is not None and node.address != node.pnode:
-                    pass
+                    continue
 
                 node_def = self.__get_node_definitions__(node)
                 if not node_def:
@@ -246,6 +246,7 @@ class DeviceManager:
             return
         control = message['control']
         value = message.get('action', None)['value']
+        LOGGER.debug(f"Processing VEN message: control={control}, value={value}")
 
         if control == "CGS":  # Current Grid Status update
             grid_state = value 
@@ -274,6 +275,7 @@ class DeviceManager:
             if action is None:
                 LOGGER.warning(f"No action found in node update message for {node_address}")
                 return
+            LOGGER.debug(f"Processing node update for {node_address} with action {action} and eventInfo {eventInfo}")
             if action == "NR":
                 #remove it from thermostats, dimmers, switches
                 if node_address in self.thermostats:
@@ -337,15 +339,17 @@ class DeviceManager:
             LOGGER.warning(f"Received invalid message format {message}")
             return
         
+        LOGGER.debug(f"Received message: {message}")
+        
         try:
             node_address = message.get('node', None)
             control = message.get('control', None)
             if control == "_3": #node updated event
                 await self.__process_node_update__(node_address, message)
-            elif control == "_5": #system busy event
-                await self.__process_busy__(message)
-            elif control == "_7": #system busy event
-                await self.__process_progress__(message)
+            #elif control == "_5": #system busy event
+            #    await self.__process_busy__(message)
+            #elif control == "_7": #system busy event
+            #    await self.__process_progress__(message)
             elif control.startswith("_"): #ven message
                 pass #ignore other control events
             elif node_address in self.thermostats.keys():

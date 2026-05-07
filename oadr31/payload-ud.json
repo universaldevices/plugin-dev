@@ -1,0 +1,153 @@
+[
+    {
+        "programID": "ppt-PGE-OADR-DIRECT",
+        "targets": [
+            "eeid-cd87f876f826f1119a49002248b94757"
+        ],
+        "payloadDescriptors": [
+            {
+                "objectType": "EVENT_PAYLOAD_DESCRIPTOR",
+                "payloadType": "SIMPLE"
+            }
+        ],
+        "intervals": [
+            {
+                "id": 0,
+                "intervalPeriod": {
+                    "start": "2026-05-01T16:00:00-07:00",
+                    "duration": "PT2H"
+                },
+                "payloads": [
+                    {
+                        "type": "SIMPLE",
+                        "values": [
+                            2
+                        ]
+                    }
+                ]
+            }
+        ],
+        "id": "peid-4285475ee144f1118ef300224876b9a2",
+        "createdDateTime": "2026-04-30T15:10:18-07:00",
+        "modificationDateTime": "2026-04-30T15:10:18.1226449-07:00",
+        "objectType": "EVENT"
+    },
+    {
+        "programID": "pnt-013921103-EELEC",
+        "targets": [
+            "pnt-013921103-EELEC",
+            "sat-venClientUD_DRET_Matter"
+        ],
+        "payloadDescriptors": [
+            {
+                "objectType": "EVENT_PAYLOAD_DESCRIPTOR",
+                "payloadType": "PRICE",
+                "units": "KWH",
+                "currency": "USD"
+            }
+        ],
+        "intervals": [
+            {
+                "id": 0,
+                "intervalPeriod": {
+                    "start": "2026-05-01T00:00:00-07:00",
+                    "duration": "P1DT"
+                },
+                "payloads": [
+                    {
+                        "type": "PRICE",
+                        "values": [
+                            0.106852,
+                            0.10506,
+                            0.103783,
+                            0.103644,
+                            0.104514,
+                            0.107052,
+                            0.109756,
+                            0.101448,
+                            0.095669,
+                            0.093839,
+                            0.088861,
+                            0.084303,
+                            0.082229,
+                            0.081834,
+                            0.081324,
+                            0.083951,
+                            0.086966,
+                            0.094362,
+                            0.108416,
+                            0.11632,
+                            0.160772,
+                            0.124993,
+                            0.115354,
+                            0.109527
+                        ]
+                    }
+                ]
+            }
+        ],
+        "id": "pnid-a1d7463bf826f1119a49002248b94757-20260501",
+        "createdDateTime": "2026-05-01T01:49:16.6372744-07:00",
+        "modificationDateTime": "2026-05-01T01:49:16.6372744-07:00",
+        "objectType": "EVENT"
+    },
+    {
+        "programID": "pnt-013921103-EELEC",
+        "targets": [
+            "pnt-013921103-EELEC",
+            "sat-venClientUD_DRET_Matter"
+        ],
+        "payloadDescriptors": [
+            {
+                "objectType": "EVENT_PAYLOAD_DESCRIPTOR",
+                "payloadType": "PRICE",
+                "units": "KWH",
+                "currency": "USD"
+            }
+        ],
+        "intervals": [
+            {
+                "id": 0,
+                "intervalPeriod": {
+                    "start": "2026-05-02T00:00:00-07:00",
+                    "duration": "P1DT"
+                },
+                "payloads": [
+                    {
+                        "type": "PRICE",
+                        "values": [
+                            0.109439,
+                            0.106484,
+                            0.105435,
+                            0.104925,
+                            0.105651,
+                            0.106758,
+                            0.106883,
+                            0.095303,
+                            0.090239,
+                            0.087423,
+                            0.083781,
+                            0.081074,
+                            0.078384,
+                            0.077451,
+                            0.077142,
+                            0.07919,
+                            0.083671,
+                            0.091639,
+                            0.1067,
+                            0.115905,
+                            0.121541,
+                            0.121102,
+                            0.11539,
+                            0.109632
+                        ]
+                    }
+                ]
+            }
+        ],
+        "id": "pnid-a1d7463bf826f1119a49002248b94757-20260502",
+        "createdDateTime": "2026-05-01T01:49:16.637532-07:00",
+        "modificationDateTime": "2026-05-01T01:49:16.637532-07:00",
+        "objectType": "EVENT"
+    }
+]

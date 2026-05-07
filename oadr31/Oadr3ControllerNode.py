@@ -344,7 +344,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             return
         try:
             self.poly.udm_alert(title, body)
-        except exception as ex:
+        except Exception as ex:
             LOGGER.error(str(ex))
 
     def __discover(self):
@@ -474,9 +474,9 @@ class Oadr3ControllerNode(udi_interface.Node):
         self.event_mode=EventMode.PRICE
         self.program_id=None
         self.disable_opt=False
-        self.last_event_type=None
         self.last_price=0.0
         self.price_scale=1.0
+        self.isInDR = False
         try:
             if 'VTN Base URL' in params:
                 self.vtn_base_url=params['VTN Base URL']
@@ -746,51 +746,77 @@ class Oadr3ControllerNode(udi_interface.Node):
             if not node:
                 LOGGER.error('VEN node not found ...')
                 return
-            #we need to ignore segment.isEnded() because we are also processing continuos prices
-            if not segment or (segment.isEnded() and self.last_event_type == 'SIMPLE'):
-                if not segment:
-                    LOGGER.debug("No events to process ...")
-                else:
-                    LOGGER.debug(f"**ended** {segment}")
-                self.last_event_type=None
+            if not segment:
+                LOGGER.error(f"Missing segment ... ")
+                self.isInDR = False
                 price=self.update_price(node, self.last_price, True)
                 node.calculateGridStatus(price)
                 return
-            LOGGER.debug(segment)
+            if self.event_mode is None:
+                #default to both
+                self.event_mode = EventMode.BOTH
 
+            LOGGER.debug(f"## Segment:\n{segment}")
             payloadType=segment.getPayloadType()
             paylaodType='n/a' if not payloadType else payloadType
-            values=segment.getValues()
-            values =[0.0] if not values  else values
-            LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
-            if segment.isEnded():
-                if self.last_event_type == 'SIMPLE':
-                    if self.last_price:
-                        self.last_event_type = 'PRICE'
-                        price=self.update_price(node, self.last_price, True)
-                        node.calculateGridStatus(price)
+            if segment.isEnded(): 
+                LOGGER.debug(f"## Segment ended:\n{segment}")
+                if payloadType == 'SIMPLE':
+                    isInDR = False
+                    price=self.update_price(node, self.last_price, True)
+                    node.calculateGridStatus(price)
+                    LOGGER.debug("DR ended!")
                 return
+            
+            values=segment.getValues()
+            values = [0.0] if not values  else values
+            LOGGER.debug(f"Got event of type {payloadType} with value of {values[0]}" )
+            
             from opt_config.ven_settings import EventMode
 
             if paylaodType == 'GHG':
                 node.updateGHG(values[0], True)
                 return
 
-            if self.event_mode is None or self.event_mode == EventMode.PRICE or self.event_mode == EventMode.BOTH:
-                if self.last_event_type == 'SIMPLE': 
-                    if paylaodType == 'PRICE':
-                        self.last_price = values[0]
-                        return 
+            if self.event_mode == EventMode.PRICE:
+                if  payloadType != 'PRICE':
+                    LOGGER.warning(f"Event mode is set for PRICE but we got a payload of type {payloadType}")
+                    return
+                self.last_price = values[0]
+                price=self.update_price(node, values[0], True)
+                node.calculateGridStatus(price)
+                return 
+                
+            if self.event_mode == EventMode.SIMPLE:
+                if payloadType != 'SIMPLE':
+                    LOGGER.warning(f"Event mode is set for SIMPLE but we got a payload of type {payloadType}")
+                    return
+                self.isInDR = True
+                node.updateSimple(values[0], True)
+                return
+
+            #Event type is BOTH
+            if self.isInDR:
+                if payloadType == 'SIMPLE':
+                    node.updateSimple(values[0], True)
+                    return
+
                 if paylaodType == 'PRICE':
-                    self.last_event_type = paylaodType
+                    self.last_price = values[0]
+                    self.update_price(node, values[0], True)
+                    #do not update grid status
+                    return 
+            else: #not in DR
+                if paylaodType == 'PRICE':
                     self.last_price = values[0]
                     price=self.update_price(node, values[0], True)
                     node.calculateGridStatus(price)
                     return 
-            if self.event_mode == EventMode.SIMPLE or self.event_mode == EventMode.BOTH:
+
                 if paylaodType == 'SIMPLE':
-                    self.last_event_type = paylaodType
+                    self.isInDR = True
                     node.updateSimple(values[0], True)
+        
         except Exception as ex:
             LOGGER.error(str(ex))
 

@@ -28,6 +28,12 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
             return None
 
     def updatePrice(self, value, force: bool=None, text: str=None):
+        try:
+            #convert to a float with 4 decimal places
+            price = round(float(value), 5)
+            return self.setDriver("ST", price, 103, force, text)
+        except:
+            LOGGER.error(f'Invalid price value: {value}')
         return self.setDriver("ST", value, 103, force, text)
 
     def getPrice(self):
@@ -239,7 +245,7 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
         else:
             status = GridState.DR
 
-        self.updateCurrentGridStatus(status)
+        self.updateCurrentGridStatus(status, True)
         return status
 
     def updateSimple(self, value, force: bool=None, text: str=None):
