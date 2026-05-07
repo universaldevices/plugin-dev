@@ -762,7 +762,7 @@ class Oadr3ControllerNode(udi_interface.Node):
             if segment.isEnded(): 
                 LOGGER.debug(f"## Segment ended:\n{segment}")
                 if payloadType == 'SIMPLE':
-                    isInDR = False
+                    self.isInDR = False
                     price=self.update_price(node, self.last_price, True)
                     node.calculateGridStatus(price)
                     LOGGER.debug("DR ended!")
