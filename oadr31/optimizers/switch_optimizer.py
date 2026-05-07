@@ -39,7 +39,14 @@ class SwitchOptimizer(BaseOptimizer):
         super().__init__(ven_settings, node, iox)
 
     def _update_settings(self):
-        asyncio.run(self._stop_duty_cycle())
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            # No running loop in this thread, so execute synchronously.
+            asyncio.run(self._stop_duty_cycle())
+        else:
+            # Already inside an event loop, so schedule without nesting loops.
+            loop.create_task(self._stop_duty_cycle())
 
     def _get_calibration_key(self):
         return 'duty_cycle_offsets'
@@ -239,7 +246,13 @@ class SwitchOptimizer(BaseOptimizer):
         self.last_applied_state = None 
         
     def _opt_out(self):
-        asyncio.create_task(self._stop_duty_cycle())
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            # No running loop in this thread, so execute synchronously.
+            asyncio.run(self._stop_duty_cycle())
+        else:
+            loop.create_task(self._stop_duty_cycle())
     
     def _reset_opt_out(self):
         """
@@ -248,7 +261,13 @@ class SwitchOptimizer(BaseOptimizer):
         self.last_applied_state = None
         # Stop duty cycling
         if hasattr(self, 'duty_cycle_task') and self.duty_cycle_task:
-            asyncio.create_task(self._stop_duty_cycle())
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                # No running loop in this thread, so execute synchronously.
+                asyncio.run(self._stop_duty_cycle())
+            else:
+                loop.create_task(self._stop_duty_cycle())
 
     async def _update_internal_state(self, property, value):
         """
