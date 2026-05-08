@@ -30,7 +30,7 @@ class Oadr3EnergyOptimizerNode(udi_interface.Node):
     def updatePrice(self, value, force: bool=None, text: str=None):
         try:
             #convert to a float with 4 decimal places
-            price = round(float(value), 5)
+            price = round(float(value), 4)
             return self.setDriver("ST", price, 103, force, text)
         except:
             LOGGER.error(f'Invalid price value: {value}')
