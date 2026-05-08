@@ -45,7 +45,7 @@ class DeviceOpt(IntEnum):
 class PushNotification:
     def __init__(self, grid_state:GridState, show_device_ops:bool):
         self.title:str = None
-        self.body:list(str) = []
+        self.body:list[str] = []
         self.show_device_ops=show_device_ops
         self._set_state(grid_state)
 
@@ -59,10 +59,10 @@ class PushNotification:
         elif grid_state == GridState.HIGH:
             self.title="Utility price is now High"
         elif grid_state == GridState.DR:
-            self.title="PG&E has issued a Demand Response Event (DR)" 
+            self.title="PG%26E has issued a Demand Response Event (DR)" 
 
     def add_body(self, line:str):
-        if not str:
+        if not line:
             return
         self.body.append(line) 
 
