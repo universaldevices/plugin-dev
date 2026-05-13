@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 from enum import IntEnum
 
@@ -87,7 +87,7 @@ class VENSettings:
     A class to store and retrieve OADR3 VEN properties to/from JSON storage.
     This ensures persistence of user-configured settings across restarts.
     """
-    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v4.json'):
+    def __init__(self, storage_file: str = 'oadr31_ven_opt_settings_v5.json'):
         """
         Initialize the VENSettings storage handler.
         
@@ -131,7 +131,7 @@ class VENSettings:
             'CGS': 0,             # Current Grid Status (0=Normal, 1=Moderate, Hight, and DR)
             'PRPUSH'                : PricePush.MOD_ABOVE,
             'DRPUSH'                : DRPush.YES,
-            'DEVOPT'                : DeviceOpt.NO,
+            'DEVOPT'                : DeviceOpt.YES,
             'mod_price_thold'       : 0.12,    # The price after which price is considered moderate
             'high_price_thold'      : 0.16,    # The price after which price is considered high
             'dr_thold'              : 2.00,     # The signal that indicates we are in DR 
@@ -154,9 +154,9 @@ class VENSettings:
                 },
                 'duty_cycle_offsets': {
                     '0': 100,   # State - Normal
-                    '1': 95,    # State - Moderate
-                    '2': 90,    # State - High
-                    '3': 80,    # State - DR 
+                    '1': 90,    # State - Moderate - 6 minutes per hour off
+                    '2': 80,    # State - High - 12 minutes per hour off
+                    '3': 70,    # State - DR - 15 minutes per hour off
                 },
             },
             'Savings': {
@@ -174,9 +174,9 @@ class VENSettings:
                 },
                 'duty_cycle_offsets': {
                     '0': 100,   # State - Normal
-                    '1': 90,    # State - Moderate
-                    '2': 85,    # State - High
-                    '3': 70,    # State - DR 
+                    '1': 90,    # State - Moderate - 6 minutes per hour off
+                    '2': 80,    # State - High - 12 minutes per hour off
+                    '3': 70,    # State - DR - 15 minutes per hour off
                 },
             }
         }
