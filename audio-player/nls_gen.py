@@ -1,4 +1,5 @@
 import os
+import shutil
 import udi_interface
 from typing import List
 import re
@@ -43,7 +44,8 @@ SHUFFLE-1 = Yes
 
 '''
 
-listFile='./m.list'
+listFile='./data/m.list'
+oldListFile='./m.list'
 
 class DefaultEditor ():
     editors='''
@@ -67,6 +69,12 @@ class NLSGenerator :
         #Given a path, recreate the NLS document for the list of files
 
     def load(self)->bool():
+        self.make_file_dir(listFile)
+        if os.path.exists(oldListFile):
+            try:
+                shutil.move(oldListFile, listFile)
+            except Exception as ex:
+                LOGGER.error("failed migrating list file {}".format(ex))
         if not os.path.exists(listFile):
             self.save()
             return True
