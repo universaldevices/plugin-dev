@@ -44,7 +44,7 @@ SHUFFLE-1 = Yes
 
 '''
 
-listFile='./data/m.list'
+listFile='./persist/m.list'
 oldListFile='./m.list'
 
 class DefaultEditor ():
